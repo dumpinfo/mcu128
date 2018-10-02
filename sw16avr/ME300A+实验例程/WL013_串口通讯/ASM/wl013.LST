@@ -1,0 +1,172 @@
+A51 MACRO ASSEMBLER  WL013                                                                01/23/2005 15:55:56 PAGE     1
+
+
+MACRO ASSEMBLER A51 V7.10
+OBJECT MODULE PLACED IN wl013.OBJ
+ASSEMBLER INVOKED BY: C:\Keil\C51\BIN\A51.EXE wl013.asm SET(SMALL) DEBUG EP
+
+LOC  OBJ            LINE     SOURCE
+
+                       1     ;********************************************************************************
+                       2     ;*    标题       : ME300系列开发板演示程序 - PC与ME300串行通迅程序              *
+                       3     ;*    文件       : wl013.asm                                                    *
+                       4     ;*    时间       : 2005-1-18                                                    *
+                       5     ;*    版本       : 1.0                                                          *
+                       6     ;*                                                                              *
+                       7     ;*    作者       : 伟纳电子 - Freeman                                           *
+                       8     ;*    邮件       : freeman@willar.com                                           *
+                       9     ;*    网址       : www.willar.com                                               *
+                      10     ;*                                                                              *
+                      11     ;********************************************************************************
+                      12     ;*    描述       :                                                              *
+                      13     ;*                 单片机接收主机的数据,然后将数据传送到P0口, 并传回给主机;     *
+                      14     ;*                 当按下AN1时, 单片机发送字串"welcome! www.willar.com\n\r"    *
+                      15     ;*                 给主机.                                                      *
+                      16     ;*                                                                              *
+                      17     ;********************************************************************************
+  00B2                18     AN1     EQU     P3.2                    ; 按键端口
+                      19     ; 变量定义
+  0050                20     KEY_S   EQU     50H                     ; 当前的按键状态                        
+  0051                21     KEY_V   EQU     51H                     ; 上次的按键状态
+                      22     
+                      23     
+0000                  24             ORG     0000H
+0000 020003           25             LJMP    MAIN
+                      26             
+0003                  27     MAIN:
+0003 758920           28             MOV     TMOD,#20H               ; 定时器1工作于8位自动重载模式,用于产生波特率
+0006 758DFD           29             MOV     TH1,#0FDH
+0009 758BFD           30             MOV     TL1,#0FDH               ; 波特率9600
+                      31             
+000C 759850           32             MOV     SCON,#50H               ; 设定串行口工作方式
+000F 5387EF           33             ANL     PCON,#0EFH              ; 波特率不倍增
+                      34             
+0012 D28E             35             SETB    TR1                     ; 启动定时器1
+0014 75A800           36             MOV     IE,#0                   ; 禁止任何中断
+                      37     
+0017 755101           38             MOV     KEY_V,#01H              ; 
+                      39             
+001A                  40     MAIN_RX:
+001A 309809           41             JNB     RI,MAIN_KEY             ; 是否有数据到来
+001D C298             42             CLR     RI
+001F E599             43             MOV     A,SBUF                  ; 暂存接收到的数据
+0021 F580             44             MOV     P0,A                    ; 数据传送到P0口
+0023 120055           45             LCALL   SEND_CHAR               ; 回传接收到的数据
+                      46             
+0026                  47     MAIN_KEY:
+0026 12003B           48             LCALL   SCAN_KEY                ;  扫描按键
+0029 60EF             49             JZ      MAIN_RX
+002B 12005D           50             LCALL   DELAY_15MS              ;  延时去抖动
+002E 12003B           51             LCALL   SCAN_KEY
+0031 60E7             52             JZ      MAIN_RX
+0033 855051           53             MOV     KEY_V,KEY_S             ;  保存键值
+0036 120045           54             LCALL   PROC_KEY                ; 键处理
+0039 80DF             55             SJMP    MAIN_RX
+                      56     ;===============================================================================
+003B                  57     SCAN_KEY:
+                      58     ; 扫描按键, (在此实例中仅扫描按键AN1)   
+A51 MACRO ASSEMBLER  WL013                                                                01/23/2005 15:55:56 PAGE     2
+
+                      59     ; 传入参数: 无
+                      60     ; 返回值:　无
+003B E4               61             CLR     A
+003C A2B2             62             MOV     C,AN1
+003E 92E0             63             MOV     ACC.0, C
+0040 F550             64             MOV     KEY_S,A
+0042 6551             65             XRL     A,KEY_V                 ; 检查按键状态是否改变
+0044 22               66             RET
+                      67     ;===============================================================================        
+0045                  68     PROC_KEY:
+                      69     ; 按键处理子程序 --- 发送字符串到PC
+                      70     ; 传入参数: KEY_V --- 按键值
+                      71     ; 返回值: 无    
+0045 20B20C           72             JB      AN1,END_PROC_KEY        ; AN1未按下时，直接返回
+0048 900068           73             MOV     DPTR,#TAB_WWW           ; 字串表格地址
+                      74     
+004B                  75     SEND_STRING:
+004B E4               76             CLR     A
+004C 93               77             MOVC    A,@A+DPTR
+004D 6005             78             JZ      END_PROC_KEY            ; 查到00H时,表示字串结束
+004F 1155             79             ACALL   SEND_CHAR
+0051 A3               80             INC     DPTR                    ; 下一字符
+0052 80F7             81             SJMP    SEND_STRING
+0054                  82     END_PROC_KEY:
+0054 22               83             RET     
+                      84     
+                      85     ;===============================================================================
+0055                  86     SEND_CHAR:
+                      87     ; 传送一个字符
+                      88     ; 传入参数: ACC(要发送的数据)
+                      89     ; 返回值: 无
+0055 F599             90             MOV     SBUF,A
+0057 3099FD           91             JNB     TI,$                    ; 等特数据传送
+005A C299             92             CLR     TI                      ; 清除数据传送标志
+005C 22               93             RET
+                      94     ;===============================================================================
+                      95     ; 扫描按键, (在此实例中仅扫描按键AN1)   
+                      96     ; 传入参数: 无
+                      97     ; 返回值:　无
+005D                  98     DELAY_15MS:
+005D 7F0F             99             MOV     R7,#15
+005F                 100     DELAY15MS_1:
+005F 7EE8            101             MOV     R6,#0E8H
+0061                 102     DELAY15MS_2:
+0061 00              103             NOP
+0062 00              104             NOP
+0063 DEFC            105             DJNZ    R6,DELAY15MS_2
+0065 DFF8            106             DJNZ    R7,DELAY15MS_1
+0067 22              107             RET
+                     108     
+                     109             
+0068                 110     TAB_WWW:
+0068 77656C63        111             DB      "welcome! www.willar.com"
+006C 6F6D6521                
+0070 20777777                
+0074 2E77696C                
+0078 6C61722E                
+007C 636F6D                  
+007F 0A0D            112             DB      0AH,0DH         ;换行/回车
+0081 00              113             DB      00H
+                     114             END
+A51 MACRO ASSEMBLER  WL013                                                                01/23/2005 15:55:56 PAGE     3
+
+SYMBOL TABLE LISTING
+------ ----- -------
+
+
+N A M E             T Y P E  V A L U E   ATTRIBUTES
+
+ACC. . . . . . . .  D ADDR   00E0H   A   
+AN1. . . . . . . .  B ADDR   00B0H.2 A   
+DELAY15MS_1. . . .  C ADDR   005FH   A   
+DELAY15MS_2. . . .  C ADDR   0061H   A   
+DELAY_15MS . . . .  C ADDR   005DH   A   
+END_PROC_KEY . . .  C ADDR   0054H   A   
+IE . . . . . . . .  D ADDR   00A8H   A   
+KEY_S. . . . . . .  N NUMB   0050H   A   
+KEY_V. . . . . . .  N NUMB   0051H   A   
+MAIN . . . . . . .  C ADDR   0003H   A   
+MAIN_KEY . . . . .  C ADDR   0026H   A   
+MAIN_RX. . . . . .  C ADDR   001AH   A   
+P0 . . . . . . . .  D ADDR   0080H   A   
+P3 . . . . . . . .  D ADDR   00B0H   A   
+PCON . . . . . . .  D ADDR   0087H   A   
+PROC_KEY . . . . .  C ADDR   0045H   A   
+RI . . . . . . . .  B ADDR   0098H.0 A   
+SBUF . . . . . . .  D ADDR   0099H   A   
+SCAN_KEY . . . . .  C ADDR   003BH   A   
+SCON . . . . . . .  D ADDR   0098H   A   
+SEND_CHAR. . . . .  C ADDR   0055H   A   
+SEND_STRING. . . .  C ADDR   004BH   A   
+TAB_WWW. . . . . .  C ADDR   0068H   A   
+TH1. . . . . . . .  D ADDR   008DH   A   
+TI . . . . . . . .  B ADDR   0098H.1 A   
+TL1. . . . . . . .  D ADDR   008BH   A   
+TMOD . . . . . . .  D ADDR   0089H   A   
+TR1. . . . . . . .  B ADDR   0088H.6 A   
+
+
+REGISTER BANK(S) USED: 0 
+
+
+ASSEMBLY COMPLETE.  0 WARNING(S), 0 ERROR(S)

@@ -1,0 +1,75 @@
+A51 MACRO ASSEMBLER  WL001                                                                03/29/2005 15:38:50 PAGE     1
+
+
+MACRO ASSEMBLER A51 V7.10
+OBJECT MODULE PLACED IN wl001.OBJ
+ASSEMBLER INVOKED BY: C:\Keil\C51\BIN\A51.EXE wl001.asm SET(SMALL) DEBUG EP
+
+LOC  OBJ            LINE     SOURCE
+
+                       1     ;********************************************************************************
+                       2     ;*  标题:  伟纳电子ME300B单片机开发系统演示程序 - LED流水灯                     *
+                       3     ;*  文件:  wl001.asm                                                            *
+                       4     ;*  日期:  2004-1-5                                                             *
+                       5     ;*  版本:  1.0                                                                  *
+                       6     ;*  作者:  伟纳电子 - Freeman                                                   *
+                       7     ;*  邮箱:  freeman@willar.com                                                   *
+                       8     ;*  网站： http://www.willar.com                                                *
+                       9     ;********************************************************************************
+                      10     ;*  描述:                                                                       *
+                      11     ;*         延时实现LED流水灯效果                                                *
+                      12     ;*                                                                              *
+                      13     ;*                                                                              *
+                      14     ;*                                                                              *
+                      15     ;********************************************************************************
+                      16     ;* 【版权】 Copyright(C)伟纳电子 www.willar.com  All Rights Reserved            *
+                      17     ;* 【声明】 此程序仅用于学习与参考，引用请注明版权和作者信息！                  *
+                      18     ;********************************************************************************
+                      19     
+                      20     
+0000                  21             ORG     0000H
+0000 020003           22             LJMP    MAIN
+                      23     
+0003                  24     MAIN:
+0003 7580FE           25             MOV     P0,#0FEH                ; 初始点亮LED1 
+0006 7FFE             26             MOV     R7,#0FEH                ; 保存P0
+0008                  27     MAIN_LP:
+0008 120012           28             LCALL   DELAY                   ; 延时
+000B EF               29             MOV     A,R7                    ; 
+000C 23               30             RL      A                       ; 循环移位
+000D FF               31             MOV     R7,A                    ; 保存到R7
+000E F580             32             MOV     P0,A                    ; 点亮下一个LED
+0010 80F6             33             JMP     MAIN_LP                 ; 不停循环
+                      34     
+                      35     ;===========================================================
+0012                  36     DELAY:                                  ; 延时子程序
+0012 78FF             37             MOV     R0,#0FFH
+0014 79FF             38             MOV     R1,#0FFH
+0016                  39     DLY_LP:
+0016 00               40             NOP
+0017 00               41             NOP
+0018 D8FC             42             DJNZ    R0,DLY_LP
+001A 78FF             43             MOV     R0,#0FFH
+001C D9F8             44             DJNZ    R1,DLY_LP 
+001E 22               45             RET
+                      46             
+                      47             END
+A51 MACRO ASSEMBLER  WL001                                                                03/29/2005 15:38:50 PAGE     2
+
+SYMBOL TABLE LISTING
+------ ----- -------
+
+
+N A M E             T Y P E  V A L U E   ATTRIBUTES
+
+DELAY. . . . . . .  C ADDR   0012H   A   
+DLY_LP . . . . . .  C ADDR   0016H   A   
+MAIN . . . . . . .  C ADDR   0003H   A   
+MAIN_LP. . . . . .  C ADDR   0008H   A   
+P0 . . . . . . . .  D ADDR   0080H   A   
+
+
+REGISTER BANK(S) USED: 0 
+
+
+ASSEMBLY COMPLETE.  0 WARNING(S), 0 ERROR(S)

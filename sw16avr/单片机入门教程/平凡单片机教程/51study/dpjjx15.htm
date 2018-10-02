@@ -1,0 +1,633 @@
+<html xmlns:v="urn:schemas-microsoft-com:vml"
+xmlns:o="urn:schemas-microsoft-com:office:office"
+xmlns:w="urn:schemas-microsoft-com:office:word"
+xmlns="http://www.w3.org/TR/REC-html40">
+
+<head>
+<meta http-equiv=Content-Type content="text/html; charset=gb2312">
+<meta name=ProgId content=FrontPage.Editor.Document>
+<meta name=Generator content="Microsoft FrontPage 5.0">
+<meta name=Originator content="Microsoft Word 10">
+<link rel=Edit-Time-Data href="dpjjx15.files/editdata.mso">
+<title>单片机第十三课</title>
+<!--[if gte mso 9]><xml>
+ <w:WordDocument>
+  <w:View>Normal</w:View>
+  <w:Compatibility>
+   <w:UseFELayout/>
+  </w:Compatibility>
+  <w:BrowserLevel>MicrosoftInternetExplorer4</w:BrowserLevel>
+ </w:WordDocument>
+</xml><![endif]-->
+<style>
+<!--
+ /* Font Definitions */
+ @font-face
+	{font-family:System;
+	panose-1:0 0 0 0 0 0 0 0 0 0;
+	mso-font-alt:方正舒体;
+	mso-font-charset:134;
+	mso-generic-font-family:auto;
+	mso-font-format:other;
+	mso-font-pitch:auto;
+	mso-font-signature:1 135135232 16 0 262144 0;}
+@font-face
+	{font-family:宋体;
+	panose-1:2 1 6 0 3 1 1 1 1 1;
+	mso-font-alt:SimSun;
+	mso-font-charset:134;
+	mso-generic-font-family:auto;
+	mso-font-pitch:variable;
+	mso-font-signature:3 135135232 16 0 262145 0;}
+@font-face
+	{font-family:"\@宋体";
+	panose-1:2 1 6 0 3 1 1 1 1 1;
+	mso-font-charset:134;
+	mso-generic-font-family:auto;
+	mso-font-pitch:variable;
+	mso-font-signature:3 135135232 16 0 262145 0;}
+@font-face
+	{font-family:"\@System";
+	panose-1:0 0 0 0 0 0 0 0 0 0;
+	mso-font-charset:134;
+	mso-generic-font-family:auto;
+	mso-font-format:other;
+	mso-font-pitch:auto;
+	mso-font-signature:1 135135232 16 0 262144 0;}
+ /* Style Definitions */
+ p.MsoNormal, li.MsoNormal, div.MsoNormal
+	{mso-style-parent:"";
+	margin-bottom:.0001pt;
+	mso-pagination:widow-orphan;
+	font-size:12.0pt;
+	font-family:宋体;
+	mso-bidi-font-family:宋体; margin-left:0cm; margin-right:0cm; margin-top:0cm}
+a:link, span.MsoHyperlink
+	{color:blue;
+	text-decoration:underline;
+	text-underline:single;}
+a:visited, span.MsoHyperlinkFollowed
+	{color:purple;
+	text-decoration:underline;
+	text-underline:single;}
+p
+	{font-size:12.0pt;
+	font-family:宋体;
+	mso-bidi-font-family:宋体;}
+@page Section1
+	{size:595.3pt 841.9pt;
+	margin:72.0pt 90.0pt 72.0pt 90.0pt;
+	mso-header-margin:42.55pt;
+	mso-footer-margin:49.6pt;
+	mso-paper-source:0;}
+div.Section1
+	{page:Section1;}
+ /* List Definitions */
+ @list l0
+	{mso-list-id:1925841163;
+	mso-list-template-ids:1315851770;}
+@list l1
+	{mso-list-id:2118403979;
+	mso-list-template-ids:-1209235218;}
+ol
+	{margin-bottom:0cm;}
+ul
+	{margin-bottom:0cm;}
+-->
+</style>
+<!--[if gte mso 10]>
+<style>
+ /* Style Definitions */
+ table.MsoNormalTable
+	{mso-style-name:普通表格;
+	mso-tstyle-rowband-size:0;
+	mso-tstyle-colband-size:0;
+	mso-style-noshow:yes;
+	mso-style-parent:"";
+	mso-padding-alt:0cm 5.4pt 0cm 5.4pt;
+	mso-para-margin:0cm;
+	mso-para-margin-bottom:.0001pt;
+	mso-pagination:widow-orphan;
+	font-size:10.0pt;
+	font-family:"Times New Roman";
+	mso-fareast-font-family:"Times New Roman"}
+</style>
+<![endif]-->
+<meta name=Template content="C:\PROGRAM FILES\MICROSOFT OFFICE\OFFICE\html.dot">
+<!--[if gte mso 9]><xml>
+ <o:shapelayout v:ext="edit">
+  <o:idmap v:ext="edit" data="1"/>
+ </o:shapelayout></xml><![endif]-->
+</head>
+
+<body bgcolor=white background="../back.jpg" lang=ZH-CN link=blue vlink=purple
+style='tab-interval:21.0pt'>
+
+<div class=Section1>
+
+<p style='mso-line-height-alt:0pt; line-height:150%; margin-top:0; margin-bottom:0'>
+<font size="2">逻辑与指令</font><span
+lang=EN-US><o:p></o:p></span></p>
+
+<p style='mso-line-height-alt:0pt; line-height:150%; margin-top:0; margin-bottom:0'>
+<span lang=EN-US style='font-family:System'><font size="2">ANL<span style='mso-tab-count:2'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </span>A,Rn</font></span><span style='mso-tab-count:2' lang="EN-US"><font size="2">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+</font> </span><span
+lang=EN-US style='font-family:System'><font size="2">;A</font></span><font size="2">与</font><span lang=EN-US style='font-family:System'><font size="2">Rn</font></span><font size="2">中的值按位</font><span
+lang=EN-US style='font-family:System'><font size="2">'</font></span><font size="2">与</font><span lang=EN-US style='font-family:System'><font size="2">'</font></span><font size="2">，结果送入</font><span
+lang=EN-US style='font-family:System'><font size="2">A</font></span><font size="2">中</font><span lang=EN-US><o:p></o:p></span></p>
+
+<p style='mso-line-height-alt:0pt; line-height:150%; margin-top:0; margin-bottom:0'>
+<span lang=EN-US style='font-family:System'><font size="2">ANL<span style='mso-tab-count:2'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </span>A,direct
+;A</font></span><font size="2">与</font><span lang=EN-US
+style='font-family:System'><font size="2">direct</font></span><font size="2">中的值按位</font><span lang=EN-US style='font-family:System'><font size="2">'</font></span><font size="2">与</font><span
+lang=EN-US style='font-family:System'><font size="2">'</font></span><font size="2">，结果送入</font><span lang=EN-US style='font-family:System'><font size="2">A</font></span><font size="2">中</font><span lang=EN-US><o:p></o:p></span></p>
+
+<p style='mso-line-height-alt:0pt; line-height:150%; margin-top:0; margin-bottom:0'>
+<span lang=EN-US style='font-family:System'><font size="2">ANL<span style='mso-tab-count:2'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </span>A,@Ri
+;A</font></span><font size="2">与间址寻址单元</font><span lang=EN-US
+style='font-family:System'><font size="2">@Ri</font></span><font size="2">中的值按位</font><span lang=EN-US style='font-family:System'><font size="2">'</font></span><font size="2">与</font><span lang=EN-US style='font-family:System'><font size="2">'</font></span><font size="2">，结果送入</font><span
+lang=EN-US style='font-family:System'><font size="2">A</font></span><font size="2">中</font><span lang=EN-US><o:p></o:p></span></p>
+
+<p style='mso-line-height-alt:0pt; line-height:150%; margin-top:0; margin-bottom:0'>
+<span lang=EN-US style='font-family:System'><font size="2">ANL<span style='mso-tab-count:2'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </span>A,#data
+;A</font></span><font size="2">与立即数</font><span lang=EN-US
+style='font-family:System'><font size="2">data</font></span><font size="2">按位</font><span lang=EN-US style='font-family:System'><font size="2">'</font></span><font size="2">与</font><span lang=EN-US style='font-family:System'><font size="2">'</font></span><font size="2">，结果送入</font><span
+lang=EN-US style='font-family:System'><font size="2">A</font></span><font size="2">中</font><span lang=EN-US><o:p></o:p></span></p>
+
+<p style='mso-line-height-alt:0pt; line-height:150%; margin-top:0; margin-bottom:0'>
+<span lang=EN-US style='font-family:System'><font size="2">ANL<span style='mso-tab-count:2'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </span>direct,A
+;direct</font></span><font size="2">中值与</font><span lang=EN-US
+style='font-family:System'><font size="2">A</font></span><font size="2">中的值按位</font><span lang=EN-US style='font-family:System'><font size="2">'</font></span><font size="2">与</font><span lang=EN-US style='font-family:System'><font size="2">'</font></span><font size="2">，结果送入</font><span
+lang=EN-US style='font-family:System'><font size="2">direct</font></span><font size="2">中</font><span lang=EN-US><o:p></o:p></span></p>
+
+<p style='mso-line-height-alt:0pt; line-height:150%; margin-top:0; margin-bottom:0'>
+<span lang=EN-US style='font-family:System'><font size="2">ANL<span style='mso-tab-count:2'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </span>direct,#data
+;direct</font></span><font size="2">中的值与立即数</font><span lang=EN-US
+style='font-family:System'><font size="2">data</font></span><font size="2">按位</font><span lang=EN-US style='font-family:System'><font size="2">'</font></span><font size="2">与</font><span lang=EN-US style='font-family:System'><font size="2">'</font></span><font size="2">，结果送入</font><span
+lang=EN-US style='font-family:System'><font size="2">direct</font></span><font size="2">中。</font><span lang=EN-US><o:p></o:p></span></p>
+
+<p style='mso-line-height-alt:0pt; line-height:150%; margin-top:0; margin-bottom:0'>
+<font size="2">这几条指令的关键是知道什么是逻辑与。这里的逻辑与是指按位与</font><span
+lang=EN-US><o:p></o:p></span></p>
+
+<p style='mso-line-height-alt:0pt; line-height:150%; margin-top:0; margin-bottom:0'>
+<font size="2">例：</font><span
+lang=EN-US style='font-family:System'><font size="2">71H</font></span><font size="2">和</font><span lang=EN-US style='font-family:System'><font size="2">56H</font></span><font size="2">相与则将两数写成二进制形式：</font><span
+lang=EN-US><o:p></o:p></span></p>
+
+<p style='mso-line-height-alt:0pt; line-height:150%; margin-top:0; margin-bottom:0'>
+<font size="2">（</font><span
+lang=EN-US style='font-family:System'><font size="2">71H</font></span><font size="2">） 
+</font><span lang=EN-US style='font-family:System'><font size="2">01110001</font></span><span lang=EN-US style='font-size:10.5pt'><o:p></o:p></span></p>
+
+<p style='mso-line-height-alt:0pt; line-height:150%; margin-top:0; margin-bottom:0'>
+<font size="2">（</font><span
+lang=EN-US style='font-family:System'><font size="2">56H</font></span><font size="2">） 
+</font><span lang=EN-US style='font-family:System'><font size="2">00100110</font></span><span lang=EN-US style='font-size:10.5pt'><o:p></o:p></span></p>
+
+<p style='mso-line-height-alt:0pt; line-height:150%; margin-top:0; margin-bottom:0'>
+<font size="2">结果 </font><span
+lang=EN-US style='font-family:System'><font size="2">00100000 </font> </span>
+<font size="2">即</font><span lang=EN-US style='font-family:System'><font size="2">20H</font></span><font size="2">，从上面的式子可以看出，两个参与运算的值只要其中有一个位上是</font><span
+lang=EN-US style='font-family:System'><font size="2">0</font></span><font size="2">，则这位的结果就是</font><span lang=EN-US style='font-family:System'><font size="2">0</font></span><font size="2">，两个同是</font><span
+lang=EN-US style='font-family:System'><font size="2">1</font></span><font size="2">，结果才是</font><span lang=EN-US style='font-family:System'><font size="2">1</font></span><font size="2">。</font><span lang=EN-US><o:p></o:p></span></p>
+
+<p style='mso-line-height-alt:0pt; line-height:150%; margin-top:0; margin-bottom:0'>
+<font size="2">理解了逻辑与的运算规则，结果自然就出来了。看每条指令后面的注释</font><span
+lang=EN-US><o:p></o:p></span></p>
+
+<p style='mso-line-height-alt:0pt; line-height:150%; margin-top:0; margin-bottom:0'>
+<font size="2">下面再举一些例子来看。</font><span
+lang=EN-US><o:p></o:p></span></p>
+
+<p style='mso-line-height-alt:0pt; line-height:150%; margin-top:0; margin-bottom:0'>
+<span lang=EN-US style='font-family:System'><font size="2">MOV<span style='mso-tab-count:2'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </span>A</font></span><font size="2">，</font><span lang=EN-US style='font-family:System'><font size="2">#45H ;(A)=45H</font></span><span lang=EN-US style='font-size:10.5pt'><o:p></o:p></span></p>
+
+<p style='mso-line-height-alt:0pt; line-height:150%; margin-top:0; margin-bottom:0'>
+<span lang=EN-US style='font-family:System'><font size="2">MOV<span style='mso-tab-count:2'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </span>R1</font></span><font size="2">，</font><span lang=EN-US style='font-family:System'><font size="2">#25H ;(R1)=25H</font></span><span lang=EN-US style='font-size:
+10.5pt'><o:p></o:p></span></p>
+
+<p style='mso-line-height-alt:0pt; line-height:150%; margin-top:0; margin-bottom:0'>
+<span lang=EN-US style='font-family:System'><font size="2">MOV<span style='mso-tab-count:2'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </span>25H</font></span><font size="2">，</font><span lang=EN-US style='font-family:System'><font size="2">#79H ;(25H)=79H</font></span><span lang=EN-US style='font-size:
+10.5pt'><o:p></o:p></span></p>
+
+<p style='mso-line-height-alt:0pt; line-height:150%; margin-top:0; margin-bottom:0'>
+<span lang=EN-US style='font-family:System'><font size="2">ANL<span style='mso-tab-count:2'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </span>A</font></span><font size="2">，</font><span lang=EN-US style='font-family:System'><font size="2">@R1 ;45H</font></span><font size="2">与</font><span
+lang=EN-US style='font-family:System'><font size="2">79H</font></span><font size="2">按位与，结果送入</font><span lang=EN-US style='font-family:System'><font size="2">A</font></span><font size="2">中为 
+</font><span
+lang=EN-US style='font-family:System'><font size="2">41H </font> </span>
+<font size="2">（</font><span lang=EN-US style='font-family:System'><font size="2">A</font></span><font size="2">）</font><span
+lang=EN-US style='font-family:System'><font size="2">=41H</font></span><span
+lang=EN-US style='font-size:10.5pt'><o:p></o:p></span></p>
+
+<p style='mso-line-height-alt:0pt; line-height:150%; margin-top:0; margin-bottom:0'>
+<span lang=EN-US style='font-family:System'><font size="2">ANL<span style='mso-tab-count:2'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </span>25H,#15H
+;25H</font></span><font size="2">中的值（</font><span lang=EN-US
+style='font-family:System'><font size="2">79H</font></span><font size="2">）与</font><span lang=EN-US style='font-family:System'><font size="2">15H</font></span><font size="2">相与结果为（</font><span lang=EN-US style='font-family:System'><font size="2">25H</font></span><font size="2">）</font><span
+lang=EN-US style='font-family:System'><font size="2">=11H</font></span><font size="2">）</font><span lang=EN-US><o:p></o:p></span></p>
+
+<p style='mso-line-height-alt:0pt; line-height:150%; margin-top:0; margin-bottom:0'>
+<span lang=EN-US style='font-family:System'><font size="2">ANL<span style='mso-tab-count:2'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </span>25H,A
+;25H</font></span><font size="2">中的值（</font><span lang=EN-US
+style='font-family:System'><font size="2">11H</font></span><font size="2">）与</font><span lang=EN-US style='font-family:System'><font size="2">A</font></span><font size="2">中的值（</font><span lang=EN-US style='font-family:System'><font size="2">41H)</font></span><font size="2">相与，结果为</font><span
+lang=EN-US style='font-family:System'><font size="2">(25H)=11H</font></span><span
+lang=EN-US style='font-size:10.5pt'><o:p></o:p></span></p>
+
+<p style='mso-line-height-alt:0pt; line-height:150%; margin-top:0; margin-bottom:0'>
+<font size="2">在知道了逻辑与指令的功能后，逻辑或和逻辑异或的功能就很简单了。逻辑或是按位“或”，即有“</font><span
+lang=EN-US style='font-family:System'><font size="2">1</font></span><font size="2">”为</font><span lang=EN-US style='font-family:System'><font size="2">1</font></span><font size="2">，全“</font><span
+lang=EN-US style='font-family:System'><font size="2">0</font></span><font size="2">”为</font><span lang=EN-US style='font-family:System'><font size="2">0</font></span><font size="2">。例：</font><span lang=EN-US><o:p></o:p></span></p>
+
+<p style='mso-line-height-alt:0pt; line-height:150%; margin-top:0; margin-bottom:0'>
+<font size="2"><span lang=EN-US style='font-family:System'>10011000</span></font><o:p></o:p></p>
+
+<p style='mso-line-height-alt:0pt; line-height:150%; margin-top:0; margin-bottom:0'>
+<font size="2">或 </font><span
+lang=EN-US style='font-family:System'><font size="2">01100001</font></span><span
+lang=EN-US style='font-size:10.5pt'><o:p></o:p></span></p>
+
+<p style='mso-line-height-alt:0pt; line-height:150%; margin-top:0; margin-bottom:0'>
+<font size="2">结果 </font><span
+lang=EN-US style='font-family:System'><font size="2">11111001</font></span><span
+lang=EN-US style='font-size:10.5pt'><o:p></o:p></span></p>
+
+<p style='mso-line-height-alt:0pt; line-height:150%; margin-top:0; margin-bottom:0'>
+<font size="2">而异或则是按位“异或”，相同为“</font><span
+lang=EN-US style='font-family:System'><font size="2">0</font></span><font size="2">”，相异为“</font><span lang=EN-US style='font-family:System'><font size="2">1</font></span><font size="2">”。例：</font><span
+lang=EN-US><o:p></o:p></span></p>
+
+<p style='mso-line-height-alt:0pt; line-height:150%; margin-top:0; margin-bottom:0'>
+<font size="2"><span lang=EN-US style='font-family:System'>10011000</span></font><o:p></o:p></p>
+
+<p style='mso-line-height-alt:0pt; line-height:150%; margin-top:0; margin-bottom:0'>
+<font size="2">异或 </font><span
+lang=EN-US style='font-family:System'><font size="2">01100001</font></span><span
+lang=EN-US style='font-size:10.5pt'><o:p></o:p></span></p>
+
+<p style='mso-line-height-alt:0pt; line-height:150%; margin-top:0; margin-bottom:0'>
+<font size="2">结果 </font><span
+lang=EN-US style='font-family:System'><font size="2">11111001</font></span><span
+lang=EN-US style='font-size:10.5pt'><o:p></o:p></span></p>
+
+<p style='mso-line-height-alt:0pt; line-height:150%; margin-top:0; margin-bottom:0'>
+<font size="2">而所有的或指令，就是将与指仿中的</font><span
+lang=EN-US style='font-family:System'><font size="2">ANL </font> </span>
+<font size="2">换成</font><span lang=EN-US style='font-family:System'><font size="2">ORL</font></span><font size="2">，而异或指令则是将</font><span
+lang=EN-US style='font-family:System'><font size="2">ANL</font><span
+style='mso-tab-count:1'><font size="2">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+</font> </span></span><font size="2">换成</font><span lang=EN-US style='font-family:System'><font size="2">XRL</font></span><font size="2">。即</font><span
+lang=EN-US><o:p></o:p></span></p>
+
+<p style='mso-line-height-alt:0pt; line-height:150%; margin-top:0; margin-bottom:0'>
+<font size="2">或指令：</font><span
+lang=EN-US><o:p></o:p></span></p>
+
+<p style='mso-line-height-alt:0pt; line-height:150%; margin-top:0; margin-bottom:0'>
+<span lang=EN-US style='font-family:System'><font size="2">ORL<span style='mso-tab-count:2'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </span>A,Rn</font></span><span style='mso-tab-count:2' lang="EN-US"><font size="2">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+</font> </span><span
+lang=EN-US style='font-family:System'><font size="2">;A</font></span><font size="2">和</font><span lang=EN-US style='font-family:System'><font size="2">Rn</font></span><font size="2">中的值按位</font><span
+lang=EN-US style='font-family:System'><font size="2">'</font></span><font size="2">或</font><span lang=EN-US style='font-family:System'><font size="2">'</font></span><font size="2">，结果送入</font><span
+lang=EN-US style='font-family:System'><font size="2">A</font></span><font size="2">中</font><span lang=EN-US><o:p></o:p></span></p>
+
+<p style='mso-line-height-alt:0pt; line-height:150%; margin-top:0; margin-bottom:0'>
+<span lang=EN-US style='font-family:System'><font size="2">ORL<span style='mso-tab-count:2'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </span>A,direct
+;A</font></span><font size="2">和与间址寻址单元</font><span lang=EN-US
+style='font-family:System'><font size="2">@Ri</font></span><font size="2">中的值按位</font><span lang=EN-US style='font-family:System'><font size="2">'</font></span><font size="2">或</font><span lang=EN-US style='font-family:System'><font size="2">'</font></span><font size="2">，结果送入</font><span
+lang=EN-US style='font-family:System'><font size="2">A</font></span><font size="2">中</font><span lang=EN-US><o:p></o:p></span></p>
+
+<p style='mso-line-height-alt:0pt; line-height:150%; margin-top:0; margin-bottom:0'>
+<span lang=EN-US style='font-family:System'><font size="2">ORL<span style='mso-tab-count:2'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </span>A,#data
+;A</font></span><font size="2">和立</font><span lang=EN-US
+style='font-family:System'><font size="2">direct</font></span><font size="2">中的值按位</font><span lang=EN-US style='font-family:System'><font size="2">'</font></span><font size="2">或</font><span
+lang=EN-US style='font-family:System'><font size="2">'</font></span><font size="2">，结果送入</font><span lang=EN-US style='font-family:System'><font size="2">A</font></span><font size="2">中</font><span lang=EN-US><o:p></o:p></span></p>
+
+<p style='mso-line-height-alt:0pt; line-height:150%; margin-top:0; margin-bottom:0'>
+<span lang=EN-US style='font-family:System'><font size="2">ORL<span style='mso-tab-count:2'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </span>A,@Ri
+;A</font></span><font size="2">和即数</font><span lang=EN-US
+style='font-family:System'><font size="2">data</font></span><font size="2">按位</font><span lang=EN-US style='font-family:System'><font size="2">'</font></span><font size="2">或</font><span lang=EN-US style='font-family:System'><font size="2">'</font></span><font size="2">，结果送入</font><span
+lang=EN-US style='font-family:System'><font size="2">A</font></span><font size="2">中</font><span lang=EN-US><o:p></o:p></span></p>
+
+<p style='mso-line-height-alt:0pt; line-height:150%; margin-top:0; margin-bottom:0'>
+<span lang=EN-US style='font-family:System'><font size="2">ORL<span style='mso-tab-count:2'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </span>direct,A
+;direct</font></span><font size="2">中值和</font><span lang=EN-US
+style='font-family:System'><font size="2">A</font></span><font size="2">中的值按位</font><span lang=EN-US style='font-family:System'><font size="2">'</font></span><font size="2">或</font><span lang=EN-US style='font-family:System'><font size="2">'</font></span><font size="2">，结果送入</font><span
+lang=EN-US style='font-family:System'><font size="2">direct</font></span><font size="2">中</font><span lang=EN-US><o:p></o:p></span></p>
+
+<p style='mso-line-height-alt:0pt; line-height:150%; margin-top:0; margin-bottom:0'>
+<span lang=EN-US style='font-family:System'><font size="2">ORL<span style='mso-tab-count:2'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </span>direct,#data
+;direct</font></span><font size="2">中的值和立即数</font><span lang=EN-US
+style='font-family:System'><font size="2">data</font></span><font size="2">按位</font><span lang=EN-US style='font-family:System'><font size="2">'</font></span><font size="2">或</font><span lang=EN-US style='font-family:System'><font size="2">'</font></span><font size="2">，结果送入</font><span
+lang=EN-US style='font-family:System'><font size="2">direct</font></span><font size="2">中。</font><span lang=EN-US><o:p></o:p></span></p>
+
+<p style='mso-line-height-alt:0pt; line-height:150%; margin-top:0; margin-bottom:0'>
+<font size="2">异或指令：</font><span
+lang=EN-US><o:p></o:p></span></p>
+
+<p style='mso-line-height-alt:0pt; line-height:150%; margin-top:0; margin-bottom:0'>
+<span lang=EN-US style='font-family:System'><font size="2">XRL<span style='mso-tab-count:2'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </span>A,Rn</font></span><span style='mso-tab-count:2' lang="EN-US"><font size="2">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+</font> </span><span
+lang=EN-US style='font-family:System'><font size="2">;A</font></span><font size="2">和</font><span lang=EN-US style='font-family:System'><font size="2">Rn</font></span><font size="2">中的值按位</font><span
+lang=EN-US style='font-family:System'><font size="2">'</font></span><font size="2">异或</font><span lang=EN-US style='font-family:System'><font size="2">'</font></span><font size="2">，结果送入</font><span
+lang=EN-US style='font-family:System'><font size="2">A</font></span><font size="2">中</font><span lang=EN-US><o:p></o:p></span></p>
+
+<p style='mso-line-height-alt:0pt; line-height:150%; margin-top:0; margin-bottom:0'>
+<span lang=EN-US style='font-family:System'><font size="2">XRL<span style='mso-tab-count:2'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </span>A,direct
+;A</font></span><font size="2">和</font><span lang=EN-US
+style='font-family:System'><font size="2">direct</font></span><font size="2">中的值按位</font><span lang=EN-US style='font-family:System'><font size="2">'</font></span><font size="2">异或</font><span
+lang=EN-US style='font-family:System'><font size="2">'</font></span><font size="2">，结果送入</font><span lang=EN-US style='font-family:System'><font size="2">A</font></span><font size="2">中</font><span lang=EN-US><o:p></o:p></span></p>
+
+<p style='mso-line-height-alt:0pt; line-height:150%; margin-top:0; margin-bottom:0'>
+<span lang=EN-US style='font-family:System'><font size="2">XRL<span style='mso-tab-count:2'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </span>A,@Ri
+;A</font></span><font size="2">和间址寻址单元</font><span lang=EN-US
+style='font-family:System'><font size="2">@Ri</font></span><font size="2">中的值按位</font><span lang=EN-US style='font-family:System'><font size="2">'</font></span><font size="2">异或</font><span lang=EN-US style='font-family:System'><font size="2">'</font></span><font size="2">，结果送入</font><span
+lang=EN-US style='font-family:System'><font size="2">A</font></span><font size="2">中</font><span lang=EN-US><o:p></o:p></span></p>
+
+<p style='mso-line-height-alt:0pt; line-height:150%; margin-top:0; margin-bottom:0'>
+<span lang=EN-US style='font-family:System'><font size="2">XRL<span style='mso-tab-count:2'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </span>A,#data
+;A</font></span><font size="2">和立即数</font><span lang=EN-US
+style='font-family:System'><font size="2">data</font></span><font size="2">按位</font><span lang=EN-US style='font-family:System'><font size="2">'</font></span><font size="2">异或</font><span lang=EN-US style='font-family:System'><font size="2">'</font></span><font size="2">，结果送入</font><span
+lang=EN-US style='font-family:System'><font size="2">A</font></span><font size="2">中</font><span lang=EN-US><o:p></o:p></span></p>
+
+<p style='mso-line-height-alt:0pt; line-height:150%; margin-top:0; margin-bottom:0'>
+<span lang=EN-US style='font-family:System'><font size="2">XRL<span style='mso-tab-count:1'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </span>direct,A
+;direct</font></span><font size="2">中值和</font><span lang=EN-US
+style='font-family:System'><font size="2">A</font></span><font size="2">中的值按位</font><span lang=EN-US style='font-family:System'><font size="2">'</font></span><font size="2">异或</font><span lang=EN-US style='font-family:System'><font size="2">'</font></span><font size="2">，结果送入</font><span
+lang=EN-US style='font-family:System'><font size="2">direct</font></span><font size="2">中</font><span lang=EN-US><o:p></o:p></span></p>
+
+<p style='mso-line-height-alt:0pt; line-height:150%; margin-top:0; margin-bottom:0'>
+<span lang=EN-US style='font-family:System'><font size="2">XRL<span style='mso-tab-count:2'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </span>direct,#data
+;direct</font></span><font size="2">中的值和立即数</font><span lang=EN-US
+style='font-family:System'><font size="2">data</font></span><font size="2">按位</font><span lang=EN-US style='font-family:System'><font size="2">'</font></span><font size="2">异或</font><span lang=EN-US style='font-family:System'><font size="2">'</font></span><font size="2">，结果送入</font><span
+lang=EN-US style='font-family:System'><font size="2">direct</font></span><font size="2">中。</font><span lang=EN-US><o:p></o:p></span></p>
+
+<p style='mso-line-height-alt:0pt; line-height:150%; margin-top:0; margin-bottom:0'>
+<font size="2">练习：</font><span
+lang=EN-US><o:p></o:p></span></p>
+
+<p style='mso-line-height-alt:0pt; line-height:150%; margin-top:0; margin-bottom:0'>
+<span lang=EN-US style='font-family:System'><font size="2">MOV<span style='mso-tab-count:2'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </span>A</font></span><font size="2">，</font><span lang=EN-US style='font-family:System'><font size="2">#24H</font></span><span lang=EN-US style='font-size:10.5pt'><o:p></o:p></span></p>
+
+<p style='mso-line-height-alt:0pt; line-height:150%; margin-top:0; margin-bottom:0'>
+<span lang=EN-US style='font-family:System'><font size="2">MOV<span style='mso-tab-count:2'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </span>R0</font></span><font size="2">，</font><span lang=EN-US style='font-family:System'><font size="2">#37H</font></span><span lang=EN-US style='font-size:10.5pt'><o:p></o:p></span></p>
+
+<p style='mso-line-height-alt:0pt; line-height:150%; margin-top:0; margin-bottom:0'>
+<span lang=EN-US style='font-family:System'><font size="2">ORL<span style='mso-tab-count:3'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </span>A</font></span><font size="2">，</font><span lang=EN-US style='font-family:System'><font size="2">R0</font></span><span lang=EN-US style='font-size:10.5pt'><o:p></o:p></span></p>
+
+<p style='mso-line-height-alt:0pt; line-height:150%; margin-top:0; margin-bottom:0'>
+<span lang=EN-US style='font-family:System'><font size="2">XRL<span style='mso-tab-count:3'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </span>A</font></span><font size="2">，</font><span lang=EN-US style='font-family:System'><font size="2">#29H</font></span><span lang=EN-US style='font-size:10.5pt'><o:p></o:p></span></p>
+
+<p style='mso-line-height-alt:0pt; line-height:150%; margin-top:0; margin-bottom:0'>
+<span lang=EN-US style='font-family:System'><font size="2">MOV<span style='mso-tab-count:2'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </span>35H</font></span><font size="2">，</font><span lang=EN-US style='font-family:System'><font size="2">#10H</font></span><span lang=EN-US style='font-size:10.5pt'><o:p></o:p></span></p>
+
+<p style='mso-line-height-alt:0pt; line-height:150%; margin-top:0; margin-bottom:0'>
+<span lang=EN-US style='font-family:System'><font size="2">ORL<span style='mso-tab-count:3'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </span>35H</font></span><font size="2">，</font><span lang=EN-US style='font-family:System'><font size="2">#29H</font></span><span lang=EN-US style='font-size:10.5pt'><o:p></o:p></span></p>
+
+<p style='mso-line-height-alt:0pt; line-height:150%; margin-top:0; margin-bottom:0'>
+<span lang=EN-US style='font-family:System'><font size="2">MOV<span style='mso-tab-count:2'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </span>R0</font></span><font size="2">，</font><span lang=EN-US style='font-family:System'><font size="2">#35H</font></span><span lang=EN-US style='font-size:10.5pt'><o:p></o:p></span></p>
+
+<p style='mso-line-height-alt:0pt; line-height:150%; margin-top:0; margin-bottom:0'>
+<span lang=EN-US style='font-family:System'><font size="2">ANL<span style='mso-tab-count:2'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </span>A</font></span><font size="2">，</font><span lang=EN-US style='font-family:System'><font size="2">@R0</font></span><span lang=EN-US style='font-size:10.5pt'><o:p></o:p></span></p>
+
+<p style='mso-line-height-alt:0pt; line-height:150%; margin-top:0; margin-bottom:0'>
+<font size="2">四、控制转移类指令</font><span
+lang=EN-US><o:p></o:p></span></p>
+
+<ol start=1 type=1>
+ <li class=MsoNormal style='mso-margin-top-alt:auto;mso-margin-bottom-alt:auto;
+     mso-line-height-alt:0pt;mso-list:l0 level1 lfo1;tab-stops:list 36.0pt'>
+ <p style="line-height: 150%; margin-top: 0; margin-bottom: 0"><font size="2">无条件转移类指令</font><span lang=EN-US><o:p></o:p></span></li>
+</ol>
+
+<ol start=1 type=1>
+ <li class=MsoNormal style='mso-margin-top-alt:auto;mso-margin-bottom-alt:auto;
+     mso-line-height-alt:0pt;mso-list:l1 level1 lfo2;tab-stops:list 36.0pt'>
+ <p style="line-height: 150%; margin-top: 0; margin-bottom: 0"><font size="2">短转移类指令</font><span lang=EN-US><o:p></o:p></span></li>
+</ol>
+
+<p style='margin-left:36.0pt;mso-line-height-alt:0pt; line-height:150%; margin-top:0; margin-bottom:0'>
+<span lang=EN-US
+style='font-family:System'><font size="2">AJMP<span style='mso-tab-count:
+1'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </span>addr11</font></span><o:p></o:p></p>
+
+<ol start=2 type=1>
+ <li class=MsoNormal style='mso-margin-top-alt:auto;mso-margin-bottom-alt:auto;
+     mso-line-height-alt:0pt;mso-list:l1 level1 lfo2;tab-stops:list 36.0pt'>
+ <p style="line-height: 150%; margin-top: 0; margin-bottom: 0"><font size="2">长转移类指令</font><span lang=EN-US><o:p></o:p></span></li>
+</ol>
+
+<p style='margin-left:36.0pt;mso-line-height-alt:0pt; line-height:150%; margin-top:0; margin-bottom:0'>
+<span lang=EN-US
+style='font-family:System'><font size="2">LJMP<span style='mso-tab-count:
+1'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </span>addr16</font></span><o:p></o:p></p>
+
+<ol start=3 type=1>
+ <li class=MsoNormal style='mso-margin-top-alt:auto;mso-margin-bottom-alt:auto;
+     mso-line-height-alt:0pt;mso-list:l1 level1 lfo2;tab-stops:list 36.0pt'>
+ <p style="line-height: 150%; margin-top: 0; margin-bottom: 0"><font size="2">相对转移指令</font><span lang=EN-US><o:p></o:p></span></li>
+</ol>
+
+<p style='margin-left:36.0pt;mso-line-height-alt:0pt; line-height:150%; margin-top:0; margin-bottom:0'>
+<span lang=EN-US
+style='font-family:System'><font size="2">SJMP<span style='mso-tab-count:
+1'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </span>rel</font></span><o:p></o:p></p>
+
+<p style='margin-left:36.0pt;mso-line-height-alt:0pt; line-height:150%; margin-top:0; margin-bottom:0'>
+<font size="2">上面的三条指令，如果要仔细分析的话，区别较大，但初学时，可不理会这么多，统统理解成：</font><span lang=EN-US
+style='font-family:System'><font size="2">JMP</font><span style='mso-tab-count:2'><font size="2">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+</font> </span></span><font size="2">标号，也就是跳转到一个标号处。事实上，</font><span lang=EN-US
+style='font-family:System'><font size="2">LJMP</font><span style='mso-tab-count:
+2'><font size="2">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+</font> </span></span><font size="2">标号，在前面的例程中我们已接触过，并且也知道如何来使用了。而</font><span lang=EN-US
+style='font-family:System'><font size="2">AJMP</font></span><font size="2">和</font><span lang=EN-US style='font-family:System'><font size="2">SJMP</font></span><font size="2">也是一样。那么他们的区别何在呢？在于跳转的范围不一样。好比跳远，</font><span
+lang=EN-US style='font-family:System'><font size="2">LJMP</font></span><font size="2">一下就能跳</font><span lang=EN-US style='font-family:System'><font size="2">64K</font></span><font size="2">这么远（当然近了更没关系了）。而</font><span
+lang=EN-US style='font-family:System'><font size="2">AJMP</font><span
+style='mso-tab-count:1'><font size="2">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+</font> </span></span><font size="2">最多只能跳</font><span lang=EN-US style='font-family:System'><font size="2">2K</font></span><font size="2">距离，而</font><span
+lang=EN-US style='font-family:System'><font size="2">SJMP</font></span><font size="2">则最多只能跳</font><span lang=EN-US style='font-family:System'><font size="2">256</font></span><font size="2">这么远。原则上，所有用</font><span
+lang=EN-US style='font-family:System'><font size="2">SJMP</font></span><font size="2">或</font><span lang=EN-US style='font-family:System'><font size="2">AJMP</font></span><font size="2">的地方都可以用</font><span
+lang=EN-US style='font-family:System'><font size="2">LJMP</font></span><font size="2">来替代。因此在初学时，需要跳转时可以全用</font><span lang=EN-US
+style='font-family:System'><font size="2">LJMP</font></span><font size="2">，除了一个场合。什么场合呢？先了解一下</font><span lang=EN-US style='font-family:System'><font size="2">AJMP</font></span><font size="2">，</font><span
+lang=EN-US style='font-family:System'><font size="2">AJMP</font></span><font size="2">是一条双字节指令，也就说这条指令本身占用存储器（</font><span lang=EN-US
+style='font-family:System'><font size="2">ROM</font></span><font size="2">）的两个单元。而</font><span lang=EN-US style='font-family:
+System'><font size="2">LJMP</font></span><font size="2">则是三字节指令，即这条指令占用存储器（</font><span
+lang=EN-US style='font-family:System'><font size="2">ROM</font></span><font size="2">）的三个单元。下面是第四条跳转指令。</font><span lang=EN-US><o:p></o:p></span></p>
+
+<ol start=4 type=1>
+ <li class=MsoNormal style='mso-margin-top-alt:auto;mso-margin-bottom-alt:auto;
+     mso-line-height-alt:0pt;mso-list:l1 level1 lfo2;tab-stops:list 36.0pt'>
+ <p style="line-height: 150%; margin-top: 0; margin-bottom: 0"><font size="2">间接转移指令</font><span lang=EN-US><o:p></o:p></span></li>
+</ol>
+
+<p style='margin-left:36.0pt;mso-line-height-alt:0pt; line-height:150%; margin-top:0; margin-bottom:0'>
+<span lang=EN-US
+style='font-family:System'><font size="2">JMP<span style='mso-tab-count:2'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </span>@A+DPTR</font></span><o:p></o:p></p>
+
+<p style='mso-line-height-alt:0pt; line-height:150%; margin-top:0; margin-bottom:0'>
+<font size="2">这条指令的用途也是跳转，转到什么地方去呢？这可不能由标号简单地决定了。让我们从一个实际的例子入手吧。</font><span
+lang=EN-US><o:p></o:p></span></p>
+
+<p style='margin-left:72.0pt;mso-line-height-alt:0pt; line-height:150%; margin-top:0; margin-bottom:0'>
+<span lang=EN-US
+style='font-family:System'><font size="2">MOV<span style='mso-tab-count:1'>&nbsp;&nbsp;&nbsp; </span>DPTR</font></span><font size="2">，</font><span lang=EN-US style='font-family:System'><font size="2">#TAB</font></span><span
+style='mso-tab-count:2' lang="EN-US"><font size="2">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+</font> </span><span
+lang=EN-US style='font-family:System'><font size="2">;</font></span><font size="2">将</font><span lang=EN-US style='font-family:System'><font size="2">TAB</font></span><font size="2">所代表的地址送入</font><span
+lang=EN-US style='font-family:System'><font size="2">DPTR</font></span><span
+lang=EN-US style='font-size:10.5pt'><o:p></o:p></span></p>
+
+<p style='margin-left:72.0pt;mso-line-height-alt:0pt; line-height:150%; margin-top:0; margin-bottom:0'>
+<span lang=EN-US
+style='font-family:System'><font size="2">MOV<span style='mso-tab-count:1'>&nbsp;&nbsp;&nbsp; </span>A</font></span><font size="2">，</font><span lang=EN-US style='font-family:System'><font size="2">R0<span style='mso-tab-count:3'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </span>;</font></span><font size="2">从</font><span lang=EN-US style='font-family:System'><font size="2">R0</font></span><font size="2">中取数（详见下面说明）</font><span
+lang=EN-US><o:p></o:p></span></p>
+
+<p style='margin-left:72.0pt;mso-line-height-alt:0pt; line-height:150%; margin-top:0; margin-bottom:0'>
+<span lang=EN-US
+style='font-family:System'><font size="2">MOV<span style='mso-tab-count:1'>&nbsp;&nbsp;&nbsp; </span>B</font></span><font size="2">，</font><span lang=EN-US style='font-family:System'><font size="2">#2</font><span style='mso-tab-count:4'><font size="2">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+</font> </span></span><span
+lang=EN-US style='font-size:10.5pt'><o:p></o:p></span></p>
+
+<p style='margin-left:72.0pt;mso-line-height-alt:0pt; line-height:150%; margin-top:0; margin-bottom:0'>
+<span lang=EN-US
+style='font-family:System'><font size="2">MUL<span style='mso-tab-count:1'>&nbsp;&nbsp;&nbsp; </span>A</font></span><font size="2">，</font><span lang=EN-US style='font-family:System'><font size="2">B</font></span><span
+style='mso-tab-count:3' lang="EN-US"><font size="2">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+</font> </span><span
+lang=EN-US style='font-family:System'><font size="2">;A</font></span><font size="2">中的值乘</font><span lang=EN-US style='font-family:System'><font size="2">2</font></span><font size="2">（详见下面的说明）</font><span
+lang=EN-US><o:p></o:p></span></p>
+
+<p style='margin-left:72.0pt;mso-line-height-alt:0pt; line-height:150%; margin-top:0; margin-bottom:0'>
+<span lang=EN-US
+style='font-family:System'><font size="2">JMP<span style='mso-tab-count:1'>&nbsp;&nbsp;&nbsp; </span>A</font></span><font size="2">，</font><span lang=EN-US style='font-family:System'><font size="2">@A+DPTR<span style='mso-tab-count:1'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </span>
+;</font></span><font size="2">跳转</font><span lang=EN-US><o:p></o:p></span></p>
+
+<p style='mso-line-height-alt:0pt; line-height:150%; margin-top:0; margin-bottom:0'>
+<span lang=EN-US style='font-family:System'><font size="2">TAB:<span style='mso-tab-count:1'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </span>AJMP<span
+style='mso-tab-count:1'>&nbsp;&nbsp;&nbsp;&nbsp; </span>S1</font></span><span style='mso-tab-count:3' lang="EN-US"><font size="2">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+</font> </span><span
+lang=EN-US style='font-family:System'><font size="2">;</font></span><font size="2">跳转表格</font><span lang=EN-US><o:p></o:p></span></p>
+
+<p style='mso-line-height-alt:0pt; line-height:150%; margin-top:0; margin-bottom:0'>
+<span
+style='mso-tab-count:1' lang="EN-US"><font size="2">&nbsp;&nbsp;&nbsp; </font> </span>
+<span lang=EN-US
+style='font-family:System'><font size="2">AJMP<span style='mso-tab-count:
+1'>&nbsp;&nbsp;&nbsp;&nbsp; </span>S2</font></span><span lang=EN-US style='font-size:
+10.5pt'><o:p></o:p></span></p>
+
+<p style='mso-line-height-alt:0pt; line-height:150%; margin-top:0; margin-bottom:0'>
+<span lang=EN-US style='font-family:System'><span style='mso-tab-count:1'>
+<font size="2">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </font> </span>
+<font size="2">AJMP<span
+style='mso-tab-count:1'>&nbsp;&nbsp;&nbsp;&nbsp; </span>S3</font></span><o:p></o:p></p>
+
+<p style='mso-line-height-alt:0pt; line-height:150%; margin-top:0; margin-bottom:0'>
+<span lang=EN-US style='font-family:System'><span style='mso-tab-count:2'>
+<font size="2">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+</font> </span><font size="2">.</font></span><o:p></o:p></p>
+
+<p style='mso-line-height-alt:0pt; line-height:150%; margin-top:0; margin-bottom:0'>
+<span lang=EN-US style='font-family:System'><span style='mso-tab-count:2'>
+<font size="2">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+</font> </span><font size="2">.</font></span><o:p></o:p></p>
+
+<p style='mso-line-height-alt:0pt; line-height:150%; margin-top:0; margin-bottom:0'>
+<span lang=EN-US style='font-family:System'><span style='mso-tab-count:2'>
+<font size="2">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+</font> </span><font size="2">.</font></span><o:p></o:p></p>
+
+<table class=MsoNormalTable border=1 cellspacing=1 cellpadding=0 width=609
+ style='width:456.75pt;mso-cellspacing:.7pt' height=446>
+ <tr style='mso-yfti-irow:0'>
+  <td width=342 rowspan=2 style='width:256.5pt;padding:.75pt .75pt .75pt .75pt'>
+  <p style='mso-line-height-alt:0pt; line-height:150%; margin-top:0; margin-bottom:0'>
+  <font size="2"><span lang=EN-US><img id="_x0000_i1025" src=dpj1302.gif width="338" height="398"></span></font><o:p></o:p></p>
+  <p style='mso-line-height-alt:0pt; line-height:150%; margin-top:0; margin-bottom:0'>
+  <font size="2"><span lang=EN-US>&nbsp;</span></font><o:p></o:p></p>
+  <p align=center style='text-align:center;mso-line-height-alt:0pt; line-height:150%; margin-top:0; margin-bottom:0'>
+  <font size="2">图</font><span lang=EN-US><font size="2">2</font><o:p></o:p></span></p>
+  </td>
+  <td width=200 style='width:150.0pt;padding:.75pt .75pt .75pt .75pt'>
+  <p class=MsoNormal style='mso-line-height-alt:0pt; line-height:150%; margin-top:0; margin-bottom:0'>
+  <font size="2"><span lang=EN-US><img id="_x0000_i1026"
+  src=dpj1301.gif width="99" height="126"></span></font><o:p></o:p></p>
+  </td>
+ </tr>
+ <tr style='mso-yfti-irow:1;mso-yfti-lastrow:yes;height:247.5pt'>
+  <td width=200 style='width:150.0pt;padding:.75pt .75pt .75pt .75pt;
+  height:247.5pt'>
+  <p style='mso-line-height-alt:0pt; line-height:150%; margin-top:0; margin-bottom:0'>
+  <font size="2"><span lang=EN-US><img id="_x0000_i1027" src=dpj1303.gif width="204" height="272"></span></font><o:p></o:p></p>
+  <p align=center style='text-align:center;mso-line-height-alt:0pt; line-height:150%; margin-top:0; margin-bottom:0'>
+  <font size="2">图</font><span lang=EN-US><font size="2">3</font><o:p></o:p></span></p>
+  </td>
+ </tr>
+</table>
+
+<p style='mso-line-height-alt:0pt; line-height:150%; margin-top:0; margin-bottom:0'>
+<font size="2">　　应用背景介绍：在单片机开发中，经常要用到键盘，见上面的</font><span
+lang=EN-US style='font-family:System'><font size="2">9</font></span><font size="2">个按键的键盘。我们的要求是：当按下功能键</font><span lang=EN-US
+style='font-family:System'><font size="2">A………..G</font></span><font size="2">时去完成不同的功能。这用程序设计的语言来表达的话，就是：按下不同的键去执行不同的程序段，以完成不同的功能。怎么样来实现呢？</font><span
+lang=EN-US><o:p></o:p></span></p>
+
+<p style='mso-line-height-alt:0pt; line-height:150%; margin-top:0; margin-bottom:0'>
+<font size="2">　　看图</font><span
+lang=EN-US style='font-family:System'><font size="2">2</font></span><font size="2">，前面的程序读入的是按键的值，如按下</font><span lang=EN-US
+style='font-family:System'><font size="2">'A'</font></span><font size="2">键后获得的键值是</font><span lang=EN-US style='font-family:
+System'><font size="2">0</font></span><font size="2">，按下</font><span lang=EN-US
+style='font-family:System'><font size="2">'B'</font></span><font size="2">键后获得的值是</font><span lang=EN-US style='font-family:
+System'><font size="2">'1'</font></span><font size="2">等等，然后根据不同的值进行跳转，如键值为</font><span
+lang=EN-US style='font-family:System'><font size="2">0</font></span><font size="2">就转到</font><span lang=EN-US style='font-family:System'><font size="2">S1</font></span><font size="2">执行，为</font><span
+lang=EN-US style='font-family:System'><font size="2">1</font></span><font size="2">就转到</font><span lang=EN-US style='font-family:System'><font size="2">S2</font></span><font size="2">执行。。。。如何来实现这一功能呢？</font><span
+lang=EN-US><o:p></o:p></span></p>
+
+<p style='mso-line-height-alt:0pt; line-height:150%; margin-top:0; margin-bottom:0'>
+<font size="2">　　先从程序的下面看起，是若干个</font><span
+lang=EN-US style='font-family:System'><font size="2">AJMP</font></span><font size="2">语句，这若干个</font><span lang=EN-US style='font-family:System'><font size="2">AJMP</font></span><font size="2">语句最后在存储器中是这样存放的（见图</font><span
+lang=EN-US style='font-family:System'><font size="2">3</font></span><font size="2">），也就是每个</font><span lang=EN-US style='font-family:System'><font size="2">AJMP</font></span><font size="2">语句都占用了两个存储器的空间，并且是连续存放的。而</font><span
+lang=EN-US style='font-family:System'><font size="2">AJMP<span
+style='mso-tab-count:1'>&nbsp;&nbsp;&nbsp; </span>S1</font></span><font size="2">存放的地址是</font><span lang=EN-US style='font-family:System'><font size="2">TAB</font></span><font size="2">，到底</font><span
+lang=EN-US style='font-family:System'><font size="2">TAB</font></span><font size="2">等于多少，我们不需要知道，把它留给汇编程序来算好了。</font><span lang=EN-US><o:p></o:p></span></p>
+
+<p style='mso-line-height-alt:0pt; line-height:150%; margin-top:0; margin-bottom:0'>
+<font size="2">　　下面我们来看这段程序的执行过程：第一句</font><span
+lang=EN-US style='font-family:System'><font size="2">MOV DPTR</font></span><font size="2">，</font><span lang=EN-US style='font-family:System'><font size="2">#TAB</font></span><font size="2">执行完了之后，</font><span
+lang=EN-US style='font-family:System'><font size="2">DPTR</font></span><font size="2">中的值就是</font><span lang=EN-US style='font-family:System'><font size="2">TAB</font></span><font size="2">，第二句是</font><span
+lang=EN-US style='font-family:System'><font size="2">MOV A</font></span><font size="2">，</font><span lang=EN-US style='font-family:System'><font size="2">R0</font></span><font size="2">，我们假设</font><span
+lang=EN-US style='font-family:System'><font size="2">R0</font></span><font size="2">是由按键处理程序获得的键值，比如按下</font><span lang=EN-US
+style='font-family:System'><font size="2">A</font></span><font size="2">键，</font><span lang=EN-US style='font-family:System'><font size="2">R0</font></span><font size="2">中的值是</font><span lang=EN-US style='font-family:System'><font size="2">0</font></span><font size="2">，按下</font><span
+lang=EN-US style='font-family:System'><font size="2">B</font></span><font size="2">键，</font><span lang=EN-US style='font-family:System'><font size="2">R0</font></span><font size="2">中的值是</font><span
+lang=EN-US style='font-family:System'><font size="2">1</font></span><font size="2">，以此类推，现在我们假设按下的是</font><span lang=EN-US
+style='font-family:System'><font size="2">B</font></span><font size="2">键，则执行完第二条指令后，</font><span lang=EN-US style='font-family:System'><font size="2">A</font></span><font size="2">中的值就是</font><span
+lang=EN-US style='font-family:System'><font size="2">1</font></span><font size="2">。并且按我们的分析，按下</font><span lang=EN-US style='font-family:System'><font size="2">B</font></span><font size="2">后应当执行</font><span
+lang=EN-US style='font-family:System'><font size="2">S2</font></span><font size="2">这段程序，让我们来看一看是否是这样呢？第三条、第四条指令是将</font><span lang=EN-US
+style='font-family:System'><font size="2">A</font></span><font size="2">中的值乘</font><span lang=EN-US style='font-family:System'><font size="2">2</font></span><font size="2">，即执行完第</font><span lang=EN-US style='font-family:System'><font size="2">4</font></span><font size="2">条指令后</font><span
+lang=EN-US style='font-family:System'><font size="2">A</font></span><font size="2">中的值是</font><span lang=EN-US style='font-family:System'><font size="2">2</font></span><font size="2">。下面就执行</font><span
+lang=EN-US style='font-family:System'><font size="2">JMP @A+DPTR</font></span><font size="2">了，现在</font><span lang=EN-US style='font-family:System'><font size="2">DPTR</font></span><font size="2">中的值是</font><span
+lang=EN-US style='font-family:System'><font size="2">TAB</font></span><font size="2">，而</font><span lang=EN-US style='font-family:System'><font size="2">A+DPTR</font></span><font size="2">后就是</font><span
+lang=EN-US style='font-family:System'><font size="2">TAB+2</font></span><font size="2">，因此，执行此句程序后，将会跳到</font><span lang=EN-US
+style='font-family:System'><font size="2">TAB+2</font></span><font size="2">这个地址继续执行。看一看在</font><span lang=EN-US style='font-family:System'><font size="2">TAB+2</font></span><font size="2">这个地址里面放的是什么？就是</font><span
+lang=EN-US style='font-family:System'><font size="2">AJMP<span
+style='mso-tab-count:1'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </span>S2</font></span><font size="2">这条指令。因此，马上又执行</font><span lang=EN-US style='font-family:System'><font size="2">AJMP<span style='mso-tab-count:2'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </span>S2</font></span><font size="2">指令，程序将跳到</font><span lang=EN-US style='font-family:System'><font size="2">S2</font></span><font size="2">处往下执行，这与我们的要求相符合。</font><span
+lang=EN-US><o:p></o:p></span></p>
+
+<p style='mso-line-height-alt:0pt; line-height:150%; margin-top:0; margin-bottom:0'>
+<font size="2">请大家自行分析按下键“</font><span
+lang=EN-US style='font-family:System'><font size="2">A</font></span><font size="2">”、“</font><span lang=EN-US style='font-family:System'><font size="2">C</font></span><font size="2">”、“</font><span
+lang=EN-US style='font-family:System'><font size="2">D</font></span><font size="2">”</font><span style='font-family:
+System'><font size="2">……</font></span><font size="2">之后的情况。</font><span lang=EN-US><o:p></o:p></span></p>
+
+<p style='mso-line-height-alt:0pt; line-height:150%; margin-top:0; margin-bottom:0'>
+<font size="2">　　这样我们用</font><span
+lang=EN-US style='font-family:System'><font size="2">JMP<span
+style='mso-tab-count:1'>&nbsp;&nbsp; </span>@A+DPTR</font></span><font size="2">就实现了按下一键跳到相应的程序段去执行的这样一个要求。再问大家一个问题，为什么取得键值后要乘</font><span
+lang=EN-US style='font-family:System'><font size="2">2</font></span><font size="2">？如果例程下面的所有指令换成</font><span lang=EN-US
+style='font-family:System'><font size="2">LJMP</font></span><font size="2">，即：</font><span lang=EN-US><o:p></o:p></span></p>
+
+<p style='mso-line-height-alt:0pt; line-height:150%; margin-top:0; margin-bottom:0'>
+<span lang=EN-US style='font-family:System'><font size="2">LJMP<span style='mso-tab-count:1'>&nbsp;&nbsp;&nbsp;&nbsp; </span>S1,LJMP<span
+style='mso-tab-count:2'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </span>S2……</font></span><font size="2">这段程序还能正确地执行吗？如果不能，应该怎么改？</font><span lang=EN-US><o:p></o:p></span></p>
+
+</div>
+
+</body>
+
+</html>

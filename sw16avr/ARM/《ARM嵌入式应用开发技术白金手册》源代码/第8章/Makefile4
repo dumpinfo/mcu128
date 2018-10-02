@@ -1,0 +1,30 @@
+INCLUDES =-I/home/nie/mysrc/include  \                          #在-I参数所指定的目录下寻找
+          -I/home/nie/mysrc/extern/include \
+          -I/home/nie/mysrc/src \
+          -I/home/nie/mysrc/libsrc \
+          -I. \
+          -I..
+          
+EXT_CC_OPTS = -DEXT_MODE                                        # 宏定义
+CPP_REQ_DEFINES = -DMODEL=tune1 -DRT -DNUMST=2 \
+                  -DTID01EQ=1 -DNCSTATES=0  \
+                  -DMT=0 -DHAVESTDIO
+RTM_CC_OPTS = -DUSE_RTMODEL
+CFLAGS = -O -g 
+CFLAGS += $(CPP_REQ_DEFINES)
+CFLAGS += $(EXT_CC_OPTS)
+CFLAGS +=$(RTM_CC_OPTS)
+SRCS  = tune1.c   rt_sim.c rt_nonfinite.c  grt_main.c rt_logging.c \
+            ext_svr.c updown.c ext_svr_transport.c ext_work.c
+OBJS  = $(SRCS:.c=.o)                                           #各个源文件所对应的目标文件名
+RM    =  rm –f                                                 # 强制删除
+CC    = gcc
+LD    = gcc
+all: dudu 
+%.o : %.c
+	$(CC) -c -o $@ $(CFLAGS)  $(INCLUDES)   $<
+tune1 : $(OBJS)	
+	$(LD) -o  $@  $(OBJS)  -lm
+clean :
+	$(RM)  $(OBJS)
+

@@ -1,0 +1,214 @@
+<HTML>
+<HEAD>
+<META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=gb_2312-80">
+<META NAME="Generator" CONTENT="Microsoft FrontPage 5.0">
+<TITLE>单片机指令（四）</TITLE>
+</HEAD>
+<BODY bgcolor="#CCCCCC" background="../back.jpg">
+<FONT FACE="宋体" LANG="ZH-CN" SIZE=2> 
+<P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">单片机指令（四）算术运算类指令</P>
+</FONT><OL><FONT FACE="宋体" LANG="ZH-CN" SIZE=3>
+
+<P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">
+</font><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>
+
+  <LI>
+  <p style="line-height: 150%; margin-top: 0; margin-bottom: 0">不带进位位的加法指令</LI></p>
+</font><FONT FACE="宋体" LANG="ZH-CN" SIZE=3>
+
+  <p style="line-height: 150%; margin-top: 0; margin-bottom: 0"></P>
+</font>
+  <P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">
+  <FONT SIZE=2>ADD A,#DATA         ;</font><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>例：</FONT><FONT SIZE=2>ADD    A</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>，</FONT><FONT SIZE=2>#10H</font></P>
+  <P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">
+<FONT SIZE=2>ADD&#9;&#9;A,direct           ;</font><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>例：</FONT><FONT SIZE=2>ADD    A</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>，</FONT><FONT SIZE=2>10H</font></P>
+  <P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">
+<FONT SIZE=2>ADD&#9;&#9;A,Rn             ;</font><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>例：</FONT><FONT SIZE=2>ADD    A</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>，</FONT><FONT SIZE=2>R7</font></P>
+  <P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">
+<FONT SIZE=2>ADD&#9;&#9;A,@Ri            ;</font><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>例：</FONT><FONT SIZE=2>ADD    A</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>，</FONT><FONT SIZE=2>@R0</font></P>
+<P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">
+<FONT FACE="宋体" LANG="ZH-CN" SIZE=2>用途：将</font><FONT SIZE=2>A</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>中的值与其后面的值相加，最终结果否是回到</FONT><FONT SIZE=2>A</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>中。</font></P>
+  <P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">
+<FONT FACE="宋体" LANG="ZH-CN" SIZE=2>例：</font><FONT SIZE=2>MOV    A</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>，</FONT><FONT SIZE=2>#30H</font></P>
+  <P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">
+<FONT SIZE=2>ADD&#9;&#9;A</font><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>，</FONT><FONT SIZE=2>#10H</font></P>
+<P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">
+<FONT FACE="宋体" LANG="ZH-CN" SIZE=2>则执行完本条指令后，</font><FONT SIZE=2>A</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>中的值为</FONT><FONT SIZE=2>40H</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>。</font></P>
+  <FONT FACE="宋体" LANG="ZH-CN" SIZE=2>
+<P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">下面的题目自行练习</P>
+</FONT>
+  <P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">
+  <FONT SIZE=2>MOV&#9;&#9;34H</font><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>，</FONT><FONT SIZE=2>#10H</font></P>
+  <P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">
+<FONT SIZE=2>MOV&#9;&#9;R0</font><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>，</FONT><FONT SIZE=2>#13H</font></P>
+  <P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">
+<FONT SIZE=2>MOV&#9;&#9;A</font><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>，</FONT><FONT SIZE=2>34H</font></P>
+  <P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">
+<FONT SIZE=2>ADD&#9;&#9;A</font><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>，</FONT><FONT SIZE=2>R0</font></P>
+  <P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">
+<FONT SIZE=2>MOV&#9;&#9;R1</font><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>，</FONT><FONT SIZE=2>#34H</font></P>
+  <P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">
+<FONT SIZE=2>ADD&#9;&#9;A</font><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>，</FONT><FONT SIZE=2>@R1</font></P>
+<FONT FACE="宋体" LANG="ZH-CN" SIZE=3>
+  <P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">
+</FONT>
+<FONT FACE="宋体" LANG="ZH-CN" SIZE=2><LI>
+  <p style="line-height: 150%; margin-top: 0; margin-bottom: 0">带进位位的加法指令</LI></p>
+</FONT>
+<FONT FACE="宋体" LANG="ZH-CN" SIZE=3>
+  <p style="line-height: 150%; margin-top: 0; margin-bottom: 0"></P>
+</FONT>
+  <P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">
+  <FONT SIZE=2>ADDC&#9;&#9;A</font><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>，</FONT><FONT SIZE=2>Rn</font></P>
+  <FONT SIZE=2>
+<P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">ADDC&#9;&#9;A,direct</P>
+<P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">ADDC&#9;&#9;A,@Ri</P>
+<P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">ADDC&#9;&#9;A,#data</P>
+</FONT>
+  <P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">
+  <FONT FACE="宋体" LANG="ZH-CN" SIZE=2>用途：将</font><FONT SIZE=2>A</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>中的值和其后面的值相加，并且加上进位位</FONT><FONT SIZE=2>C</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>中的值。</font></P>
+  <P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">
+<FONT FACE="宋体" LANG="ZH-CN" SIZE=2>说明：由于</font><FONT SIZE=2>51</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>单片机是一种</FONT><FONT SIZE=2>8</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>位机，所以只能做</FONT><FONT SIZE=2>8</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>位的数学运算，但</FONT><FONT SIZE=2>8</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>位运算的范围只有</FONT><FONT SIZE=2>0-255</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>，这在实际工作中是不够的，因此就要进行扩展，一般是将</FONT><FONT SIZE=2>2</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>个</FONT><FONT SIZE=2>8</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>位的数学运算合起来，成为一个</FONT><FONT SIZE=2>16</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>位的运算，这样，可以表达的数的范围就可以达到</FONT><FONT SIZE=2>0-65535</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>。如何合并呢？其实很简单，让我们看一个</FONT><FONT SIZE=2>10</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>进制数的例子：</font></P>
+<P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">
+<FONT SIZE=2>66+78</font><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>。</font></P>
+  <P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">
+<FONT FACE="宋体" LANG="ZH-CN" SIZE=2>这两个数相加，我们根本不在意这的过程，但事实上我们是这样做的：先做</font><FONT SIZE=2>6+8</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>（低位），然后再做</FONT><FONT SIZE=2>6+7</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>，这是高位。做了两次加法，只是我们做的时候并没有刻意分成两次加法来做罢了，或者说我们并没有意识到我们做了两次加法。之所以要分成两次来做，是因为这两个数超过了一位数所能表达的范置（</FONT><FONT SIZE=2>0-9</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>）。</font></P>
+  <P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">
+<FONT FACE="宋体" LANG="ZH-CN" SIZE=2>在做低位时产生了进位，我们做的时候是在适当的位置点一下，然后在做高位加法是将这一点加进去。那么计算机中做</font><FONT SIZE=2>16</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>位加法时同样如此，先做低</FONT><FONT SIZE=2>8</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>位的，如果两数相加产生了进位，也要“点一下”做个标记，这个标记就是进位位</FONT><FONT SIZE=2>C</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>，在</FONT><FONT SIZE=2>PSW</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>中。在进行高位加法是将这个</FONT><FONT SIZE=2>C</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>加进去。例：</FONT><FONT SIZE=2>1067H+10A0H</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>，先做</FONT><FONT SIZE=2>67H+A0H=107H</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>，而</FONT><FONT SIZE=2>107H</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>显然超过了</FONT><FONT SIZE=2>0FFH</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>，因此最终保存在</FONT><FONT SIZE=2>A</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>中的是</FONT><FONT SIZE=2>7</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>，而</FONT><FONT SIZE=2>1</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>则到了</FONT><FONT SIZE=2>PSW</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>中的</FONT><FONT SIZE=2>CY</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>位了，换言之，</FONT><FONT SIZE=2>CY</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>就相当于是</FONT><FONT SIZE=2>100H</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>。然后再做</FONT><FONT SIZE=2>10H+10H+CY</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>，结果是</FONT><FONT SIZE=2>21H</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>，所以最终的结果是</FONT><FONT SIZE=2>2107H</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>。</font></P><FONT FACE="宋体" LANG="ZH-CN" SIZE=3>
+<P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">
+</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>
+  <LI>
+  <p style="line-height: 150%; margin-top: 0; margin-bottom: 0">带借位的减法指令</LI></p>
+</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=3>
+  <p style="line-height: 150%; margin-top: 0; margin-bottom: 0"></P>
+</FONT>
+  <P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">
+  <FONT SIZE=2>SUBB&#9;&#9;A</font><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>，</FONT><FONT SIZE=2>Rn</font></P>
+  <FONT SIZE=2>
+<P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">SUBB&#9;&#9;A,direct</P>
+<P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">SUBB&#9;&#9;A,@Ri</P>
+<P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">SUBB&#9;&#9;A,#data</P>
+</FONT>
+  <P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">
+  <FONT FACE="宋体" LANG="ZH-CN" SIZE=2>设（每个</font><FONT SIZE=2>H</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>，（</FONT><FONT SIZE=2>R2</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>）</FONT><FONT SIZE=2>=55H</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>，</FONT><FONT SIZE=2>CY=1</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>，执行指令</FONT><FONT SIZE=2>SUBB&#9;&#9;A</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>，</FONT><FONT SIZE=2>R2</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>之后，</FONT><FONT SIZE=2>A</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>中的值为</FONT><FONT SIZE=2>73H</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>。</font></P>
+  <P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">
+<FONT FACE="宋体" LANG="ZH-CN" SIZE=2>说明：没有不带借位的减法指令，如果需要做不带位的减法指令（在做第一次相减时），只要将</font><FONT SIZE=2>CY</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>清零即可。</font></P><FONT FACE="宋体" LANG="ZH-CN" SIZE=3>
+<P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">
+</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>
+  <LI>
+  <p style="line-height: 150%; margin-top: 0; margin-bottom: 0">乘法指令</LI></p>
+</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=3>
+  <p style="line-height: 150%; margin-top: 0; margin-bottom: 0"></P>
+</FONT><FONT SIZE=2>
+  <P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">MUL&#9;&#9;AB&#9;</P>
+</FONT>
+  <P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">
+  <FONT FACE="宋体" LANG="ZH-CN" SIZE=2>此指令的功能是将</font><FONT SIZE=2>A</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>和</FONT><FONT SIZE=2>B</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>中的两个</FONT><FONT SIZE=2>8</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>位无符号数相乘，两数相乘结果一般比较大，因此最终结果用</FONT><FONT SIZE=2>1</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>个</FONT><FONT SIZE=2>16</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>位数来表达，其中高</FONT><FONT SIZE=2>8</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>位放在</FONT><FONT SIZE=2>B</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>中，低</FONT><FONT SIZE=2>8</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>位放在</FONT><FONT SIZE=2>A</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>中。在乘积大于</FONT><FONT SIZE=2>FFFFFH</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>（</FONT><FONT SIZE=2>65535</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>）时，</FONT><FONT SIZE=2>0V</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>置</FONT><FONT SIZE=2>1</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>（溢出），否则</FONT><FONT SIZE=2>OV</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>为</FONT><FONT SIZE=2>0</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>，而</FONT><FONT SIZE=2>CY</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>总是</FONT><FONT SIZE=2>0</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>。</font></P>
+  <P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">
+<FONT FACE="宋体" LANG="ZH-CN" SIZE=2>例：（</font><FONT SIZE=2>A</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>）</FONT><FONT SIZE=2>=4EH</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>，（</FONT><FONT SIZE=2>B</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>）</FONT><FONT SIZE=2>=5DH</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>，执行指令</font></P>
+<P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">
+<FONT SIZE=2>MUL&#9;&#9;AB</font><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>后，乘积是</FONT><FONT SIZE=2>1C56H</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>，所以在</FONT><FONT SIZE=2>B</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>中放的是</FONT><FONT SIZE=2>1CH</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>，而</FONT><FONT SIZE=2>A</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>中放的则是</FONT><FONT SIZE=2>56H</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>。</font></P><FONT FACE="宋体" LANG="ZH-CN" SIZE=3>
+<P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">
+</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>
+  <LI>
+  <p style="line-height: 150%; margin-top: 0; margin-bottom: 0">除法指令</LI></p>
+</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=3>
+  <p style="line-height: 150%; margin-top: 0; margin-bottom: 0"></P>
+</FONT><FONT SIZE=2>
+  <P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">DIV&#9;&#9;AB</P>
+</FONT>
+  <P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">
+  <FONT FACE="宋体" LANG="ZH-CN" SIZE=2>此指令的功能是将</font><FONT SIZE=2>A</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>中的</FONT><FONT SIZE=2>8</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>位无符号数除了</FONT><FONT SIZE=2>B</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>中的</FONT><FONT SIZE=2>8</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>位无符号数（</FONT><FONT SIZE=2>A/B</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>）。除法一般会出现小数，但计算机中可没法直接表达小数，它用的是我们小学生还没接触到小数时用的商和余数的概念，如</FONT><FONT SIZE=2>13/5</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>，其商是</FONT><FONT SIZE=2>2</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>，余数是</FONT><FONT SIZE=2>3</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>。除了以后，商放在</FONT><FONT SIZE=2>A</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>中，余数放在</FONT><FONT SIZE=2>B</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>中。</FONT><FONT SIZE=2>CY</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>和</FONT><FONT SIZE=2>OV</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>都是</FONT><FONT SIZE=2>0</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>。如果在做除法前</FONT><FONT SIZE=2>B</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>中的值是</FONT><FONT SIZE=2>00H</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>，也就是除数为</FONT><FONT SIZE=2>0</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>，那么</FONT><FONT SIZE=2>0V=1</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>。</font></P><FONT FACE="宋体" LANG="ZH-CN" SIZE=3>
+<P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0"></FONT><LI>
+  <p style="line-height: 150%; margin-top: 0; margin-bottom: 0">
+  <FONT FACE="宋体" LANG="ZH-CN" SIZE=2>加</font><FONT SIZE=2>1</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>指令</font><font size="2"></LI></font><FONT FACE="宋体" LANG="ZH-CN" SIZE=3></p>
+  <p style="line-height: 150%; margin-top: 0; margin-bottom: 0"></P>
+</FONT><FONT SIZE=2>
+  <P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">INC&#9;&#9;A</P>
+<P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">INC&#9;&#9;Rn</P>
+<P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">INC&#9;&#9;direct</P>
+<P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">INC&#9;&#9;@Ri</P>
+<P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">INC&#9;&#9;DPTR</P>
+</FONT>
+  <P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">
+  <FONT FACE="宋体" LANG="ZH-CN" SIZE=2>用途很简单，就是将后面目标中的值加</font><FONT SIZE=2>1</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>。例：（</FONT><FONT SIZE=2>A</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>）</FONT><FONT SIZE=2>=12H</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>，（</FONT><FONT SIZE=2>R0</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>）</FONT><FONT SIZE=2>=33H</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>，（</FONT><FONT SIZE=2>21H</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>）</FONT><FONT SIZE=2>=32H</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>，（</FONT><FONT SIZE=2>34H</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>）</FONT><FONT SIZE=2>=22H</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>，</FONT><FONT SIZE=2>DPTR=1234H</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>。执行下面的指令：</font></P>
+<P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">
+<FONT SIZE=2>INC&#9;A              </font><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>（</FONT><FONT SIZE=2>A</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>）</FONT><FONT SIZE=2>=13H</font></P>
+  <P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">
+<FONT SIZE=2>INC&#9;R2             </font><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>（</FONT><FONT SIZE=2>R0</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>）</FONT><FONT SIZE=2>=34H</font></P>
+  <P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">
+<FONT SIZE=2>INC&#9;21H            </font><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>（</FONT><FONT SIZE=2>21H</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>）</FONT><FONT SIZE=2>=33H</font></P>
+  <P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">
+<FONT SIZE=2>INC&#9;@R0           </font><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>（</FONT><FONT SIZE=2>34H</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>）</FONT><FONT SIZE=2>=23H</font></P>
+  <P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">
+<FONT SIZE=2>INC&#9;DPTR&#9;&#9;9;&#9;  </font>
+<FONT FACE="宋体" LANG="ZH-CN" SIZE=2>（</FONT><FONT SIZE=2> DPTR</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>）</FONT><FONT SIZE=2>=1235H</font></P>
+<FONT FACE="宋体" LANG="ZH-CN" SIZE=2>
+  <P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">后结果如上所示。</P>
+</FONT>
+  <P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">
+  <FONT FACE="宋体" LANG="ZH-CN" SIZE=2>说明：从结果上看</font><FONT SIZE=2>INC&#9;A</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>和</FONT><FONT SIZE=2>ADD   A</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>，</FONT><FONT SIZE=2>#1</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>差不多，但</FONT><FONT SIZE=2>INC&#9;A</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>是单字节，单周期指令，而</FONT><FONT SIZE=2>ADD  #1</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>则是双字节，双周期指令，而且</FONT><FONT SIZE=2>INC  A</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>不会影响</FONT><FONT SIZE=2>PSW</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>位，如（</FONT><FONT SIZE=2>A</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>）</FONT><FONT SIZE=2>=0FFH</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>，</FONT><FONT SIZE=2>INC A</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>后（</FONT><FONT SIZE=2>A</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>）</FONT><FONT SIZE=2>=00H</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>，而</FONT><FONT SIZE=2>CY</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>依然保持不变。如果是</FONT><FONT SIZE=2>ADD       A </FONT>
+  <FONT FACE="宋体" LANG="ZH-CN" SIZE=2>，</FONT><FONT SIZE=2>#1</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>，则（</FONT><FONT SIZE=2>A</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>）</FONT><FONT SIZE=2>=00H</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>，而</FONT><FONT SIZE=2>CY</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>一定是</FONT><FONT SIZE=2>1</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>。因此加</FONT><FONT SIZE=2>1</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>指令并不适合做加法，事实上它主要是用来做计数、地址增加等用途。另外，加法类指令都是以</FONT><FONT SIZE=2>A</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>为核心的&#0;&#0;其中一个数必须放在</FONT><FONT SIZE=2>A</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>中，而运算结果也必须放在</FONT><FONT SIZE=2>A</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>中，而加</FONT><FONT SIZE=2>1</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>类指令的对象则广泛得多，可以是寄存器、内存地址、间址寻址的地址等等。</font></P>
+  <P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">
+<FONT FACE="宋体" LANG="ZH-CN" SIZE=2>减</font><FONT SIZE=2>1</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>指令</font></P><FONT FACE="宋体" LANG="ZH-CN" SIZE=3>
+<P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0"></FONT><LI>
+  <p style="line-height: 150%; margin-top: 0; margin-bottom: 0">
+  <FONT FACE="宋体" LANG="ZH-CN" SIZE=2>减</font><FONT SIZE=2>1</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>指令</font><font size="2"></LI></font><FONT FACE="宋体" LANG="ZH-CN" SIZE=3></p>
+  <p style="line-height: 150%; margin-top: 0; margin-bottom: 0"></P></font></OL>
+
+<FONT SIZE=2>
+<P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">DEC&#9;&#9;A</P></FONT><DIR>
+  <FONT SIZE=2>
+
+<P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">DEC&#9;&#9;RN</P>
+<P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">DEC&#9;&#9;direct</P>
+<P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">DEC&#9;&#9;@Ri</P>
+</font>
+  <P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">
+  <FONT FACE="宋体" LANG="ZH-CN" SIZE=2>与加</font><FONT SIZE=2>1</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>指令类似，就不多说了。</font></P>
+  <FONT FACE="宋体" LANG="ZH-CN" SIZE=2>
+<P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">综合练习：</P>
+</FONT>
+  <P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">
+  <FONT SIZE=2>MOV&#9;&#9;A</font><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>，</FONT><FONT SIZE=2>#12H</font></P>
+  <P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">
+<FONT SIZE=2>MOV&#9;&#9;R0</font><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>，</FONT><FONT SIZE=2>#24H</font></P>
+  <P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">
+<FONT SIZE=2>MOV&#9;&#9;21H</font><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>，</FONT><FONT SIZE=2>#56H</font></P>
+  <P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">
+<FONT SIZE=2>ADD&#9;&#9;A</font><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>，</FONT><FONT SIZE=2>#12H</font></P>
+  <P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">
+<FONT SIZE=2>MOV&#9;&#9;DPTR</font><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>，</FONT><FONT SIZE=2>#4316H</font></P>
+  <P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">
+<FONT SIZE=2>ADD&#9;&#9;A</font><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>，</FONT><FONT SIZE=2>DPH</font></P>
+  <P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">
+<FONT SIZE=2>ADD&#9;&#9;A</font><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>，</FONT><FONT SIZE=2>R0</font></P>
+  <FONT SIZE=2>
+<P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">CLR&#9;&#9;C</P>
+</FONT>
+  <P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">
+  <FONT SIZE=2>SUBB&#9;A</font><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>，</FONT><FONT SIZE=2>DPL</font></P>
+  <P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">
+<FONT SIZE=2>SUBB&#9;A</font><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>，</FONT><FONT SIZE=2>#25H</font></P>
+  <FONT SIZE=2>
+<P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">INC&#9;&#9;A</P>
+<P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">SETB&#9;&#9;C</P>
+</FONT>
+  <P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">
+  <FONT SIZE=2>ADDC&#9;A</font><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>，</FONT><FONT SIZE=2>21H</font></P>
+  <FONT SIZE=2>
+<P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">INC&#9;&#9;R0</P>
+</FONT>
+  <P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">
+  <FONT SIZE=2>SUBB&#9;A</font><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>，</FONT><FONT SIZE=2>R0</font></P>
+  <P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">
+<FONT SIZE=2>MOV&#9;&#9;24H</font><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>，</FONT><FONT SIZE=2>#16H</font></P>
+  <FONT SIZE=2>
+<P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">CLR&#9;&#9;C</P>
+</FONT>
+  <P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">
+  <FONT SIZE=2>ADD&#9;&#9;A</font><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>，</FONT><FONT SIZE=2>@R0</font></P>
+<FONT FACE="宋体" LANG="ZH-CN" SIZE=2>
+  <P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">先写出每步运行结果，然后将以上题目建入，并在软件仿真中运行，观察寄存器及有关单元的内容的变化，是否与自已的预想结果相同。</P></font></DIR>
+</BODY>
+</HTML>

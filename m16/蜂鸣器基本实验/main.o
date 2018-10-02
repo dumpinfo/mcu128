@@ -1,0 +1,97 @@
+XL
+H 4 areas 6 global symbols
+M main.c
+A text size 6C flags 0
+dbfile D:\mega16学习板资料\例程\m16\蜂鸣器基本实验\main.c
+dbfunc e port_init 0 fV
+dbline FFFFFFFF 0
+dbline A 0
+dbline B 0
+dbline C 4
+dbline D 6
+dbline E 8
+dbline F C
+dbline 10 E
+dbline 11 10
+dbline 12 12
+dbline FFFFFFFE 14
+dbline 13 14
+dbline 0 14
+dbfunc e timer0_init 16 fV
+dbline FFFFFFFF 16
+dbline 1A 16
+dbline 1B 16
+dbline 1C 1A
+dbline 1D 1E
+dbline 1E 22
+dbline FFFFFFFE 26
+dbline 1F 26
+dbline 0 26
+dbfunc e timer0_ovf_isr 28 fV
+dbline FFFFFFFF 30
+dbline 23 30
+dbline 24 30
+dbline 25 34
+dbline 26 3A
+dbline 27 3E
+dbline 29 46
+dbline FFFFFFFE 4C
+dbline 2A 4C
+dbline 0 54
+dbfunc e init_devices 56 fV
+dbline FFFFFFFF 56
+dbline 2E 56
+dbline 30 56
+dbline 31 58
+dbline 32 5A
+dbline 34 5C
+dbline 35 60
+dbline 36 62
+dbline 37 66
+dbline FFFFFFFE 68
+dbline 39 68
+dbline 0 68
+dbfunc e main 6A fV
+dbline FFFFFFFF 6A
+dbline 3D 6A
+dbline 3E 6A
+dbline FFFFFFFE 6A
+dbline 40 6A
+dbline 0 6A
+S _main Def006A
+S _timer0_ovf_isr Def0028
+S _port_init Def0000
+S _init_devices Def0056
+S _timer0_init Def0016
+A data size 1 flags 20
+dbfile D:\mega16学习板资料\例程\m16\蜂鸣器基本实验\main.c
+dbsym e Data 0 c
+S _Data Def0000
+A idata size 1 flags 0
+A vector size 28 flags C
+T 00 00 00
+R 00 00 02 00
+T 00 00 8F EF 8B BB 8A BB 88 BB 22 24 27 BA 85 BB
+R 00 00 00 00
+T 0E 00 24 BA 82 BB 21 BA 08 95
+R 00 00 00 00
+T 16 00 22 24 23 BE 8D E8 82 BF 83 E7 8C BF 83 E0
+R 00 00 00 00
+T 24 00 83 BF 08 95
+R 00 00 00 00
+T 24 00 0C 94 14 00
+R 00 00 03 00 10 04 00 00
+T 28 00 2A 92 8A 93 2F B6 2A 92 8D E8 82 BF 20 90
+R 00 00 00 00
+T 36 00 00 00 2B BA 22 20 21 F4 81 E0 80 93 00 00
+R 00 00 00 00 00 02 01 00 00 0E 01 00
+T 44 00 03 C0 22 24 20 92 00 00 29 90 2F BE 89 91
+R 00 00 00 00 00 08 01 00
+T 52 00 29 90 18 95
+R 00 00 00 00
+T 56 00 F8 94 D3 DF DD DF 22 24 25 BE 2B BE 81 E0
+R 00 00 00 00
+T 64 00 89 BF 78 94 08 95
+R 00 00 00 00
+T 6A 00 F5 CF
+R 00 00 00 00

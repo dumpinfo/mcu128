@@ -1,0 +1,79 @@
+C51 COMPILER V7.06   MAIN                                                                  01/27/2008 14:42:42 PAGE 1   
+
+
+C51 COMPILER V7.06, COMPILATION OF MODULE MAIN
+OBJECT MODULE PLACED IN main.OBJ
+COMPILER INVOKED BY: d:\Keil\C51\BIN\C51.EXE main.c BROWSE DEBUG OBJECTEXTEND
+
+stmt level    source
+
+   1          #include"reg51.h"
+   2          #include"51usb.h"                          //51USB实验板的头文件
+   3          
+   4          #define  uchar unsigned char
+   5          #define  uint  unsigned int
+   6          //////以下函数用于LCD的操作///////////
+   7          void delay();                                   //判断LCD是否忙
+   8          void writedata(uchar lcddata); //写数据到LCD
+   9          void writecom(uchar lcddata);  //写命令到LCD
+  10          void writeline(uchar *str);        //写一串数据到LCD
+  11          void initlcd();                           //初始化LCD
+  12          
+  13          void  main()
+  14          {
+  15   1       initlcd();
+  16   1       writeline("www.ourembed.com");
+  17   1       writecom(0xc0);        //第二行
+  18   1       writeline("TEL:13979813332");
+  19   1       while(1)       ;
+  20   1      }
+  21          
+  22          void delay()
+  23          {
+  24   1       while(RCOM&0x80); //读状态寄存器，如果LCD忙，就一直读。
+  25   1      }
+  26          
+  27          void writedata(uchar lcddata)
+  28          {
+  29   1       WDAT=lcddata; //写数据到LCD
+  30   1       delay();
+  31   1      }
+  32          /////////////////////////////////
+  33          void writecom(uchar lcddata)
+  34          {
+  35   1       WCOM=lcddata;//写命令到LCD
+  36   1       delay();
+  37   1      }
+  38          
+  39          void writeline(uchar *str)
+  40          {
+  41   1       while(*str)writedata(*str++);
+  42   1      }
+  43          
+  44          ///////////////////////////////////
+  45          void initlcd()
+  46          {
+  47   1       writecom(0x01);        //清屏
+  48   1       writecom(0x38);        //功能设置
+  49   1       writecom(0x0f);        //显示开关控制
+  50   1       writecom(0x06);        //设置输入模式
+  51   1       writecom(0x01);        //清屏
+  52   1       writecom(0x80);        //回车
+  53   1      }
+  54          ///////////////////////////////////
+
+C51 COMPILER V7.06   MAIN                                                                  01/27/2008 14:42:42 PAGE 2   
+
+
+MODULE INFORMATION:   STATIC OVERLAYABLE
+   CODE SIZE        =    119    ----
+   CONSTANT SIZE    =     33    ----
+   XDATA SIZE       =   ----    ----
+   PDATA SIZE       =   ----    ----
+   DATA SIZE        =   ----       3
+   IDATA SIZE       =   ----    ----
+   BIT SIZE         =   ----    ----
+END OF MODULE INFORMATION.
+
+
+C51 COMPILATION COMPLETE.  0 WARNING(S),  0 ERROR(S)

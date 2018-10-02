@@ -1,0 +1,157 @@
+__start:
+__text_start:
+    002B E5CF      LDI	R28,0x5F
+    002C E0D4      LDI	R29,4
+    002D BFCD      OUT	0x3D,R28
+    002E BFDE      OUT	0x3E,R29
+    002F 51C0      SUBI	R28,0x10
+    0030 40D0      SBCI	R29,0
+    0031 EA0A      LDI	R16,0xAA
+    0032 8308      STD	Y+0,R16
+    0033 2400      CLR	R0
+    0034 E6E1      LDI	R30,0x61
+    0035 E0F0      LDI	R31,0
+    0036 E010      LDI	R17,0
+    0037 36E1      CPI	R30,0x61
+    0038 07F1      CPC	R31,R17
+    0039 F011      BEQ	0x003C
+    003A 9201      ST	R0,Z+
+    003B CFFB      RJMP	0x0037
+    003C 8300      STD	Z+0,R16
+    003D E5E4      LDI	R30,0x54
+    003E E0F0      LDI	R31,0
+    003F E6A0      LDI	R26,0x60
+    0040 E0B0      LDI	R27,0
+    0041 E010      LDI	R17,0
+    0042 35E5      CPI	R30,0x55
+    0043 07F1      CPC	R31,R17
+    0044 F021      BEQ	0x0049
+    0045 95C8      LPM
+    0046 9631      ADIW	R30,1
+    0047 920D      ST	R0,X+
+    0048 CFF9      RJMP	0x0042
+    0049 940E0081  CALL	_main
+_exit:
+    004B CFFF      RJMP	_exit
+FILE: D:\mega16学习板资料\例程\m16\蜂鸣器基本实验\main.c
+(0001) //ICC-AVR application builder : 2007-4-12 9:38:39
+(0002) // Target : M16
+(0003) // Crystal: 7.3728Mhz
+(0004) //PA0输出频率波形
+(0005) #include <iom16v.h>
+(0006) #include <macros.h>
+(0007) 
+(0008) unsigned char Data=0;
+(0009) void port_init(void)
+(0010) {
+(0011)  PORTA = 0xFF;
+_port_init:
+    004C EF8F      LDI	R24,0xFF
+    004D BB8B      OUT	0x1B,R24
+(0012)  DDRA  = 0xFF;
+    004E BB8A      OUT	0x1A,R24
+(0013)  PORTB = 0xFF;
+    004F BB88      OUT	0x18,R24
+(0014)  DDRB  = 0x00;
+    0050 2422      CLR	R2
+    0051 BA27      OUT	0x17,R2
+(0015)  PORTC = 0xFF; 
+    0052 BB85      OUT	0x15,R24
+(0016)  DDRC  = 0x00;
+    0053 BA24      OUT	0x14,R2
+(0017)  PORTD = 0xFF;
+    0054 BB82      OUT	0x12,R24
+(0018)  DDRD  = 0x00;
+    0055 BA21      OUT	0x11,R2
+(0019) }
+    0056 9508      RET
+(0020) 
+(0021) //TIMER0 initialisation - prescale:64
+(0022) // WGM: Normal
+(0023) // desired value: 1KHz
+(0024) // actual value:  1.002KHz (0.2%)
+(0025) void timer0_init(void)
+(0026) {
+(0027)  TCCR0 = 0x00; //stop
+_timer0_init:
+    0057 2422      CLR	R2
+    0058 BE23      OUT	0x33,R2
+(0028)  TCNT0 = 0x8D; //set count
+    0059 E88D      LDI	R24,0x8D
+    005A BF82      OUT	0x32,R24
+(0029)  OCR0  = 0x73;  //set compare
+    005B E783      LDI	R24,0x73
+    005C BF8C      OUT	0x3C,R24
+(0030)  TCCR0 = 0x03; //start timer
+    005D E083      LDI	R24,3
+    005E BF83      OUT	0x33,R24
+(0031) }
+    005F 9508      RET
+_timer0_ovf_isr:
+    0060 922A      ST	R2,-Y
+    0061 938A      ST	R24,-Y
+    0062 B62F      IN	R2,0x3F
+    0063 922A      ST	R2,-Y
+(0032) 
+(0033) #pragma interrupt_handler timer0_ovf_isr:10
+(0034) void timer0_ovf_isr(void)
+(0035) {
+(0036)  TCNT0 = 0x8D; //reload counter value
+    0064 E88D      LDI	R24,0x8D
+    0065 BF82      OUT	0x32,R24
+(0037)  PORTA = Data;
+    0066 90200060  LDS	R2,0x60
+    0068 BA2B      OUT	0x1B,R2
+(0038)  if(Data ==0)
+    0069 2022      TST	R2
+    006A F421      BNE	0x006F
+(0039)   Data = 1;
+    006B E081      LDI	R24,1
+    006C 93800060  STS	0x60,R24
+    006E C003      RJMP	0x0072
+(0040)  else
+(0041)   Data = 0;
+    006F 2422      CLR	R2
+    0070 92200060  STS	0x60,R2
+(0042) }
+    0072 9029      LD	R2,Y+
+    0073 BE2F      OUT	0x3F,R2
+    0074 9189      LD	R24,Y+
+    0075 9029      LD	R2,Y+
+    0076 9518      RETI
+(0043) 
+(0044) //call this routine to initialise all peripherals
+(0045) void init_devices(void)
+(0046) {
+(0047)  //stop errant interrupts until set up
+(0048)  CLI(); //disable all interrupts
+_init_devices:
+    0077 94F8      BCLR	7
+(0049)  port_init();
+    0078 DFD3      RCALL	_port_init
+(0050)  timer0_init();
+    0079 DFDD      RCALL	_timer0_init
+(0051) 
+(0052)  MCUCR = 0x00;
+    007A 2422      CLR	R2
+    007B BE25      OUT	0x35,R2
+(0053)  GICR  = 0x00;
+    007C BE2B      OUT	0x3B,R2
+(0054)  TIMSK = 0x01; //timer interrupt sources
+    007D E081      LDI	R24,1
+    007E BF89      OUT	0x39,R24
+(0055)  SEI(); //re-enable interrupts
+    007F 9478      BSET	7
+(0056)  //all peripherals are now initialised
+(0057) }
+    0080 9508      RET
+(0058) 
+(0059) //
+(0060) void main(void)
+(0061) {
+(0062)  init_devices();
+(0063)  //insert your functional code here...
+(0064) }
+FILE: <library>
+_main:
+    0081 CFF5      RJMP	_init_devices

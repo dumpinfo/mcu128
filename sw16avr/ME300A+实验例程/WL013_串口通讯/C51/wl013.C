@@ -1,0 +1,122 @@
+/*******************************************************************************
+*  标题:  伟纳电子ME300B单片机开发系统演示程序 - PC与ME300串行通迅程序         *
+*  文件:  wl013.c                                                              *
+*  日期:  2004-1-5                                                             *
+*  版本:  1.0                                                                  *
+*  作者:  伟纳电子 - Freeman                                                   *
+*  邮箱:  freeman@willar.com                                                   *
+*  网站： http://www.willar.com                                                *
+********************************************************************************
+*  描述:                                                                       *
+*         单片机接收主机的数据,然后将数据传送到P0口, 并传回给主机;             *
+*         当按下K1时, 单片机发送字串"welcome! www.willar.com\n\r" 给主机       * 
+*                                                                              *
+*  注意：演示此程序需要配合串口调试软件,且串口调试软件与ME300软件不能同时打开。*
+*        串口调试软件在光盘“工具软件”目录下有。                                *
+*                                                                              *
+*  实验方法：先用ME300软件将程序写入单片机，关闭ME300软件，将ME300的串口切换   *
+*            开关切换到仿真位置（这样设置后计算机的串口才能与试验芯片串口通信）*
+*            最后运行串口调试软件即可实验。                                    *
+*                                                                              *
+********************************************************************************
+********************************************************************************
+* 【版权】 Copyright(C)伟纳电子 www.willar.com  All Rights Reserved            *
+* 【声明】 此程序仅用于学习与参考，引用请注明版权和作者信息！                  *
+*******************************************************************************/   
+
+#include <reg51.h>
+#include <intrins.h>
+
+unsigned char key_s, key_v, tmp;
+
+char code str[] = "welcome! www.willar.com \n\r";
+
+
+void send_str();
+bit	scan_key();
+void proc_key();
+void delayms(unsigned char ms);
+void send_char(unsigned char txd);
+
+sbit	K1 = P1^4;
+
+main()
+{
+	TMOD = 0x20;			// 定时器1工作于8位自动重载模式, 用于产生波特率
+	TH1 = 0xFD;				// 波特率9600
+	TL1 = 0xFD;
+	
+	SCON = 0x50;			// 设定串行口工作方式
+	PCON &= 0xef;			// 波特率不倍增
+		
+	TR1 = 1;				// 启动定时器1
+	IE = 0x0;				// 禁止任何中断
+	
+	while(1)
+	{
+		if(scan_key())		// 扫描按键
+		{
+			delayms(10);			// 延时去抖动
+			if(scan_key())			// 再次扫描
+			{
+				key_v = key_s;		// 保存键值
+				proc_key();			// 键处理
+			}
+		}
+		if(RI)						// 是否有数据到来
+		{
+			RI = 0;
+			tmp = SBUF;				// 暂存接收到的数据
+			P0 = tmp;				// 数据传送到P0口
+			send_char(tmp);			// 回传接收到的数据
+		}		
+	}
+}
+
+bit scan_key()	
+// 扫描按键
+{
+	key_s = 0x00;
+	key_s |= K1;
+	return(key_s ^ key_v);	
+}
+
+void proc_key()
+// 键处理
+{
+	if((key_v & 0x01) == 0)
+	{			// K1按下
+		send_str();				// 传送字串"welcome!...
+	}
+}
+
+void send_char(unsigned char txd)
+// 传送一个字符
+{
+	SBUF = txd;
+	while(!TI);				// 等特数据传送
+	TI = 0;					// 清除数据传送标志
+}
+
+void send_str()
+// 传送字串
+{
+	unsigned char i = 0;
+	while(str[i] != '\0')
+	{
+		SBUF = str[i];
+		while(!TI);				// 等特数据传送
+		TI = 0;					// 清除数据传送标志
+		i++;					// 下一个字符
+	}	
+}
+
+void delayms(unsigned char ms)	
+// 延时子程序
+{						
+	unsigned char i;
+	while(ms--)
+	{
+		for(i = 0; i < 120; i++);
+	}
+}

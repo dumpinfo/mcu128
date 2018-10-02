@@ -1,0 +1,108 @@
+C51 COMPILER V7.20   WL005                                                                 03/29/2005 15:43:28 PAGE 1   
+
+
+C51 COMPILER V7.20, COMPILATION OF MODULE WL005
+OBJECT MODULE PLACED IN wl005.OBJ
+COMPILER INVOKED BY: C:\Keil\C51\BIN\C51.EXE wl005.c BROWSE DEBUG OBJECTEXTEND
+
+line level    source
+
+   1          /*******************************************************************************
+   2          *  标题:  伟纳电子ME300B单片机开发系统演示程序 - 按键扫描程序                  *
+   3          *  文件:  wl005.C                                                              *
+   4          *  日期:  2004-1-5                                                             *
+   5          *  版本:  1.0                                                                  *
+   6          *  作者:  伟纳电子 - Freeman                                                   *
+   7          *  邮箱:  freeman@willar.com                                                   *
+   8          *  网站： http://www.willar.com                                                *
+   9          ********************************************************************************
+  10          *  描述:                                                                       *
+  11          *         按键扫描程序                                                         *
+  12          *         上电时, 点亮P00口LED                                                 *
+  13          *         按下K1时, LED向右移一位                                              *
+  14          *         按下K2时, LED向左移一位                                              *
+  15          *                                                                              *
+  16          ********************************************************************************
+  17          * 【版权】 Copyright(C)伟纳电子 www.willar.com  All Rights Reserved            *
+  18          * 【声明】 此程序仅用于学习与参考，引用请注明版权和作者信息！                  *
+  19          *******************************************************************************/
+  20          
+  21          #include <reg51.h>
+  22          #include <intrins.h>
+  23          
+  24          unsigned char scan_key();
+  25          void proc_key(unsigned char key_v);
+  26          void delayms(unsigned char ms);
+  27          
+  28          sbit    K1 = P1^4;
+  29          sbit    K2 = P1^5;
+  30          
+  31          main()
+  32          {
+  33   1              
+  34   1              unsigned char key_s,key_v;
+  35   1              key_v = 0x03;
+  36   1              P0 = 0xfe;
+  37   1              while(1)
+  38   1              {
+  39   2                      key_s = scan_key();
+  40   2                      if(key_s != key_v)
+  41   2                      {
+  42   3                              delayms(10);
+  43   3                              key_s = scan_key();
+  44   3                              if(key_s != key_v)
+  45   3                              {       
+  46   4                                      key_v = key_s;
+  47   4                                      proc_key(key_v);                                        
+  48   4                              }
+  49   3                      }
+  50   2              }       
+  51   1      }
+  52          
+  53          unsigned char scan_key()
+  54          {
+  55   1              unsigned char key_s;
+C51 COMPILER V7.20   WL005                                                                 03/29/2005 15:43:28 PAGE 2   
+
+  56   1              key_s = 0x00;
+  57   1              key_s |= K2;
+  58   1              key_s <<= 1;
+  59   1              key_s |= K1;
+  60   1              return key_s;           
+  61   1      }
+  62          
+  63          void proc_key(unsigned char key_v)
+  64          {
+  65   1              if((key_v & 0x01) == 0)
+  66   1              {
+  67   2                      P0 = _cror_(P0,1);
+  68   2              }
+  69   1              else if((key_v & 0x02) == 0)
+  70   1              {
+  71   2                      P0 = _crol_(P0, 1);
+  72   2              }
+  73   1      }
+  74          
+  75          void delayms(unsigned char ms)  
+  76          // 延时子程序
+  77          {                                               
+  78   1              unsigned char i;
+  79   1              while(ms--)
+  80   1              {
+  81   2                      for(i = 0; i < 120; i++);
+  82   2              }
+  83   1      }
+
+
+MODULE INFORMATION:   STATIC OVERLAYABLE
+   CODE SIZE        =    111    ----
+   CONSTANT SIZE    =   ----    ----
+   XDATA SIZE       =   ----    ----
+   PDATA SIZE       =   ----    ----
+   DATA SIZE        =   ----       2
+   IDATA SIZE       =   ----    ----
+   BIT SIZE         =   ----    ----
+END OF MODULE INFORMATION.
+
+
+C51 COMPILATION COMPLETE.  0 WARNING(S),  0 ERROR(S)

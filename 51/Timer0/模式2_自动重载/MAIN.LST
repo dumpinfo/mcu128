@@ -1,0 +1,98 @@
+C51 COMPILER V7.50   MAIN                                                                  12/03/2006 09:00:17 PAGE 1   
+
+
+C51 COMPILER V7.50, COMPILATION OF MODULE MAIN
+OBJECT MODULE PLACED IN MAIN.OBJ
+COMPILER INVOKED BY: C:\Keil\C51\BIN\C51.EXE MAIN.C BROWSE DEBUG OBJECTEXTEND
+
+line level    source
+
+   1          #include"reg51.h"
+   2          #include"51usb.h"                         //51USB实验板头文件
+   3          
+   4          #define  uchar unsigned char
+   5          #define  uint  unsigned int
+   6          
+   7          unsigned char code      SEG[8]={0x00,0x02,0x04,0x06,0x08,0x0A,0x0C,0x0E};
+   8          unsigned char code  Tab[]       =       {0xC0,0xF9,0xA4,0xB0,0x99,0x92,0x82,0xF8,
+   9                                                   0x80,0x90,0x88,0x83,0xC6,0xA1,0x86,0x8E};
+  10          
+  11          
+  12          unsigned char ShuMa[7]={0,0,0,0,0,0,0xFF};//数码管显示缓冲区
+  13          unsigned int count=0;
+  14          
+  15          void delay(uint ticks);// 延时程序的声明
+  16          void display();
+  17          void inittimer();
+  18          
+  19          //每50毫秒中断一次，误差--正负5us
+  20          void ISR_Timer0(void) interrupt 1 using 1
+  21          {
+  22   1       count++;
+  23   1      }
+  24          
+  25          
+  26          void main()
+  27          {
+  28   1       inittimer();
+  29   1       while(1)
+  30   1       {
+  31   2          if(count>5000)
+  32   2              {//刷新显示缓冲区
+  33   3                 count=0;
+  34   3                 if(++ShuMa[0]>0x0f)ShuMa[0]=0;
+  35   3                 if(++ShuMa[1]>0x0f)ShuMa[1]=0;
+  36   3                 if(++ShuMa[2]>0x0f)ShuMa[2]=0;
+  37   3                 if(++ShuMa[3]>0x0f)ShuMa[3]=0;
+  38   3                 if(++ShuMa[4]>0x0f)ShuMa[4]=0;
+  39   3                 if(++ShuMa[5]>0x0f)ShuMa[5]=0;          
+  40   3              }
+  41   2      
+  42   2              display(); 
+  43   2       }
+  44   1      }
+  45          
+  46          void inittimer()
+  47          {
+  48   1       TL0=0x38;          //0x38=56
+  49   1       TH0=0x38;              //0x38=56
+  50   1       TMOD=0x02;             //定时器0模式2
+  51   1       TR0=1;                 //启动定时器0
+  52   1       ET0=1;                 //开定时器0中断
+  53   1       EA=1;                  //开全局中断
+  54   1      }
+  55          
+C51 COMPILER V7.50   MAIN                                                                  12/03/2006 09:00:17 PAGE 2   
+
+  56          void display()
+  57          {
+  58   1       unsigned char index;
+  59   1      
+  60   1       for(index=0;index!=6;index++)
+  61   1       {
+  62   2               P1=1;//关显示
+  63   2               LED=Tab[ShuMa[index]]; //查表显示数码管数据
+  64   2               P1=SEG[index];
+  65   2               delay(10);
+  66   2       }
+  67   1      }
+  68          //////////// 延时程序的实现////////////////////
+  69          void delay(uint ticks)
+  70          {
+  71   1       uchar i;
+  72   1       for(;ticks!=0;ticks--)for(i=50;i!=0;i--);
+  73   1      }
+
+
+MODULE INFORMATION:   STATIC OVERLAYABLE
+   CODE SIZE        =    184    ----
+   CONSTANT SIZE    =     24    ----
+   XDATA SIZE       =   ----    ----
+   PDATA SIZE       =   ----    ----
+   DATA SIZE        =      9       1
+   IDATA SIZE       =   ----    ----
+   BIT SIZE         =   ----    ----
+END OF MODULE INFORMATION.
+
+
+C51 COMPILATION COMPLETE.  0 WARNING(S),  0 ERROR(S)

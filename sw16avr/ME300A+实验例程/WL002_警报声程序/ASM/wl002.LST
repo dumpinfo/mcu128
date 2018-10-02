@@ -1,0 +1,147 @@
+A51 MACRO ASSEMBLER  WL002                                                                03/29/2005 15:39:49 PAGE     1
+
+
+MACRO ASSEMBLER A51 V7.10
+OBJECT MODULE PLACED IN wl002.OBJ
+ASSEMBLER INVOKED BY: C:\Keil\C51\BIN\A51.EXE wl002.asm SET(SMALL) DEBUG EP
+
+LOC  OBJ            LINE     SOURCE
+
+                       1     ;********************************************************************************
+                       2     ;*  标题:  伟纳电子ME300系列单片机开发系统演示程序 - 报警声程序                 *
+                       3     ;*  文件:  wl002.asm                                                            *
+                       4     ;*  日期:  2004-1-5                                                             *
+                       5     ;*  版本:  1.0                                                                  *
+                       6     ;*  作者:  伟纳电子 - Freeman                                                   *
+                       7     ;*  邮箱:  freeman@willar.com                                                   *
+                       8     ;*  网站： http://www.willar.com                                                *
+                       9     ;********************************************************************************
+                      10     ;*  描述:                                                                       *
+                      11     ;*         单片机模拟报警声                                                     *
+                      12     ;*                                                                              *
+                      13     ;*                                                                              *
+                      14     ;*                                                                              *
+                      15     ;********************************************************************************    
+                      16     ;* 【版权】 Copyright(C)伟纳电子 www.willar.com  All Rights Reserved            *
+                      17     ;* 【声明】 此程序仅用于学习与参考，引用请注明版权和作者信息！                  *  
+                      18     ;********************************************************************************
+                      19     
+                      20     CODE_SEG        SEGMENT CODE 
+                      21     DATA_SEG        SEGMENT DATA
+                      22     STACK_SEG       SEGMENT IDATA
+                      23     
+  00B7                24     SPK     BIT     P3.7
+                      25     
+----                  26             RSEG    DATA_SEG
+0000                  27     FRQ:   DS   1
+0001                  28     TMP:   DS   1
+                      29     
+----                  30             RSEG    STACK_SEG
+0000                  31     STACK:  DS      20
+                      32     
+                      33     ;===============================================================================
+----                  34     CSEG    AT      00000H
+0000 020000   F       35             LJMP    MAIN
+                      36     
+                      37     
+----                  38     CSEG    AT      0000BH
+000B 020000   F       39             LJMP    TIMER0
+                      40             
+                      41             
+                      42             
+                      43     ;===============================================================================
+                      44     
+----                  45             RSEG    CODE_SEG
+0000                  46     MAIN:
+                      47             USING   0
+                      48             
+0000 758100   F       49             MOV     SP,#(STACK-1)
+                      50             
+0003 758901           51             MOV     TMOD,#01H
+0006 E4               52             CLR     A
+0007 F500     F       53             MOV     FRQ,A
+0009 F58C             54             MOV     TH0,A
+000B 758AFF           55             MOV     TL0,#0FFH
+000E D28C             56             SETB    TR0
+0010 75A882           57             MOV     IE,#082H
+                      58             
+A51 MACRO ASSEMBLER  WL002                                                                03/29/2005 15:39:49 PAGE     2
+
+0013                  59     MAIN_LP:
+                      60     
+0013 0500     F       61             INC     FRQ
+                      62             
+0015 7F04             63             MOV     R7,#04          ; 
+0017 120000   F       64             LCALL   DELAYMS
+                      65     
+001A 80F7             66             SJMP    MAIN_LP
+                      67             
+                      68     ; END OF main
+                      69     
+                      70     ;===============================================================================
+                      71     
+                      72     
+001C                  73     TIMER0:
+001C 758CFE           74             MOV     TH0,#0FEH
+001F 85008A   F       75             MOV     TL0,frq
+0022 B2B7             76             CPL     SPK
+0024 32               77             RETI    
+                      78     ; END OF TIMER0
+                      79     
+                      80     
+                      81     ;===============================================================================
+0025                  82     DELAYMS:
+                      83     ; 延时子程序
+                      84     ; 传入参数：R7 --- 延时值(MS) 
+                      85     ; 返回值：无
+                      86     
+0025 EF               87             MOV     A,R7
+0026 6009             88             JZ      END_DLYMS       
+0028                  89     DLY_LP1:
+0028 7EB9             90             MOV     R6,#185
+002A                  91     DLY_LP2:
+002A 00               92             NOP
+002B 00               93             NOP
+002C 00               94             NOP
+002D DEFB             95             DJNZ    R6,DLY_LP2
+002F DFF7             96             DJNZ    R7,DLY_LP1
+                      97     
+0031                  98     END_DLYMS:
+0031 22               99             RET 
+                     100     
+                     101             END
+A51 MACRO ASSEMBLER  WL002                                                                03/29/2005 15:39:49 PAGE     3
+
+SYMBOL TABLE LISTING
+------ ----- -------
+
+
+N A M E             T Y P E  V A L U E   ATTRIBUTES
+
+CODE_SEG . . . . .  C SEG    0032H       REL=UNIT
+DATA_SEG . . . . .  D SEG    0002H       REL=UNIT
+DELAYMS. . . . . .  C ADDR   0025H   R   SEG=CODE_SEG
+DLY_LP1. . . . . .  C ADDR   0028H   R   SEG=CODE_SEG
+DLY_LP2. . . . . .  C ADDR   002AH   R   SEG=CODE_SEG
+END_DLYMS. . . . .  C ADDR   0031H   R   SEG=CODE_SEG
+FRQ. . . . . . . .  D ADDR   0000H   R   SEG=DATA_SEG
+IE . . . . . . . .  D ADDR   00A8H   A   
+MAIN . . . . . . .  C ADDR   0000H   R   SEG=CODE_SEG
+MAIN_LP. . . . . .  C ADDR   0013H   R   SEG=CODE_SEG
+P3 . . . . . . . .  D ADDR   00B0H   A   
+SP . . . . . . . .  D ADDR   0081H   A   
+SPK. . . . . . . .  B ADDR   00B0H.7 A   
+STACK. . . . . . .  I ADDR   0000H   R   SEG=STACK_SEG
+STACK_SEG. . . . .  I SEG    0014H       REL=UNIT
+TH0. . . . . . . .  D ADDR   008CH   A   
+TIMER0 . . . . . .  C ADDR   001CH   R   SEG=CODE_SEG
+TL0. . . . . . . .  D ADDR   008AH   A   
+TMOD . . . . . . .  D ADDR   0089H   A   
+TMP. . . . . . . .  D ADDR   0001H   R   SEG=DATA_SEG
+TR0. . . . . . . .  B ADDR   0088H.4 A   
+
+
+REGISTER BANK(S) USED: 0 
+
+
+ASSEMBLY COMPLETE.  0 WARNING(S), 0 ERROR(S)

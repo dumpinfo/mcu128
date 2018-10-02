@@ -1,0 +1,114 @@
+BL51 BANKED LINKER/LOCATER V5.11                                                        01/23/2005  15:55:57  PAGE 1
+
+
+BL51 BANKED LINKER/LOCATER V5.11, INVOKED BY:
+C:\KEIL\C51\BIN\BL51.EXE wl013.obj TO wl013
+
+
+INPUT MODULES INCLUDED:
+  wl013.obj (WL013)
+
+
+LINK MAP OF MODULE:  wl013 (WL013)
+
+
+            TYPE    BASE      LENGTH    RELOCATION   SEGMENT NAME
+            -----------------------------------------------------
+
+            * * * * * * *   D A T A   M E M O R Y   * * * * * * *
+            REG     0000H     0008H     ABSOLUTE     "REG BANK 0"
+
+            * * * * * * *   C O D E   M E M O R Y   * * * * * * *
+            CODE    0000H     0082H     ABSOLUTE     
+
+
+
+SYMBOL TABLE OF MODULE:  wl013 (WL013)
+
+  VALUE           TYPE          NAME
+  ----------------------------------
+
+  -------         MODULE        WL013
+  D:00E0H         SYMBOL        ACC
+  B:00B0H.2       SYMBOL        AN1
+  C:005FH         SYMBOL        DELAY15MS_1
+  C:0061H         SYMBOL        DELAY15MS_2
+  C:005DH         SYMBOL        DELAY_15MS
+  C:0054H         SYMBOL        END_PROC_KEY
+  D:00A8H         SYMBOL        IE
+  N:0050H         SYMBOL        KEY_S
+  N:0051H         SYMBOL        KEY_V
+  C:0003H         SYMBOL        MAIN
+  C:0026H         SYMBOL        MAIN_KEY
+  C:001AH         SYMBOL        MAIN_RX
+  D:0080H         SYMBOL        P0
+  D:00B0H         SYMBOL        P3
+  D:0087H         SYMBOL        PCON
+  C:0045H         SYMBOL        PROC_KEY
+  B:0098H.0       SYMBOL        RI
+  D:0099H         SYMBOL        SBUF
+  C:003BH         SYMBOL        SCAN_KEY
+  D:0098H         SYMBOL        SCON
+  C:0055H         SYMBOL        SEND_CHAR
+  C:004BH         SYMBOL        SEND_STRING
+  C:0068H         SYMBOL        TAB_WWW
+  D:008DH         SYMBOL        TH1
+  B:0098H.1       SYMBOL        TI
+  D:008BH         SYMBOL        TL1
+  D:0089H         SYMBOL        TMOD
+  B:0088H.6       SYMBOL        TR1
+  C:0000H         LINE#         25
+  C:0003H         LINE#         28
+BL51 BANKED LINKER/LOCATER V5.11                                                      01/23/2005  15:55:57  PAGE 2
+
+
+  C:0006H         LINE#         29
+  C:0009H         LINE#         30
+  C:000CH         LINE#         32
+  C:000FH         LINE#         33
+  C:0012H         LINE#         35
+  C:0014H         LINE#         36
+  C:0017H         LINE#         38
+  C:001AH         LINE#         41
+  C:001DH         LINE#         42
+  C:001FH         LINE#         43
+  C:0021H         LINE#         44
+  C:0023H         LINE#         45
+  C:0026H         LINE#         48
+  C:0029H         LINE#         49
+  C:002BH         LINE#         50
+  C:002EH         LINE#         51
+  C:0031H         LINE#         52
+  C:0033H         LINE#         53
+  C:0036H         LINE#         54
+  C:0039H         LINE#         55
+  C:003BH         LINE#         61
+  C:003CH         LINE#         62
+  C:003EH         LINE#         63
+  C:0040H         LINE#         64
+  C:0042H         LINE#         65
+  C:0044H         LINE#         66
+  C:0045H         LINE#         72
+  C:0048H         LINE#         73
+  C:004BH         LINE#         76
+  C:004CH         LINE#         77
+  C:004DH         LINE#         78
+  C:004FH         LINE#         79
+  C:0051H         LINE#         80
+  C:0052H         LINE#         81
+  C:0054H         LINE#         83
+  C:0055H         LINE#         90
+  C:0057H         LINE#         91
+  C:005AH         LINE#         92
+  C:005CH         LINE#         93
+  C:005DH         LINE#         99
+  C:005FH         LINE#         101
+  C:0061H         LINE#         103
+  C:0062H         LINE#         104
+  C:0063H         LINE#         105
+  C:0065H         LINE#         106
+  C:0067H         LINE#         107
+  -------         ENDMOD        WL013
+
+Program Size: data=8.0 xdata=0 code=130
+LINK/LOCATE RUN COMPLETE.  0 WARNING(S),  0 ERROR(S)

@@ -1,0 +1,535 @@
+<HTML>
+<HEAD>
+<META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=gb_2312-80">
+<META NAME="Generator" CONTENT="Microsoft FrontPage 5.0">
+<TITLE>常用接口电路及其编程</TITLE>
+<META NAME="Template" CONTENT="D:\MICROSOFT OFFICE\OFFICE\html.dot">
+</HEAD>
+<BODY LINK="#0000ff" VLINK="#800080" background="../back.jpg">
+<FONT FACE="宋体" LANG="ZH-CN" size="2"> 
+<P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">常用接口电路及其编程</P>
+</FONT><OL><FONT FACE="System" LANG="ZH-CN">
+  <P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0"></FONT><LI>
+  <p style="line-height: 150%; margin-top: 0; margin-bottom: 0">
+  <font size="2" FACE="System" LANG="ZH-CN">LED</font><font size="2"><FONT FACE="宋体" LANG="ZH-CN">数码显示器的连接与编程</font></LI></font><FONT FACE="宋体" LANG="ZH-CN"></p>
+  <p style="line-height: 150%; margin-top: 0; margin-bottom: 0"></P></font></OL>
+<P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">
+
+<font size="2" FACE="宋体" LANG="ZH-CN">在单片机系统中，通常用</font><FONT FACE="System" LANG="ZH-CN" size="2">LED</FONT><font size="2" FACE="宋体" LANG="ZH-CN">数码显示器来显示各种数字或符号。由于它具有显示清晰、亮度高、使用电压低、寿命长的特点，因此使用非常广泛。</font></P>
+<OL>
+  <LI>
+  <p style="line-height: 150%; margin-top: 0; margin-bottom: 0">
+  <font size="2" FACE="宋体" LANG="ZH-CN">八段</font><font size="2"><FONT FACE="System" LANG="ZH-CN">LED</FONT><FONT FACE="宋体" LANG="ZH-CN">显示器</font></LI>
+  </font>
+  <FONT FACE="宋体" LANG="ZH-CN"> 
+  </p>
+  <p style="line-height: 150%; margin-top: 0; margin-bottom: 0"></P>
+  </FONT> 
+  <P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">
+  <font size="2" FACE="宋体" LANG="ZH-CN">引入：还记得我们小时候玩的“火柴棒游戏”吗，几根火柴棒组合起来，可以拼成各种各样的图形，</font><FONT FACE="System" LANG="ZH-CN" size="2">LED</FONT><font size="2" FACE="宋体" LANG="ZH-CN">显示器实际上也是这么一个东西。</font></P>
+  <p style="line-height: 150%; margin-top: 0; margin-bottom: 0"> 
+  <FONT FACE="宋体" LANG="ZH-CN" size="2"><img src="dpj251.gif" width="566" height="255"></font></p>
+  <p style="line-height: 150%; margin-top: 0; margin-bottom: 0">
+  <font size="2" FACE="宋体" LANG="ZH-CN">八段</font><font size="2"><FONT FACE="System" LANG="ZH-CN">LED</FONT><FONT FACE="宋体" LANG="ZH-CN">显示器由</FONT><FONT FACE="System" LANG="ZH-CN">8</FONT><FONT FACE="宋体" LANG="ZH-CN">个发光二极管组成。基中</FONT><FONT FACE="System" LANG="ZH-CN">7</FONT><FONT FACE="宋体" LANG="ZH-CN">个长条形的发光管排列成“日”字形，另一个贺点形的发光管在显示器的右下角作为显示小数点用，它能显示各种数字及部份英文字母。</FONT><FONT FACE="System" LANG="ZH-CN">LED</FONT><FONT FACE="宋体" LANG="ZH-CN">显示器有两种不同的形式：一种是</FONT><FONT FACE="System" LANG="ZH-CN">8</FONT><FONT FACE="宋体" LANG="ZH-CN">个发光二极管的阳极都连在一起的，称之为共阳极</FONT><FONT FACE="System" LANG="ZH-CN">LED</FONT><FONT FACE="宋体" LANG="ZH-CN">显示器；另一种是</FONT><FONT FACE="System" LANG="ZH-CN">8</FONT><FONT FACE="宋体" LANG="ZH-CN">个发光二极管的阴极都连在一起的，称之为共阴极</FONT><FONT FACE="System" LANG="ZH-CN">LED</FONT><FONT FACE="宋体" LANG="ZH-CN">显示器。如下图所示。</FONT></font><font size="2" FACE="System" LANG="ZH-CN">`</font></p>
+  <P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">
+  <font size="2" FACE="宋体" LANG="ZH-CN">共阴和共阳结构的</font><font size="2"><FONT FACE="System" LANG="ZH-CN">LED</FONT><FONT FACE="宋体" LANG="ZH-CN">显示器各笔划段名和安排位置是相同的。当二极管导通时，相应的笔划段发亮，由发亮的笔划段组合而显示的各种字符。</FONT><FONT FACE="System" LANG="ZH-CN">8</FONT><FONT FACE="宋体" LANG="ZH-CN">个笔划段</FONT><FONT FACE="System" LANG="ZH-CN">hgfedcba</FONT><FONT FACE="宋体" LANG="ZH-CN">对应于一个字节（</FONT><FONT FACE="System" LANG="ZH-CN">8</FONT><FONT FACE="宋体" LANG="ZH-CN">位）的</FONT><FONT FACE="System" LANG="ZH-CN">D7 
+    D6 D5 D4 D3 D2 D1 D0,</FONT><FONT FACE="宋体" LANG="ZH-CN">于是用</FONT><FONT FACE="System" LANG="ZH-CN">8</FONT><FONT FACE="宋体" LANG="ZH-CN">位二进制码就可以表示欲显示字符的字形代码。例如，对于共阴</FONT><FONT FACE="System" LANG="ZH-CN">LED</FONT><FONT FACE="宋体" LANG="ZH-CN">显示器，当公共阴极接地（为零电平），而阳极</FONT><FONT FACE="System" LANG="ZH-CN">hgfedcba</FONT><FONT FACE="宋体" LANG="ZH-CN">各段为</FONT><FONT FACE="System" LANG="ZH-CN">0111011</FONT><FONT FACE="宋体" LANG="ZH-CN">时，显示器显示</FONT><FONT FACE="System" LANG="ZH-CN">"P"</FONT><FONT FACE="宋体" LANG="ZH-CN">字符，即对于共阴极</FONT><FONT FACE="System" LANG="ZH-CN">LED</FONT><FONT FACE="宋体" LANG="ZH-CN">显示器，“</FONT><FONT FACE="System" LANG="ZH-CN">P</FONT><FONT FACE="宋体" LANG="ZH-CN">”字符的字形码是</FONT><FONT FACE="System" LANG="ZH-CN">73H</FONT><FONT FACE="宋体" LANG="ZH-CN">。如果是共阳</FONT><FONT FACE="System" LANG="ZH-CN">LED</FONT><FONT FACE="宋体" LANG="ZH-CN">显示器，公共阳极接高电平，显示“</FONT><FONT FACE="System" LANG="ZH-CN">P</FONT><FONT FACE="宋体" LANG="ZH-CN">”字符的字形代码应为</FONT><FONT FACE="System" LANG="ZH-CN">10001100</FONT><FONT FACE="宋体" LANG="ZH-CN">（</FONT><FONT FACE="System" LANG="ZH-CN">8CH</FONT></font><font size="2" FACE="宋体" LANG="ZH-CN">）。这里必须注意的是：很多产品为方便接线，常不按规则的方法去对应字段与位的关系，这时字形码就必须根据接线来自行设计了，后面我们会给出一个例子。</font></P>
+  <FONT FACE="宋体" LANG="ZH-CN"> 
+  <P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0"> 
+  <LI>
+  <p style="line-height: 150%; margin-top: 0; margin-bottom: 0"><font size="2">静态显示接口</LI> 
+  </font></p>
+  <p style="line-height: 150%; margin-top: 0; margin-bottom: 0"></P>
+  </font> 
+</OL>
+<P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">
+
+<font size="2" FACE="宋体" LANG="ZH-CN">在单片机应用系统中，显示器显示常用两种方法：静态显示和动态扫描显示。所谓静态显示，就是每一个显示器都要占用单独的具有锁存功能的</font><font size="2"><FONT FACE="System" LANG="ZH-CN">I/O</FONT><FONT FACE="宋体" LANG="ZH-CN">接口用于笔划段字形代码。这样单片机只要把要显示的字形代码发送到接口电路，就不用管它了，直到要显示新的数据时，再发送新的字形码，因此，使用这种方法单片机中</FONT><FONT FACE="System" LANG="ZH-CN">CPU</FONT><FONT FACE="宋体" LANG="ZH-CN">的开销小。可以提供单独锁存的</FONT><FONT FACE="System" LANG="ZH-CN">I/O</FONT><FONT FACE="宋体" LANG="ZH-CN">接口电路很多，这里以常用的串并转换电路</FONT><FONT FACE="System" LANG="ZH-CN">74LS164</FONT></font><font size="2" FACE="宋体" LANG="ZH-CN">为例，介绍一种常用静态显示电路，以使大家对静态显示有一定的了解。</font></P>
+<P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">
+<font size="2" FACE="System" LANG="ZH-CN">MCS-51</font><font size="2"><FONT FACE="宋体" LANG="ZH-CN">单片机串行口方式押为移们寄存器方式，外接</FONT><FONT FACE="System" LANG="ZH-CN">6</FONT><FONT FACE="宋体" LANG="ZH-CN">片</FONT><FONT FACE="System" LANG="ZH-CN">74LS164</FONT><FONT FACE="宋体" LANG="ZH-CN">作为</FONT><FONT FACE="System" LANG="ZH-CN">6</FONT><FONT FACE="宋体" LANG="ZH-CN">位</FONT><FONT FACE="System" LANG="ZH-CN">LED</FONT><FONT FACE="宋体" LANG="ZH-CN">显示器的静态显示接口，把</FONT><FONT FACE="System" LANG="ZH-CN">8031</FONT><FONT FACE="宋体" LANG="ZH-CN">的</FONT><FONT FACE="System" LANG="ZH-CN">RXD</FONT><FONT FACE="宋体" LANG="ZH-CN">作为数据输出线，</FONT><FONT FACE="System" LANG="ZH-CN">TXD</FONT><FONT FACE="宋体" LANG="ZH-CN">作为移位时钟脉冲。</FONT><FONT FACE="System" LANG="ZH-CN">74LS164</FONT><FONT FACE="宋体" LANG="ZH-CN">为</FONT><FONT FACE="System" LANG="ZH-CN">TTL</FONT><FONT FACE="宋体" LANG="ZH-CN">单向</FONT><FONT FACE="System" LANG="ZH-CN">8</FONT><FONT FACE="宋体" LANG="ZH-CN">位移位寄存器，可实现串行输入，并行输出。其中</FONT><FONT FACE="System" LANG="ZH-CN">A</FONT><FONT FACE="宋体" LANG="ZH-CN">、</FONT><FONT FACE="System" LANG="ZH-CN">B</FONT><FONT FACE="宋体" LANG="ZH-CN">（第</FONT><FONT FACE="System" LANG="ZH-CN">1</FONT><FONT FACE="宋体" LANG="ZH-CN">、</FONT><FONT FACE="System" LANG="ZH-CN">2</FONT><FONT FACE="宋体" LANG="ZH-CN">脚）为串行数据输入端，</FONT><FONT FACE="System" LANG="ZH-CN">2</FONT><FONT FACE="宋体" LANG="ZH-CN">个引脚按逻辑与运算规律输入信号，公一个输入信号时可并接。</FONT><FONT FACE="System" LANG="ZH-CN">T</FONT><FONT FACE="宋体" LANG="ZH-CN">（第</FONT><FONT FACE="System" LANG="ZH-CN">8</FONT><FONT FACE="宋体" LANG="ZH-CN">脚）为时钟输入端，可连接到串行口的</FONT><FONT FACE="System" LANG="ZH-CN">TXD</FONT><FONT FACE="宋体" LANG="ZH-CN">端。每一个时钟信号的上升沿加到</FONT><FONT FACE="System" LANG="ZH-CN">T</FONT><FONT FACE="宋体" LANG="ZH-CN">端时，移位寄存器移一位，</FONT><FONT FACE="System" LANG="ZH-CN">8</FONT><FONT FACE="宋体" LANG="ZH-CN">个时钟脉冲过后，</FONT><FONT FACE="System" LANG="ZH-CN">8</FONT><FONT FACE="宋体" LANG="ZH-CN">位二进制数全部移入</FONT><FONT FACE="System" LANG="ZH-CN">74LS164</FONT><FONT FACE="宋体" LANG="ZH-CN">中。</FONT><FONT FACE="System" LANG="ZH-CN">R</FONT><FONT FACE="宋体" LANG="ZH-CN">（第</FONT><FONT FACE="System" LANG="ZH-CN">9</FONT><FONT FACE="宋体" LANG="ZH-CN">脚）为复位端，当</FONT><FONT FACE="System" LANG="ZH-CN">R=0</FONT><FONT FACE="宋体" LANG="ZH-CN">时，移位寄存器各位复</FONT><FONT FACE="System" LANG="ZH-CN">0</FONT><FONT FACE="宋体" LANG="ZH-CN">，只有当</FONT><FONT FACE="System" LANG="ZH-CN">R=1</FONT><FONT FACE="宋体" LANG="ZH-CN">时，时钟脉冲才起作用。</FONT><FONT FACE="System" LANG="ZH-CN">Q1</FONT><FONT FACE="宋体" LANG="ZH-CN">…</FONT><FONT FACE="System" LANG="ZH-CN">Q8</FONT><FONT FACE="宋体" LANG="ZH-CN">（第</FONT><FONT FACE="System" LANG="ZH-CN">3-6</FONT><FONT FACE="宋体" LANG="ZH-CN">和</FONT><FONT FACE="System" LANG="ZH-CN">10-13</FONT><FONT FACE="宋体" LANG="ZH-CN">引脚）并行输出端分别接</FONT><FONT FACE="System" LANG="ZH-CN">LED</FONT><FONT FACE="宋体" LANG="ZH-CN">显示器的</FONT><FONT FACE="System" LANG="ZH-CN">hg---a</FONT><FONT FACE="宋体" LANG="ZH-CN">各段对应的引脚上。关于</FONT><FONT FACE="System" LANG="ZH-CN">74LS164</FONT><FONT FACE="宋体" LANG="ZH-CN">还可以作如下的介绍：所谓时钟脉冲端，其实就是需要高、低、高、低的脉冲，不管这个脉冲是怎么来的，比如，我们用根电线，一端接</FONT><FONT FACE="System" LANG="ZH-CN">T</FONT><FONT FACE="宋体" LANG="ZH-CN">，一端用手拿着，分别接高电平、低电平，那也是给出时钟脉冲，在</FONT><FONT FACE="System" LANG="ZH-CN">74LS164</FONT><FONT FACE="宋体" LANG="ZH-CN">获得时钟脉冲的瞬间（再讲清楚点，是在脉冲的沿），如果数据输入端（第</FONT><FONT FACE="System" LANG="ZH-CN">1</FONT><FONT FACE="宋体" LANG="ZH-CN">，</FONT><FONT FACE="System" LANG="ZH-CN">2</FONT><FONT FACE="宋体" LANG="ZH-CN">引脚）是高电平，则就会有一个</FONT><FONT FACE="System" LANG="ZH-CN">1</FONT><FONT FACE="宋体" LANG="ZH-CN">进入到</FONT><FONT FACE="System" LANG="ZH-CN">74LS164</FONT><FONT FACE="宋体" LANG="ZH-CN">的内部，如果数据输入端是低电平，则就会有一个</FONT><FONT FACE="System" LANG="ZH-CN">0</FONT><FONT FACE="宋体" LANG="ZH-CN">进入其内部。在给出了</FONT><FONT FACE="System" LANG="ZH-CN">8</FONT><FONT FACE="宋体" LANG="ZH-CN">个脉冲后，最先进入</FONT><FONT FACE="System" LANG="ZH-CN">74LS164</FONT></font><font size="2" FACE="宋体" LANG="ZH-CN">的第一个数据到达了最高位，然后再来一个脉冲会有什么发生呢？再来一个脉冲，第一个脉冲就会从最高位移出，就象车站排队买票，栏杆就那么长，要从后面进去一个人，前面必须要从前面走出去一个人才行。</font></P>
+<P ALIGN="left" style="line-height: 150%; margin-top: 0; margin-bottom: 0"> 
+<font size="2" FACE="宋体" LANG="ZH-CN">搞清了这一点，下面让我们来看电路，</font><font size="2"><FONT FACE="System" LANG="ZH-CN">6</FONT><FONT FACE="宋体" LANG="ZH-CN">片</FONT><FONT FACE="System" LANG="ZH-CN">7LS164</FONT><FONT FACE="宋体" LANG="ZH-CN">首尾相串，而时钟端则接在一起，这样，当输入</FONT><FONT FACE="System" LANG="ZH-CN">8</FONT><FONT FACE="宋体" LANG="ZH-CN">个脉冲时，从单片机</FONT><FONT FACE="System" LANG="ZH-CN">RXD</FONT><FONT FACE="宋体" LANG="ZH-CN">端输出的数据就进入到了第一片</FONT><FONT FACE="System" LANG="ZH-CN">74LS164</FONT><FONT FACE="宋体" LANG="ZH-CN">中了，而当第二个</FONT><FONT FACE="System" LANG="ZH-CN">8</FONT><FONT FACE="宋体" LANG="ZH-CN">个脉冲到来后，这个数据就进入了第二片</FONT><FONT FACE="System" LANG="ZH-CN">74LS164</FONT><FONT FACE="宋体" LANG="ZH-CN">，而新的数据则进入了第一片</FONT><FONT FACE="System" LANG="ZH-CN">74LS164</FONT><FONT FACE="宋体" LANG="ZH-CN">，这样，当第六个</FONT><FONT FACE="System" LANG="ZH-CN">8</FONT><FONT FACE="宋体" LANG="ZH-CN">个脉冲完成后，首次送出的数据被送到了最左面的</FONT><FONT FACE="System" LANG="ZH-CN">164</FONT><FONT FACE="宋体" LANG="ZH-CN">中，其他数据依次出现在第一、二、三、四、五片</FONT><FONT FACE="System" LANG="ZH-CN">74LS164</FONT><FONT FACE="宋体" LANG="ZH-CN">中。有个问题，在第一个脉冲到来时，除了第一片</FONT><FONT FACE="System" LANG="ZH-CN">74LS164</FONT><FONT FACE="宋体" LANG="ZH-CN">中接收数据外，其他各片在干吗呢？它们也在接收数据，因为它们的时钟端都是被接在一起的，可是数据还没有送到其他各片呢，它们在接收什么数据呢？。。。。。。其实所谓数据不过是一种说法而已，实际就是电平的高低，当第一个脉冲到来时，第一片</FONT><FONT FACE="System" LANG="ZH-CN">164</FONT><FONT FACE="宋体" LANG="ZH-CN">固然是从单片机接收数据了，而其它各片也接到前一片的</FONT><FONT FACE="System" LANG="ZH-CN">Q8</FONT><FONT FACE="宋体" LANG="ZH-CN">上，而</FONT><FONT FACE="System" LANG="ZH-CN">Q8</FONT><FONT FACE="宋体" LANG="ZH-CN">是一根电线，在数字电路中它只可能有两种状态：低电平或高电平，也就是“</FONT><FONT FACE="System" LANG="ZH-CN">0</FONT><FONT FACE="宋体" LANG="ZH-CN">”和“</FONT><FONT FACE="System" LANG="ZH-CN">1</FONT><FONT FACE="宋体" LANG="ZH-CN">”。所以它的下一片</FONT><FONT FACE="System" LANG="ZH-CN">74LS164</FONT><FONT FACE="宋体" LANG="ZH-CN">也相当于是在接收数据啊。只是接收的全部是</FONT><FONT FACE="System" LANG="ZH-CN">0</FONT><FONT FACE="宋体" LANG="ZH-CN">或</FONT><FONT FACE="System" LANG="ZH-CN">1</FONT><FONT FACE="宋体" LANG="ZH-CN">而已。这个问题放在这儿说明，可能有朋友不屑一顾，而有的朋友可能还是不清楚，这实际上涉及到数的本质的问题，如果不懂的，请仔细思考，并找一些数字电路的数，理解</FONT><FONT FACE="System" LANG="ZH-CN">164</FONT></font><font size="2" FACE="宋体" LANG="ZH-CN">的工作原理，再来看这个问题，或者去看看我的另一篇文章《初学单片机易掌握的概念》。务必搞懂，搞懂了这一点，你的级别就高过初学者，可谓入门者了。<img src="dpj252.gif" width="582" height="222"></font></P>
+<P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">
+<font size="2" FACE="宋体" LANG="ZH-CN">入口：把要显示的数分别放在显示缓冲区</font><font size="2"><FONT FACE="System" LANG="ZH-CN">60H-65H</FONT><FONT FACE="宋体" LANG="ZH-CN">共</FONT><FONT FACE="System" LANG="ZH-CN">6</FONT><FONT FACE="宋体" LANG="ZH-CN">个单元中，并且分别对应各个数码管</FONT><FONT FACE="System" LANG="ZH-CN">LED0-LED5</FONT></font><font size="2" FACE="宋体" LANG="ZH-CN">。</font></P>
+<P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">
+<font size="2" FACE="宋体" LANG="ZH-CN">出口：将预置在显示缓冲区中的</font><FONT FACE="System" LANG="ZH-CN" size="2">6</FONT><font size="2" FACE="宋体" LANG="ZH-CN">个数成相应的显示字形码，然后输出到显示器中显示。</font></P>
+<FONT FACE="宋体" LANG="ZH-CN" size="2">
+<P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">显示程序如下：</P>
+</FONT>
+<P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">
+<font size="2" FACE="System" LANG="ZH-CN">DISP:&#9;MOV&#9;SCON,#00H</font><font size="2"><FONT FACE="宋体" LANG="ZH-CN">&#9;&#9;</FONT><FONT FACE="System" LANG="ZH-CN">;</FONT><FONT FACE="宋体" LANG="ZH-CN">初始化串行口方式</FONT></font><font size="2" FACE="System" LANG="ZH-CN">0</font></P>
+<P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">
+<font size="2" FACE="System" LANG="ZH-CN">MOV&#9;R1,#06H</font><font size="2"><FONT FACE="宋体" LANG="ZH-CN">&#9;&#9;&#9;</FONT><FONT FACE="System" LANG="ZH-CN">;</FONT><FONT FACE="宋体" LANG="ZH-CN">显示</FONT><FONT FACE="System" LANG="ZH-CN">6</FONT></font><font size="2" FACE="宋体" LANG="ZH-CN">位数</font></P>
+<P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">
+<font size="2" FACE="System" LANG="ZH-CN">MOV&#9;R0,#65H</font><font size="2"><FONT FACE="宋体" LANG="ZH-CN">&#9;&#9;&#9;</FONT><FONT FACE="System" LANG="ZH-CN">;60H-65H</FONT></font><font size="2" FACE="宋体" LANG="ZH-CN">为显示缓冲区</font></P>
+<P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">
+<font size="2" FACE="System" LANG="ZH-CN">MOV&#9;DPTR,#SEGTAB</font><font size="2"><FONT FACE="宋体" LANG="ZH-CN">&#9;</FONT><FONT FACE="System" LANG="ZH-CN">;</FONT></font><font size="2" FACE="宋体" LANG="ZH-CN">字形表的入口地址</font></P>
+<FONT FACE="System" LANG="ZH-CN" size="2">
+<P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">LOOP:</P>
+</FONT>
+<P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">
+<font size="2" FACE="System" LANG="ZH-CN">MOV&#9;A,@R0</font><font size="2"><FONT FACE="宋体" LANG="ZH-CN">&#9;&#9;&#9;</FONT><FONT FACE="System" LANG="ZH-CN">;</FONT></font><font size="2" FACE="宋体" LANG="ZH-CN">取最高位的待显示数据</font></P>
+<P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">
+<font size="2" FACE="System" LANG="ZH-CN">MOVC&#9;A,@A+DPTR</font><font size="2"><FONT FACE="宋体" LANG="ZH-CN">&#9;&#9;</FONT><FONT FACE="System" LANG="ZH-CN">;</FONT></font><font size="2" FACE="宋体" LANG="ZH-CN">查表获取字形码</font></P>
+<P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">
+<font size="2" FACE="System" LANG="ZH-CN">MOV&#9;SBUF,A</font><font size="2"><FONT FACE="宋体" LANG="ZH-CN">&#9;&#9;&#9;</FONT><FONT FACE="System" LANG="ZH-CN">;</FONT></font><font size="2" FACE="宋体" LANG="ZH-CN">送串口显示</font></P>
+<P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">
+<font size="2" FACE="System" LANG="ZH-CN">DELAY:&#9;JNB&#9;&#9;TI,DELAY</font><font size="2"><FONT FACE="宋体" LANG="ZH-CN">&#9;&#9;</FONT><FONT FACE="System" LANG="ZH-CN">;</FONT></font><font size="2" FACE="宋体" LANG="ZH-CN">等待发送完毕</font></P>
+<P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">
+<font size="2" FACE="System" LANG="ZH-CN">CLR&#9;&#9;TI</font><font size="2"><FONT FACE="宋体" LANG="ZH-CN">&#9;&#9;&#9;&#9;</FONT><FONT FACE="System" LANG="ZH-CN">;</FONT></font><font size="2" FACE="宋体" LANG="ZH-CN">清发送标志</font></P>
+<P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">
+<font size="2" FACE="System" LANG="ZH-CN">DEC&#9;&#9;R0</font><font size="2"><FONT FACE="宋体" LANG="ZH-CN">&#9;&#9;&#9;&#9;</FONT><FONT FACE="System" LANG="ZH-CN">;</FONT></font><font size="2" FACE="宋体" LANG="ZH-CN">指针下移一位，准备取下一个待显示数</font></P>
+<P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">
+<font size="2" FACE="System" LANG="ZH-CN">DJNZ&#9;R1,LOOP</font><font size="2"><FONT FACE="宋体" LANG="ZH-CN">&#9;&#9;&#9;</FONT><FONT FACE="System" LANG="ZH-CN">;</FONT><FONT FACE="宋体" LANG="ZH-CN">直到</FONT><FONT FACE="System" LANG="ZH-CN">6</FONT></font><font size="2" FACE="宋体" LANG="ZH-CN">个数据全显示完。</font></P>
+<P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">
+<FONT FACE="System" LANG="ZH-CN" size="2">RET</font></P>
+<P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0"> 
+<font size="2" FACE="System" LANG="ZH-CN">SETTAB:</font><FONT FACE="宋体" LANG="ZH-CN" size="2"> &#9;&#9;&#9;&#9;&#9;&#9;;字形表，前面有介绍，以后我们再介绍字形表的制作。</FONT></P>
+<P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">
+<FONT FACE="System" LANG="ZH-CN" size="2">DB&#9;03H 9FH 27H 0DH 99H 49H 41H 1FH 01H 09H 0FFH</font></P>
+<P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">
+<font size="2" FACE="System" LANG="ZH-CN">;&#9;&#9;&#9;#9;&#9;&#9; 0 1 2 3 4 5 6 7 8 9
+</font><font size="2" FACE="宋体" LANG="ZH-CN">消隐码</font></P>
+<FONT FACE="宋体" LANG="ZH-CN" size="2">
+<P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">测试用主程序</P>
+</FONT>
+<P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">
+<FONT FACE="System" LANG="ZH-CN" size="2">ORG&#9;0000H</font></P>
+<P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">
+<FONT FACE="System" LANG="ZH-CN" size="2">AJMP&#9;START</font></P><FONT FACE="System" LANG="ZH-CN">
+<P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">&#9;
+<font size="2">ORG&#9;30H</font></P>
+<P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">
+<font size="2">START:&#9;&#9;MOV&#9;SP,#6FH</font></P>
+<P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">&#9;&#9;&#9;
+<font size="2">MOV&#9;65H,#0</font></P>
+</FONT>
+<P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">
+<FONT FACE="System" LANG="ZH-CN" size="2">MOV&#9;64H,#1</font></P>
+<P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">
+<FONT FACE="System" LANG="ZH-CN" size="2">MOV&#9;63H,#2</font></P>
+<P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">
+<FONT FACE="System" LANG="ZH-CN" size="2">MOV&#9;62H,#3</font></P>
+<P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">
+<FONT FACE="System" LANG="ZH-CN" size="2">MOV&#9;61H,#4</font></P>
+<P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">
+<FONT FACE="System" LANG="ZH-CN" size="2">MOV&#9;60H,#5</font></P>
+<P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">
+<FONT FACE="System" LANG="ZH-CN" size="2">LCALL&#9;DISP</font></P>
+<P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">
+<FONT FACE="System" LANG="ZH-CN" size="2">SJMP&#9;$</font></P>
+<P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">
+<font size="2" FACE="宋体" LANG="ZH-CN">如果按图示数码管排列，则以上主程序将显示的是</font><font size="2"><FONT FACE="System" LANG="ZH-CN">543210</FONT><FONT FACE="宋体" LANG="ZH-CN">，想想看，如果要显示</FONT><FONT FACE="System" LANG="ZH-CN">012345</FONT></font><font size="2" FACE="宋体" LANG="ZH-CN">该怎样送数？</font></P>
+<P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">
+<font size="2" FACE="宋体" LANG="ZH-CN">下面我们来分析一下字形表的制作问题。先就上述“标准”的图形来看吧。写出数据位和字形的对应关系并列一个表如下（设为共阳型，也就是相应的输出位为</font><FONT FACE="System" LANG="ZH-CN" size="2">0</FONT><font size="2" FACE="宋体" LANG="ZH-CN">时笔段亮）</font></P>
+<TABLE BORDER CELLSPACING=1 CELLPADDING=7 WIDTH=603>
+<TR><TD WIDTH="14%" VALIGN="TOP">
+<FONT FACE="宋体" LANG="ZH-CN" size="2">
+<P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">数据位</FONT></TD>
+<TD WIDTH="6%" VALIGN="TOP">
+<FONT FACE="System" LANG="ZH-CN" size="2">
+<P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">D7</FONT></TD>
+<TD WIDTH="10%" VALIGN="TOP">
+<FONT FACE="System" LANG="ZH-CN" size="2">
+<P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">D6</FONT></TD>
+<TD WIDTH="10%" VALIGN="TOP">
+<FONT FACE="System" LANG="ZH-CN" size="2">
+<P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">D5</FONT></TD>
+<TD WIDTH="10%" VALIGN="TOP">
+<FONT FACE="System" LANG="ZH-CN" size="2">
+<P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">D4</FONT></TD>
+<TD WIDTH="10%" VALIGN="TOP">
+<FONT FACE="System" LANG="ZH-CN" size="2">
+<P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">D3</FONT></TD>
+<TD WIDTH="10%" VALIGN="TOP">
+<FONT FACE="System" LANG="ZH-CN" size="2">
+<P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">D2</FONT></TD>
+<TD WIDTH="10%" VALIGN="TOP">
+<FONT FACE="System" LANG="ZH-CN" size="2">
+<P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">D1</FONT></TD>
+<TD WIDTH="10%" VALIGN="TOP">
+<FONT FACE="System" LANG="ZH-CN" size="2">
+<P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">D0</FONT></TD>
+<TD WIDTH="12%" VALIGN="TOP" ROWSPAN=2>
+<FONT FACE="宋体" LANG="ZH-CN" size="2">
+<P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">字形码</FONT></TD>
+</TR>
+<TR><TD WIDTH="14%" VALIGN="TOP">
+<FONT FACE="宋体" LANG="ZH-CN" size="2">
+<P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">笔段位</FONT></TD>
+<TD WIDTH="6%" VALIGN="TOP">
+<FONT FACE="System" LANG="ZH-CN" size="2">
+<P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">A</FONT></TD>
+<TD WIDTH="10%" VALIGN="TOP">
+<FONT FACE="System" LANG="ZH-CN" size="2">
+<P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">B</FONT></TD>
+<TD WIDTH="10%" VALIGN="TOP">
+<FONT FACE="System" LANG="ZH-CN" size="2">
+<P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">C</FONT></TD>
+<TD WIDTH="10%" VALIGN="TOP">
+<FONT FACE="System" LANG="ZH-CN" size="2">
+<P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">D</FONT></TD>
+<TD WIDTH="10%" VALIGN="TOP">
+<FONT FACE="System" LANG="ZH-CN" size="2">
+<P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">E</FONT></TD>
+<TD WIDTH="10%" VALIGN="TOP">
+<FONT FACE="System" LANG="ZH-CN" size="2">
+<P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">F</FONT></TD>
+<TD WIDTH="10%" VALIGN="TOP">
+<FONT FACE="System" LANG="ZH-CN" size="2">
+<P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">G</FONT></TD>
+<TD WIDTH="10%" VALIGN="TOP">
+<FONT FACE="System" LANG="ZH-CN" size="2">
+<P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">H</FONT></TD>
+</TR>
+<TR><TD WIDTH="14%" VALIGN="TOP">
+<FONT FACE="System" LANG="ZH-CN" size="2">
+<P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">0</FONT></TD>
+<TD WIDTH="6%" VALIGN="TOP">
+<FONT FACE="System" LANG="ZH-CN" size="2">
+<P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">0</FONT></TD>
+<TD WIDTH="10%" VALIGN="TOP">
+<FONT FACE="System" LANG="ZH-CN" size="2">
+<P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">0</FONT></TD>
+<TD WIDTH="10%" VALIGN="TOP">
+<FONT FACE="System" LANG="ZH-CN" size="2">
+<P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">0</FONT></TD>
+<TD WIDTH="10%" VALIGN="TOP">
+<FONT FACE="System" LANG="ZH-CN" size="2">
+<P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">0</FONT></TD>
+<TD WIDTH="10%" VALIGN="TOP">
+<FONT FACE="System" LANG="ZH-CN" size="2">
+<P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">0</FONT></TD>
+<TD WIDTH="10%" VALIGN="TOP">
+<FONT FACE="System" LANG="ZH-CN" size="2">
+<P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">0</FONT></TD>
+<TD WIDTH="10%" VALIGN="TOP">
+<FONT FACE="System" LANG="ZH-CN" size="2">
+<P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">1</FONT></TD>
+<TD WIDTH="10%" VALIGN="TOP">
+<FONT FACE="System" LANG="ZH-CN" size="2">
+<P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">1</FONT></TD>
+<TD WIDTH="12%" VALIGN="TOP">
+<FONT FACE="System" LANG="ZH-CN" size="2">
+<P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">03H</FONT></TD>
+</TR>
+<TR><TD WIDTH="14%" VALIGN="TOP">
+<FONT FACE="System" LANG="ZH-CN" size="2">
+<P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">1</FONT></TD>
+<TD WIDTH="6%" VALIGN="TOP">
+<FONT FACE="System" LANG="ZH-CN" size="2">
+<P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">1</FONT></TD>
+<TD WIDTH="10%" VALIGN="TOP">
+<FONT FACE="System" LANG="ZH-CN" size="2">
+<P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">0</FONT></TD>
+<TD WIDTH="10%" VALIGN="TOP">
+<FONT FACE="System" LANG="ZH-CN" size="2">
+<P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">0</FONT></TD>
+<TD WIDTH="10%" VALIGN="TOP">
+<FONT FACE="System" LANG="ZH-CN" size="2">
+<P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">1</FONT></TD>
+<TD WIDTH="10%" VALIGN="TOP">
+<FONT FACE="System" LANG="ZH-CN" size="2">
+<P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">1</FONT></TD>
+<TD WIDTH="10%" VALIGN="TOP">
+<FONT FACE="System" LANG="ZH-CN" size="2">
+<P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">1</FONT></TD>
+<TD WIDTH="10%" VALIGN="TOP">
+<FONT FACE="System" LANG="ZH-CN" size="2">
+<P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">1</FONT></TD>
+<TD WIDTH="10%" VALIGN="TOP">
+<FONT FACE="System" LANG="ZH-CN" size="2">
+<P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">1</FONT></TD>
+<TD WIDTH="12%" VALIGN="TOP">
+<FONT FACE="System" LANG="ZH-CN" size="2">
+<P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">9FH</FONT></TD>
+</TR>
+<TR><TD WIDTH="14%" VALIGN="TOP">
+<FONT FACE="System" LANG="ZH-CN" size="2">
+<P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">2</FONT></TD>
+<TD WIDTH="6%" VALIGN="TOP">
+<FONT FACE="System" LANG="ZH-CN" size="2">
+<P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">0</FONT></TD>
+<TD WIDTH="10%" VALIGN="TOP">
+<FONT FACE="System" LANG="ZH-CN" size="2">
+<P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">0</FONT></TD>
+<TD WIDTH="10%" VALIGN="TOP">
+<FONT FACE="System" LANG="ZH-CN" size="2">
+<P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">1</FONT></TD>
+<TD WIDTH="10%" VALIGN="TOP">
+<FONT FACE="System" LANG="ZH-CN" size="2">
+<P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">0</FONT></TD>
+<TD WIDTH="10%" VALIGN="TOP">
+<FONT FACE="System" LANG="ZH-CN" size="2">
+<P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">0</FONT></TD>
+<TD WIDTH="10%" VALIGN="TOP">
+<FONT FACE="System" LANG="ZH-CN" size="2">
+<P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">1</FONT></TD>
+<TD WIDTH="10%" VALIGN="TOP">
+<FONT FACE="System" LANG="ZH-CN" size="2">
+<P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">1</FONT></TD>
+<TD WIDTH="10%" VALIGN="TOP">
+<FONT FACE="System" LANG="ZH-CN" size="2">
+<P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">1</FONT></TD>
+<TD WIDTH="12%" VALIGN="TOP">
+<FONT FACE="System" LANG="ZH-CN" size="2">
+<P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">27H</FONT></TD>
+</TR>
+<TR><TD WIDTH="14%" VALIGN="TOP">
+<FONT FACE="System" LANG="ZH-CN" size="2">
+<P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">3</FONT></TD>
+<TD WIDTH="6%" VALIGN="TOP">
+<FONT FACE="System" LANG="ZH-CN" size="2">
+<P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">0</FONT></TD>
+<TD WIDTH="10%" VALIGN="TOP">
+<FONT FACE="System" LANG="ZH-CN" size="2">
+<P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">0</FONT></TD>
+<TD WIDTH="10%" VALIGN="TOP">
+<FONT FACE="System" LANG="ZH-CN" size="2">
+<P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">0</FONT></TD>
+<TD WIDTH="10%" VALIGN="TOP">
+<FONT FACE="System" LANG="ZH-CN" size="2">
+<P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">0</FONT></TD>
+<TD WIDTH="10%" VALIGN="TOP">
+<FONT FACE="System" LANG="ZH-CN" size="2">
+<P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">1</FONT></TD>
+<TD WIDTH="10%" VALIGN="TOP">
+<FONT FACE="System" LANG="ZH-CN" size="2">
+<P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">1</FONT></TD>
+<TD WIDTH="10%" VALIGN="TOP">
+<FONT FACE="System" LANG="ZH-CN" size="2">
+<P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">0</FONT></TD>
+<TD WIDTH="10%" VALIGN="TOP">
+<FONT FACE="System" LANG="ZH-CN" size="2">
+<P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">1</FONT></TD>
+<TD WIDTH="12%" VALIGN="TOP">
+<FONT FACE="System" LANG="ZH-CN" size="2">
+<P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">0DH</FONT></TD>
+</TR>
+<TR><TD WIDTH="14%" VALIGN="TOP">
+<FONT FACE="System" LANG="ZH-CN" size="2">
+<P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">4</FONT></TD>
+<TD WIDTH="6%" VALIGN="TOP">
+<FONT FACE="System" LANG="ZH-CN" size="2">
+<P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">1</FONT></TD>
+<TD WIDTH="10%" VALIGN="TOP">
+<FONT FACE="System" LANG="ZH-CN" size="2">
+<P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">0</FONT></TD>
+<TD WIDTH="10%" VALIGN="TOP">
+<FONT FACE="System" LANG="ZH-CN" size="2">
+<P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">0</FONT></TD>
+<TD WIDTH="10%" VALIGN="TOP">
+<FONT FACE="System" LANG="ZH-CN" size="2">
+<P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">1</FONT></TD>
+<TD WIDTH="10%" VALIGN="TOP">
+<FONT FACE="System" LANG="ZH-CN" size="2">
+<P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">1</FONT></TD>
+<TD WIDTH="10%" VALIGN="TOP">
+<FONT FACE="System" LANG="ZH-CN" size="2">
+<P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">0</FONT></TD>
+<TD WIDTH="10%" VALIGN="TOP">
+<FONT FACE="System" LANG="ZH-CN" size="2">
+<P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">0</FONT></TD>
+<TD WIDTH="10%" VALIGN="TOP">
+<FONT FACE="System" LANG="ZH-CN" size="2">
+<P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">1</FONT></TD>
+<TD WIDTH="12%" VALIGN="TOP">
+<FONT FACE="System" LANG="ZH-CN" size="2">
+<P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">99H</FONT></TD>
+</TR>
+<TR><TD WIDTH="14%" VALIGN="TOP">
+<FONT FACE="System" LANG="ZH-CN" size="2">
+<P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">5</FONT></TD>
+<TD WIDTH="6%" VALIGN="TOP">
+<FONT FACE="System" LANG="ZH-CN" size="2">
+<P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">0</FONT></TD>
+<TD WIDTH="10%" VALIGN="TOP">
+<FONT FACE="System" LANG="ZH-CN" size="2">
+<P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">1</FONT></TD>
+<TD WIDTH="10%" VALIGN="TOP">
+<FONT FACE="System" LANG="ZH-CN" size="2">
+<P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">0</FONT></TD>
+<TD WIDTH="10%" VALIGN="TOP">
+<FONT FACE="System" LANG="ZH-CN" size="2">
+<P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">0</FONT></TD>
+<TD WIDTH="10%" VALIGN="TOP">
+<FONT FACE="System" LANG="ZH-CN" size="2">
+<P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">1</FONT></TD>
+<TD WIDTH="10%" VALIGN="TOP">
+<FONT FACE="System" LANG="ZH-CN" size="2">
+<P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">0</FONT></TD>
+<TD WIDTH="10%" VALIGN="TOP">
+<FONT FACE="System" LANG="ZH-CN" size="2">
+<P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">0</FONT></TD>
+<TD WIDTH="10%" VALIGN="TOP">
+<FONT FACE="System" LANG="ZH-CN" size="2">
+<P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">1</FONT></TD>
+<TD WIDTH="12%" VALIGN="TOP">
+<FONT FACE="System" LANG="ZH-CN" size="2">
+<P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">49H</FONT></TD>
+</TR>
+<TR><TD WIDTH="14%" VALIGN="TOP">
+<FONT FACE="System" LANG="ZH-CN" size="2">
+<P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">6</FONT></TD>
+<TD WIDTH="6%" VALIGN="TOP">
+<FONT FACE="System" LANG="ZH-CN" size="2">
+<P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">0</FONT></TD>
+<TD WIDTH="10%" VALIGN="TOP">
+<FONT FACE="System" LANG="ZH-CN" size="2">
+<P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">1</FONT></TD>
+<TD WIDTH="10%" VALIGN="TOP">
+<FONT FACE="System" LANG="ZH-CN" size="2">
+<P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">0</FONT></TD>
+<TD WIDTH="10%" VALIGN="TOP">
+<FONT FACE="System" LANG="ZH-CN" size="2">
+<P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">0</FONT></TD>
+<TD WIDTH="10%" VALIGN="TOP">
+<FONT FACE="System" LANG="ZH-CN" size="2">
+<P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">0</FONT></TD>
+<TD WIDTH="10%" VALIGN="TOP">
+<FONT FACE="System" LANG="ZH-CN" size="2">
+<P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">0</FONT></TD>
+<TD WIDTH="10%" VALIGN="TOP">
+<FONT FACE="System" LANG="ZH-CN" size="2">
+<P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">0</FONT></TD>
+<TD WIDTH="10%" VALIGN="TOP">
+<FONT FACE="System" LANG="ZH-CN" size="2">
+<P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">1</FONT></TD>
+<TD WIDTH="12%" VALIGN="TOP">
+<FONT FACE="System" LANG="ZH-CN" size="2">
+<P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">41H</FONT></TD>
+</TR>
+<TR><TD WIDTH="14%" VALIGN="TOP">
+<FONT FACE="System" LANG="ZH-CN" size="2">
+<P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">7</FONT></TD>
+<TD WIDTH="6%" VALIGN="TOP">
+<FONT FACE="System" LANG="ZH-CN" size="2">
+<P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">0</FONT></TD>
+<TD WIDTH="10%" VALIGN="TOP">
+<FONT FACE="System" LANG="ZH-CN" size="2">
+<P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">0</FONT></TD>
+<TD WIDTH="10%" VALIGN="TOP">
+<FONT FACE="System" LANG="ZH-CN" size="2">
+<P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">0</FONT></TD>
+<TD WIDTH="10%" VALIGN="TOP">
+<FONT FACE="System" LANG="ZH-CN" size="2">
+<P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">1</FONT></TD>
+<TD WIDTH="10%" VALIGN="TOP">
+<FONT FACE="System" LANG="ZH-CN" size="2">
+<P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">1</FONT></TD>
+<TD WIDTH="10%" VALIGN="TOP">
+<FONT FACE="System" LANG="ZH-CN" size="2">
+<P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">1</FONT></TD>
+<TD WIDTH="10%" VALIGN="TOP">
+<FONT FACE="System" LANG="ZH-CN" size="2">
+<P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">1</FONT></TD>
+<TD WIDTH="10%" VALIGN="TOP">
+<FONT FACE="System" LANG="ZH-CN" size="2">
+<P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">1</FONT></TD>
+<TD WIDTH="12%" VALIGN="TOP">
+<FONT FACE="System" LANG="ZH-CN" size="2">
+<P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">1FH</FONT></TD>
+</TR>
+<TR><TD WIDTH="14%" VALIGN="TOP">
+<FONT FACE="System" LANG="ZH-CN" size="2">
+<P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">8</FONT></TD>
+<TD WIDTH="6%" VALIGN="TOP">
+<FONT FACE="System" LANG="ZH-CN" size="2">
+<P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">0</FONT></TD>
+<TD WIDTH="10%" VALIGN="TOP">
+<FONT FACE="System" LANG="ZH-CN" size="2">
+<P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">0</FONT></TD>
+<TD WIDTH="10%" VALIGN="TOP">
+<FONT FACE="System" LANG="ZH-CN" size="2">
+<P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">0</FONT></TD>
+<TD WIDTH="10%" VALIGN="TOP">
+<FONT FACE="System" LANG="ZH-CN" size="2">
+<P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">0</FONT></TD>
+<TD WIDTH="10%" VALIGN="TOP">
+<FONT FACE="System" LANG="ZH-CN" size="2">
+<P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">0</FONT></TD>
+<TD WIDTH="10%" VALIGN="TOP">
+<FONT FACE="System" LANG="ZH-CN" size="2">
+<P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">0</FONT></TD>
+<TD WIDTH="10%" VALIGN="TOP">
+<FONT FACE="System" LANG="ZH-CN" size="2">
+<P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">0</FONT></TD>
+<TD WIDTH="10%" VALIGN="TOP">
+<FONT FACE="System" LANG="ZH-CN" size="2">
+<P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">1</FONT></TD>
+<TD WIDTH="12%" VALIGN="TOP">
+<FONT FACE="System" LANG="ZH-CN" size="2">
+<P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">01H</FONT></TD>
+</TR>
+<TR><TD WIDTH="14%" VALIGN="TOP">
+<FONT FACE="System" LANG="ZH-CN" size="2">
+<P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">9</FONT></TD>
+<TD WIDTH="6%" VALIGN="TOP">
+<FONT FACE="System" LANG="ZH-CN" size="2">
+<P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">0</FONT></TD>
+<TD WIDTH="10%" VALIGN="TOP">
+<FONT FACE="System" LANG="ZH-CN" size="2">
+<P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">0</FONT></TD>
+<TD WIDTH="10%" VALIGN="TOP">
+<FONT FACE="System" LANG="ZH-CN" size="2">
+<P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">0</FONT></TD>
+<TD WIDTH="10%" VALIGN="TOP">
+<FONT FACE="System" LANG="ZH-CN" size="2">
+<P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">0</FONT></TD>
+<TD WIDTH="10%" VALIGN="TOP">
+<FONT FACE="System" LANG="ZH-CN" size="2">
+<P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">1</FONT></TD>
+<TD WIDTH="10%" VALIGN="TOP">
+<FONT FACE="System" LANG="ZH-CN" size="2">
+<P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">0</FONT></TD>
+<TD WIDTH="10%" VALIGN="TOP">
+<FONT FACE="System" LANG="ZH-CN" size="2">
+<P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">0</FONT></TD>
+<TD WIDTH="10%" VALIGN="TOP">
+<FONT FACE="System" LANG="ZH-CN" size="2">
+<P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">1</FONT></TD>
+<TD WIDTH="12%" VALIGN="TOP">
+<FONT FACE="System" LANG="ZH-CN" size="2">
+<P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">09H</FONT></TD>
+</TR>
+</TABLE>
+
+<P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">
+<font size="2" FACE="宋体" LANG="ZH-CN">如何，字形表会做了吧，就是这样列个表格，根据要求（</font><font size="2"><FONT FACE="System" LANG="ZH-CN">0</FONT><FONT FACE="宋体" LANG="ZH-CN">亮或</FONT><FONT FACE="System" LANG="ZH-CN">1</FONT><FONT FACE="宋体" LANG="ZH-CN">亮）写出相应位的</FONT><FONT FACE="System" LANG="ZH-CN">0</FONT><FONT FACE="宋体" LANG="ZH-CN">和</FONT><FONT FACE="System" LANG="ZH-CN">1</FONT><FONT FACE="宋体" LANG="ZH-CN">，就成了。做个练习，写出</FONT><FONT FACE="System" LANG="ZH-CN">A-F</FONT></font><font size="2" FACE="宋体" LANG="ZH-CN">的字形码吧。</font></P>
+<FONT FACE="宋体" LANG="ZH-CN" size="2">
+<P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">如果为了接线方便而打乱了接线的顺序，那么字形表又该如何接呢？也很简单，一样地列表啊。以新实验板为例，共阳型。接线如下：</P></FONT> 
+<FONT FACE="System" LANG="ZH-CN">
+<P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">
+<font size="2">P0.7 P0.6 P0.5 P0.4 P0.3 P0.2 P0.1 P0.0</font></P>
+<P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">
+<font size="2">C E H D G F A B</font></P>
+</FONT><FONT FACE="宋体" LANG="ZH-CN" size="2">
+<P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">则字形码如下所示：</P>
+</FONT><FONT FACE="System" LANG="ZH-CN">
+<P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">
+<font size="2">;0 00101000 28H</font></P>
+<P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">
+<font size="2">;1 01111110 7EH</font></P>
+<P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">
+<font size="2">;2 10100100 0A4H</font></P>
+<P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">
+<font size="2">;3 01100100 64H </font> </P>
+<P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">
+<font size="2">;4 01110010 72H</font></P>
+<P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">
+<font size="2">;5 01100001 61H </font> </P>
+<P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">
+<font size="2">;6 00100001 21H</font></P>
+<P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">
+<font size="2">;7 01111100 7CH</font></P>
+<P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">
+<font size="2">;8 00100000 20H</font></P>
+<P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">
+<font size="2">;9 01100000 60H</font></P>
+</FONT>
+<P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">
+<font size="2" FACE="宋体" LANG="ZH-CN">作为练习，大家写出</font><FONT FACE="System" LANG="ZH-CN" size="2">A-F</FONT><font size="2" FACE="宋体" LANG="ZH-CN">的字形代码。</font></P>
+<P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">
+<font face="宋体" size="2">本来这里是讲解显示器的静态接口的，到此应当可算结束了，但是我还想接着上面讲到的数的本质的问题再谈一点。单片机中有一些术语、名词本来是帮助我们理解事物的，但有时我们会被这些术语的相关语义所迷惑，以致不能进一步认清他们的本质，由此往往陷入困惑的境界。只有深入地了解了74LS164的工作特性，才能真正理解何谓串行的数据。有兴趣的朋友还可以再看看我网站上“其他资料”中的“银行利率屏的设计”一文。</font></P>
+</BODY>
+</HTML>

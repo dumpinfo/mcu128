@@ -1,0 +1,57 @@
+BL51 BANKED LINKER/LOCATER V5.11                                                        03/29/2005  15:38:50  PAGE 1
+
+
+BL51 BANKED LINKER/LOCATER V5.11, INVOKED BY:
+C:\KEIL\C51\BIN\BL51.EXE wl001.obj TO wl001 CODE (0X0000-0X0FFF)
+
+
+INPUT MODULES INCLUDED:
+  wl001.obj (WL001)
+
+
+LINK MAP OF MODULE:  wl001 (WL001)
+
+
+            TYPE    BASE      LENGTH    RELOCATION   SEGMENT NAME
+            -----------------------------------------------------
+
+            * * * * * * *   D A T A   M E M O R Y   * * * * * * *
+            REG     0000H     0008H     ABSOLUTE     "REG BANK 0"
+
+            * * * * * * *   C O D E   M E M O R Y   * * * * * * *
+            CODE    0000H     001FH     ABSOLUTE     
+
+
+
+SYMBOL TABLE OF MODULE:  wl001 (WL001)
+
+  VALUE           TYPE          NAME
+  ----------------------------------
+
+  -------         MODULE        WL001
+  C:0012H         SYMBOL        DELAY
+  C:0016H         SYMBOL        DLY_LP
+  C:0003H         SYMBOL        MAIN
+  C:0008H         SYMBOL        MAIN_LP
+  D:0080H         SYMBOL        P0
+  C:0000H         LINE#         22
+  C:0003H         LINE#         25
+  C:0006H         LINE#         26
+  C:0008H         LINE#         28
+  C:000BH         LINE#         29
+  C:000CH         LINE#         30
+  C:000DH         LINE#         31
+  C:000EH         LINE#         32
+  C:0010H         LINE#         33
+  C:0012H         LINE#         37
+  C:0014H         LINE#         38
+  C:0016H         LINE#         40
+  C:0017H         LINE#         41
+  C:0018H         LINE#         42
+  C:001AH         LINE#         43
+  C:001CH         LINE#         44
+  C:001EH         LINE#         45
+  -------         ENDMOD        WL001
+
+Program Size: data=8.0 xdata=0 code=31
+LINK/LOCATE RUN COMPLETE.  0 WARNING(S),  0 ERROR(S)

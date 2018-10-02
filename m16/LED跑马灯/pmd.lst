@@ -1,0 +1,194 @@
+__start:
+__text_start:
+    002B E5CF      LDI	R28,0x5F
+    002C E0D4      LDI	R29,4
+    002D BFCD      OUT	0x3D,R28
+    002E BFDE      OUT	0x3E,R29
+    002F 51C0      SUBI	R28,0x10
+    0030 40D0      SBCI	R29,0
+    0031 EA0A      LDI	R16,0xAA
+    0032 8308      STD	Y+0,R16
+    0033 2400      CLR	R0
+    0034 E6E2      LDI	R30,0x62
+    0035 E0F0      LDI	R31,0
+    0036 E010      LDI	R17,0
+    0037 36E2      CPI	R30,0x62
+    0038 07F1      CPC	R31,R17
+    0039 F011      BEQ	0x003C
+    003A 9201      ST	R0,Z+
+    003B CFFB      RJMP	0x0037
+    003C 8300      STD	Z+0,R16
+    003D E5E4      LDI	R30,0x54
+    003E E0F0      LDI	R31,0
+    003F E6A0      LDI	R26,0x60
+    0040 E0B0      LDI	R27,0
+    0041 E010      LDI	R17,0
+    0042 35E6      CPI	R30,0x56
+    0043 07F1      CPC	R31,R17
+    0044 F021      BEQ	0x0049
+    0045 95C8      LPM
+    0046 9631      ADIW	R30,1
+    0047 920D      ST	R0,X+
+    0048 CFF9      RJMP	0x0042
+    0049 940E009D  CALL	_main
+_exit:
+    004B CFFF      RJMP	_exit
+FILE: E:\avr资料\例程\m16\LED跑马灯\C_LEDPMD.C
+(0001) //ICC-AVR application builder : 2007-3-14 9:32:42
+(0002) // Target : M16
+(0003) // Crystal: 7.3728Mhz
+(0004) // Designed by solo       转载请注明
+(0005) // http://www.ourembed.com     
+(0006) // qq:15537031 phone:13879805760
+(0007) //该程序使用了PA口，请将PA口接到LED的脚上，然后运行程序
+(0008) //显示结果应该是循环点亮LED，
+(0009) //请注意主频
+(0010) #include <iom16v.h>
+(0011) #include <macros.h>
+(0012) 
+(0013) unsigned LM_Data=1;
+(0014) void port_init(void)
+(0015) {
+(0016)  PORTA = 0xFF;
+_port_init:
+    004C EF8F      LDI	R24,0xFF
+    004D BB8B      OUT	0x1B,R24
+(0017)  DDRA  = 0xFF;
+    004E BB8A      OUT	0x1A,R24
+(0018)  PORTB = 0x00;
+    004F 2422      CLR	R2
+    0050 BA28      OUT	0x18,R2
+(0019)  DDRB  = 0x00;
+    0051 BA27      OUT	0x17,R2
+(0020)  PORTC = 0x00; //m103 output only
+    0052 BA25      OUT	0x15,R2
+(0021)  DDRC  = 0x00;
+    0053 BA24      OUT	0x14,R2
+(0022)  PORTD = 0x00;
+    0054 BA22      OUT	0x12,R2
+(0023)  DDRD  = 0x00;
+    0055 BA21      OUT	0x11,R2
+    0056 9508      RET
+(0024) }
+(0025) 
+(0026) //TIMER1 initialize - prescale:256
+(0027) // WGM: 0) Normal, TOP=0xFFFF
+(0028) // desired value: 1Sec
+(0029) // actual value:  1.000Sec (0.0%)
+(0030) void timer1_init(void)
+(0031) {
+(0032)  TCCR1B = 0x00; //stop
+_timer1_init:
+    0057 2422      CLR	R2
+    0058 BC2E      OUT	0x2E,R2
+(0033)  TCNT1H = 0xcF; //setup
+    0059 EC8F      LDI	R24,0xCF
+    005A BD8D      OUT	0x2D,R24
+(0034)  TCNT1L = 0xc1;
+    005B EC81      LDI	R24,0xC1
+    005C BD8C      OUT	0x2C,R24
+(0035)  OCR1AH = 0x70;
+    005D E780      LDI	R24,0x70
+    005E BD8B      OUT	0x2B,R24
+(0036)  OCR1AL = 0x7F;
+    005F E78F      LDI	R24,0x7F
+    0060 BD8A      OUT	0x2A,R24
+(0037)  OCR1BH = 0x70;
+    0061 E780      LDI	R24,0x70
+    0062 BD89      OUT	0x29,R24
+(0038)  OCR1BL = 0x7F;
+    0063 E78F      LDI	R24,0x7F
+    0064 BD88      OUT	0x28,R24
+(0039)  ICR1H  = 0x70;
+    0065 E780      LDI	R24,0x70
+    0066 BD87      OUT	0x27,R24
+(0040)  ICR1L  = 0x7F;
+    0067 E78F      LDI	R24,0x7F
+    0068 BD86      OUT	0x26,R24
+(0041)  TCCR1A = 0x00;
+    0069 BC2F      OUT	0x2F,R2
+(0042)  TCCR1B = 0x04; //start Timer
+    006A E084      LDI	R24,4
+    006B BD8E      OUT	0x2E,R24
+    006C 9508      RET
+_timer1_ovf_isr:
+    006D 922A      ST	R2,-Y
+    006E 923A      ST	R3,-Y
+    006F 938A      ST	R24,-Y
+    0070 939A      ST	R25,-Y
+    0071 B62F      IN	R2,0x3F
+    0072 922A      ST	R2,-Y
+(0043) }
+(0044) 
+(0045) #pragma interrupt_handler timer1_ovf_isr:9
+(0046) void timer1_ovf_isr(void)
+(0047) {
+(0048)  //TIMER1 has overflowed
+(0049)  TCNT1H = 0xeF; //reload counter high value
+    0073 EE8F      LDI	R24,0xEF
+    0074 BD8D      OUT	0x2D,R24
+(0050)  TCNT1L = 0xff; //reload counter low value
+    0075 EF8F      LDI	R24,0xFF
+    0076 BD8C      OUT	0x2C,R24
+(0051)  PORTA = LM_Data;
+    0077 90200060  LDS	R2,LM_Data
+    0079 90300061  LDS	R3,LM_Data+1
+    007B BA2B      OUT	0x1B,R2
+(0052)  LM_Data = LM_Data<<1;
+    007C 0C22      LSL	R2
+    007D 1C33      ROL	R3
+    007E 92300061  STS	LM_Data+1,R3
+    0080 92200060  STS	LM_Data,R2
+(0053)  if (LM_Data == 0)
+    0082 2022      TST	R2
+    0083 F441      BNE	0x008C
+    0084 2033      TST	R3
+    0085 F431      BNE	0x008C
+(0054)   LM_Data = 1;
+    0086 E081      LDI	R24,1
+    0087 E090      LDI	R25,0
+    0088 93900061  STS	LM_Data+1,R25
+    008A 93800060  STS	LM_Data,R24
+    008C 9029      LD	R2,Y+
+    008D BE2F      OUT	0x3F,R2
+    008E 9199      LD	R25,Y+
+    008F 9189      LD	R24,Y+
+    0090 9039      LD	R3,Y+
+    0091 9029      LD	R2,Y+
+    0092 9518      RETI
+(0055) }
+(0056) 
+(0057) //call this routine to initialize all peripherals
+(0058) void init_devices(void)
+(0059) {
+(0060)  //stop errant interrupts until set up
+(0061)  CLI(); //disable all interrupts
+_init_devices:
+    0093 94F8      BCLR	7
+(0062)  port_init();
+    0094 DFB7      RCALL	_port_init
+(0063)  timer1_init();
+    0095 DFC1      RCALL	_timer1_init
+(0064) 
+(0065)  MCUCR = 0x00;
+    0096 2422      CLR	R2
+    0097 BE25      OUT	0x35,R2
+(0066)  GICR  = 0x00;
+    0098 BE2B      OUT	0x3B,R2
+(0067)  TIMSK = 0x04; //timer interrupt sources
+    0099 E084      LDI	R24,4
+    009A BF89      OUT	0x39,R24
+(0068)  SEI(); //re-enable interrupts
+    009B 9478      BSET	7
+    009C 9508      RET
+(0069)  //all peripherals are now initialized
+(0070) }
+(0071) 
+(0072) //
+(0073) void main(void)
+(0074) {
+(0075)  init_devices();
+FILE: <library>
+_main:
+    009D DFF5      RCALL	_init_devices
+    009E 9508      RET

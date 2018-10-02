@@ -1,0 +1,66 @@
+<html>
+<head>
+<title>单片机教学（3）</title>
+<meta http-equiv="Content-Type" content="text/html; charset=gb2312">
+</head>
+
+<body bgcolor="#FFFFFF" background="../back.jpg">
+<p style="line-height: 150%; margin-top: 0; margin-bottom: 0"><font size="2">单片机教学（3）</font></p>
+<h3 style="line-height: 150%; margin-top: 0; margin-bottom: 0"> <font size="2">单片机的内外部结构分析（二）</font></h3>
+<h4 style="line-height: 150%; margin-top: 0; margin-bottom: 0"> <font size="2">一、 程序的完善 
+</font> </h4>
+<p style="line-height: 150%; margin-top: 0; margin-bottom: 0"><font size="2">　　上一次我们的程序实在是没什么用，要灯亮还要重写一下片子，下面我们要让灯不断地闪烁，这就有一定的实用价值了，比如可以把它当成汽车上的一个信号灯用了。怎样才能让灯不断地闪烁呢？实际上就是要灯亮一段时间，再灭一段时间，也就是说要P10不断地输出高和低电平。怎样实现这个要求呢？请考虑用下面的指令是否可行： 
+</font> 
+</p>
+<p style="line-height: 150%; margin-top: 0; margin-bottom: 0"><font size="2">SETB P10
+</font> </p> 
+<p style="line-height: 150%; margin-top: 0; margin-bottom: 0"><font size="2">CLR P10
+</font> </p>
+<p style="line-height: 150%; margin-top: 0; margin-bottom: 0"><font size="2">……</font></p>
+<p style="line-height: 150%; margin-top: 0; margin-bottom: 0"><font size="2">这是不行的，有两个问题，第一，计算机执行指令的时间很快，执行完SETB P10后，灯是灭了，但在极短时间（微秒级）后，计算机又执行了CLR P10指令，灯又亮了，所以根本分辨不出灯曾灭过。第二，在执行完CLR  
+  P10后，不会再去执行SETB P10指令，所以以后再也没有机会让灭了。 </font> </p> 
+<p style="line-height: 150%; margin-top: 0; margin-bottom: 0"><font size="2">　　为了解决这两个问题，我们可以做如下设想，第一，在执行完SETB P10后，延时一段时间（几秒或零点几秒）再执行第二条指令，就可以分辨出灯曾灭过了。第二在执行完第二条指令后，让计算机再去执行第一条指令，不断地在原地兜圈，我们称之为"循环"，这样就可以完成任务了。 
+</font>  
+</p>
+<p style="line-height: 150%; margin-top: 0; margin-bottom: 0"><font size="2">以下先给出程序（后面括号中的数字是为了便于讲解而写的，实际不用输入）： 
+</font> </p>
+<p style="line-height: 150%; margin-top: 0; margin-bottom: 0"><font size="2">；主程序：</font></p>
+<p style="line-height: 150%; margin-top: 0; margin-bottom: 0"><font size="2">LOOP： SETB P10 　　　　；（１）</font></p>
+<p style="line-height: 150%; margin-top: 0; margin-bottom: 0"><font size="2">　　　　LCALL DELAY 　　；（２）</font></p>
+<p style="line-height: 150%; margin-top: 0; margin-bottom: 0"><font size="2">　　　　CLR P10 　　　　；（３）</font></p>
+<p style="line-height: 150%; margin-top: 0; margin-bottom: 0"><font size="2">　　　　LCALL DELAY 　　；（４）</font></p>
+<p style="line-height: 150%; margin-top: 0; margin-bottom: 0"><font size="2">　　　　AJMP LOOP 　　　；（５）</font></p>
+<p style="line-height: 150%; margin-top: 0; margin-bottom: 0"><font size="2">；以下子程序</font></p>
+<p style="line-height: 150%; margin-top: 0; margin-bottom: 0"><font size="2">DELAY： MOV R7，#250　　；（６）</font></p>
+<p style="line-height: 150%; margin-top: 0; margin-bottom: 0"> <font size="2">D1： MOV R6，#250 　　　；（７）</font></p>
+<p style="line-height: 150%; margin-top: 0; margin-bottom: 0"><font size="2">D2： DJNZ R6，D2 　　　；（８）</font></p>
+<p style="line-height: 150%; margin-top: 0; margin-bottom: 0"><font size="2">　　DJNZ R7，D1 　　　　；（９）</font></p>
+<p style="line-height: 150%; margin-top: 0; margin-bottom: 0"><font size="2">　　RET 　　　　　　　　；（１０）</font></p>
+<p style="line-height: 150%; margin-top: 0; margin-bottom: 0"><font size="2">　　END 　　　　　　　　；（１１）</font></p>
+<p style="line-height: 150%; margin-top: 0; margin-bottom: 0"><font size="2">按上面的设想分析一下前面的五条指令。</font></p>
+<p style="line-height: 150%; margin-top: 0; margin-bottom: 0"><font size="2">　　第一条是让灯灭，第二条应当是延时，第三条是让灯亮，第四条和第二条一模一样，也是延时，第五条应当是转去执行第一条指令。第二和第四条实现的原理稍后谈，先看第五条，LJMP是一条指令，意思是转移，往什么地方转移呢？后面跟的是LOOP，看一下，什么地方还有LOOP，对了，在第一条指令的前面有一个LOOP，所以很直观地，我们可以认识到，它要转到第一条指令处。这个第一条指令前面的LOOP被称之为标号，它的用途就是给这一行起一个名字，便于使用。是否一定要给它起名叫LOOP呢？当然不是，起什么名字，完全由编程序的人决定，可以称它为A，X等等，当然，这时，第五条指令LJMP后面的名字也得跟着改了。 
+</font> 
+</p>
+<p style="line-height: 150%; margin-top: 0; margin-bottom: 0"><font size="2">　　第二条和第四条指令的用途是延时，它是怎样实现的呢？指令的形式是LCALL，这条指令称为调用子程序指令，看一下指令后面跟的是什么，DELAY，找一下DELAY，在第六条指令的前面，显然，这也是一个标号。这条指令的作用是这样的：当执行LCALL指令时，程序就转到LCALL后面的标号所标定的程序处执行，如果在执行指令的过程中遇到RET指令，则程序就返回到LCALL指令的下面的一条指令继续执行，从第六行开始的指令中，可以看到确实有RET指令。在执行第二条指令后，将转去执行第６条指令，而在执行完６，７，８，９条指令后将遇到第１０条令：RET，执行该条指令后，程序将回来执行第三条指令，即将P10清零，使灯亮，然后又是第四条指令，执行第四条指令就是转去执行第6，7，8，9，10条指令，然后回来执行第5条指令，第5条指令就是让程序回到第1条开始执行，如此周而复始，灯就在不断地亮、灭了。 
+</font> 
+</p>
+<p style="line-height: 150%; margin-top: 0; margin-bottom: 0"> <font size="2">　　在标号DELAY标志的这一行到RET这一行中的所有程序，这是一段延时程序，大概延时零点几秒，至于具体的时间，以后我们再学习如何计算。 程序的最后一行是END，这不是一条指令，它只是告诉我们程序到此结束，它被称为"伪指令"。 
+</font>  
+</p>
+<p style="line-height: 150%; margin-top: 0; margin-bottom: 0"><font size="2">二、单片机内部结构分析：</font></p>
+<p style="line-height: 150%; margin-top: 0; margin-bottom: 0"><font size="2">　　为了知道延时程序是如何工作的，我们必需首先了解延时程序中出现的一些符号， 就从R1开始，R1被称之为工作寄存器。什么是工作寄存器呢？让我们从现实生活中来找找答案。如果出一道数学题：123+567，让你回答结果是多少，你会马上答出是690，再看下面一道题：123+567+562，要让你要上回答，就不这么容易了吧？我们会怎样做呢？如果有张纸，就容易了，我们先算出123+567=690，把690写在纸上，然后再算690+562得到结果是1552。这其中1552是我们想要的结果，而690并非我们所要的结果，但是为了得到最终结果，我们又不得不先算出690，并记下来，这其实是一个中间结果，计算机中做运算和这个类似，为了要得到最终结果，往往要做很多步的中间结果，这些中间结果要有个地方放才行，把它们放哪呢？放在前面提到过的ROM中可以吗？显然不行，因为计算机要将结果写进去，而ROM是不可以写的，所以在单片机中另有一个区域称为RAM区（RAM是随机存取存储器的英文缩写），它可以将数据写进去。</font></p> 
+<p style="line-height: 150%; margin-top: 0; margin-bottom: 0"> <font size="2">　　特别地，在MCS-51单片机中，将RAM中分出一块区域，称为工作寄存器区。</font></p>
+<p style="line-height: 150%; margin-top: 0; margin-bottom: 0">　</p>
+
+<p style="line-height: 150%; margin-top: 0; margin-bottom: 0">　</p>
+
+          <hr width="550" SIZE="1" align="center">     
+
+<p align="center" style="line-height: 150%; margin-top: 0; margin-bottom: 0"><font size="2">伟纳电子 COPYRIGHT &reg; 2000  
+<a href="http://www.willar.com">http://www.willar.com</a><br>                                           
+&nbsp; E-mail:<a href="mailto:support@willar.com">support@willar.com</a> </font>      
+ 
+<p align="center" style="line-height: 150%; margin-top: 0; margin-bottom: 0">　</p>
+<p align="center" style="line-height: 150%; margin-top: 0; margin-bottom: 0">　</p>
+</body>
+</html>

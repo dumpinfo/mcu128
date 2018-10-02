@@ -1,0 +1,80 @@
+
+//PA0输出频率波形
+//请将PA0口接到蜂鸣器控制端
+//ICC-AVR application builder : 2007-6-26 15:44:31
+// Target : M128
+// Crystal: 6.0000Mhz
+
+#include <iom128v.h>
+#include <macros.h>
+unsigned char Data=0;
+  
+void port_init(void)
+{
+ PORTA = 0xFF;
+ DDRA  = 0x00;
+ PORTB = 0xFF;
+ DDRB  = 0x00;
+ PORTC = 0xFF; //m103 output only
+ DDRC  = 0x00;
+ PORTD = 0xFF;
+ DDRD  = 0x00;
+ PORTE = 0xFF;
+ DDRE  = 0x00;
+ PORTF = 0xFF;
+ DDRF  = 0x00;
+ PORTG = 0x1F;
+ DDRG  = 0x00;
+}
+
+//TIMER0 initialisation - prescale:8
+// WGM: Normal
+// desired value: 10KHz
+// actual value: 10.000KHz (0.0%)
+void timer0_init(void)
+{
+ TCCR0 = 0x00; //stop
+ ASSR  = 0x00; //set async mode
+ TCNT0 = 0xB5; //set count
+ OCR0  = 0x4B;
+ TCCR0 = 0x02; //start timer
+}
+
+#pragma interrupt_handler timer0_ovf_isr:17
+void timer0_ovf_isr(void)
+{
+ TCNT0 = 0xB5; //reload counter value
+  PORTA = Data;
+ if(Data ==0)
+  Data = 1;
+ else
+  Data = 0;
+}
+
+//call this routine to initialise all peripherals
+void init_devices(void)
+{
+ //stop errant interrupts until set up
+ CLI(); //disable all interrupts
+ XDIV  = 0x00; //xtal divider
+ XMCRA = 0x00; //external memory
+ port_init();
+ timer0_init();
+
+ MCUCR = 0x00;
+ EICRA = 0x00; //extended ext ints
+ EICRB = 0x00; //extended ext ints
+ EIMSK = 0x00;
+ TIMSK = 0x01; //timer interrupt sources
+ ETIMSK = 0x00; //extended timer interrupt sources
+ SEI(); //re-enable interrupts
+ //all peripherals are now initialised
+}
+
+//
+void main(void)
+{
+ init_devices();
+ //insert your functional code here...
+}
+

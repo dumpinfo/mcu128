@@ -1,0 +1,210 @@
+<HTML>
+<HEAD>
+<META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=gb_2312-80">
+<META NAME="Generator" CONTENT="Microsoft FrontPage 5.0">
+<TITLE>键盘接口与编程</TITLE>
+</HEAD>
+<BODY background="../back.jpg">
+<OL>
+
+<FONT FACE="宋体" LANG="ZH-CN" SIZE=3>
+<P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0"></font>
+
+<FONT FACE="宋体" LANG="ZH-CN" SIZE=2><LI>
+<p style="line-height: 150%; margin-top: 0; margin-bottom: 0">矩阵式键盘接口技术及编程</LI></p>
+</font>
+
+<FONT FACE="宋体" LANG="ZH-CN" SIZE=3>
+<p style="line-height: 150%; margin-top: 0; margin-bottom: 0"></P></font></OL>
+<OL>
+  <FONT FACE="宋体" LANG="ZH-CN" SIZE=3> 
+  <P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">
+  </font> 
+  <FONT FACE="宋体" LANG="ZH-CN" SIZE=2> 
+  <LI>
+  <p style="line-height: 150%; margin-top: 0; margin-bottom: 0">矩阵式键盘的结构与工作原理：</LI> 
+  </p>
+  </font> 
+  <FONT FACE="宋体" LANG="ZH-CN" SIZE=3> 
+  <p style="line-height: 150%; margin-top: 0; margin-bottom: 0"></P>
+  </font> 
+  <P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">
+  <FONT FACE="宋体" LANG="ZH-CN" SIZE=2>在键盘中按键数量较多时，为了减少</font><FONT SIZE=2>I/O</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>口的占用，通常将按键排列成矩阵形式，如图</FONT><FONT SIZE=2>1</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>所示。在矩阵式键盘中，每条水平线和垂直线在交叉处不直接连通，而是通过一个按键加以连接。这样，一个端口（如</FONT><FONT SIZE=2>P1</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>口）就可以构成</FONT><FONT SIZE=2>4*4=16</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>个按键，比之直接将端口线用于键盘多出了一倍，而且线数越多，区别越明显，比如再多加一条线就可以构成</FONT><FONT SIZE=2>20</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>键的键盘，而直接用端口线则只能多出一键（</FONT><FONT SIZE=2>9</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>键）。由此可见，在</font></P>
+  <table width="300" border="0" cellspacing="2" cellpadding="2">
+    <tr> 
+      <td>
+      <p style="line-height: 150%; margin-top: 0; margin-bottom: 0">
+      <font size="2"><img src="dpj281.gif" width="308" height="333"></font></td>
+    </tr>
+  </table>
+  <P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">
+  <FONT FACE="宋体" LANG="ZH-CN" SIZE=2>需要的键数比较多时，采用矩阵法来做键盘是合理的。</font></P>
+  <P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0"> 
+  <FONT FACE="宋体" LANG="ZH-CN" SIZE=2>矩阵式结构的键盘显然比直接法要复杂一些，识别也要复杂一些，上图中，列线通过电阻接正电源，并将行线所接的单片机的</font><FONT SIZE=2>I/O</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>口作为输出端，而列线所接的</FONT><FONT SIZE=2>I/O</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>口则作为输入。这样，当按键没有按下时，所有的输出端都是高电平，代表无键按下。行线输出是低电平，一旦有键按下，则输入线就会被拉低，这样，通过读入输入线的状态就可得知是否有键按下了。具体的识别及编程方法如下所述。</font></P>
+  <FONT FACE="宋体" LANG="ZH-CN" SIZE=3> 
+  <P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">
+  </font> 
+  <FONT FACE="宋体" LANG="ZH-CN" SIZE=2> 
+  <LI>
+  <p style="line-height: 150%; margin-top: 0; margin-bottom: 0">矩阵式键盘的按键识别方法</LI> 
+  </p>
+  </font> 
+  <FONT FACE="宋体" LANG="ZH-CN" SIZE=3> 
+  <p style="line-height: 150%; margin-top: 0; margin-bottom: 0"></P>
+  </font> 
+</OL>
+<FONT FACE="宋体" LANG="ZH-CN" SIZE=2>
+
+<P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">确定矩阵式键盘上何键被按下介绍一种“行扫描法”。</P>
+</FONT>
+<P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">
+<FONT FACE="宋体" LANG="ZH-CN" SIZE=2>行扫描法</font><FONT SIZE=2>  </FONT>
+<FONT FACE="宋体" LANG="ZH-CN" SIZE=2>行扫描法又称为逐行（或列）扫描查询法，是一种最常用的按键识别方法，如上图所示键盘，介绍过程如下。</font></P><OL>
+<FONT FACE="宋体" LANG="ZH-CN" SIZE=3>
+
+<P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0"></font><LI>
+<p style="line-height: 150%; margin-top: 0; margin-bottom: 0">
+<FONT FACE="宋体" LANG="ZH-CN" SIZE=2>判断键盘中有无键按下</font><FONT SIZE=2>  </FONT>
+<FONT FACE="宋体" LANG="ZH-CN" SIZE=2>将全部行线</FONT><FONT SIZE=2>Y0-Y3</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>置低电平，然后检测列线的状态。只要有一列的电平为低，则表示键盘中有键被按下，而且闭合的键位于低电平线与</FONT><FONT SIZE=2>4</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>根行线相交叉的</FONT><FONT SIZE=2>4</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>个按键之中。若所有列线均为高电平，则键盘中无键按下。</font><font size="2"></LI></font><FONT FACE="宋体" LANG="ZH-CN" SIZE=3></p>
+<p style="line-height: 150%; margin-top: 0; margin-bottom: 0"></P>
+<P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0"></FONT><LI>
+<p style="line-height: 150%; margin-top: 0; margin-bottom: 0">
+<FONT FACE="宋体" LANG="ZH-CN" SIZE=2>判断闭合键所在的位置</font><FONT SIZE=2> </FONT>
+<FONT FACE="宋体" LANG="ZH-CN" SIZE=2>在确认有键按下后，即可进入确定具体闭合键的过程。其方法是：依次将行线置为低电平，即在置某根行线为低电平时，其它线为高电平。在确定某根行线位置为低电平后，再逐行检测各列线的电平状态。若某列为低，则该列线与置为低电平的行线交叉处的按键就是闭合的按键。</font><font size="2"></LI></font><FONT FACE="宋体" LANG="ZH-CN" SIZE=3></p>
+<p style="line-height: 150%; margin-top: 0; margin-bottom: 0"></P></font></OL>
+<FONT FACE="宋体" LANG="ZH-CN" SIZE=2>
+<DIR>
+
+<P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">下面给出一个具体的例子：</P></DIR>
+
+</FONT>
+<P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">
+<FONT FACE="宋体" LANG="ZH-CN" SIZE=2>图仍如上所示。</font><FONT SIZE=2>8031</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>单片机的</FONT><FONT SIZE=2>P1</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>口用作键盘</FONT><FONT SIZE=2>I/O</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>口，键盘的列线接到</FONT><FONT SIZE=2>P1</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>口的低</FONT><FONT SIZE=2>4</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>位，键盘的行线接到</FONT><FONT SIZE=2>P1</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>口的高</FONT><FONT SIZE=2>4</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>位。列线</FONT><FONT SIZE=2>P1.0-P1.3</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>分别接有</FONT><FONT SIZE=2>4</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>个上拉电阻到正电源</FONT><FONT SIZE=2>+5V</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>，并把列线</FONT><FONT SIZE=2>P1.0-P1.3</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>设置为输入线，行线</FONT><FONT SIZE=2>P1.4-P.17</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>设置为输出线。</FONT><FONT SIZE=2>4</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>根行线和</FONT><FONT SIZE=2>4</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>根列线形成</FONT><FONT SIZE=2>16</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>个相交点。</font></P>
+<OL>
+  <FONT FACE="宋体" LANG="ZH-CN" SIZE=3> 
+  <P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">
+  </font> 
+  <LI>
+  <p style="line-height: 150%; margin-top: 0; margin-bottom: 0">
+  <FONT FACE="宋体" LANG="ZH-CN" SIZE=2>检测当前是否有键被按下。检测的方法是</font><FONT SIZE=2>P1.4-P1.7</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>输出全“</FONT><FONT SIZE=2>0</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>”，读取</FONT><FONT SIZE=2>P1.0-P1.3</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>的状态，若</FONT><FONT SIZE=2>P1.0-P1.3</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>为全“</FONT><FONT SIZE=2>1</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>”，则无键闭合，否则有键闭合。</font><font size="2"></LI>
+  </font>
+  <FONT FACE="宋体" LANG="ZH-CN" SIZE=3> 
+  </p>
+  <p style="line-height: 150%; margin-top: 0; margin-bottom: 0"></P>
+  <P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">
+  </FONT> 
+  <FONT FACE="宋体" LANG="ZH-CN" SIZE=2> 
+  <LI>
+  <p style="line-height: 150%; margin-top: 0; margin-bottom: 0">去除键抖动。当检测到有键按下后，延时一段时间再做下一步的检测判断。</LI> 
+  </p>
+  </FONT> 
+  <FONT FACE="宋体" LANG="ZH-CN" SIZE=3> 
+  <p style="line-height: 150%; margin-top: 0; margin-bottom: 0"></P>
+  </FONT> 
+  <P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">
+  　<LI>
+  <p style="line-height: 150%; margin-top: 0; margin-bottom: 0">
+  <FONT FACE="宋体" LANG="ZH-CN" SIZE=2>若有键被按下，应识别出是哪一个键闭合。方法是对键盘的行线进行扫描。</font><FONT SIZE=2>P1.4-P1.7</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>按下述</FONT><FONT SIZE=2>4</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>种组合依次输出：</font><font size="2"></LI>
+  </font>
+  <FONT FACE="宋体" LANG="ZH-CN" SIZE=3> 
+  </p>
+  <p style="line-height: 150%; margin-top: 0; margin-bottom: 0"></P>
+  </FONT><FONT SIZE=2> 
+  <P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">P1.7 1 1 1 0</P>
+  <P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">P1.6 1 1 0 1</P>
+  <P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">P1.5 1 0 1 1</P>
+  <P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">P1.4 0 1 1 1</P>
+  </FONT> 
+  <P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">
+  <FONT FACE="宋体" LANG="ZH-CN" SIZE=2>在每组行输出时读取</FONT><FONT SIZE=2>P1.0-P1.3</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>，若全为“</FONT><FONT SIZE=2>1</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>”，则表示为“</FONT><FONT SIZE=2>0</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>”这一行没有键闭合，否则有键闭合。由此得到闭合键的行值和列值，然后可采用计算法或查表法将闭合键的行值和列值转换成所定义的键值</font></P>
+  <FONT FACE="宋体" LANG="ZH-CN" SIZE=3> 
+  <P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">
+  </FONT> 
+  <LI>
+  <p style="line-height: 150%; margin-top: 0; margin-bottom: 0">
+  <FONT FACE="宋体" LANG="ZH-CN" SIZE=2>为了保证键每闭合一次</font><FONT SIZE=2>CPU</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>仅作一次处理，必须却除键释放时的抖动。</font><font size="2"></LI>
+  </font></p>
+  <table width="300" border="0" cellspacing="2" cellpadding="2">
+    <tr> 
+      <td height="328">
+      <p style="line-height: 150%; margin-top: 0; margin-bottom: 0">
+      <font size="2"><img src="DPJ282.gif" align="bottom" width="362" height="324"> </font> 
+      </td>
+    </tr>
+    <tr> 
+      <td>
+      <p style="line-height: 150%; margin-top: 0; margin-bottom: 0">
+      <font size="2"><img src="DPJ283.gif" width="362" height="296"></font></td>
+    </tr>
+  </table>
+  <FONT FACE="宋体" LANG="ZH-CN" SIZE=3> 
+  <p style="line-height: 150%; margin-top: 0; margin-bottom: 0"></P>
+  </font> 
+</OL>
+<FONT FACE="宋体" LANG="ZH-CN" SIZE=2>
+
+<P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">键盘扫描程序：</P>
+</FONT>
+<P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">
+<FONT FACE="宋体" LANG="ZH-CN" SIZE=2>&#9;从以上分析得到键盘扫描程序的流程图如图</font><font size="2">2</font><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>所示。程序如下</font></P>
+<FONT SIZE=2>
+<P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">SCAN:&#9;MOV&#9;P1,#0FH</P>
+</FONT>
+<P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">
+<FONT SIZE=2>MOV&#9;A,P1</font></P><FONT SIZE=2>
+<P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">&#9;&#9;ANL&#9;A,#0FH</P>
+<P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">&#9;&#9;CJNE&#9;A,#0FH,NEXT1</P>
+<P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">&#9;&#9;SJMP&#9;NEXT3</P>
+<P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">NEXT1:&#9;ACALL&#9;D20MS</P>
+<P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">&#9;&#9;MOV&#9;A,#0EFH</P>
+<P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">NEXT2:&#9;MOV&#9;R1,A</P>
+<P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">&#9;&#9;MOV&#9;P1,A</P>
+<P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">&#9;&#9;MOV&#9;A,P1</P>
+<P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">&#9;&#9;ANL&#9;A,#0FH</P>
+<P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">&#9;&#9;CJNE&#9;A,#0FH,KCODE;</P>
+<P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">&#9;&#9;MOV&#9;A,R1</P>
+<P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">&#9;&#9;SETB&#9;C</P>
+<P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">&#9;&#9;RLC&#9;&#9;A</P>
+<P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">&#9;&#9;JC&#9;&#9;NEXT2</P>
+<P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">NEXT3:&#9;MOV&#9;R0,#00H&#9;</P>
+<P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">&#9;&#9;RET</P>
+<P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">KCODE:&#9;MOV&#9;B,#0FBH</P>
+<P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">NEXT4:&#9;RRC&#9;&#9;A</P>
+<P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">&#9;&#9;INC&#9;&#9;B</P>
+<P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">&#9;&#9;JC&#9;&#9;NEXT4</P>
+<P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">&#9;&#9;MOV&#9;A,R1</P>
+<P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">&#9;&#9;SWAP&#9;A</P>
+<P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">NEXT5:&#9;RRC&#9;&#9;A</P>
+<P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">&#9;&#9;INC&#9;&#9;B</P>
+<P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">&#9;&#9;INC&#9;&#9;B</P>
+<P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">&#9;&#9;INC&#9;&#9;B</P>
+<P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">&#9;&#9;INC&#9;&#9;B</P>
+<P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">&#9;&#9;JC&#9;&#9;NEXT5</P>
+<P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">NEXT6:&#9;MOV&#9;A,P1</P>
+<P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">&#9;&#9;ANL&#9;A,#0FH</P>
+</FONT>
+<P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">
+<FONT SIZE=2>CJNE&#9;A,#0FH,NEXT6</font></P><FONT SIZE=2>
+<P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">&#9;&#9;MOV&#9;R0,#0FFH</P>
+</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=3>
+<P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">
+&#9;&#9;</FONT><FONT SIZE=2>RET
+</FONT>
+<FONT SIZE=3>
+<p style="line-height: 150%; margin-top: 0; margin-bottom: 0"></P>
+<p style="line-height: 150%; margin-top: 0; margin-bottom: 0"></P>
+<p style="line-height: 150%; margin-top: 0; margin-bottom: 0"></P>
+<p style="line-height: 150%; margin-top: 0; margin-bottom: 0"></P>
+<p style="line-height: 150%; margin-top: 0; margin-bottom: 0"></P>
+<p style="line-height: 150%; margin-top: 0; margin-bottom: 0"></P>
+<p style="line-height: 150%; margin-top: 0; margin-bottom: 0"></P>
+</FONT>
+<FONT SIZE=2>
+<p style="line-height: 150%; margin-top: 0; margin-bottom: 0">键盘处理程序就作这么一个简单的介绍，实际上，键盘、显示处理是很复杂的，它往往占到一个应用程序的大部份代码，可见其重要性，但说到，这种复杂并不来自于单片机的本身，而是来自于操作者的习惯等等问题，因此，在编写键盘处理程序之前，最好先把它从逻辑上理清，然后用适当的算法表示出来，最后再去写代码，这样，才能快速有效地写好代码。</P>
+</FONT>
+<FONT SIZE=3>
+<p style="line-height: 150%; margin-top: 0; margin-bottom: 0"></P>
+</FONT>
+<p style="line-height: 150%; margin-top: 0; margin-bottom: 0"><font size="2">到本课为止，本站教程暂告一个段落！感谢大家的关心和支持！</font></p>
+</BODY>
+</HTML>

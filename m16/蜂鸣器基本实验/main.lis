@@ -1,0 +1,208 @@
+                        .module main.c
+                        .area data(ram, con, rel)
+ 0000           _Data::
+ 0000                   .blkb 1
+                        .area idata
+ 0000 00                .byte 0
+                        .area data(ram, con, rel)
+ 0001                   .dbfile D:\mega16学习板资料\例程\m16\蜂鸣器基本实验\main.c
+ 0001                   .dbsym e Data _Data c
+                        .area text(rom, con, rel)
+ 0000                   .dbfile D:\mega16学习板资料\例程\m16\蜂鸣器基本实验\main.c
+ 0000                   .dbfunc e port_init _port_init fV
+                        .even
+ 0000           _port_init::
+ 0000                   .dbline -1
+ 0000                   .dbline 10
+ 0000           ; //ICC-AVR application builder : 2007-4-12 9:38:39
+ 0000           ; // Target : M16
+ 0000           ; // Crystal: 7.3728Mhz
+ 0000           ; //PA0输出频率波形
+ 0000           ; #include <iom16v.h>
+ 0000           ; #include <macros.h>
+ 0000           ; 
+ 0000           ; unsigned char Data=0;
+ 0000           ; void port_init(void)
+ 0000           ; {
+ 0000                   .dbline 11
+ 0000           ;  PORTA = 0xFF;
+ 0000 8FEF              ldi R24,255
+ 0002 8BBB              out 0x1b,R24
+ 0004                   .dbline 12
+ 0004           ;  DDRA  = 0xFF;
+ 0004 8ABB              out 0x1a,R24
+ 0006                   .dbline 13
+ 0006           ;  PORTB = 0xFF;
+ 0006 88BB              out 0x18,R24
+ 0008                   .dbline 14
+ 0008           ;  DDRB  = 0x00;
+ 0008 2224              clr R2
+ 000A 27BA              out 0x17,R2
+ 000C                   .dbline 15
+ 000C           ;  PORTC = 0xFF; 
+ 000C 85BB              out 0x15,R24
+ 000E                   .dbline 16
+ 000E           ;  DDRC  = 0x00;
+ 000E 24BA              out 0x14,R2
+ 0010                   .dbline 17
+ 0010           ;  PORTD = 0xFF;
+ 0010 82BB              out 0x12,R24
+ 0012                   .dbline 18
+ 0012           ;  DDRD  = 0x00;
+ 0012 21BA              out 0x11,R2
+ 0014                   .dbline -2
+ 0014                   .dbline 19
+ 0014           ; }
+ 0014           L1:
+ 0014                   .dbline 0 ; func end
+ 0014 0895              ret
+ 0016                   .dbend
+ 0016                   .dbfunc e timer0_init _timer0_init fV
+                        .even
+ 0016           _timer0_init::
+ 0016                   .dbline -1
+ 0016                   .dbline 26
+ 0016           ; 
+ 0016           ; //TIMER0 initialisation - prescale:64
+ 0016           ; // WGM: Normal
+ 0016           ; // desired value: 1KHz
+ 0016           ; // actual value:  1.002KHz (0.2%)
+ 0016           ; void timer0_init(void)
+ 0016           ; {
+ 0016                   .dbline 27
+ 0016           ;  TCCR0 = 0x00; //stop
+ 0016 2224              clr R2
+ 0018 23BE              out 0x33,R2
+ 001A                   .dbline 28
+ 001A           ;  TCNT0 = 0x8D; //set count
+ 001A 8DE8              ldi R24,141
+ 001C 82BF              out 0x32,R24
+ 001E                   .dbline 29
+ 001E           ;  OCR0  = 0x73;  //set compare
+ 001E 83E7              ldi R24,115
+ 0020 8CBF              out 0x3c,R24
+ 0022                   .dbline 30
+ 0022           ;  TCCR0 = 0x03; //start timer
+ 0022 83E0              ldi R24,3
+ 0024 83BF              out 0x33,R24
+ 0026                   .dbline -2
+ 0026                   .dbline 31
+ 0026           ; }
+ 0026           L2:
+ 0026                   .dbline 0 ; func end
+ 0026 0895              ret
+ 0028                   .dbend
+                        .area vector(rom, abs)
+                        .org 36
+ 0024 0C941400          jmp _timer0_ovf_isr
+                        .area text(rom, con, rel)
+ 0028                   .dbfile D:\mega16学习板资料\例程\m16\蜂鸣器基本实验\main.c
+ 0028                   .dbfunc e timer0_ovf_isr _timer0_ovf_isr fV
+                        .even
+ 0028           _timer0_ovf_isr::
+ 0028 2A92              st -y,R2
+ 002A 8A93              st -y,R24
+ 002C 2FB6              in R2,0x3f
+ 002E 2A92              st -y,R2
+ 0030                   .dbline -1
+ 0030                   .dbline 35
+ 0030           ; 
+ 0030           ; #pragma interrupt_handler timer0_ovf_isr:10
+ 0030           ; void timer0_ovf_isr(void)
+ 0030           ; {
+ 0030                   .dbline 36
+ 0030           ;  TCNT0 = 0x8D; //reload counter value
+ 0030 8DE8              ldi R24,141
+ 0032 82BF              out 0x32,R24
+ 0034                   .dbline 37
+ 0034           ;  PORTA = Data;
+ 0034 20900000          lds R2,_Data
+ 0038 2BBA              out 0x1b,R2
+ 003A                   .dbline 38
+ 003A           ;  if(Data ==0)
+ 003A 2220              tst R2
+ 003C 21F4              brne L4
+ 003E                   .dbline 39
+ 003E           ;   Data = 1;
+ 003E 81E0              ldi R24,1
+ 0040 80930000          sts _Data,R24
+ 0044 03C0              xjmp L5
+ 0046           L4:
+ 0046                   .dbline 41
+ 0046 2224              clr R2
+ 0048 20920000          sts _Data,R2
+ 004C           L5:
+ 004C                   .dbline -2
+ 004C                   .dbline 42
+ 004C           ;  else
+ 004C           ;   Data = 0;
+ 004C           ; }
+ 004C           L3:
+ 004C 2990              ld R2,y+
+ 004E 2FBE              out 0x3f,R2
+ 0050 8991              ld R24,y+
+ 0052 2990              ld R2,y+
+ 0054                   .dbline 0 ; func end
+ 0054 1895              reti
+ 0056                   .dbend
+ 0056                   .dbfunc e init_devices _init_devices fV
+                        .even
+ 0056           _init_devices::
+ 0056                   .dbline -1
+ 0056                   .dbline 46
+ 0056           ; 
+ 0056           ; //call this routine to initialise all peripherals
+ 0056           ; void init_devices(void)
+ 0056           ; {
+ 0056                   .dbline 48
+ 0056           ;  //stop errant interrupts until set up
+ 0056           ;  CLI(); //disable all interrupts
+ 0056 F894              cli
+ 0058                   .dbline 49
+ 0058           ;  port_init();
+ 0058 D3DF              xcall _port_init
+ 005A                   .dbline 50
+ 005A           ;  timer0_init();
+ 005A DDDF              xcall _timer0_init
+ 005C                   .dbline 52
+ 005C           ; 
+ 005C           ;  MCUCR = 0x00;
+ 005C 2224              clr R2
+ 005E 25BE              out 0x35,R2
+ 0060                   .dbline 53
+ 0060           ;  GICR  = 0x00;
+ 0060 2BBE              out 0x3b,R2
+ 0062                   .dbline 54
+ 0062           ;  TIMSK = 0x01; //timer interrupt sources
+ 0062 81E0              ldi R24,1
+ 0064 89BF              out 0x39,R24
+ 0066                   .dbline 55
+ 0066           ;  SEI(); //re-enable interrupts
+ 0066 7894              sei
+ 0068                   .dbline -2
+ 0068                   .dbline 57
+ 0068           ;  //all peripherals are now initialised
+ 0068           ; }
+ 0068           L6:
+ 0068                   .dbline 0 ; func end
+ 0068 0895              ret
+ 006A                   .dbend
+ 006A                   .dbfunc e main _main fV
+                        .even
+ 006A           _main::
+ 006A                   .dbline -1
+ 006A                   .dbline 61
+ 006A           ; 
+ 006A           ; //
+ 006A           ; void main(void)
+ 006A           ; {
+ 006A                   .dbline 62
+ 006A           ;  init_devices();
+ 006A                   .dbline -2
+ 006A                   .dbline 64
+ 006A           ;  //insert your functional code here...
+ 006A           ; }
+ 006A           L7:
+ 006A                   .dbline 0 ; func end
+ 006A F5CF              xjmp _init_devices
+ 006C                   .dbend

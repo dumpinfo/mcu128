@@ -1,0 +1,4 @@
+"STARTUP.obj",
+"main.obj" 
+TO "Clk_Out" 
+RAMSIZE(256) 

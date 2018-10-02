@@ -1,0 +1,289 @@
+A51 MACRO ASSEMBLER  WL009                                                                04/05/2005 09:56:15 PAGE     1
+
+
+MACRO ASSEMBLER A51 V7.10
+OBJECT MODULE PLACED IN wl009.OBJ
+ASSEMBLER INVOKED BY: C:\Keil\C51\BIN\A51.EXE wl009.asm SET(SMALL) DEBUG EP
+
+LOC  OBJ            LINE     SOURCE
+
+                       1     ;********************************************************************************
+                       2     ;*  标题:  伟纳电子ME300B单片机开发系统演示程序 - 1602LCD显示演示程序           *
+                       3     ;*  文件:  wl009.asm                                                            *
+                       4     ;*  日期:  2005-1-20                                                             *
+                       5     ;*  版本:  1.0                                                                  *
+                       6     ;*  作者:  伟纳电子 - Freeman                                                   *
+                       7     ;*  邮箱:  freeman@willar.com                                                   *
+                       8     ;*  网站： http://www.willar.com                                                *
+                       9     ;********************************************************************************
+                      10     ;*  描述:                                                                       *
+                      11     ;*         1602字符型LCD显示演示程序                                            *
+                      12     ;*         在第一行显示  welcome                                                *
+                      13     ;*         在第一行显示  www.willar.com                                         *
+                      14     ;*                                                                              *
+                      15     ;*                                                                              *
+                      16     ;********************************************************************************
+                      17     ;* 【版权】 Copyright(C)伟纳电子 www.willar.com  All Rights Reserved            *
+                      18     ;* 【声明】 此程序仅用于学习与参考，引用请注明版权和作者信息！                  *
+                      19     ;********************************************************************************
+                      20     
+                      21     
+                      22     ; 端口定义
+  00A0                23     RS      EQU     P2.0
+  00A1                24     RW      EQU     P2.1
+  00A2                25     EP      EQU     P2.2
+                      26     
+0000                  27             ORG     0000H
+0000 020003           28             LJMP    MAIN
+                      29     
+                      30     
+0003                  31     MAIN:
+0003 120060           32             LCALL   LCD_INIT                ; 初始化LCD
+0006 740F             33             MOV     A,#15
+0008 1200EB           34             LCALL   DELAY_MS                ;
+                      35     
+000B                  36     MAIN_LOOP:      
+                      37     ;  在第一行显示字符串"welcome!"
+000B 7404             38             MOV     A,#4
+000D 12009C           39             LCALL   SET_LCD_POS             ; 设置LCD光标到第一行的第5个字符
+                      40             
+0010 900104           41             MOV     DPTR,#TAB_WELCOME       ; "welcome!"字串表格地址
+0013 120050           42             LCALL   DISPLAY_STRING          ; 显示字符串
+                      43     ; 在第二行显示字符串"www.willar.com"    
+0016 7441             44             MOV     A,#41H                  ; 
+0018 12009C           45             LCALL   SET_LCD_POS             ; 设置LCD光标到第二行第二个字符
+                      46             
+001B 9000F5           47             MOV     DPTR,#TAB_WILLAR
+001E 120050           48             LCALL   DISPLAY_STRING
+                      49     
+                      50     ; 闪烁显示内容  
+0021 74C8             51             MOV     A,#200                  ; 
+0023 1200EB           52             LCALL   DELAY_MS                ; 
+                      53             
+0026 120086           54             LCALL   LCD_TURN_OFF    
+0029 74C8             55             MOV     A,#200                  ; 
+002B 1200EB           56             LCALL   DELAY_MS                ; 
+                      57             
+002E 12007B           58             LCALL   LCD_TURN_ON
+A51 MACRO ASSEMBLER  WL009                                                                04/05/2005 09:56:15 PAGE     2
+
+                      59             
+0031 74C8             60             MOV     A,#200                  ; 
+0033 1200EB           61             LCALL   DELAY_MS                ; 
+                      62             
+0036 120086           63             LCALL   LCD_TURN_OFF
+                      64                     
+0039 74C8             65             MOV     A,#200                  ; 
+003B 1200EB           66             LCALL   DELAY_MS                ; 
+                      67             
+003E 12007B           68             LCALL   LCD_TURN_ON
+                      69             
+0041 74C8             70             MOV     A,#200                  ; 
+0043 1200EB           71             LCALL   DELAY_MS                ; 
+                      72     ;清屏
+0046 120091           73             LCALL   LCD_CLEAR
+0049 7401             74             MOV     A,#1
+004B 1200EB           75             LCALL   DELAY_MS
+                      76     ; 重新显示      
+004E 80BB             77             JMP     MAIN_LOOP       
+                      78     
+                      79     ;显示字符串函数
+                      80     ;传入参数：DPTR(字符串表格地址)
+                      81     ;返回值：无
+0050                  82     DISPLAY_STRING: 
+0050 E4               83             CLR     A
+0051 93               84             MOVC    A,@A+DPTR               ; 
+0052 600B             85             JZ      END_DISPLAY_STRING      ; 如果遇到00H表示表格结束
+0054 1200BC           86             LCALL   LCD_WRITE_DATA          ; 写数据到LCD
+0057 A3               87             INC     DPTR                    ; 指向表格的下一字符
+0058 74C8             88             MOV     A, #200                 ; 
+005A 1200EB           89             LCALL   DELAY_MS                ; 
+005D 80F1             90             SJMP    DISPLAY_STRING          ; 循环直到字符串结束
+005F                  91     END_DISPLAY_STRING:
+005F 22               92             RET
+                      93             
+                      94             
+                      95     ; 初始化LCD
+0060                  96     LCD_INIT:
+                      97     
+                      98     ; 设置显示格式---
+0060 7438             99             MOV     A,#38H                  ; 38H --- 16*2行显示,5*7点阵,8位数据接口
+0062 1200A2          100             LCALL   LCD_WRITE_COMMAND
+0065 7401            101             MOV     A,#1
+0067 1200EB          102             LCALL   DELAY_MS
+                     103     ;开显示
+006A 12007B          104             LCALL   LCD_TURN_ON
+                     105     ;读写后指针加1
+006D 7406            106             MOV     A,#06H                  ; 06H --- 读写后指针加1
+006F 1200A2          107             LCALL   LCD_WRITE_COMMAND
+0072 7401            108             MOV     A,#1
+0074 1200EB          109             LCALL   DELAY_MS
+                     110     ; 清除LCD屏幕
+0077 120091          111             LCALL   LCD_CLEAR
+007A 22              112             RET
+                     113     
+                     114     
+                     115     ;开显示
+007B                 116     LCD_TURN_ON:
+007B 740C            117             MOV     A,#0CH                  ; 0CH --- 开显示,无光标
+007D 1200A2          118             LCALL   LCD_WRITE_COMMAND
+0080 7401            119             MOV     A,#1
+0082 1200EB          120             LCALL   DELAY_MS
+0085 22              121             RET
+                     122             
+                     123     ; 关显示
+0086                 124     LCD_TURN_OFF:
+A51 MACRO ASSEMBLER  WL009                                                                04/05/2005 09:56:15 PAGE     3
+
+0086 7408            125             MOV     A,#08H                  ; 08H --- 关显示
+0088 1200A2          126             LCALL   LCD_WRITE_COMMAND
+008B 7401            127             MOV     A,#1
+008D 1200EB          128             LCALL   DELAY_MS
+0090 22              129             RET
+                     130     
+                     131     ; 清除LCD屏幕
+0091                 132     LCD_CLEAR:
+0091 7401            133             MOV     A,#01H                  ; 01H清屏指令                   
+0093 1200A2          134             LCALL   LCD_WRITE_COMMAND
+0096 7401            135             MOV     A,#1
+0098 1200EB          136             LCALL   DELAY_MS
+009B 22              137             RET
+                     138     
+                     139     ;设置LCD当前光标的位置
+                     140     
+009C                 141     SET_LCD_POS:
+009C 4480            142             ORL     A,#80H          ; 
+009E 1200A2          143             LCALL   LCD_WRITE_COMMAND
+00A1 22              144             RET
+                     145     
+                     146     ; 写入控制指令到LCD
+                     147     ; 传入参数: ACC(要写入的命令)
+                     148     ; 返回值: 无
+00A2                 149     LCD_WRITE_COMMAND:
+00A2 1200D6          150             LCALL   CHECK_LCD_BUSY
+00A5 C2A0            151             CLR     RS
+00A7 C2A1            152             CLR     RW
+00A9 C2A2            153             CLR     EP
+00AB 00              154             NOP
+00AC 00              155             NOP
+00AD F580            156             MOV     P0,A                    ; 写入数据到LCD端口
+00AF 00              157             NOP
+00B0 00              158             NOP
+00B1 00              159             NOP
+00B2 00              160             NOP
+00B3 D2A2            161             SETB    EP
+00B5 00              162             NOP
+00B6 00              163             NOP
+00B7 00              164             NOP
+00B8 00              165             NOP
+00B9 C2A2            166             CLR     EP
+00BB 22              167             RET
+                     168             
+                     169     ; 写入显示数据到LCD
+                     170     ; 传入参数: ACC(要写入的数据)
+                     171     ; 返回值: 无
+00BC                 172     LCD_WRITE_DATA:
+00BC 1200D6          173             LCALL   CHECK_LCD_BUSY
+00BF D2A0            174             SETB    RS
+00C1 C2A1            175             CLR     RW
+00C3 C2A2            176             CLR     EP
+00C5 00              177             NOP
+00C6 00              178             NOP
+00C7 F580            179             MOV     P0,A                    ; 写入数据到LCD端口
+00C9 00              180             NOP
+00CA 00              181             NOP
+00CB 00              182             NOP
+00CC 00              183             NOP
+00CD D2A2            184             SETB    EP
+00CF 00              185             NOP
+00D0 00              186             NOP
+00D1 00              187             NOP
+00D2 00              188             NOP
+00D3 C2A2            189             CLR     EP
+00D5 22              190             RET
+A51 MACRO ASSEMBLER  WL009                                                                04/05/2005 09:56:15 PAGE     4
+
+                     191             
+00D6                 192     CHECK_LCD_BUSY:
+00D6 C2A0            193             CLR     RS
+00D8 D2A1            194             SETB    RW
+00DA D2A2            195             SETB    EP
+00DC 00              196             NOP
+00DD 00              197             NOP
+00DE 00              198             NOP
+00DF 00              199             NOP
+00E0 A287            200             MOV     C,P0.7                  ; 读取忙碌位
+00E2 00              201             NOP
+00E3 00              202             NOP
+00E4 C2A2            203             CLR     EP
+00E6 00              204             NOP
+00E7 00              205             NOP
+00E8 40EC            206             JC      CHECK_LCD_BUSY          ; 等待LCD空闲(P0.7=0)
+                     207             
+00EA 22              208             RET
+                     209     
+                     210     
+                     211     ; 延时子程序
+                     212     ; 传入参数: ACC(延时时间,单位毫秒)
+                     213     ; 返回值: 无
+00EB                 214     DELAY_MS:
+00EB FF              215             MOV     R7,A
+00EC                 216     DELAY_LOOP1:
+00EC 7EE8            217             MOV     R6,#0E8H
+00EE                 218     DELAY_LOOP2:
+00EE 00              219             NOP
+00EF 00              220             NOP
+00F0 DEFC            221             DJNZ    R6,DELAY_LOOP2
+00F2 DFF8            222             DJNZ    R7,DELAY_LOOP1
+00F4 22              223             RET
+                     224                     
+                     225     
+00F5                 226     TAB_WILLAR:
+00F5 7777772E        227             DB      "www.willar.com"
+00F9 77696C6C                
+00FD 61722E63                
+0101 6F6D                    
+0103 00              228             DB      00                      ; 字符结束标志
+                     229             
+0104                 230     TAB_WELCOME:
+0104 77656C63        231             DB      "welcome!"
+0108 6F6D6521                
+010C 00              232             DB      00                      ; 字符结束标志
+                     233     
+                     234             END
+A51 MACRO ASSEMBLER  WL009                                                                04/05/2005 09:56:15 PAGE     5
+
+SYMBOL TABLE LISTING
+------ ----- -------
+
+
+N A M E             T Y P E  V A L U E   ATTRIBUTES
+
+CHECK_LCD_BUSY . .  C ADDR   00D6H   A   
+DELAY_LOOP1. . . .  C ADDR   00ECH   A   
+DELAY_LOOP2. . . .  C ADDR   00EEH   A   
+DELAY_MS . . . . .  C ADDR   00EBH   A   
+DISPLAY_STRING . .  C ADDR   0050H   A   
+END_DISPLAY_STRING  C ADDR   005FH   A   
+EP . . . . . . . .  B ADDR   00A0H.2 A   
+LCD_CLEAR. . . . .  C ADDR   0091H   A   
+LCD_INIT . . . . .  C ADDR   0060H   A   
+LCD_TURN_OFF . . .  C ADDR   0086H   A   
+LCD_TURN_ON. . . .  C ADDR   007BH   A   
+LCD_WRITE_COMMAND.  C ADDR   00A2H   A   
+LCD_WRITE_DATA . .  C ADDR   00BCH   A   
+MAIN . . . . . . .  C ADDR   0003H   A   
+MAIN_LOOP. . . . .  C ADDR   000BH   A   
+P0 . . . . . . . .  D ADDR   0080H   A   
+P2 . . . . . . . .  D ADDR   00A0H   A   
+RS . . . . . . . .  B ADDR   00A0H.0 A   
+RW . . . . . . . .  B ADDR   00A0H.1 A   
+SET_LCD_POS. . . .  C ADDR   009CH   A   
+TAB_WELCOME. . . .  C ADDR   0104H   A   
+TAB_WILLAR . . . .  C ADDR   00F5H   A   
+
+
+REGISTER BANK(S) USED: 0 
+
+
+ASSEMBLY COMPLETE.  0 WARNING(S), 0 ERROR(S)

@@ -1,0 +1,566 @@
+__start:
+__text_start:
+    00C2 E5CF      LDI	R28,0x5F
+    00C3 E0D4      LDI	R29,4
+    00C4 BFCD      OUT	0x3D,R28
+    00C5 BFDE      OUT	0x3E,R29
+    00C6 51C0      SUBI	R28,0x10
+    00C7 40D0      SBCI	R29,0
+    00C8 EA0A      LDI	R16,0xAA
+    00C9 8308      STD	Y+0,R16
+    00CA 2400      CLR	R0
+    00CB E6E0      LDI	R30,0x60
+    00CC E0F0      LDI	R31,0
+    00CD E010      LDI	R17,0
+    00CE 36E0      CPI	R30,0x60
+    00CF 07F1      CPC	R31,R17
+    00D0 F011      BEQ	0x00D3
+    00D1 9201      ST	R0,Z+
+    00D2 CFFB      RJMP	0x00CE
+    00D3 8300      STD	Z+0,R16
+    00D4 E8E4      LDI	R30,0x84
+    00D5 E0F1      LDI	R31,1
+    00D6 E6A0      LDI	R26,0x60
+    00D7 E0B0      LDI	R27,0
+    00D8 E011      LDI	R17,1
+    00D9 38E4      CPI	R30,0x84
+    00DA 07F1      CPC	R31,R17
+    00DB F021      BEQ	0x00E0
+    00DC 95C8      LPM
+    00DD 9631      ADIW	R30,1
+    00DE 920D      ST	R0,X+
+    00DF CFF9      RJMP	0x00D9
+    00E0 940E0198  CALL	_main
+_exit:
+    00E2 CFFF      RJMP	_exit
+_delay:
+  i                    --> R20
+  j                    --> R22
+  t                    --> R16
+    00E3 940E01E8  CALL	push_gset2
+FILE: D:\mega16学习板资料\例程\m16\12864\12864.H
+(0001) #include "font.h"
+(0002) 
+(0003) #define	LCD_DI (1 <<6)			    	// PA6----DI
+(0004) #define	LCD_RW (1 <<5)					// PA5----RW
+(0005) #define	LCD_E (1 <<4)			    	// PA4----E
+(0006) #define	LCD_PSB (1 << 3)	           	// PA3----CS1
+(0007) #define	LCD_RST (1 << 1)				// PA1----RST
+(0008) 
+(0009) #define LCD_PORT  PORTA                 //PA口连接到了5个控制脚，具体定义如上
+(0010) #define	LCD_SET_PSB()    (LCD_PORT |= LCD_PSB)	// 位置位，输出1
+(0011) #define	LCD_SET_RST()    (LCD_PORT |= LCD_RST)
+(0012) #define	LCD_SET_DI()     (LCD_PORT |= LCD_DI)
+(0013) #define	LCD_SET_RW()     (LCD_PORT |= LCD_RW)
+(0014) #define	LCD_SET_E()      (LCD_PORT |= LCD_E)
+(0015) 
+(0016) #define	LCD_CLEAR_PSB()  (LCD_PORT &= ~LCD_PSB)			// 位清零，输出0
+(0017) #define	LCD_CLEAR_RST()  (LCD_PORT &= ~LCD_RST)
+(0018) #define	LCD_CLEAR_DI()   (LCD_PORT &= ~LCD_DI)
+(0019) #define	LCD_CLEAR_RW()   (LCD_PORT &= ~LCD_RW)
+(0020) #define	LCD_CLEAR_E()    (LCD_PORT &= ~LCD_E)
+(0021) #define	LCD_DATA_OUT	 PORTB				//LCD数据输出口
+(0022) #define	LCD_DATA_IN 	 PINB				//LCD数据输出口
+(0023) #define	LCD_DDR 	     DDRB				//LCD数据口方向
+(0024) /* Define the register command code */
+(0025) #define Disp_On  0x3f
+(0026) #define Disp_Off 0x30
+(0027) #define Col_Add  0x40
+(0028) #define Page_Add 0xb8
+(0029) #define Start_Line 0xc0
+(0030) 
+(0031) 
+(0032) void delay(unsigned int t);
+(0033) void write_com(unsigned char cmdcode);
+(0034) void write_data(unsigned char Dispdata);
+(0035) void init_lcd(void);
+(0036) unsigned char read_data(void);
+(0037) void DisplayWord(unsigned int Add,unsigned char xAdd,unsigned char yAdd,
+(0038) unsigned char SelscP,unsigned char num,unsigned char flag);
+(0039) void DisplayLine(unsigned int Add,unsigned char com,unsigned char line,unsigned char flag);
+(0040) void ClearDisplay(void);
+(0041) void Test(unsigned int lcd_data);
+(0042) void Testlcd2(unsigned char lcd_datah,unsigned char lcd_datal);
+(0043) /*------------------延时子程序-----------------------------*/
+(0044) void delay(unsigned int t)
+(0045) {
+(0046) unsigned int i,j;
+(0047) for(i=0;i<t;i++)
+    00E5 2744      CLR	R20
+    00E6 2755      CLR	R21
+    00E7 C00B      RJMP	0x00F3
+(0048) for(j=0;j<10;j++)
+    00E8 2766      CLR	R22
+    00E9 2777      CLR	R23
+    00EA C002      RJMP	0x00ED
+    00EB 5F6F      SUBI	R22,0xFF
+    00EC 4F7F      SBCI	R23,0xFF
+    00ED 306A      CPI	R22,0xA
+    00EE E0E0      LDI	R30,0
+    00EF 077E      CPC	R23,R30
+    00F0 F3D0      BCS	0x00EB
+    00F1 5F4F      SUBI	R20,0xFF
+    00F2 4F5F      SBCI	R21,0xFF
+    00F3 1740      CP	R20,R16
+    00F4 0751      CPC	R21,R17
+    00F5 F390      BCS	0x00E8
+(0049) ;
+(0050) }
+    00F6 940E01CE  CALL	pop_gset2
+    00F8 9508      RET
+_write_com:
+  cmdcode              --> R20
+    00F9 940E01D1  CALL	push_gset1
+    00FB 2F40      MOV	R20,R16
+(0051) 
+(0052) /*------------------写命令到LCD------------------------------*/
+(0053) void write_com(unsigned char cmdcode)
+(0054) {
+(0055) 
+(0056) LCD_CLEAR_DI();
+    00FC 98DE      CBI	0x1B,6
+(0057) LCD_CLEAR_RW();
+    00FD 98DD      CBI	0x1B,5
+(0058) LCD_DDR=0xff;
+    00FE EF8F      LDI	R24,0xFF
+    00FF BB87      OUT	0x17,R24
+(0059) 
+(0060) LCD_DATA_OUT=cmdcode;
+    0100 BB48      OUT	0x18,R20
+(0061) LCD_SET_E();
+    0101 9ADC      SBI	0x1B,4
+(0062) delay(100);
+    0102 E604      LDI	R16,0x64
+    0103 E010      LDI	R17,0
+    0104 DFDE      RCALL	_delay
+(0063) LCD_CLEAR_E();
+    0105 98DC      CBI	0x1B,4
+(0064) }
+    0106 940E01D4  CALL	pop_gset1
+    0108 9508      RET
+_write_data:
+  Dispdata             --> R20
+    0109 940E01D1  CALL	push_gset1
+    010B 2F40      MOV	R20,R16
+(0065) 
+(0066) /*-------------------写数据到LCD----------------------------*/
+(0067) 
+(0068) void write_data(unsigned char Dispdata)
+(0069) {
+(0070) 
+(0071) LCD_SET_DI();
+    010C 9ADE      SBI	0x1B,6
+(0072) LCD_CLEAR_RW();
+    010D 98DD      CBI	0x1B,5
+(0073) LCD_DDR=0xff;
+    010E EF8F      LDI	R24,0xFF
+    010F BB87      OUT	0x17,R24
+(0074) 
+(0075) LCD_DATA_OUT=Dispdata;
+    0110 BB48      OUT	0x18,R20
+(0076) LCD_SET_E();
+    0111 9ADC      SBI	0x1B,4
+(0077) delay(100);
+    0112 E604      LDI	R16,0x64
+    0113 E010      LDI	R17,0
+    0114 DFCE      RCALL	_delay
+(0078) LCD_CLEAR_E();
+    0115 98DC      CBI	0x1B,4
+(0079) }
+    0116 940E01D4  CALL	pop_gset1
+    0118 9508      RET
+_read_data:
+  tmpin                --> R20
+    0119 940E01D1  CALL	push_gset1
+(0080) 
+(0081) /*-------------------读LCD数据----------------------------*/
+(0082) 
+(0083) unsigned char read_data(void)
+(0084) {
+(0085) unsigned char tmpin;
+(0086) LCD_DDR=0x0;
+    011B 2422      CLR	R2
+    011C BA27      OUT	0x17,R2
+(0087) LCD_SET_DI();
+    011D 9ADE      SBI	0x1B,6
+(0088) LCD_SET_RW();
+    011E 9ADD      SBI	0x1B,5
+(0089) delay(0);
+    011F 2700      CLR	R16
+    0120 2711      CLR	R17
+    0121 DFC1      RCALL	_delay
+(0090) LCD_SET_E();
+    0122 9ADC      SBI	0x1B,4
+(0091) delay(0);
+    0123 2700      CLR	R16
+    0124 2711      CLR	R17
+    0125 DFBD      RCALL	_delay
+(0092) LCD_CLEAR_E();
+    0126 98DC      CBI	0x1B,4
+(0093) 
+(0094) tmpin=LCD_DATA_IN;
+    0127 B346      IN	R20,0x16
+(0095) 
+(0096) return tmpin;
+    0128 2F04      MOV	R16,R20
+    0129 940E01D4  CALL	pop_gset1
+    012B 9508      RET
+(0097) }
+(0098) /*------------------初始化LCD屏--------------------------*/
+(0099) void init_lcd(void)
+(0100) {
+(0101) LCD_SET_PSB();
+_init_lcd:
+    012C 9ADB      SBI	0x1B,3
+(0102) delay(100);
+    012D E604      LDI	R16,0x64
+    012E E010      LDI	R17,0
+    012F DFB3      RCALL	_delay
+(0103) LCD_SET_RST();
+    0130 9AD9      SBI	0x1B,1
+(0104) delay(100);
+    0131 E604      LDI	R16,0x64
+    0132 E010      LDI	R17,0
+    0133 DFAF      RCALL	_delay
+(0105) 
+(0106) write_com(0X30);
+    0134 E300      LDI	R16,0x30
+    0135 DFC3      RCALL	_write_com
+(0107) delay(100);
+    0136 E604      LDI	R16,0x64
+    0137 E010      LDI	R17,0
+    0138 DFAA      RCALL	_delay
+(0108) write_com(0X30);
+    0139 E300      LDI	R16,0x30
+    013A DFBE      RCALL	_write_com
+(0109) delay(100);
+    013B E604      LDI	R16,0x64
+    013C E010      LDI	R17,0
+    013D DFA5      RCALL	_delay
+(0110) write_com(0x0C);
+    013E E00C      LDI	R16,0xC
+    013F DFB9      RCALL	_write_com
+(0111) delay(100);
+    0140 E604      LDI	R16,0x64
+    0141 E010      LDI	R17,0
+    0142 DFA0      RCALL	_delay
+(0112) write_com(0X01);
+    0143 E001      LDI	R16,1
+    0144 DFB4      RCALL	_write_com
+(0113) delay(100);
+    0145 E604      LDI	R16,0x64
+    0146 E010      LDI	R17,0
+    0147 DF9B      RCALL	_delay
+(0114) write_com(0X06);
+    0148 E006      LDI	R16,6
+    0149 DFAF      RCALL	_write_com
+(0115) delay(100);
+    014A E604      LDI	R16,0x64
+    014B E010      LDI	R17,0
+(0116) }
+    014C CF96      RJMP	_delay
+_ClearDisplay:
+  i                    --> R20
+  j                    --> R22
+    014D 940E01E8  CALL	push_gset2
+(0117) 
+(0118) /*void DisplayWord(unsigned int Add,unsigned char xAdd,unsigned char yAdd,
+(0119) unsigned char SelscP,unsigned char num,unsigned char flag)//Add:显示数据的起始地址
+(0120) { unsigned char i,m=0,dat;                                //xAdd,yAdd:显示位置
+(0121)   switch (SelscP)
+(0122)    {case 0:LCD_SET_CS1();
+(0123)    		   LCD_SET_CS2();
+(0124) 		   break;
+(0125) 	case 1:LCD_SET_CS1();
+(0126)    		   LCD_CLEAR_CS2();
+(0127) 		   break;
+(0128) 	case 2:LCD_CLEAR_CS1();
+(0129)    		   LCD_SET_CS2();
+(0130) 		   break;	   	   
+(0131)    }                                                       //SelscP:选择屏1，2，3
+(0132)   write_com(xAdd++); //x首地址                          //mun显示宽度，一般为16
+(0133)   write_com(yAdd); //y首地址							  //flag:是否清字位1不清
+(0134)   while(m<num+2)
+(0135)   { for(i=0;i<num;i++)
+(0136)     { if(flag==0) dat=0;
+(0137) 	  else dat=font[Add+i+m];
+(0138) 	  write_data(dat);
+(0139) 	}
+(0140) 	write_com(xAdd++); 
+(0141) 	write_com(yAdd);
+(0142) 	m+=num;
+(0143)    } 
+(0144) }
+(0145) 
+(0146) void DisplayLine(unsigned int Add,unsigned char com,unsigned char line,unsigned char flag)
+(0147) { unsigned char i,p,l,r;  	  			   			     //Add:数据起始位置
+(0148)   		   												 //com:空位置个数，4字为满
+(0149)   r=com&0x0f;											 //line: 显示行位置
+(0150)   l=4-com;												 //flag:是否清字符1不清
+(0151)   for(i=0;i<r;i++)
+(0152)     DisplayWord(Add+i*32,0xb8+(line%4)*2,0x40+(i+l)*16,(line/4)+1,16,flag);
+(0153) }*/
+(0154) void ClearDisplay(void)
+(0155) { unsigned char i,j;
+(0156) 
+(0157)   for(i=0;i<8;i++)
+    014F 2744      CLR	R20
+    0150 C00D      RJMP	0x015E
+(0158)   { write_com(0xb8+i); //X首地址
+    0151 2F04      MOV	R16,R20
+    0152 5408      SUBI	R16,0x48
+    0153 DFA5      RCALL	_write_com
+(0159)   	write_com(0x40); //y首地址
+    0154 E400      LDI	R16,0x40
+    0155 DFA3      RCALL	_write_com
+(0160)   	for(j=0;j<64;j++)
+    0156 2766      CLR	R22
+    0157 C003      RJMP	0x015B
+(0161)       write_data(0x00);
+    0158 2700      CLR	R16
+    0159 DFAF      RCALL	_write_data
+    015A 9563      INC	R22
+    015B 3460      CPI	R22,0x40
+    015C F3D8      BCS	0x0158
+    015D 9543      INC	R20
+    015E 3048      CPI	R20,0x8
+    015F F388      BCS	0x0151
+(0162)   }
+(0163) }
+    0160 940E01CE  CALL	pop_gset2
+    0162 9508      RET
+_Test:
+  K                    --> R20
+  lcd_data             --> R22
+    0163 940E01E8  CALL	push_gset2
+    0165 01B8      MOVW	R22,R16
+(0164) 
+(0165) void Test(unsigned int lcd_data)
+(0166)  {unsigned int K;
+(0167)   write_com(0x01);
+    0166 E001      LDI	R16,1
+    0167 DF91      RCALL	_write_com
+(0168)   write_com(0x40);
+    0168 E400      LDI	R16,0x40
+    0169 DF8F      RCALL	_write_com
+(0169)   for(K=0;K<148;K++)
+    016A 2744      CLR	R20
+    016B 2755      CLR	R21
+    016C C004      RJMP	0x0171
+(0170)   {write_data(lcd_data);
+    016D 2F06      MOV	R16,R22
+    016E DF9A      RCALL	_write_data
+    016F 5F4F      SUBI	R20,0xFF
+    0170 4F5F      SBCI	R21,0xFF
+    0171 3944      CPI	R20,0x94
+    0172 E0E0      LDI	R30,0
+    0173 075E      CPC	R21,R30
+    0174 F3C0      BCS	0x016D
+(0171)   }
+(0172) 
+(0173)  }
+    0175 940E01CE  CALL	pop_gset2
+    0177 9508      RET
+_Testlcd2:
+  lcd_datal            --> R22
+  lcd_datah            --> R20
+    0178 940E01E8  CALL	push_gset2
+    017A 2F62      MOV	R22,R18
+    017B 2F40      MOV	R20,R16
+(0174) void Testlcd2(unsigned char lcd_datah,unsigned char lcd_datal)
+(0175) {write_data(lcd_datal);
+    017C 2F06      MOV	R16,R22
+    017D DF8B      RCALL	_write_data
+(0176)  delay(100);
+    017E E604      LDI	R16,0x64
+    017F E010      LDI	R17,0
+    0180 DF62      RCALL	_delay
+(0177)  write_data(lcd_datah);
+    0181 2F04      MOV	R16,R20
+    0182 DF86      RCALL	_write_data
+(0178) }
+    0183 940E01CE  CALL	pop_gset2
+    0185 9508      RET
+FILE: D:\mega16学习板资料\例程\m16\12864\main.c
+(0001) //AM12864参考程序(st7920)
+(0002) /********************************************/
+(0003) /* AM12864系列测试程序 1.0for mega16 */
+(0004) /* Designed by ourembed.com */
+(0005) /* 2003.04.23 */
+(0006) /********************************************/
+(0007) //ICC-AVR application builder : 2006-11-7 18:33:11
+(0008) // Target : M16
+(0009) // Crystal: 4.0000Mhz
+(0010) 
+(0011) #include <iom16v.h>
+(0012) #include <macros.h>
+(0013) 
+(0014) #include "12864.H"
+(0015) 
+(0016) 
+(0017) 
+(0018) 
+(0019) void port_init(void)
+(0020) {
+(0021)  PORTA = 0xFF;
+_port_init:
+    0186 EF8F      LDI	R24,0xFF
+    0187 BB8B      OUT	0x1B,R24
+(0022)  DDRA  = 0xFF;
+    0188 BB8A      OUT	0x1A,R24
+(0023)  PORTB = 0xFF;
+    0189 BB88      OUT	0x18,R24
+(0024)  DDRB  = 0xFF;
+    018A BB87      OUT	0x17,R24
+(0025)  PORTC = 0xFF; //m103 output only
+    018B BB85      OUT	0x15,R24
+(0026)  DDRC  = 0xFF;
+    018C BB84      OUT	0x14,R24
+(0027)  PORTD = 0xFF;
+    018D BB82      OUT	0x12,R24
+(0028)  DDRD  = 0xFF;
+    018E BB81      OUT	0x11,R24
+(0029) }
+    018F 9508      RET
+(0030) 
+(0031) //call this routine to initialise all peripherals
+(0032) void init_devices(void)
+(0033) {
+(0034)  //stop errant interrupts until set up
+(0035)  CLI(); //disable all interrupts
+_init_devices:
+    0190 94F8      BCLR	7
+(0036)  port_init();
+    0191 DFF4      RCALL	_port_init
+(0037) 
+(0038)  MCUCR = 0x00;
+    0192 2422      CLR	R2
+    0193 BE25      OUT	0x35,R2
+(0039)  GICR  = 0x00;
+    0194 BE2B      OUT	0x3B,R2
+(0040)  TIMSK = 0x00; //timer interrupt sources
+    0195 BE29      OUT	0x39,R2
+(0041)  SEI(); //re-enable interrupts
+    0196 9478      BSET	7
+(0042)  //all peripherals are now initialised
+(0043) }
+    0197 9508      RET
+(0044) 
+(0045) //
+(0046) void main(void)
+(0047) {int i,j;
+(0048)  init_devices();
+_main:
+  j                    --> Y+1
+  i                    --> Y+1
+    0198 DFF7      RCALL	_init_devices
+(0049)  //insert your functional code here...
+(0050)  init_lcd();
+    0199 DF92      RCALL	_init_lcd
+(0051)  Test(0x10);
+    019A E100      LDI	R16,0x10
+    019B E010      LDI	R17,0
+    019C DFC6      RCALL	_Test
+(0052)  Test(0x23);
+    019D E203      LDI	R16,0x23
+    019E E010      LDI	R17,0
+    019F DFC3      RCALL	_Test
+(0053)  Test(0x35);
+    01A0 E305      LDI	R16,0x35
+    01A1 E010      LDI	R17,0
+    01A2 DFC0      RCALL	_Test
+(0054)  init_lcd();         //LCD初始化
+    01A3 DF88      RCALL	_init_lcd
+(0055)  Testlcd2(0XA0,0XC1);//根据LCD12864自带字库，显示需要显示的汉字
+    01A4 EC21      LDI	R18,0xC1
+    01A5 EA00      LDI	R16,0xA0
+    01A6 DFD1      RCALL	_Testlcd2
+(0056)  Testlcd2(0XA0,0XC1);
+    01A7 EC21      LDI	R18,0xC1
+    01A8 EA00      LDI	R16,0xA0
+    01A9 DFCE      RCALL	_Testlcd2
+(0057)  Testlcd2(0XB6,0XBB);
+    01AA EB2B      LDI	R18,0xBB
+    01AB EB06      LDI	R16,0xB6
+    01AC DFCB      RCALL	_Testlcd2
+(0058)  Testlcd2(0XAD,0XD3);
+    01AD ED23      LDI	R18,0xD3
+    01AE EA0D      LDI	R16,0xAD
+    01AF DFC8      RCALL	_Testlcd2
+(0059)  Testlcd2(0XE2,0XB9);
+    01B0 EB29      LDI	R18,0xB9
+    01B1 EE02      LDI	R16,0xE2
+    01B2 DFC5      RCALL	_Testlcd2
+(0060)  Testlcd2(0XD9,0XC1);
+    01B3 EC21      LDI	R18,0xC1
+    01B4 ED09      LDI	R16,0xD9
+    01B5 DFC2      RCALL	_Testlcd2
+(0061)  Testlcd2(0XA0,0XC1);
+    01B6 EC21      LDI	R18,0xC1
+    01B7 EA00      LDI	R16,0xA0
+    01B8 DFBF      RCALL	_Testlcd2
+(0062)  Testlcd2(0XA0,0XC1);
+    01B9 EC21      LDI	R18,0xC1
+    01BA EA00      LDI	R16,0xA0
+    01BB DFBC      RCALL	_Testlcd2
+(0063)  Testlcd2(0XA0,0XC1);
+    01BC EC21      LDI	R18,0xC1
+    01BD EA00      LDI	R16,0xA0
+    01BE DFB9      RCALL	_Testlcd2
+(0064)  Testlcd2(0XB6,0XC7);
+    01BF EC27      LDI	R18,0xC7
+    01C0 EB06      LDI	R16,0xB6
+    01C1 DFB6      RCALL	_Testlcd2
+(0065)  Testlcd2(0XEB,0XC8);
+    01C2 EC28      LDI	R18,0xC8
+    01C3 EE0B      LDI	R16,0xEB
+    01C4 DFB3      RCALL	_Testlcd2
+(0066)  Testlcd2(0XBD,0XCA);
+    01C5 EC2A      LDI	R18,0xCA
+    01C6 EB0D      LDI	R16,0xBD
+    01C7 DFB0      RCALL	_Testlcd2
+(0067)  Testlcd2(0XAA,0XC1);
+    01C8 EC21      LDI	R18,0xC1
+    01C9 EA0A      LDI	R16,0xAA
+    01CA DFAD      RCALL	_Testlcd2
+(0068)  Testlcd2(0XCB,0XC3);/**/
+    01CB EC23      LDI	R18,0xC3
+    01CC EC0B      LDI	R16,0xCB
+(0069)  
+(0070)  
+(0071) } 
+FILE: <library>
+    01CD CFAA      RJMP	_Testlcd2
+pop_gset2:
+    01CE E0E2      LDI	R30,2
+    01CF 940C01D5  JMP	pop
+push_gset1:
+    01D1 935A      ST	R21,-Y
+    01D2 934A      ST	R20,-Y
+    01D3 9508      RET
+pop_gset1:
+    01D4 E0E1      LDI	R30,1
+pop:
+    01D5 9149      LD	R20,Y+
+    01D6 9159      LD	R21,Y+
+    01D7 FDE0      SBRC	R30,0
+    01D8 9508      RET
+    01D9 9169      LD	R22,Y+
+    01DA 9179      LD	R23,Y+
+    01DB FDE1      SBRC	R30,1
+    01DC 9508      RET
+    01DD 90A9      LD	R10,Y+
+    01DE 90B9      LD	R11,Y+
+    01DF FDE2      SBRC	R30,2
+    01E0 9508      RET
+    01E1 90C9      LD	R12,Y+
+    01E2 90D9      LD	R13,Y+
+    01E3 FDE3      SBRC	R30,3
+    01E4 9508      RET
+    01E5 90E9      LD	R14,Y+
+    01E6 90F9      LD	R15,Y+
+    01E7 9508      RET
+push_gset2:
+    01E8 937A      ST	R23,-Y
+    01E9 936A      ST	R22,-Y
+    01EA 940C01D1  JMP	push_gset1

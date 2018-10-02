@@ -1,0 +1,15 @@
+<html>
+<body>
+<pre>
+<h1>礦ision2 Build Log</h1>
+<h2>Project:</h2>
+F:\winf\ME300系列\ME300B\samples_release\WL002_警报声程序\C51\wl002.uv2
+Project File Date:  02/12/2004
+
+<h2>Output:</h2>
+Build target 'Target 1'
+compiling wl002.C...
+linking...
+Program Size: data=10.0 xdata=0 code=70
+creating hex file from "wl002"...
+"wl002" - 0 Error(s), 0 Warning(s).

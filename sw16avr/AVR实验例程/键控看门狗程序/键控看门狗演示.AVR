@@ -1,0 +1,139 @@
+;键控看门狗演示程序（入门练习） 
+;－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－
+;实验系统：ME300全系列单片机开发板。
+
+;实验芯片： ATmega8515L或Atmega8515
+
+;工作频率： 8MHz
+
+;作者：伟纳电子 Gguoqing
+
+;出处：伟纳电子网站  www.willar.com
+－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－
+;功能：
+
+;开机时，P0.1、P0.0引脚上的LED灯闪烁发光。
+;按K1键，激活看门狗后，喂狗，P0.7、P0.6引脚上的LED闪烁发光。
+;按K2键，进入不喂狗程序，则程序复位，P0.1、P0.0引脚上的LED闪烁发光。
+;－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－
+;汇编程序：
+ ;-----------------------------------------------------------
+ ;工作芯片：ATmega8515L
+ ;工作频率8MHz
+ ;-----------------------------------------------------------
+
+
+          .INCLUDE "8515DEF.INC"  ;CPU配置文件
+          .ORG $0000
+           RJMP RESET             ;上电复位跳转到主程序
+          .ORG $007               ;T/C0溢出中断
+           RJMP  TOVF0
+          .ORG  $010
+            
+RESET:
+          LDI  R16,LOW(RAMEND)     ;设置堆栈指针
+          OUT  SPL,R16
+          LDI  R16,HIGH(RAMEND)
+          OUT  SPH,R16
+          
+          LDI  R16,$FF            ;设置PA口为输出端口
+          OUT  DDRA,R16
+          LDI  R16,$0F     ;
+          OUT  DDRB,R16           ;PB口高4位作输入
+          LDI  R16,$FF
+          OUT  PORTB,R16          ;接通输入引脚内部上拉电阻
+    
+LOOP:
+          LDI  R16,$FF
+          OUT  PORTA,R16
+          RCALL DELAY    
+          LDI  R16,$FC
+          OUT  PORTA,R16
+          RCALL DELAY
+          LDI  R16,$FF
+          OUT  PORTA,R16
+          RCALL DELAY    
+          SBIS  PINB,4              ;若PINB4=1，则跨越。
+          RJMP  WDOG             ;若PINB4=0，跳到WDOG。(K1=0)
+          RJMP  LOOP
+
+ ;---------------------------------------------------------------
+ ;看门狗
+ ;---------------------------------------------------------------
+WDOG:
+          WDR                              ;WDT使用前先复位
+          LDI  R20,$09            ;WDTCR中的WDE置1
+          OUT  WDTCR,R20          ;启动WDT,溢出时限30ms
+ ;---------------------------------------------------------------
+ ;T/C0中断初始化
+ ;---------------------------------------------------------------
+          
+         LDI  R17,$F0               ;T/C0 初值
+         OUT  TCNT0,R17          ;定时间隔16ms
+         LDI  R16,$05
+         OUT  TCCR0,R16          ;对CPU时钟进行1024分频
+         LDI  R16,$02               ;拟将TOIE0 位置1
+         OUT  TIMSK,R16          ;开放TOV0中断
+         SEI                              ;开总中断
+
+LOOP1:    RJMP  LOOP1
+    
+ ;-----------------------------------------------------------------
+ ;T0中断子程序
+ ;-----------------------------------------------------------------
+TOVF0:
+          LDI  R16,$00            ;拟将TOIE0 位置0
+          OUT  TIMSK,R16          ;关闭TOV0中断
+          SBIS  PINB,5               ;若PINB5=1，则跨越。
+           RJMP  LOOP2              ;若PINB5=0，跳到LOOP2。(K2=0)
+           LDI  R17,$F0              ;T/C0 初值
+          OUT  TCNT0,R17          ;定时间隔16ms
+          LDI  R16,$3F
+          OUT  PORTA,R16
+          RCALL DELAYA
+          LDI  R16,$FF
+          OUT  PORTA,R16
+          RCALL DELAYA
+          LDI  R16,$02            ;拟将TOIE0 位置1
+          OUT  TIMSK,R16          ;开放TOV0中断
+          RETI
+
+LOOP2:   
+          LDI  R16,$00            ;拟将TOIE0 位置0
+          OUT  TIMSK,R16          ;关闭TOV0中断
+          RJMP  LOOP2             ;等待看门狗复位
+          RET
+
+ ;----------------------------------------------------------------
+ ;若R17初值为1，则延时总计25ms左右。
+ ;晶振频率为8MHz。
+ ;---------------------------------------------------------------- 
+DELAY:    
+          LDI  R17,$03
+          CLR  R18
+          CLR  R19
+DELAY1:
+          DEC  R18
+          BRNE  DELAY1
+          DEC  R19
+          BRNE  DELAY1
+          DEC  R17
+          BRNE  DELAY1
+          RET
+
+
+DELAYA:   
+          LDI  R17,$03
+          CLR  R18
+          CLR  R19
+
+DELAY1A:
+          DEC  R18
+          BRNE  DELAY1A
+          WDR                     ;看门狗复位指令
+          DEC  R19
+          BRNE  DELAY1A
+          DEC  R17
+          BRNE  DELAY1A
+          RET
+ 

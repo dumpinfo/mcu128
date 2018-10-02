@@ -1,0 +1,268 @@
+C51 COMPILER V7.06   D12CI                                                                 02/01/2008 12:33:50 PAGE 1   
+
+
+C51 COMPILER V7.06, COMPILATION OF MODULE D12CI
+OBJECT MODULE PLACED IN D12ci.OBJ
+COMPILER INVOKED BY: d:\Keil\C51\BIN\C51.EXE D12ci.c BROWSE DEBUG OBJECTEXTEND
+
+stmt level    source
+
+   1          #include <reg51.h>                /* special function register declarations   */
+   2          #include "mainloop.h"
+   3          #include "d12ci.h" 
+   4          #include "absacc.h"
+   5          #include "epphal.h"
+   6          
+   7          #define D12_DATA        0x7FF0   //偶数是数据地址
+   8          #define D12_COMMAND 0x7FF1       //奇数是命令地址
+   9          
+  10          extern EPPFLAGS bEPPflags;
+  11          
+  12          //设置地址使能
+  13          void D12_SetAddressEnable(unsigned char bAddress, unsigned char bEnable)
+  14          {
+  15   1              if(bEPPflags.bits.in_isr == 0)
+  16   1                      DISABLE;
+  17   1      
+  18   1              outportb(D12_COMMAND, 0xD0);//输出指令
+  19   1              if(bEnable)
+  20   1                      bAddress |= 0x80;
+  21   1              outportb(D12_DATA, bAddress);//设置地址
+  22   1      
+  23   1              if(bEPPflags.bits.in_isr == 0)
+  24   1                      ENABLE;
+  25   1      }
+  26          
+  27          //设置端点使能
+  28          void D12_SetEndpointEnable(unsigned char bEnable)
+  29          {
+  30   1              if(bEPPflags.bits.in_isr == 0)
+  31   1                      DISABLE;
+  32   1      
+  33   1              outportb(D12_COMMAND, 0xD8);//输出指令
+  34   1              if(bEnable)
+  35   1                      outportb(D12_DATA, 1);//设置端点允许
+  36   1              else
+  37   1                      outportb(D12_DATA, 0);//设置端点禁止
+  38   1      
+  39   1              if(bEPPflags.bits.in_isr == 0)
+  40   1                      ENABLE;
+  41   1      }
+  42          
+  43          //模式设置
+  44          void D12_SetMode(unsigned char bConfig, unsigned char bClkDiv)
+  45          {
+  46   1              if(bEPPflags.bits.in_isr == 0)
+  47   1                      DISABLE;
+  48   1      
+  49   1              outportb(D12_COMMAND, 0xF3);//设置模式
+  50   1              outportb(D12_DATA, bConfig);
+  51   1              outportb(D12_DATA, bClkDiv);
+  52   1      
+  53   1              if(bEPPflags.bits.in_isr == 0)
+  54   1                      ENABLE;
+  55   1      }
+C51 COMPILER V7.06   D12CI                                                                 02/01/2008 12:33:50 PAGE 2   
+
+  56          
+  57          //DMA工作方式设置
+  58          void D12_SetDMA(unsigned char bMode)
+  59          {
+  60   1              if(bEPPflags.bits.in_isr == 0)
+  61   1                      DISABLE;
+  62   1      
+  63   1              outportb(D12_COMMAND, 0xFB);//设置DMA工作方式
+  64   1              outportb(D12_DATA, bMode);
+  65   1      
+  66   1              if(bEPPflags.bits.in_isr == 0)
+  67   1                      ENABLE;
+  68   1      }
+  69          
+  70          //读取中断寄存器
+  71          unsigned short D12_ReadInterruptRegister(void)
+  72          {
+  73   1              unsigned char b1;
+  74   1              unsigned int j;
+  75   1      
+  76   1              outportb(D12_COMMAND, 0xF4);//读取中断寄存器
+  77   1              b1 = inportb(D12_DATA);
+  78   1              j = inportb(D12_DATA);
+  79   1      
+  80   1              j <<= 8;
+  81   1              j += b1;
+  82   1      
+  83   1              return j;
+  84   1      }
+  85          
+  86          //端点选择
+  87          unsigned char D12_SelectEndpoint(unsigned char bEndp)
+  88          {
+  89   1              unsigned char c;
+  90   1      
+  91   1              if(bEPPflags.bits.in_isr == 0)
+  92   1                      DISABLE;
+  93   1      
+  94   1              outportb(D12_COMMAND, bEndp);//端点选择
+  95   1              c = inportb(D12_DATA);
+  96   1      
+  97   1              if(bEPPflags.bits.in_isr == 0)
+  98   1                      ENABLE;
+  99   1      
+ 100   1              return c;
+ 101   1      }
+ 102          
+ 103          //读取最后传输状态
+ 104          unsigned char D12_ReadLastTransactionStatus(unsigned char bEndp)
+ 105          {
+ 106   1              outportb(D12_COMMAND, 0x40 + bEndp);//返回最后传输状态
+ 107   1              return inportb(D12_DATA);
+ 108   1      }
+ 109          
+ 110          //读取端点状态
+ 111          unsigned char D12_ReadEndpointStatus(unsigned char bEndp)
+ 112          {
+ 113   1              unsigned char c;
+ 114   1      
+ 115   1              if(bEPPflags.bits.in_isr == 0)
+ 116   1                      DISABLE;
+ 117   1      
+C51 COMPILER V7.06   D12CI                                                                 02/01/2008 12:33:50 PAGE 3   
+
+ 118   1              outportb(D12_COMMAND, 0x80 + bEndp);//读取端点状态
+ 119   1              c = inportb(D12_DATA);
+ 120   1      
+ 121   1              if(bEPPflags.bits.in_isr == 0)
+ 122   1                      ENABLE;
+ 123   1      
+ 124   1              return c;
+ 125   1      }
+ 126          
+ 127          //设置端点状态
+ 128          void D12_SetEndpointStatus(unsigned char bEndp, unsigned char bStalled)
+ 129          {
+ 130   1              if(bEPPflags.bits.in_isr == 0)
+ 131   1                      DISABLE;
+ 132   1      
+ 133   1              outportb(D12_COMMAND, 0x40 + bEndp);//设置端点状态
+ 134   1              outportb(D12_DATA, bStalled);
+ 135   1      
+ 136   1              if(bEPPflags.bits.in_isr == 0)
+ 137   1                      ENABLE;
+ 138   1      }
+ 139          
+ 140          unsigned short D12_ReadChipID(void)
+ 141          {
+ 142   1              unsigned short i,j;
+ 143   1      
+ 144   1              if(bEPPflags.bits.in_isr == 0)
+ 145   1                      DISABLE;
+ 146   1      
+ 147   1              outportb(D12_COMMAND, 0xFD);
+ 148   1              i=inportb(D12_DATA);
+ 149   1              j=inportb(D12_DATA);
+ 150   1              i += (j<<8);
+ 151   1      
+ 152   1              if(bEPPflags.bits.in_isr == 0)
+ 153   1                      ENABLE;
+ 154   1      
+ 155   1              return i;
+ 156   1      }
+ 157          
+ 158          //读取端点数据
+ 159          unsigned char D12_ReadEndpoint(unsigned char endp, unsigned char len, unsigned char * buf)
+ 160          {
+ 161   1              unsigned char i, j;
+ 162   1      
+ 163   1              if(bEPPflags.bits.in_isr == 0)
+ 164   1                      DISABLE;
+ 165   1      
+ 166   1              outportb(D12_COMMAND, endp);
+ 167   1              if((inportb(D12_DATA) & D12_FULLEMPTY) == 0) {
+ 168   2                      if(bEPPflags.bits.in_isr == 0)
+ 169   2                              ENABLE;
+ 170   2                      return 0;
+ 171   2              }
+ 172   1      
+ 173   1              outportb(D12_COMMAND, 0xF0);
+ 174   1              j = inportb(D12_DATA);
+ 175   1              j = inportb(D12_DATA);
+ 176   1      
+ 177   1              if(j > len)
+ 178   1                      j = len;
+ 179   1      
+C51 COMPILER V7.06   D12CI                                                                 02/01/2008 12:33:50 PAGE 4   
+
+ 180   1              for(i=0; i<j; i++)
+ 181   1                      *(buf+i) = inportb(D12_DATA);
+ 182   1      
+ 183   1              outportb(D12_COMMAND, 0xF2);
+ 184   1      
+ 185   1              if(bEPPflags.bits.in_isr == 0)
+ 186   1                      ENABLE;
+ 187   1      
+ 188   1              return j;
+ 189   1      }
+ 190          
+ 191          //写端点
+ 192          unsigned char D12_WriteEndpoint(unsigned char endp, unsigned char len, unsigned char * buf)
+ 193          {
+ 194   1              unsigned char i;
+ 195   1      
+ 196   1              if(bEPPflags.bits.in_isr == 0)
+ 197   1                      DISABLE;
+ 198   1      
+ 199   1              outportb(D12_COMMAND, endp);
+ 200   1              i = inportb(D12_DATA);
+ 201   1      
+ 202   1              outportb(D12_COMMAND, 0xF0);
+ 203   1              outportb(D12_DATA, 0);
+ 204   1              outportb(D12_DATA, len);
+ 205   1      
+ 206   1              for(i=0; i<len; i++)
+ 207   1                      outportb(D12_DATA, *(buf+i));
+ 208   1      
+ 209   1              outportb(D12_COMMAND, 0xFA);
+ 210   1      
+ 211   1              if(bEPPflags.bits.in_isr == 0)
+ 212   1                      ENABLE;
+ 213   1      
+ 214   1              return len;
+ 215   1      }
+ 216          
+ 217          //设置端点应答
+ 218          void D12_AcknowledgeEndpoint(unsigned char endp)
+ 219          {
+ 220   1              outportb(D12_COMMAND, endp);
+ 221   1              outportb(D12_COMMAND, 0xF1);
+ 222   1              if(endp == 0)
+ 223   1                      outportb(D12_COMMAND, 0xF2);
+ 224   1      }
+ 225          
+ 226          //输出数据
+ 227          void outportb(unsigned int Addr, unsigned char Data)
+ 228          {
+ 229   1              *((unsigned char xdata *) Addr) = Data;
+ 230   1      }
+ 231          
+ 232          //输入数据
+ 233          unsigned char inportb(unsigned int Addr)
+ 234          {
+ 235   1              return *((unsigned char xdata *) Addr);
+ 236   1      }
+ 237          
+
+
+MODULE INFORMATION:   STATIC OVERLAYABLE
+   CODE SIZE        =    670    ----
+C51 COMPILER V7.06   D12CI                                                                 02/01/2008 12:33:50 PAGE 5   
+
+   CONSTANT SIZE    =   ----    ----
+   XDATA SIZE       =   ----    ----
+   PDATA SIZE       =   ----    ----
+   DATA SIZE        =   ----      22
+   IDATA SIZE       =   ----    ----
+   BIT SIZE         =   ----    ----
+END OF MODULE INFORMATION.
+
+
+C51 COMPILATION COMPLETE.  0 WARNING(S),  0 ERROR(S)

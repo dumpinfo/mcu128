@@ -1,0 +1,15 @@
+<html>
+<body>
+<pre>
+<h1>礦ision3 Build Log</h1>
+<h2>Project:</h2>
+C:\51单片机基本实验\Timer1\模式2_自动重载\Timer1_Auto.uv2
+Project File Date:  12/03/2006
+
+<h2>Output:</h2>
+Build target 'Target 1'
+compiling MAIN.C...
+linking...
+Program Size: data=19.0 xdata=0 code=368
+creating hex file from "Timer1_Auto"...
+"Timer1_Auto" - 0 Error(s), 0 Warning(s).

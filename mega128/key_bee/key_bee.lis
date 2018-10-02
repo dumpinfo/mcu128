@@ -1,0 +1,402 @@
+                        .module key_bee.c
+                        .area data(ram, con, rel)
+ 0000           _chabiao::
+ 0000                   .blkb 2
+                        .area idata
+ 0000 0001              .byte 0,1
+                        .area data(ram, con, rel)
+ 0002                   .blkb 2
+                        .area idata
+ 0002 0200              .byte 2,0
+                        .area data(ram, con, rel)
+ 0004                   .blkb 2
+                        .area idata
+ 0004 0300              .byte 3,0
+                        .area data(ram, con, rel)
+ 0006                   .blkb 2
+                        .area idata
+ 0006 0000              .byte 0,0
+                        .area data(ram, con, rel)
+ 0008                   .blkb 1
+                        .area idata
+ 0008 04                .byte 4
+                        .area data(ram, con, rel)
+ 0009                   .dbfile F:\工程文件\avr\例程\mega128\key_bee\key_bee.c
+ 0009                   .dbsym e chabiao _chabiao A[9:9]c
+                        .area text(rom, con, rel)
+ 0000                   .dbfile F:\工程文件\avr\例程\mega128\key_bee\key_bee.c
+ 0000                   .dbfunc e port_init _port_init fV
+                        .even
+ 0000           _port_init::
+ 0000                   .dbline -1
+ 0000                   .dbline 21
+ 0000           ; //ICC-AVR application builder : 2008-1-14 9:09:01
+ 0000           ; // Target : M128
+ 0000           ; // Crystal: 2.0000Mhz
+ 0000           ; //该程序采用了键盘扫描的方法
+ 0000           ; //PD口作为键盘控制端
+ 0000           ; //PC0作为蜂鸣器输出端
+ 0000           ; 
+ 0000           ; 
+ 0000           ; #include <iom128v.h>
+ 0000           ; #include <macros.h>
+ 0000           ; 
+ 0000           ; #define port_key  PORTD
+ 0000           ; #define ddr_key   DDRD
+ 0000           ; #define pin_key   PIND
+ 0000           ; #define port_bee  PORTC
+ 0000           ; void delay(int ms);
+ 0000           ; unsigned char key(unsigned char number);
+ 0000           ;  unsigned char chabiao[]={0,1,2,0,3,0,0,0,4};
+ 0000           ; 
+ 0000           ; void port_init(void)
+ 0000           ; {
+ 0000                   .dbline 22
+ 0000           ;  PORTA = 0xFF;
+ 0000 8FEF              ldi R24,255
+ 0002 8BBB              out 0x1b,R24
+ 0004                   .dbline 23
+ 0004           ;  DDRA  = 0x00;
+ 0004 2224              clr R2
+ 0006 2ABA              out 0x1a,R2
+ 0008                   .dbline 24
+ 0008           ;  PORTB = 0xFF;
+ 0008 88BB              out 0x18,R24
+ 000A                   .dbline 25
+ 000A           ;  DDRB  = 0x00;
+ 000A 27BA              out 0x17,R2
+ 000C                   .dbline 26
+ 000C           ;  PORTC = 0x0; 
+ 000C 25BA              out 0x15,R2
+ 000E                   .dbline 27
+ 000E           ;  DDRC  = 0xFF;
+ 000E 84BB              out 0x14,R24
+ 0010                   .dbline 28
+ 0010           ;  PORTD = 0x0;
+ 0010 22BA              out 0x12,R2
+ 0012                   .dbline 29
+ 0012           ;  DDRD  = 0xFF;
+ 0012 81BB              out 0x11,R24
+ 0014                   .dbline 30
+ 0014           ;  PORTE = 0xFF;
+ 0014 83B9              out 0x3,R24
+ 0016                   .dbline 31
+ 0016           ;  DDRE  = 0x00;
+ 0016 22B8              out 0x2,R2
+ 0018                   .dbline 32
+ 0018           ;  PORTF = 0xFF;
+ 0018 80936200          sts 98,R24
+ 001C                   .dbline 33
+ 001C           ;  DDRF  = 0x00;
+ 001C 20926100          sts 97,R2
+ 0020                   .dbline 34
+ 0020           ;  PORTG = 0x1F;
+ 0020 8FE1              ldi R24,31
+ 0022 80936500          sts 101,R24
+ 0026                   .dbline 35
+ 0026           ;  DDRG  = 0x00;
+ 0026 20926400          sts 100,R2
+ 002A                   .dbline -2
+ 002A                   .dbline 36
+ 002A           ; }
+ 002A           L1:
+ 002A                   .dbline 0 ; func end
+ 002A 0895              ret
+ 002C                   .dbend
+ 002C                   .dbfunc e init_devices _init_devices fV
+                        .even
+ 002C           _init_devices::
+ 002C                   .dbline -1
+ 002C                   .dbline 40
+ 002C           ; 
+ 002C           ; //call this routine to initialise all peripherals
+ 002C           ; void init_devices(void)
+ 002C           ; {
+ 002C                   .dbline 42
+ 002C           ;  //stop errant interrupts until set up
+ 002C           ;  CLI(); //disable all interrupts
+ 002C F894              cli
+ 002E                   .dbline 43
+ 002E           ;  XDIV  = 0x00; //xtal divider
+ 002E 2224              clr R2
+ 0030 2CBE              out 0x3c,R2
+ 0032                   .dbline 44
+ 0032           ;  XMCRA = 0x00; //external memory
+ 0032 20926D00          sts 109,R2
+ 0036                   .dbline 45
+ 0036           ;  port_init();
+ 0036 E4DF              xcall _port_init
+ 0038                   .dbline 47
+ 0038           ; 
+ 0038           ;  MCUCR = 0x00;
+ 0038 2224              clr R2
+ 003A 25BE              out 0x35,R2
+ 003C                   .dbline 48
+ 003C           ;  EICRA = 0x00; //extended ext ints
+ 003C 20926A00          sts 106,R2
+ 0040                   .dbline 49
+ 0040           ;  EICRB = 0x00; //extended ext ints
+ 0040 2ABE              out 0x3a,R2
+ 0042                   .dbline 50
+ 0042           ;  EIMSK = 0x00;
+ 0042 29BE              out 0x39,R2
+ 0044                   .dbline 51
+ 0044           ;  TIMSK = 0x00; //timer interrupt sources
+ 0044 27BE              out 0x37,R2
+ 0046                   .dbline 52
+ 0046           ;  ETIMSK = 0x00; //extended timer interrupt sources
+ 0046 20927D00          sts 125,R2
+ 004A                   .dbline 53
+ 004A           ;  SEI(); //re-enable interrupts
+ 004A 7894              sei
+ 004C                   .dbline -2
+ 004C                   .dbline 55
+ 004C           ;  //all peripherals are now initialised
+ 004C           ; }
+ 004C           L2:
+ 004C                   .dbline 0 ; func end
+ 004C 0895              ret
+ 004E                   .dbend
+ 004E                   .dbfunc e main _main fV
+ 004E           ;             kk -> R20
+                        .even
+ 004E           _main::
+ 004E                   .dbline -1
+ 004E                   .dbline 59
+ 004E           ; 
+ 004E           ; //
+ 004E           ; void main(void)
+ 004E           ; { 
+ 004E                   .dbline 61
+ 004E           ;   unsigned char kk;
+ 004E           ;  init_devices();
+ 004E EEDF              xcall _init_devices
+ 0050 08C0              xjmp L5
+ 0052           L4:
+ 0052                   .dbline 63
+ 0052           ;  while(1)
+ 0052           ;   {if(key(2)!=0)
+ 0052                   .dbline 63
+ 0052 02E0              ldi R16,2
+ 0054 1DD0              xcall _key
+ 0056 0023              tst R16
+ 0058 19F0              breq L7
+ 005A                   .dbline 64
+ 005A           ;    kk=key(2);
+ 005A 02E0              ldi R16,2
+ 005C 19D0              xcall _key
+ 005E 402F              mov R20,R16
+ 0060           L7:
+ 0060                   .dbline 65
+ 0060 45BB              out 0x15,R20
+ 0062                   .dbline 66
+ 0062           L5:
+ 0062                   .dbline 62
+ 0062 F7CF              xjmp L4
+ 0064           X0:
+ 0064                   .dbline -2
+ 0064                   .dbline 69
+ 0064           ;   PORTC = kk;
+ 0064           ;   }
+ 0064           ;    
+ 0064           ;    
+ 0064           ;  }
+ 0064           L3:
+ 0064                   .dbline 0 ; func end
+ 0064 0895              ret
+ 0066                   .dbsym r kk 20 c
+ 0066                   .dbend
+ 0066                   .dbfunc e delay _delay fV
+ 0066           ;              j -> R20,R21
+ 0066           ;              i -> R22,R23
+ 0066           ;             ms -> R16,R17
+                        .even
+ 0066           _delay::
+ 0066 0E940000          xcall push_gset2
+ 006A                   .dbline -1
+ 006A                   .dbline 71
+ 006A           ; void delay(int ms)
+ 006A           ; {int i,j;
+ 006A                   .dbline 72
+ 006A           ;   for(j=0;j<ms;j++)
+ 006A 4427              clr R20
+ 006C 5527              clr R21
+ 006E 0AC0              xjmp L13
+ 0070           L10:
+ 0070                   .dbline 73
+ 0070 6627              clr R22
+ 0072 7727              clr R23
+ 0074           L14:
+ 0074                   .dbline 73
+ 0074           L15:
+ 0074                   .dbline 73
+ 0074 6F5F              subi R22,255  ; offset = 1
+ 0076 7F4F              sbci R23,255
+ 0078                   .dbline 73
+ 0078 6436              cpi R22,100
+ 007A E0E0              ldi R30,0
+ 007C 7E07              cpc R23,R30
+ 007E D4F3              brlt L14
+ 0080           L11:
+ 0080                   .dbline 72
+ 0080 4F5F              subi R20,255  ; offset = 1
+ 0082 5F4F              sbci R21,255
+ 0084           L13:
+ 0084                   .dbline 72
+ 0084 4017              cp R20,R16
+ 0086 5107              cpc R21,R17
+ 0088 9CF3              brlt L10
+ 008A                   .dbline -2
+ 008A                   .dbline 74
+ 008A           ;   for(i=0;i<100;i++);
+ 008A           ; }
+ 008A           L9:
+ 008A 0E940000          xcall pop_gset2
+ 008E                   .dbline 0 ; func end
+ 008E 0895              ret
+ 0090                   .dbsym r j 20 I
+ 0090                   .dbsym r i 22 I
+ 0090                   .dbsym r ms 16 I
+ 0090                   .dbend
+ 0090                   .dbfunc e key _key fc
+ 0090           ;        key_out -> <dead>
+ 0090           ;             ky -> R20,R21
+ 0090           ;       key_data -> y+0
+ 0090           ;        key_in1 -> R22,R23
+ 0090           ;        key_in3 -> R10,R11
+ 0090           ;        key_in2 -> R12,R13
+ 0090           ;         key_in -> R14,R15
+ 0090           ;              i -> R20,R21
+ 0090           ;         number -> y+12
+                        .even
+ 0090           _key::
+ 0090 1A93              st -y,r17
+ 0092 0A93              st -y,r16
+ 0094 0E940000          xcall push_gset5
+ 0098 2297              sbiw R28,2
+ 009A                   .dbline -1
+ 009A                   .dbline 78
+ 009A           ; 
+ 009A           ; //number表示键盘列数，比如共有2列,number=2
+ 009A           ; unsigned char key(unsigned char number)
+ 009A           ; { 
+ 009A                   .dbline 79
+ 009A           ;   unsigned key_data=0,ky=1,key_out,i = 0,key_in1,key_in2,key_in3,key_in;
+ 009A 0024              clr R0
+ 009C 1124              clr R1
+ 009E 1982              std y+1,R1
+ 00A0 0882              std y+0,R0
+ 00A2                   .dbline 79
+ 00A2 41E0              ldi R20,1
+ 00A4 50E0              ldi R21,0
+ 00A6                   .dbline 79
+ 00A6 4427              clr R20
+ 00A8                   .dbline 80
+ 00A8           ;   ddr_key = 0Xff;//低4位输入，高4位输出
+ 00A8 8FEF              ldi R24,255
+ 00AA 81BB              out 0x11,R24
+ 00AC                   .dbline 82
+ 00AC           ;   
+ 00AC           ;   for(i = 0;i<number; i++)
+ 00AC 30C0              xjmp L22
+ 00AE           L19:
+ 00AE                   .dbline 83
+ 00AE           ;    {port_key = 1<<(i+4);
+ 00AE                   .dbline 83
+ 00AE 9A01              movw R18,R20
+ 00B0 2C5F              subi R18,252  ; offset = 4
+ 00B2 3F4F              sbci R19,255
+ 00B4 01E0              ldi R16,1
+ 00B6 10E0              ldi R17,0
+ 00B8 0E940000          xcall lsl16
+ 00BC 02BB              out 0x12,R16
+ 00BE                   .dbline 84
+ 00BE           ;     key_in1 = pin_key&0xf;
+ 00BE 60B3              in R22,0x10
+ 00C0 7727              clr R23
+ 00C2 6F70              andi R22,15
+ 00C4 7070              andi R23,0
+ 00C6                   .dbline 85
+ 00C6           ;       delay(1);
+ 00C6 01E0              ldi R16,1
+ 00C8 10E0              ldi R17,0
+ 00CA CDDF              xcall _delay
+ 00CC                   .dbline 86
+ 00CC           ;       key_in2 = pin_key&0xf;
+ 00CC 80B3              in R24,0x10
+ 00CE 9927              clr R25
+ 00D0 8F70              andi R24,15
+ 00D2 9070              andi R25,0
+ 00D4 6C01              movw R12,R24
+ 00D6                   .dbline 87
+ 00D6           ;       delay(1);
+ 00D6 01E0              ldi R16,1
+ 00D8 10E0              ldi R17,0
+ 00DA C5DF              xcall _delay
+ 00DC                   .dbline 88
+ 00DC           ;       key_in3 = pin_key&0xf;
+ 00DC 80B3              in R24,0x10
+ 00DE 9927              clr R25
+ 00E0 8F70              andi R24,15
+ 00E2 9070              andi R25,0
+ 00E4 5C01              movw R10,R24
+ 00E6                   .dbline 89
+ 00E6           ;       key_in = key_in2&key_in3;
+ 00E6 7601              movw R14,R12
+ 00E8 E822              and R14,R24
+ 00EA F922              and R15,R25
+ 00EC                   .dbline 90
+ 00EC           ;       if(key_in != 0)
+ 00EC EE20              tst R14
+ 00EE 11F4              brne X1
+ 00F0 FF20              tst R15
+ 00F2 59F0              breq L23
+ 00F4           X1:
+ 00F4                   .dbline 91
+ 00F4           ;        key_data = key_in<<(i*4);
+ 00F4 04E0              ldi R16,4
+ 00F6 10E0              ldi R17,0
+ 00F8 9A01              movw R18,R20
+ 00FA 0E940000          xcall empy16s
+ 00FE 9801              movw R18,R16
+ 0100 8701              movw R16,R14
+ 0102 0E940000          xcall lsl16
+ 0106 1983              std y+1,R17
+ 0108 0883              std y+0,R16
+ 010A           L23:
+ 010A                   .dbline 93
+ 010A           L20:
+ 010A                   .dbline 82
+ 010A 4F5F              subi R20,255  ; offset = 1
+ 010C 5F4F              sbci R21,255
+ 010E           L22:
+ 010E                   .dbline 82
+ 010E 2C84              ldd R2,y+12
+ 0110 3324              clr R3
+ 0112 4215              cp R20,R2
+ 0114 5305              cpc R21,R3
+ 0116 58F2              brlo L19
+ 0118                   .dbline 95
+ 0118           ;       
+ 0118           ;    }
+ 0118           ;    //key_data = pin_key;
+ 0118           ;     return key_data;
+ 0118 0881              ldd R16,y+0
+ 011A 1981              ldd R17,y+1
+ 011C                   .dbline -2
+ 011C           L18:
+ 011C 2296              adiw R28,2
+ 011E 0E940000          xcall pop_gset5
+ 0122 2296              adiw R28,2
+ 0124                   .dbline 0 ; func end
+ 0124 0895              ret
+ 0126                   .dbsym l key_out 1 i
+ 0126                   .dbsym r ky 20 i
+ 0126                   .dbsym l key_data 0 i
+ 0126                   .dbsym r key_in1 22 i
+ 0126                   .dbsym r key_in3 10 i
+ 0126                   .dbsym r key_in2 12 i
+ 0126                   .dbsym r key_in 14 i
+ 0126                   .dbsym r i 20 i
+ 0126                   .dbsym l number 12 c
+ 0126                   .dbend

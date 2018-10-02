@@ -1,0 +1,108 @@
+C51 COMPILER V7.06   MAIN                                                                  01/27/2008 14:48:05 PAGE 1   
+
+
+C51 COMPILER V7.06, COMPILATION OF MODULE MAIN
+OBJECT MODULE PLACED IN main.OBJ
+COMPILER INVOKED BY: d:\Keil\C51\BIN\C51.EXE main.c BROWSE DEBUG OBJECTEXTEND
+
+stmt level    source
+
+   1          #include"reg51.h"
+   2          #include"51usb.h"                          //51USB实验板的头文件
+   3          
+   4          #define  uchar unsigned char
+   5          #define  uint  unsigned int
+   6          //////以下函数用于LCD的操作///////////
+   7          void delay();                                   //判断LCD是否忙
+   8          void writedata(uchar lcddata); //写数据到LCD
+   9          void writecom(uchar lcddata);  //写命令到LCD
+  10          void writeline(uchar *str);        //写一串数据到LCD
+  11          void initlcd();                           //初始化LCD
+  12          
+  13          
+  14          void delay_ms(uint ticks);
+  15          
+  16          
+  17          void  main()
+  18          {
+  19   1       uchar i;
+  20   1       initlcd();
+  21   1       while(1)
+  22   1       {
+  23   2              writeline("www.ourmebed.com");
+  24   2              writecom(0xc0); //第二行
+  25   2              writeline("TEL:13979813332");
+  26   2              for(i=0;i!=16;i++)
+  27   2              {
+  28   3                       delay_ms(1000);
+  29   3                       writecom(0x1C); //右移动
+  30   3      
+  31   3              }
+  32   2              for(i=0;i!=32;i++)
+  33   2              {
+  34   3                   delay_ms(1000);
+  35   3                       writecom(0x18); //左移动                
+  36   3              }
+  37   2               writecom(0x01);        //清屏
+  38   2               writecom(0x80);        //回车
+  39   2       }
+  40   1      }
+  41          
+  42          
+  43          void delay_ms(uint ticks)
+  44          {
+  45   1       uchar i;
+  46   1       for(;ticks!=0;ticks--)
+  47   1              for(i=200;i!=0;i--);
+  48   1      
+  49   1      }
+  50          ////////////////////////////////////
+  51          void delay()
+  52          {
+  53   1       while(RCOM&0x80); //读状态寄存器，如果LCD忙，就一直读。
+  54   1      }
+  55          
+C51 COMPILER V7.06   MAIN                                                                  01/27/2008 14:48:05 PAGE 2   
+
+  56          void writedata(uchar lcddata)
+  57          {
+  58   1       WDAT=lcddata; //写数据到LCD
+  59   1       delay();
+  60   1      }
+  61          /////////////////////////////////
+  62          void writecom(uchar lcddata)
+  63          {
+  64   1       WCOM=lcddata;//写命令到LCD
+  65   1       delay();
+  66   1      }
+  67          
+  68          void writeline(uchar *str)
+  69          {
+  70   1       while(*str)writedata(*str++);
+  71   1      }
+  72          
+  73          ///////////////////////////////////
+  74          void initlcd()
+  75          {
+  76   1       writecom(0x01);        //清屏
+  77   1       writecom(0x38);        //功能设置
+  78   1       writecom(0x0f);        //显示开关控制
+  79   1       writecom(0x06);        //设置输入模式
+  80   1       writecom(0x01);        //清屏
+  81   1       writecom(0x80);        //回车
+  82   1      }
+  83          ///////////////////////////////////
+
+
+MODULE INFORMATION:   STATIC OVERLAYABLE
+   CODE SIZE        =    189    ----
+   CONSTANT SIZE    =     33    ----
+   XDATA SIZE       =   ----    ----
+   PDATA SIZE       =   ----    ----
+   DATA SIZE        =   ----       4
+   IDATA SIZE       =   ----    ----
+   BIT SIZE         =   ----    ----
+END OF MODULE INFORMATION.
+
+
+C51 COMPILATION COMPLETE.  0 WARNING(S),  0 ERROR(S)

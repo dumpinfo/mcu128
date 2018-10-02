@@ -1,0 +1,47 @@
+BL51 BANKED LINKER/LOCATER V5.03                                                        02/12/2004  12:12:34  PAGE 1
+
+
+BL51 BANKED LINKER/LOCATER V5.03, INVOKED BY:
+D:\KEIL\C51\BIN\BL51.EXE wl014.obj TO wl014 CODE (0X0000-0X0FFF)
+
+
+INPUT MODULES INCLUDED:
+  wl014.obj (WL014)
+
+
+LINK MAP OF MODULE:  wl014 (WL014)
+
+
+            TYPE    BASE      LENGTH    RELOCATION   SEGMENT NAME
+            -----------------------------------------------------
+
+            * * * * * * *   D A T A   M E M O R Y   * * * * * * *
+            REG     0000H     0008H     ABSOLUTE     "REG BANK 0"
+
+            * * * * * * *   C O D E   M E M O R Y   * * * * * * *
+            CODE    0000H     0040H     ABSOLUTE     
+
+
+
+SYMBOL TABLE OF MODULE:  wl014 (WL014)
+
+  VALUE           TYPE          NAME
+  ----------------------------------
+
+  -------         MODULE        WL014
+  N:008EH         SYMBOL        AUXR
+  C:0039H         SYMBOL        CLR_WDT
+  C:0030H         SYMBOL        MAIN
+  C:0033H         SYMBOL        MAIN_LP
+  N:00A6H         SYMBOL        WDTRST
+  C:0000H         LINE#         24
+  C:0030H         LINE#         29
+  C:0033H         LINE#         32
+  C:0036H         LINE#         38
+  C:0039H         LINE#         43
+  C:003CH         LINE#         44
+  C:003FH         LINE#         45
+  -------         ENDMOD        WL014
+
+Program Size: data=8.0 xdata=0 code=64
+LINK/LOCATE RUN COMPLETE.  0 WARNING(S),  0 ERROR(S)

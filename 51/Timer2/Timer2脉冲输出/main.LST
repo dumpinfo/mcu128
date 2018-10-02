@@ -1,0 +1,72 @@
+C51 COMPILER V7.50   MAIN                                                                  12/13/2006 05:53:04 PAGE 1   
+
+
+C51 COMPILER V7.50, COMPILATION OF MODULE MAIN
+OBJECT MODULE PLACED IN main.OBJ
+COMPILER INVOKED BY: C:\Keil\C51\BIN\C51.EXE main.c BROWSE DEBUG OBJECTEXTEND
+
+line level    source
+
+   1          #include"reg52.h"
+   2          #include"51usb.h"                  //51USB实验板的头文件
+   3          
+   4          #define  uchar unsigned char
+   5          #define  uint  unsigned int
+   6          
+   7          sfr  T2MOD      = 0xC9;
+   8          
+   9          void initsys();                   //初始化系统
+  10          void delay(uint ticks);
+  11          
+  12          
+  13          
+  14          
+  15          void main()
+  16          {
+  17   1       initsys();
+  18   1       LED=0;
+  19   1       P1=0;
+  20   1       while(1)
+  21   1       {
+  22   2        delay(5000); //约0.5s
+  23   2        TR2^=1;          //停止Timer2
+  24   2       }
+  25   1      
+  26   1      
+  27   1      }
+  28          
+  29          void initsys()
+  30          {
+  31   1       //(RCAP2L,RCAP2H)===>(TL2,TH2)
+  32   1       TL2=0;
+  33   1       TH2=0;
+  34   1       RCAP2L=0;
+  35   1       RCAP2H=0;
+  36   1      
+  37   1       T2MOD=0x02;
+  38   1       TR2=1; //Star Timer2
+  39   1      
+  40   1      }
+  41          
+  42          void delay(uint ticks)
+  43          {
+  44   1       uchar i;
+  45   1       for(;ticks!=0;ticks--)for(i=50;i!=0;i--);
+  46   1      }
+  47          
+
+
+MODULE INFORMATION:   STATIC OVERLAYABLE
+   CODE SIZE        =     55    ----
+   CONSTANT SIZE    =   ----    ----
+   XDATA SIZE       =   ----    ----
+   PDATA SIZE       =   ----    ----
+   DATA SIZE        =   ----    ----
+C51 COMPILER V7.50   MAIN                                                                  12/13/2006 05:53:04 PAGE 2   
+
+   IDATA SIZE       =   ----    ----
+   BIT SIZE         =   ----    ----
+END OF MODULE INFORMATION.
+
+
+C51 COMPILATION COMPLETE.  0 WARNING(S),  0 ERROR(S)

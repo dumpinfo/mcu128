@@ -1,0 +1,15 @@
+<html>
+<body>
+<pre>
+<h1>礦ision2 Build Log</h1>
+<h2>Project:</h2>
+D:\产品光盘\ME300\ME300B实验例程\WL010_数码管显示电子钟\ASM\wl010.uv2
+Project File Date:  01/22/2004
+
+<h2>Output:</h2>
+Build target 'Target 1'
+assembling wl010.asm...
+linking...
+Program Size: data=44.0 xdata=0 code=455
+creating hex file from "wl010"...
+"wl010" - 0 Error(s), 0 Warning(s).

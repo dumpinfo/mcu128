@@ -1,0 +1,629 @@
+ Usb_Wdm
+
+ Timestamp is 451a9912 (Wed Sep 27 23:30:26 2006)
+
+ Preferred load address is 00010000
+
+ Start         Length     Name                   Class
+ 0001:00000000 000000f4H .idata$5                CODE
+ 0001:000000f4 000006b6H .rdata                  CODE
+ 0001:000007b0 0000dcd4H .text                   CODE
+ 0002:00000000 00000170H .data                   DATA
+ 0002:00000170 00000489H .bss                    DATA
+ 0003:00000000 00000004H .CRT$XCA                DATA
+ 0003:00000004 00000004H .CRT$XCU                DATA
+ 0003:00000008 00000004H .CRT$XCZ                DATA
+ 0004:00000000 00000004H .STL$A                  DATA
+ 0004:00000004 00000004H .STL$L                  DATA
+ 0004:00000008 00000004H .STL$M                  DATA
+ 0004:0000000c 00000004H .STL$Z                  DATA
+ 0005:00000000 00001943H PAGE                    CODE
+ 0006:00000000 00000785H INIT                    CODE
+ 0006:00000788 0000003cH .idata$2                CODE
+ 0006:000007c4 00000014H .idata$3                CODE
+ 0006:000007d8 000000f4H .idata$4                CODE
+ 0006:000008cc 000004eeH .idata$6                CODE
+ 0007:00000000 00000058H .rsrc$01                DATA
+ 0007:00000060 00000320H .rsrc$02                DATA
+
+  Address         Publics by Value              Rva+Base     Lib:Object
+
+ 0001:00000000       __imp_@KfAcquireSpinLock@4 00010300     wdm:HAL.DLL
+ 0001:00000004       __imp_@KfReleaseSpinLock@8 00010304     wdm:HAL.DLL
+ 0001:00000008       __imp__KeGetCurrentIrql@0  00010308     wdm:HAL.DLL
+ 0001:0000000c       \177HAL_NULL_THUNK_DATA    0001030c     wdm:HAL.DLL
+ 0001:00000010       __imp__ZwClose@4           00010310     wdm:NTOSKRNL.EXE
+ 0001:00000014       __imp__RtlAssert@16        00010314     wdm:NTOSKRNL.EXE
+ 0001:00000018       __imp__PoSetPowerState@12  00010318     wdm:NTOSKRNL.EXE
+ 0001:0000001c       __imp__PoStartNextPowerIrp@4 0001031c     wdm:NTOSKRNL.EXE
+ 0001:00000020       __imp__IoFreeMdl@4         00010320     wdm:NTOSKRNL.EXE
+ 0001:00000024       __imp_@IofCompleteRequest@8 00010324     wdm:NTOSKRNL.EXE
+ 0001:00000028       __imp__PoCallDriver@8      00010328     wdm:NTOSKRNL.EXE
+ 0001:0000002c       __imp_@IofCallDriver@8     0001032c     wdm:NTOSKRNL.EXE
+ 0001:00000030       __imp_@KefReleaseSpinLockFromDpcLevel@4 00010330     wdm:NTOSKRNL.EXE
+ 0001:00000034       __imp_@KefAcquireSpinLockAtDpcLevel@4 00010334     wdm:NTOSKRNL.EXE
+ 0001:00000038       __imp__KeRemoveEntryDeviceQueue@8 00010338     wdm:NTOSKRNL.EXE
+ 0001:0000003c       __imp__RtlInitAnsiString@8 0001033c     wdm:NTOSKRNL.EXE
+ 0001:00000040       __imp_@ObfDereferenceObject@4 00010340     wdm:NTOSKRNL.EXE
+ 0001:00000044       __imp__memmove             00010344     wdm:NTOSKRNL.EXE
+ 0001:00000048       __imp__strchr              00010348     wdm:NTOSKRNL.EXE
+ 0001:0000004c       __imp___vsnprintf          0001034c     wdm:NTOSKRNL.EXE
+ 0001:00000050       __imp__DbgPrint            00010350     wdm:NTOSKRNL.EXE
+ 0001:00000054       __imp_@InterlockedIncrement@4 00010354     wdm:NTOSKRNL.EXE
+ 0001:00000058       __imp_@InterlockedDecrement@4 00010358     wdm:NTOSKRNL.EXE
+ 0001:0000005c       __imp__ExFreePool@4        0001035c     wdm:NTOSKRNL.EXE
+ 0001:00000060       __imp__RtlAppendUnicodeStringToString@8 00010360     wdm:NTOSKRNL.EXE
+ 0001:00000064       __imp__ZwOpenKey@12        00010364     wdm:NTOSKRNL.EXE
+ 0001:00000068       __imp__ExAllocatePoolWithTag@12 00010368     wdm:NTOSKRNL.EXE
+ 0001:0000006c       __imp__ZwQueryValueKey@24  0001036c     wdm:NTOSKRNL.EXE
+ 0001:00000070       __imp__IoDeleteDevice@4    00010370     wdm:NTOSKRNL.EXE
+ 0001:00000074       __imp__IoDeleteSymbolicLink@4 00010374     wdm:NTOSKRNL.EXE
+ 0001:00000078       __imp__IoCreateSymbolicLink@8 00010378     wdm:NTOSKRNL.EXE
+ 0001:0000007c       __imp__IoCreateDevice@28   0001037c     wdm:NTOSKRNL.EXE
+ 0001:00000080       __imp__IoAttachDeviceToDeviceStack@8 00010380     wdm:NTOSKRNL.EXE
+ 0001:00000084       __imp__RtlIntegerToUnicodeString@12 00010384     wdm:NTOSKRNL.EXE
+ 0001:00000088       __imp__IoAllocateIrp@8     00010388     wdm:NTOSKRNL.EXE
+ 0001:0000008c       __imp__IoFreeIrp@4         0001038c     wdm:NTOSKRNL.EXE
+ 0001:00000090       __imp_@InterlockedExchange@8 00010390     wdm:NTOSKRNL.EXE
+ 0001:00000094       __imp__RtlFreeUnicodeString@4 00010394     wdm:NTOSKRNL.EXE
+ 0001:00000098       __imp__KeWaitForSingleObject@20 00010398     wdm:NTOSKRNL.EXE
+ 0001:0000009c       __imp__KeReleaseMutex@8    0001039c     wdm:NTOSKRNL.EXE
+ 0001:000000a0       __imp__IoDetachDevice@4    000103a0     wdm:NTOSKRNL.EXE
+ 0001:000000a4       __imp__IoAcquireCancelSpinLock@4 000103a4     wdm:NTOSKRNL.EXE
+ 0001:000000a8       __imp__IoReleaseCancelSpinLock@4 000103a8     wdm:NTOSKRNL.EXE
+ 0001:000000ac       __imp__KeClearEvent@4      000103ac     wdm:NTOSKRNL.EXE
+ 0001:000000b0       __imp__KeSetEvent@12       000103b0     wdm:NTOSKRNL.EXE
+ 0001:000000b4       __imp__PoRequestPowerIrp@24 000103b4     wdm:NTOSKRNL.EXE
+ 0001:000000b8       __imp__IoCancelIrp@4       000103b8     wdm:NTOSKRNL.EXE
+ 0001:000000bc       __imp__IoRegisterDeviceInterface@16 000103bc     wdm:NTOSKRNL.EXE
+ 0001:000000c0       __imp__IoSetDeviceInterfaceState@8 000103c0     wdm:NTOSKRNL.EXE
+ 0001:000000c4       __imp__KeInitializeSpinLock@4 000103c4     wdm:NTOSKRNL.EXE
+ 0001:000000c8       __imp__DbgBreakPoint@0     000103c8     wdm:NTOSKRNL.EXE
+ 0001:000000cc       __imp__ZwCreateKey@28      000103cc     wdm:NTOSKRNL.EXE
+ 0001:000000d0       __imp__IoGetDeviceObjectPointer@16 000103d0     wdm:NTOSKRNL.EXE
+ 0001:000000d4       __imp__IoBuildDeviceIoControlRequest@36 000103d4     wdm:NTOSKRNL.EXE
+ 0001:000000d8       __imp__KeInitializeEvent@12 000103d8     wdm:NTOSKRNL.EXE
+ 0001:000000dc       __imp__KeInitializeMutex@8 000103dc     wdm:NTOSKRNL.EXE
+ 0001:000000e0       __imp__RtlInitUnicodeString@8 000103e0     wdm:NTOSKRNL.EXE
+ 0001:000000e4       \177NTOSKRNL_NULL_THUNK_DATA 000103e4     wdm:NTOSKRNL.EXE
+ 0001:000000e8       __imp__USBD_ParseConfigurationDescriptorEx@28 000103e8     usbd:USBD.SYS
+ 0001:000000ec       __imp__USBD_CreateConfigurationRequestEx@8 000103ec     usbd:USBD.SYS
+ 0001:000000f0       \177USBD_NULL_THUNK_DATA   000103f0     usbd:USBD.SYS
+ 0001:0000011c       ??_C@_0DF@KLGO@DriverWorks?5?$CIc?$CJ?5Copyright?51998?5C@ 0001041c     Usb_Wdm.obj
+ 0001:00000154       ??_7Usb_Wdm@@6B@           00010454     Usb_Wdm.obj
+ 0001:00000168       ??_7KDriver@@6B@           00010468     Usb_Wdm.obj
+ 0001:0000017c       ??_C@_0BL@DGKJ@m_Irp?9?$DOCurrentLocation?5?$DO?51?$AA@ 0001047c     Usb_Wdm.obj
+ 0001:00000198       ??_C@_0CM@GODI@m_Irp?9?$DOCurrentLocation?5?$DM?$DN?5m_Irp?9@ 00010498     Usb_Wdm.obj
+ 0001:000001c4       ??_C@_0DO@MIEF@C?3?2PROGRA?$HO1?2Compuware?2DriverStud@ 000104c4     Usb_Wdm.obj
+ 0001:00000204       ??_C@_02DILL@?$CFs?$AA@    00010504     Usb_Wdm.obj
+ 0001:00000208       ??_C@_02MHMJ@?$CFu?$AA@    00010508     Usb_Wdm.obj
+ 0001:0000020c       ??_C@_07KCHC@0x?$CF08lx?$AA@ 0001050c     Usb_Wdm.obj
+ 0001:00000214       ??_7Usb_WdmDevice@@6B@     00010514     Usb_WdmDevice.obj
+ 0001:0000033c       ??_C@_05LLOB@FALSE?$AA@    0001063c     Usb_WdmDevice.obj
+ 0001:00000344       ??_C@_0EB@DNIL@C?3?2PROGRA?$HO1?2Compuware?2DriverStud@ 00010644     Usb_WdmDevice.obj
+ 0001:00000388       ??_C@_06BCG@0x?$CF02x?$AA@ 00010688     Usb_WdmDevice.obj
+ 0001:00000390       ??_C@_0CG@GBKI@I?4MajorFunction?$CINEXT?$CJ?5?$DN?$DN?5IRP_MJ_@ 00010690     Usb_WdmDevice.obj
+ 0001:000003b8       ??_C@_0EB@MMCM@C?3?2PROGRA?$HO1?2Compuware?2DriverStud@ 000106b8     Usb_WdmDevice.obj
+ 0001:000003fc       ??_C@_0BJ@KELK@STATUS_SUCCESS?5?$DN?$DN?5status?$AA@ 000106fc     Usb_WdmDevice.obj
+ 0001:00000418       ??_C@_0DO@OLLK@C?3?2PROGRA?$HO1?2Compuware?2DriverStud@ 00010718     Usb_WdmDevice.obj
+ 0001:00000458       ??_7?$KList@UPreconfiguredInterfaceListEntry@@@@6B@ 00010758     Usb_WdmDevice.obj
+ 0001:00000460       ??_C@_0O@JJLN@m_Information?$AA@ 00010760     Usb_WdmDevice.obj
+ 0001:00000470       ??_C@_0BP@BDGD@m_pInterface?9?$DOUsbLowerDevice?$CI?$CJ?$AA@ 00010770     Usb_WdmDevice.obj
+ 0001:00000490       ??_C@_0N@ICJP@m_pInterface?$AA@ 00010790     Usb_WdmDevice.obj
+ 0001:000004a0       ??_C@_0BG@IHBF@m_IntfArray?4IsValid?$CI?$CJ?$AA@ 000107a0     Usb_WdmDevice.obj
+ 0001:000004b8       ??_C@_0BE@OHAP@?4?2?4?4?2include?2kirp?4h?$AA@ 000107b8     vdw_wdm:ktrace.obj
+ 0001:000004cc       ??_7KDevice@@6B@           000107cc     vdw_wdm:kdevice.obj
+ 0001:00000550       ??_C@_0BH@OBIK@?4?2?4?4?2include?2kdevice?4h?$AA@ 00010850     vdw_wdm:kdevice.obj
+ 0001:00000568       ??_7KPnpDevice@@6B@        00010868     vdw_wdm:kpnpdev.obj
+ 0001:00000690       ??_C@_0O@PCO@m_pdq?5?$CB?$DN?5NULL?$AA@ 00010990     vdw_wdm:kpnpdev.obj
+ 0001:000006a0       ??_C@_0BH@GIDI@?4?2?4?4?2include?2kdevque?4h?$AA@ 000109a0     vdw_wdm:kpnpdev.obj
+ 0001:000006b8       ??_C@_0DN@KDCI@?$CIOnSuccess?$CJ?5?$HM?5?$CIOnError?$CJ?5?$HM?5?$CIOnCan@ 000109b8     vdw_wdm:kpnpdev.obj
+ 0001:000006f8       ??_C@_0BH@CDCF@?4?2?4?4?2include?2kpnplow?4h?$AA@ 000109f8     vdw_wdm:kpnpdev.obj
+ 0001:00000710       ??_7?$KList@UINTERFACE_LIST_ENTRY@@@@6B@ 00010a10     vdw_wdm:kpnpdev.obj
+ 0001:00000718       ??_C@_0BE@MEPA@?4?2?4?4?2include?2kusb?4h?$AA@ 00010a18     vdw_wdm:kusb.obj
+ 0001:0000072c       ??_C@_0CP@HLBP@?$CIunsigned?$CJIndex?5?$DM?5m_Information?9@ 00010a2c     vdw_wdm:kusb.obj
+ 0001:0000075c       ??_C@_09MKKF@IsValid?$CI?$CJ?$AA@ 00010a5c     vdw_wdm:kusb.obj
+ 0001:00000768       ??_C@_0CJ@LEBB@?$CIindex?5?$DO?$DN?50?$CJ?5?$CG?$CG?5?$CIindex?5?$DM?$DN?5m_MaxI@ 00010a68     vdw_wdm:kusb.obj
+ 0001:00000794       ??_C@_0BG@PFHN@?4?2?4?4?2include?2karray?4h?$AA@ 00010a94     vdw_wdm:kusb.obj
+ 0001:0000089e       ?AddDevice@Usb_Wdm@@UAEJPAU_DEVICE_OBJECT@@@Z 00010b9e f   Usb_Wdm.obj
+ 0001:00000a00       ??2@YAPAXI@Z               00010d00 f i Usb_Wdm.obj
+ 0001:00000a30       ??2@YAPAXIW4_POOL_TYPE@@@Z 00010d30 f i Usb_Wdm.obj
+ 0001:00000a70       ??1KUnitizedName@@QAE@XZ   00010d70 f i Usb_Wdm.obj
+ 0001:00000aa0       ??1KRegistryKey@@QAE@XZ    00010da0 f i Usb_Wdm.obj
+ 0001:00000ad0       ?Invalidate@KRegistryKey@@QAEXXZ 00010dd0 f i Usb_Wdm.obj
+ 0001:00000b00       ?LastError@KRegistryKey@@QAEJXZ 00010e00 f i Usb_Wdm.obj
+ 0001:00000b00       ?UsbLowerDevice@KUsbInterface@@QAEPAVKUsbLowerDevice@@XZ 00010e00 f i Usb_Wdm.obj
+ 0001:00000b20       ?ConstructorStatus@KDevice@@QAEJXZ 00010e20 f i Usb_Wdm.obj
+ 0001:00000b40       ?_self_delete@KDriver@@EAEXXZ 00010e40 f i Usb_Wdm.obj
+ 0001:00000b80       ??_GKDriver@@QAEPAXI@Z     00010e80 f i Usb_Wdm.obj
+ 0001:00000bb0       ??1KDriver@@QAE@XZ         00010eb0 f i Usb_Wdm.obj
+ 0001:00000c00       ?DriverInstance@KDriver@@SGPAV1@XZ 00010f00 f i Usb_Wdm.obj
+ 0001:00000c10       ?AddDeviceDispatch@KDriver@@KGJPAU_DRIVER_OBJECT@@PAU_DEVICE_OBJECT@@@Z 00010f10 f   Usb_Wdm.obj
+ 0001:00000c70       ?DriverIrpDispatch@KDriver@@SGJPAU_DEVICE_OBJECT@@PAU_IRP@@@Z 00010f70 f   Usb_Wdm.obj
+ 0001:00000d10       ??0KIrp@@QAE@PAU_IRP@@@Z   00011010 f i Usb_Wdm.obj
+ 0001:00000d30       ?MajorFunction@KIrp@@QAEAAEW4EStackLocation@@@Z 00011030 f i Usb_Wdm.obj
+ 0001:00000d70       ?ValidateStackLocation@KIrp@@QAEXW4EStackLocation@@@Z 00011070 f i Usb_Wdm.obj
+ 0001:00000de0       ?DispatchFilter@KDriver@@UAEJPAVKDevice@@VKIrp@@P82@AEJ1@Z@Z 000110e0 f   Usb_Wdm.obj
+ 0001:00000e5a       __purecall                 0001115a f   Usb_Wdm.obj
+ 0001:00000e90       ?Object@KDispatcherObject@@QAEPAXXZ 00011190 f i Usb_Wdm.obj
+ 0001:00000e90       ?DriverObject@KDriver@@QAEPAU_DRIVER_OBJECT@@XZ 00011190 f i Usb_Wdm.obj
+ 0001:00000e90       ??BKEvent@@QAEPAU_KEVENT@@XZ 00011190 f i Usb_Wdm.obj
+ 0001:00000eb0       ??6KTrace@@QAEAAV0@PBD@Z   000111b0 f i Usb_Wdm.obj
+ 0001:00000ee0       ??6KTrace@@QAEAAV0@K@Z     000111e0 f i Usb_Wdm.obj
+ 0001:00000f30       ?ReportNewDevicePowerState@KPnpDevice@@QAE?AT_POWER_STATE@@W4_DEVICE_POWER_STATE@@@Z 00011230 f i Usb_Wdm.obj
+ 0001:00000f80       ?_self_delete@Usb_Wdm@@EAEXXZ 00011280 f i Usb_Wdm.obj
+ 0001:00000fc0       ??_GUsb_Wdm@@QAEPAXI@Z     000112c0 f i Usb_Wdm.obj
+ 0001:00000ff0       ??1Usb_Wdm@@QAE@XZ         000112f0 f i Usb_Wdm.obj
+ 0001:00001010       ??_GUsb_WdmDevice@@QAEPAXI@Z 00011310 f i Usb_Wdm.obj
+ 0001:00001075       ??0Usb_WdmDevice@@QAE@PAU_DEVICE_OBJECT@@K@Z 00011375 f   Usb_WdmDevice.obj
+ 0001:00001227       ??1Usb_WdmDevice@@QAE@XZ   00011527 f   Usb_WdmDevice.obj
+ 0001:0000150d       ?PNPMinorFunctionName@@YGPADK@Z 0001180d f   Usb_WdmDevice.obj
+ 0001:0000156e       ?DefaultPnp@Usb_WdmDevice@@UAEJVKIrp@@@Z 0001186e f   Usb_WdmDevice.obj
+ 0001:000015f6       ?DefaultPower@Usb_WdmDevice@@UAEJVKIrp@@@Z 000118f6 f   Usb_WdmDevice.obj
+ 0001:00001667       ?SystemControl@Usb_WdmDevice@@UAEJVKIrp@@@Z 00011967 f   Usb_WdmDevice.obj
+ 0001:000017f3       ?OnStartDevice@Usb_WdmDevice@@UAEJVKIrp@@@Z 00011af3 f   Usb_WdmDevice.obj
+ 0001:00001946       ?OnStopDevice@Usb_WdmDevice@@UAEJVKIrp@@@Z 00011c46 f   Usb_WdmDevice.obj
+ 0001:000019a8       ?OnRemoveDevice@Usb_WdmDevice@@UAEJVKIrp@@@Z 00011ca8 f   Usb_WdmDevice.obj
+ 0001:00001a09       ?OnDevicePowerUp@Usb_WdmDevice@@UAEJVKIrp@@@Z 00011d09 f   Usb_WdmDevice.obj
+ 0001:00001a67       ?OnDeviceSleep@Usb_WdmDevice@@UAEJVKIrp@@@Z 00011d67 f   Usb_WdmDevice.obj
+ 0001:00001ada       ?Create@Usb_WdmDevice@@UAEJVKIrp@@@Z 00011dda f   Usb_WdmDevice.obj
+ 0001:00001b96       ?Close@Usb_WdmDevice@@UAEJVKIrp@@@Z 00011e96 f   Usb_WdmDevice.obj
+ 0001:00001c26       ?CleanUp@Usb_WdmDevice@@UAEJVKIrp@@@Z 00011f26 f   Usb_WdmDevice.obj
+ 0001:00001cc2       ?Read@Usb_WdmDevice@@UAEJVKIrp@@@Z 00011fc2 f   Usb_WdmDevice.obj
+ 0001:00001edd       ?ReadComplete@Usb_WdmDevice@@QAGJVKIrp@@PAUUSB_COMPLETION_INFO@@@Z 000121dd f   Usb_WdmDevice.obj
+ 0001:00001ff2       ?Write@Usb_WdmDevice@@UAEJVKIrp@@@Z 000122f2 f   Usb_WdmDevice.obj
+ 0001:00002207       ?WriteComplete@Usb_WdmDevice@@QAGJVKIrp@@PAUUSB_COMPLETION_INFO@@@Z 00012507 f   Usb_WdmDevice.obj
+ 0001:000022ee       ?DeviceControl@Usb_WdmDevice@@UAEJVKIrp@@@Z 000125ee f   Usb_WdmDevice.obj
+ 0001:000023c6       ?USB_WDM_IOCTL_Test_Handler@Usb_WdmDevice@@QAEJVKIrp@@@Z 000126c6 f   Usb_WdmDevice.obj
+ 0001:00002520       ?Status@KIrp@@QAEAAJXZ     00012820 f i Usb_WdmDevice.obj
+ 0001:00002540       ?Information@KIrp@@QAEAAKXZ 00012840 f i Usb_WdmDevice.obj
+ 0001:00002560       ?IoctlBuffer@KIrp@@QAEAAPAXXZ 00012860 f i Usb_WdmDevice.obj
+ 0001:00002580       ?ForceReuseOfCurrentStackLocationInCalldown@KIrp@@QAEXXZ 00012880 f i Usb_WdmDevice.obj
+ 0001:000025c0       ?MarkPending@KIrp@@QAEXXZ  000128c0 f i Usb_WdmDevice.obj
+ 0001:000025f0       ?Mdl@KIrp@@QAEAAPAU_MDL@@XZ 000128f0 f i Usb_WdmDevice.obj
+ 0001:00002610       ?MinorFunction@KIrp@@QAEAAEW4EStackLocation@@@Z 00012910 f i Usb_WdmDevice.obj
+ 0001:00002650       ?CopyParametersDown@KIrp@@QAEXXZ 00012950 f i Usb_WdmDevice.obj
+ 0001:000026b0       ?IndicatePowerIrpProcessed@KIrp@@QAEXXZ 000129b0 f i Usb_WdmDevice.obj
+ 0001:000026d0       ??1KMemory@@QAE@XZ         000129d0 f i Usb_WdmDevice.obj
+ 0001:00002700       ?IsValid@KDeviceQueue@@QAEEXZ 00012a00 f i Usb_WdmDevice.obj
+ 0001:00002700       ?IsValid@KUnitizedName@@QAEEXZ 00012a00 f i Usb_WdmDevice.obj
+ 0001:00002700       ?IsValid@KMemory@@QAEEXZ   00012a00 f i Usb_WdmDevice.obj
+ 0001:00002720       ??0KMemory@@QAE@PAU_MDL@@@Z 00012a20 f i Usb_WdmDevice.obj
+ 0001:00002740       ?Invalidate@KMemory@@QAEXXZ 00012a40 f i Usb_WdmDevice.obj
+ 0001:00002780       ?CreateClose@KDevice@@UAEJVKIrp@@@Z 00012a80 f i Usb_WdmDevice.obj
+ 0001:000027c0       ?Complete@KIrp@@QAEJJD@Z   00012ac0 f i Usb_WdmDevice.obj
+ 0001:000027f0       ?CreateNamedPipe@KDevice@@UAEJVKIrp@@@Z 00012af0 f i Usb_WdmDevice.obj
+ 0001:00002830       ?ReadWrite@KDevice@@UAEJVKIrp@@@Z 00012b30 f i Usb_WdmDevice.obj
+ 0001:00002870       ?QueryInformation@KDevice@@UAEJVKIrp@@@Z 00012b70 f i Usb_WdmDevice.obj
+ 0001:000028b0       ?SetInformation@KDevice@@UAEJVKIrp@@@Z 00012bb0 f i Usb_WdmDevice.obj
+ 0001:000028f0       ?QueryEa@KDevice@@UAEJVKIrp@@@Z 00012bf0 f i Usb_WdmDevice.obj
+ 0001:00002930       ?SetEa@KDevice@@UAEJVKIrp@@@Z 00012c30 f i Usb_WdmDevice.obj
+ 0001:00002970       ?FlushBuffers@KDevice@@UAEJVKIrp@@@Z 00012c70 f i Usb_WdmDevice.obj
+ 0001:000029b0       ?QueryVolumeInformation@KDevice@@UAEJVKIrp@@@Z 00012cb0 f i Usb_WdmDevice.obj
+ 0001:000029f0       ?SetVolumeInformation@KDevice@@UAEJVKIrp@@@Z 00012cf0 f i Usb_WdmDevice.obj
+ 0001:00002a30       ?DirectoryControl@KDevice@@UAEJVKIrp@@@Z 00012d30 f i Usb_WdmDevice.obj
+ 0001:00002a70       ?FileSystemControl@KDevice@@UAEJVKIrp@@@Z 00012d70 f i Usb_WdmDevice.obj
+ 0001:00002ab0       ?InternalDeviceControl@KDevice@@UAEJVKIrp@@@Z 00012db0 f i Usb_WdmDevice.obj
+ 0001:00002af0       ?Shutdown@KDevice@@UAEJVKIrp@@@Z 00012df0 f i Usb_WdmDevice.obj
+ 0001:00002b30       ?LockControl@KDevice@@UAEJVKIrp@@@Z 00012e30 f i Usb_WdmDevice.obj
+ 0001:00002b70       ?CreateMailSlot@KDevice@@UAEJVKIrp@@@Z 00012e70 f i Usb_WdmDevice.obj
+ 0001:00002bb0       ?QuerySecurity@KDevice@@UAEJVKIrp@@@Z 00012eb0 f i Usb_WdmDevice.obj
+ 0001:00002bf0       ?SetSecurity@KDevice@@UAEJVKIrp@@@Z 00012ef0 f i Usb_WdmDevice.obj
+ 0001:00002c30       ?DeviceChange@KDevice@@UAEJVKIrp@@@Z 00012f30 f i Usb_WdmDevice.obj
+ 0001:00002c70       ?QueryQuota@KDevice@@UAEJVKIrp@@@Z 00012f70 f i Usb_WdmDevice.obj
+ 0001:00002cb0       ?SetQuota@KDevice@@UAEJVKIrp@@@Z 00012fb0 f i Usb_WdmDevice.obj
+ 0001:00002cf0       ?StartIo@KDevice@@UAEXVKIrp@@@Z 00012ff0 f i Usb_WdmDevice.obj
+ 0001:00002d00       ??6KTrace@@QAEAAV0@E@Z     00013000 f i Usb_WdmDevice.obj
+ 0001:00002d50       ?SetLowerDevice@KPnpDevice@@QAEXPAVKPnpLowerDevice@@@Z 00013050 f i Usb_WdmDevice.obj
+ 0001:00002d70       ?PnpComplete@KIrp@@QAEJPAVKPnpDevice@@JD@Z 00013070 f i Usb_WdmDevice.obj
+ 0001:00002db0       ?PnpPowerCall@KPnpLowerDevice@@QAEJPAVKPnpDevice@@VKIrp@@@Z 000130b0 f i Usb_WdmDevice.obj
+ 0001:00002e00       ?PnpCall@KLowerDevice@@QAEJPAVKPnpDevice@@VKIrp@@@Z 00013100 f i Usb_WdmDevice.obj
+ 0001:00002e30       ??0KUsbInterface@@QAE@XZ   00013130 f i Usb_WdmDevice.obj
+ 0001:00002e60       ?Initialize@KUsbInterface@@QAEJAAVKUsbLowerDevice@@EEE@Z 00013160 f i Usb_WdmDevice.obj
+ 0001:00002ef0       ??0KUsbLowerDevice@@QAE@XZ 000131f0 f i Usb_WdmDevice.obj
+ 0001:00002f40       ??0?$KArray@PAVKUsbPipe@@VKGenericLockNop@@@@QAE@XZ 00013240 f i Usb_WdmDevice.obj
+ 0001:00002f40       ??0?$KArray@PAVKUsbInterface@@VKGenericLockNop@@@@QAE@XZ 00013240 f i Usb_WdmDevice.obj
+ 0001:00002f90       ??0?$KList@UPreconfiguredInterfaceListEntry@@@@QAE@XZ 00013290 f i Usb_WdmDevice.obj
+ 0001:00002fd0       ?ListEntryOffset@@YGKPAUPreconfiguredInterfaceListEntry@@@Z 000132d0 f i Usb_WdmDevice.obj
+ 0001:00002fe0       ?Initialize@KUsbLowerDevice@@QAEJPAVKDevice@@PAU_DEVICE_OBJECT@@@Z 000132e0 f i Usb_WdmDevice.obj
+ 0001:00003020       ?Initialize@?$KArray@PAVKUsbPipe@@VKGenericLockNop@@@@QAEJKKW4_POOL_TYPE@@@Z 00013320 f i Usb_WdmDevice.obj
+ 0001:00003020       ?Initialize@?$KArray@PAVKUsbInterface@@VKGenericLockNop@@@@QAEJKKW4_POOL_TYPE@@@Z 00013320 f i Usb_WdmDevice.obj
+ 0001:000030d0       ??0KUsbPipe@@QAE@XZ        000133d0 f i Usb_WdmDevice.obj
+ 0001:00003110       ?MaximumTransferSize@KUsbPipe@@QAEKXZ 00013410 f i Usb_WdmDevice.obj
+ 0001:00003160       ?IsOpen@KUsbPipe@@QAEEXZ   00013460 f i Usb_WdmDevice.obj
+ 0001:00003160       ?IsValid@KUsbInterface@@QAEEXZ 00013460 f i Usb_WdmDevice.obj
+ 0001:00003180       ?SubmitUrb@KUsbPipe@@QAEJPAU_URB@@P6GJPAU_DEVICE_OBJECT@@PAU_IRP@@PAX@Z3K@Z 00013480 f i Usb_WdmDevice.obj
+ 0001:00003200       ?SubmitUrb@KUsbPipe@@QAEJVKIrp@@PAU_URB@@P6GJPAU_DEVICE_OBJECT@@PAU_IRP@@PAX@Z4K@Z 00013500 f i Usb_WdmDevice.obj
+ 0001:00003280       ?RegisterInterface@KUsbLowerDevice@@QAEJPAVKUsbInterface@@@Z 00013580 f i Usb_WdmDevice.obj
+ 0001:000032f0       ?InsertNext@?$KArray@PAVKUsbPipe@@VKGenericLockNop@@@@QAEJPAVKUsbPipe@@PAKE@Z 000135f0 f i Usb_WdmDevice.obj
+ 0001:000032f0       ?InsertNext@?$KArray@PAVKUsbInterface@@VKGenericLockNop@@@@QAEJPAVKUsbInterface@@PAKE@Z 000135f0 f i Usb_WdmDevice.obj
+ 0001:00003370       ?Insert@?$KArray@PAVKUsbPipe@@VKGenericLockNop@@@@QAEJHAAPAVKUsbPipe@@E@Z 00013670 f i Usb_WdmDevice.obj
+ 0001:00003370       ?Insert@?$KArray@PAVKUsbInterface@@VKGenericLockNop@@@@QAEJHAAPAVKUsbInterface@@E@Z 00013670 f i Usb_WdmDevice.obj
+ 0001:000033f0       ??_V@YAXPAX@Z              000136f0 f i Usb_WdmDevice.obj
+ 0001:000033f0       ??3@YAXPAX@Z               000136f0 f i Usb_WdmDevice.obj
+ 0001:00003410       ?_self_delete@Usb_WdmDevice@@UAEXXZ 00013710 f i Usb_WdmDevice.obj
+ 0001:00003450       ?ReadCompleteLINK@Usb_WdmDevice@@SGJPAU_DEVICE_OBJECT@@PAU_IRP@@PAX@Z 00013750 f i Usb_WdmDevice.obj
+ 0001:00003480       ?WriteCompleteLINK@Usb_WdmDevice@@SGJPAU_DEVICE_OBJECT@@PAU_IRP@@PAX@Z 00013780 f i Usb_WdmDevice.obj
+ 0001:000034aa       _DbgBreakPoint@0           000137aa f   wdm:NTOSKRNL.EXE
+ 0001:000034b0       ??0KTrace@@QAE@PADKW4TRACE_LEVEL@@W4BREAK_LEVEL@@PAU_UNICODE_STRING@@PAU_KINTERRUPT@@@Z 000137b0 f   vdw_wdm:ktrace.obj
+ 0001:000035f6       ?__construct@KTrace@@IAEXPAU_STRING@@PAU_UNICODE_STRING@@PAU_KINTERRUPT@@@Z 000138f6 f   vdw_wdm:ktrace.obj
+ 0001:000037b6       ?Connect@KTrace@@KGEXZ     00013ab6 f   vdw_wdm:ktrace.obj
+ 0001:00003860       ??1KLowerDevice@@QAE@XZ    00013b60 f i vdw_wdm:ktrace.obj
+ 0001:000038c0       ?Test@KInterlockedCounter@@QAEJXZ 00013bc0 f i vdw_wdm:ktrace.obj
+ 0001:000038c0       ??CKIrp@@QAEPAU_IRP@@XZ    00013bc0 f i vdw_wdm:ktrace.obj
+ 0001:000038c0       ??BKIrp@@QAEPAU_IRP@@XZ    00013bc0 f i vdw_wdm:ktrace.obj
+ 0001:000038c0       ??BKMemory@@QAEPAU_MDL@@XZ 00013bc0 f i vdw_wdm:ktrace.obj
+ 0001:000038c0       ??BKUnitizedName@@QAEPBGXZ 00013bc0 f i vdw_wdm:ktrace.obj
+ 0001:000038c0       ?ConstructorStatus@KLowerDevice@@QAEJXZ 00013bc0 f i vdw_wdm:ktrace.obj
+ 0001:0000390e       ?Trace@KTrace@@QAAXW4TRACE_LEVEL@@PADZZ 00013c0e f   vdw_wdm:ktrace.obj
+ 0001:00003b60       ??1KTrace@@QAE@XZ          00013e60 f   vdw_wdm:ktrace.obj
+ 0001:00003c23       ??6KTrace@@QAEAAV0@VKIrp@@@Z 00013f23 f   vdw_wdm:ktrace.obj
+ 0001:00003ff0       ?InitializeCppRunTime@@YGJXZ 000142f0 f   vdw_wdm:stcinit.obj
+ 0001:00004030       ?InitCPP@@YGXXZ            00014330 f   vdw_wdm:stcinit.obj
+ 0001:00004060       ?TerminateCppRunTime@@YGXXZ 00014360 f   vdw_wdm:stcinit.obj
+ 0001:000040c0       ??_GAtExitCall@@QAEPAXI@Z  000143c0 f i vdw_wdm:stcinit.obj
+ 0001:000040f0       ??1AtExitCall@@QAE@XZ      000143f0 f i vdw_wdm:stcinit.obj
+ 0001:00004110       _atexit                    00014410 f   vdw_wdm:stcinit.obj
+ 0001:00004170       ??0AtExitCall@@QAE@P6AXXZ@Z 00014470 f i vdw_wdm:stcinit.obj
+ 0001:000041a0       ??1KUstring@@QAE@XZ        000144a0 f i vdw_wdm:kregkey.obj
+ 0001:000041d0       ?IsValid@KRegistryKey@@QAEEXZ 000144d0 f i vdw_wdm:kregkey.obj
+ 0001:000041d0       ?IsValid@KDispatcherObject@@QAEEXZ 000144d0 f i vdw_wdm:kregkey.obj
+ 0001:000041d0       ?IsValid@KUstring@@QAEEXZ  000144d0 f i vdw_wdm:kregkey.obj
+ 0001:000041f0       ??0KUstring@@QAE@PBG@Z     000144f0 f i vdw_wdm:kregkey.obj
+ 0001:00004220       ?Invalidate@KUstring@@QAEXXZ 00014520 f i vdw_wdm:kregkey.obj
+ 0001:00004270       ??BKUstring@@QAEPAU_UNICODE_STRING@@XZ 00014570 f i vdw_wdm:kregkey.obj
+ 0001:000042e9       ?DeviceIrpDispatch@KDevice@@UAEJPAU_IRP@@@Z 000145e9 f   vdw_wdm:kdevice.obj
+ 0001:00004340       ??0KUstring@@QAE@W4SpecialCtorParameter@0@@Z 00014640 f i vdw_wdm:kdevice.obj
+ 0001:00004350       ?_self_delete@KDevice@@UAEXXZ 00014650 f i vdw_wdm:kdevice.obj
+ 0001:00004390       ?Create@KDevice@@UAEJVKIrp@@@Z 00014690 f i vdw_wdm:kdevice.obj
+ 0001:000043d0       ?Close@KDevice@@UAEJVKIrp@@@Z 000146d0 f i vdw_wdm:kdevice.obj
+ 0001:00004410       ?Read@KDevice@@UAEJVKIrp@@@Z 00014710 f i vdw_wdm:kdevice.obj
+ 0001:00004450       ?Write@KDevice@@UAEJVKIrp@@@Z 00014750 f i vdw_wdm:kdevice.obj
+ 0001:00004490       ?DeviceControl@KDevice@@UAEJVKIrp@@@Z 00014790 f i vdw_wdm:kdevice.obj
+ 0001:000044d0       ?CleanUp@KDevice@@UAEJVKIrp@@@Z 000147d0 f i vdw_wdm:kdevice.obj
+ 0001:00004510       ?Power@KDevice@@UAEJVKIrp@@@Z 00014810 f i vdw_wdm:kdevice.obj
+ 0001:00004550       ?SystemControl@KDevice@@UAEJVKIrp@@@Z 00014850 f i vdw_wdm:kdevice.obj
+ 0001:00004590       ?Pnp@KDevice@@UAEJVKIrp@@@Z 00014890 f i vdw_wdm:kdevice.obj
+ 0001:000045d0       ??_GKDevice@@QAEPAXI@Z     000148d0 f i vdw_wdm:kdevice.obj
+ 0001:00004600       ??0KUstring@@QAE@XZ        00014900 f i vdw_wdm:kdevice.obj
+ 0001:00004630       ?MaximumLength@KUstring@@QAEGXZ 00014930 f i vdw_wdm:kdevice.obj
+ 0001:00004650       ?Append@KUstring@@QAEJPBG@Z 00014950 f i vdw_wdm:kdevice.obj
+ 0001:00004690       ?Append@KUstring@@QAEJAAV1@@Z 00014990 f i vdw_wdm:kdevice.obj
+ 0001:000046b0       ?Length@KUstring@@QAEGXZ   000149b0 f i vdw_wdm:kdevice.obj
+ 0001:000046d0       ?IsRemoved@KPnpDevice@@QAEEXZ 000149d0 f i vdw_wdm:kdevice.obj
+ 0001:000046f0       ??0KUstring@@QAE@PAU_UNICODE_STRING@@E@Z 000149f0 f i vdw_wdm:kdevice.obj
+ 0001:00004720       ?DeviceObject@KLowerDevice@@QAEAAPAU_DEVICE_OBJECT@@XZ 00014a20 f i vdw_wdm:kdevice.obj
+ 0001:00004740       ??_9@$BBM@AE               00014a40 f i vdw_wdm:kdevice.obj
+ 0001:00004750       ??_9@$BHM@AE               00014a50 f i vdw_wdm:kdevice.obj
+ 0001:00004760       ??_9@$BFM@AE               00014a60 f i vdw_wdm:kdevice.obj
+ 0001:00004770       ??_9@$BDM@AE               00014a70 f i vdw_wdm:kdevice.obj
+ 0001:00004780       ??_9@$BGA@AE               00014a80 f i vdw_wdm:kdevice.obj
+ 0001:00004790       ??_9@$BEA@AE               00014a90 f i vdw_wdm:kdevice.obj
+ 0001:000047a0       ??_9@$BCA@AE               00014aa0 f i vdw_wdm:kdevice.obj
+ 0001:000047b0       ??_9@$BGE@AE               00014ab0 f i vdw_wdm:kdevice.obj
+ 0001:000047c0       ??_9@$BEE@AE               00014ac0 f i vdw_wdm:kdevice.obj
+ 0001:000047d0       ??_9@$BCE@AE               00014ad0 f i vdw_wdm:kdevice.obj
+ 0001:000047e0       ??_9@$BGI@AE               00014ae0 f i vdw_wdm:kdevice.obj
+ 0001:000047f0       ??_9@$BEI@AE               00014af0 f i vdw_wdm:kdevice.obj
+ 0001:00004800       ??_9@$BCI@AE               00014b00 f i vdw_wdm:kdevice.obj
+ 0001:00004810       ??_9@$B7AE                 00014b10 f i vdw_wdm:kdevice.obj
+ 0001:00004820       ??_9@$BM@AE                00014b20 f i vdw_wdm:kdevice.obj
+ 0001:00004830       ??_9@$BGM@AE               00014b30 f i vdw_wdm:kdevice.obj
+ 0001:00004840       ??_9@$BEM@AE               00014b40 f i vdw_wdm:kdevice.obj
+ 0001:00004850       ??_9@$BCM@AE               00014b50 f i vdw_wdm:kdevice.obj
+ 0001:00004860       ??_9@$BHA@AE               00014b60 f i vdw_wdm:kdevice.obj
+ 0001:00004870       ??_9@$BFA@AE               00014b70 f i vdw_wdm:kdevice.obj
+ 0001:00004880       ??_9@$BDA@AE               00014b80 f i vdw_wdm:kdevice.obj
+ 0001:00004890       ??_9@$BBA@AE               00014b90 f i vdw_wdm:kdevice.obj
+ 0001:000048a0       ??_9@$BHE@AE               00014ba0 f i vdw_wdm:kdevice.obj
+ 0001:000048b0       ??_9@$BFE@AE               00014bb0 f i vdw_wdm:kdevice.obj
+ 0001:000048c0       ??_9@$BDE@AE               00014bc0 f i vdw_wdm:kdevice.obj
+ 0001:000048d0       ??_9@$BBE@AE               00014bd0 f i vdw_wdm:kdevice.obj
+ 0001:000048e0       ??_9@$BHI@AE               00014be0 f i vdw_wdm:kdevice.obj
+ 0001:000048f0       ??_9@$BFI@AE               00014bf0 f i vdw_wdm:kdevice.obj
+ 0001:00004900       ??_9@$BDI@AE               00014c00 f i vdw_wdm:kdevice.obj
+ 0001:00004910       ??_9@$BBI@AE               00014c10 f i vdw_wdm:kdevice.obj
+ 0001:0000493c       ?Init@BoundsChecker@@YGJPAU_DRIVER_OBJECT@@@Z 00014c3c f   vdw_wdm:kchecker.obj
+ 0001:00004a90       ?UserBuffer@KIrp@@QAEAAPAXXZ 00014d90 f i vdw_wdm:kchecker.obj
+ 0001:00004ab0       ?Allocate@KIrp@@SGPAU_IRP@@D@Z 00014db0 f i vdw_wdm:kchecker.obj
+ 0001:00004ad0       ?Deallocate@KIrp@@SGXPAU_IRP@@@Z 00014dd0 f i vdw_wdm:kchecker.obj
+ 0001:00004af0       ?StackRequirement@KLowerDevice@@QAEDXZ 00014df0 f i vdw_wdm:kchecker.obj
+ 0001:00004b10       ?DummyReportRoutine@BoundsChecker@@YAXKPAU_DRIVER_OBJECT@@ZZ 00014e10 f   vdw_wdm:kchecker.obj
+ 0001:00004b20       ?_CommonInit@KPnpDevice@@IAEJXZ 00014e20 f   vdw_wdm:kpnpdev.obj
+ 0001:00004c00       ?TestAndSet@KInterlockedCounter@@QAEJJ@Z 00014f00 f i vdw_wdm:kpnpdev.obj
+ 0001:00004c20       ??0KPnpDevice@@QAE@PAU_DEVICE_OBJECT@@PBU_GUID@@@Z 00014f20 f   vdw_wdm:kpnpdev.obj
+ 0001:00004d60       ??0KInterlockedCounter@@QAE@XZ 00015060 f i vdw_wdm:kpnpdev.obj
+ 0001:00004d80       ?Reset@KInterlockedCounter@@QAEJXZ 00015080 f i vdw_wdm:kpnpdev.obj
+ 0001:00004da0       ??0POWER_DEVICE_FLAGS@@QAE@XZ 000150a0 f i vdw_wdm:kpnpdev.obj
+ 0001:00004da0       ??0PNP_DEVICE_FLAGS@@QAE@XZ 000150a0 f i vdw_wdm:kpnpdev.obj
+ 0001:00004e00       ?_self_delete@KPnpDevice@@UAEXXZ 00015100 f i vdw_wdm:kpnpdev.obj
+ 0001:00004e40       ??_GKPnpDevice@@QAEPAXI@Z  00015140 f i vdw_wdm:kpnpdev.obj
+ 0001:00004e70       ??1KPnpDevice@@QAE@XZ      00015170 f   vdw_wdm:kpnpdev.obj
+ 0001:00004f10       ??1KEvent@@QAE@XZ          00015210 f i vdw_wdm:kpnpdev.obj
+ 0001:00004f40       ??1KDispatcherObject@@IAE@XZ 00015240 f i vdw_wdm:kpnpdev.obj
+ 0001:00004f70       ?Invalidate@KDispatcherObject@@QAEXXZ 00015270 f i vdw_wdm:kpnpdev.obj
+ 0001:00004fe0       ??1KMutex@@QAE@XZ          000152e0 f i vdw_wdm:kpnpdev.obj
+ 0001:00005000       ?SetPnpPolicy@KPnpDevice@@UAEXXZ 00015300 f   vdw_wdm:kpnpdev.obj
+ 0001:00005520       ?DeviceIrpDispatch@KPnpDevice@@UAEJPAU_IRP@@@Z 00015820 f   vdw_wdm:kpnpdev.obj
+ 0001:00005b40       ?FileObject@KIrp@@QAEPAU_FILE_OBJECT@@W4EStackLocation@@@Z 00015e40 f i vdw_wdm:kpnpdev.obj
+ 0001:00005ba0       ?Wait@KDispatcherObject@@QAEJDEPAT_LARGE_INTEGER@@W4_KWAIT_REASON@@@Z 00015ea0 f i vdw_wdm:kpnpdev.obj
+ 0001:00005bd0       ?Release@KMutex@@QAEJE@Z   00015ed0 f i vdw_wdm:kpnpdev.obj
+ 0001:00005bf0       ??EKInterlockedCounter@@QAEJXZ 00015ef0 f i vdw_wdm:kpnpdev.obj
+ 0001:00005c10       ??FKInterlockedCounter@@QAEJXZ 00015f10 f i vdw_wdm:kpnpdev.obj
+ 0001:00005c30       ?IndicateBusy@KPnpDevice@@QAEXXZ 00015f30 f i vdw_wdm:kpnpdev.obj
+ 0001:00005da7       ?Pnp@KPnpDevice@@MAEJVKIrp@@@Z 000160a7 f   vdw_wdm:kpnpdev.obj
+ 0001:00007290       ?IsNull@KIrp@@QAEEXZ       00017590 f i vdw_wdm:kpnpdev.obj
+ 0001:000072b0       ??1KDeviceQueue@@QAE@XZ    000175b0 f i vdw_wdm:kpnpdev.obj
+ 0001:000072e0       ??0KDeviceQueue@@QAE@PAU_KDEVICE_QUEUE@@@Z 000175e0 f i vdw_wdm:kpnpdev.obj
+ 0001:00007310       ?Invalidate@KDeviceQueue@@QAEXXZ 00017610 f i vdw_wdm:kpnpdev.obj
+ 0001:00007370       ?Call@KLowerDevice@@QAEJVKIrp@@@Z 00017670 f i vdw_wdm:kpnpdev.obj
+ 0001:000073c0       ?Detach@KDevice@@QAEXPAVKLowerDevice@@@Z 000176c0 f i vdw_wdm:kpnpdev.obj
+ 0001:00007410       ?DeviceQueue@KDevice@@QAEPAU_KDEVICE_QUEUE@@XZ 00017710 f i vdw_wdm:kpnpdev.obj
+ 0001:00007430       ?CurrentIrp@KDevice@@QAEAAPAU_IRP@@XZ 00017730 f i vdw_wdm:kpnpdev.obj
+ 0001:00007450       ?HoldIrp@KPnpDevice@@UAEJVKIrp@@@Z 00017750 f   vdw_wdm:kpnpdev.obj
+ 0001:00007520       ?Acquire@CancelSpinLock@@SGEXZ 00017820 f i vdw_wdm:kpnpdev.obj
+ 0001:00007540       ?Release@CancelSpinLock@@SGXXZ 00017840 f i vdw_wdm:kpnpdev.obj
+ 0001:00007560       ?SetCancelRoutine@KIrp@@QAEP6GXPAU_DEVICE_OBJECT@@PAU_IRP@@@ZP6GX01@Z@Z 00017860 f i vdw_wdm:kpnpdev.obj
+ 0001:00007580       ?WasCanceled@KIrp@@QAEEE@Z 00017880 f i vdw_wdm:kpnpdev.obj
+ 0001:000075c0       ?CancelHeldIrpLINK@KPnpDevice@@KGXPAU_DEVICE_OBJECT@@PAU_IRP@@@Z 000178c0 f i vdw_wdm:kpnpdev.obj
+ 0001:000075f0       ?CancelHeldIrp@KPnpDevice@@IAEXVKIrp@@@Z 000178f0 f   vdw_wdm:kpnpdev.obj
+ 0001:00007680       ?Release@CancelSpinLock@@SGXE@Z 00017980 f i vdw_wdm:kpnpdev.obj
+ 0001:000076a0       ?ProcessHeldRequests@KPnpDevice@@UAEXE@Z 000179a0 f   vdw_wdm:kpnpdev.obj
+ 0001:000077b0       ?IncrementOutstandingRequestCount@KPnpDevice@@QAEJXZ 00017ab0 f   vdw_wdm:kpnpdev.obj
+ 0001:00007870       ?Clear@KEvent@@QAEXXZ      00017b70 f i vdw_wdm:kpnpdev.obj
+ 0001:00007890       ?DecrementOutstandingRequestCount@KPnpDevice@@QAEJXZ 00017b90 f   vdw_wdm:kpnpdev.obj
+ 0001:00007970       ?Set@KEvent@@QAEEJE@Z      00017c70 f i vdw_wdm:kpnpdev.obj
+ 0001:000079a0       ?WaitPowerOff@KPnpDevice@@QAEJ_K@Z 00017ca0 f   vdw_wdm:kpnpdev.obj
+ 0001:00007a70       ?WaitStop@KPnpDevice@@UAEJ_K@Z 00017d70 f   vdw_wdm:kpnpdev.obj
+ 0001:00007b60       ?WaitRemove@KPnpDevice@@UAEJ_K@Z 00017e60 f   vdw_wdm:kpnpdev.obj
+ 0001:00007c50       ?CleanUpHeldRequests@KPnpDevice@@QAEXPAU_FILE_OBJECT@@@Z 00017f50 f   vdw_wdm:kpnpdev.obj
+ 0001:00007db4       ?Power@KPnpDevice@@MAEJVKIrp@@@Z 000180b4 f   vdw_wdm:kpnpdev.obj
+ 0001:00008fa0       ?SetCompletionRoutine@KIrp@@QAEXP6GJPAU_DEVICE_OBJECT@@PAU_IRP@@PAX@Z2EEE@Z 000192a0 f i vdw_wdm:kpnpdev.obj
+ 0001:00009090       ?PowerStateType@KIrp@@QAEAAW4_POWER_STATE_TYPE@@W4EStackLocation@@@Z 00019390 f i vdw_wdm:kpnpdev.obj
+ 0001:00009090       ?IoctlInputBufferSize@KIrp@@QAEAAKW4EStackLocation@@@Z 00019390 f i vdw_wdm:kpnpdev.obj
+ 0001:000090d0       ?PowerStateSetting@KIrp@@QAEAAT_POWER_STATE@@W4EStackLocation@@@Z 000193d0 f i vdw_wdm:kpnpdev.obj
+ 0001:000090d0       ?IoctlCode@KIrp@@QAEAAKW4EStackLocation@@@Z 000193d0 f i vdw_wdm:kpnpdev.obj
+ 0001:00009110       ?PowerCall@KPnpLowerDevice@@QAEJVKIrp@@@Z 00019410 f i vdw_wdm:kpnpdev.obj
+ 0001:00009190       ?WaitWakeCompletionRoutineLINK@KPnpDevice@@KGJPAU_DEVICE_OBJECT@@PAU_IRP@@PAX@Z 00019490 f i vdw_wdm:kpnpdev.obj
+ 0001:000091c0       ?DevicePowerUpCompleteLINK@KPnpDevice@@KGJPAU_DEVICE_OBJECT@@PAU_IRP@@PAX@Z 000194c0 f i vdw_wdm:kpnpdev.obj
+ 0001:000091f0       ?OnDevicePowerUp@KPnpDevice@@UAEJVKIrp@@@Z 000194f0 f   vdw_wdm:kpnpdev.obj
+ 0001:000091f0       ?OnSystemSleep@KPnpDevice@@UAEJVKIrp@@@Z 000194f0 f   vdw_wdm:kpnpdev.obj
+ 0001:000091f0       ?OnSystemPowerUp@KPnpDevice@@UAEJVKIrp@@@Z 000194f0 f   vdw_wdm:kpnpdev.obj
+ 0001:000091f0       ?OnDeviceSleep@KPnpDevice@@UAEJVKIrp@@@Z 000194f0 f   vdw_wdm:kpnpdev.obj
+ 0001:00009200       ?DevicePowerUpComplete@KPnpDevice@@IAGJVKIrp@@@Z 00019500 f   vdw_wdm:kpnpdev.obj
+ 0001:000092c0       ?SetPowerPolicy@KPnpDevice@@UAEXE@Z 000195c0 f   vdw_wdm:kpnpdev.obj
+ 0001:00009670       ?DetermineNewDevicePowerState@KPnpDevice@@UAE?AW4_DEVICE_POWER_STATE@@W4_SYSTEM_POWER_STATE@@@Z 00019970 f   vdw_wdm:kpnpdev.obj
+ 0001:000096b0       ?WaitWakeCompletionRoutine@KPnpDevice@@IAGJVKIrp@@@Z 000199b0 f   vdw_wdm:kpnpdev.obj
+ 0001:000097af       ?GetDeviceCapabilities@KPnpDevice@@QAEJXZ 00019aaf f   vdw_wdm:kpnpdev.obj
+ 0001:00009920       ?IoctlOutputBufferSize@KIrp@@QAEAAKW4EStackLocation@@@Z 00019c20 f i vdw_wdm:kpnpdev.obj
+ 0001:00009920       ?WaitWakePowerState@KIrp@@QAEAAW4_SYSTEM_POWER_STATE@@W4EStackLocation@@@Z 00019c20 f i vdw_wdm:kpnpdev.obj
+ 0001:00009920       ?PowerSequence@KIrp@@QAEAAPAU_POWER_SEQUENCE@@W4EStackLocation@@@Z 00019c20 f i vdw_wdm:kpnpdev.obj
+ 0001:00009920       ?DeviceCapabilities@KIrp@@QAEAAPAU_DEVICE_CAPABILITIES@@W4EStackLocation@@@Z 00019c20 f i vdw_wdm:kpnpdev.obj
+ 0001:00009920       ?ReadSize@KIrp@@QAEAAKW4EStackLocation@@@Z 00019c20 f i vdw_wdm:kpnpdev.obj
+ 0001:00009920       ?WriteSize@KIrp@@QAEAAKW4EStackLocation@@@Z 00019c20 f i vdw_wdm:kpnpdev.obj
+ 0001:00009920       ?Urb@KIrp@@QAEAAPAU_URB@@W4EStackLocation@@@Z 00019c20 f i vdw_wdm:kpnpdev.obj
+ 0001:000099ac       ?GetPowerSequence@KPnpDevice@@QAEJPAU_POWER_SEQUENCE@@@Z 00019cac f   vdw_wdm:kpnpdev.obj
+ 0001:00009ab0       ?RequestPowerCompletionCallback@KPnpDevice@@IAGXET_POWER_STATE@@PAUPowerCompletionContext@@PAU_IO_STATUS_BLOCK@@@Z 00019db0 f   vdw_wdm:kpnpdev.obj
+ 0001:00009b50       ?RequestWaitWakeCompletionCallback@KPnpDevice@@IAGXET_POWER_STATE@@PAUPowerCompletionContext@@PAU_IO_STATUS_BLOCK@@@Z 00019e50 f   vdw_wdm:kpnpdev.obj
+ 0001:00009d42       ?RequestDevicePowerIrpWait@KPnpDevice@@QAEJEW4_DEVICE_POWER_STATE@@P6GXPAU_DEVICE_OBJECT@@ET_POWER_STATE@@PAXPAU_IO_STATUS_BLOCK@@@Z@Z 0001a042 f   vdw_wdm:kpnpdev.obj
+ 0001:00009ed0       ?RequestPowerCompletionCallbackLINK@KPnpDevice@@KGXPAU_DEVICE_OBJECT@@ET_POWER_STATE@@PAXPAU_IO_STATUS_BLOCK@@@Z 0001a1d0 f i vdw_wdm:kpnpdev.obj
+ 0001:0000a042       ?RequestDevicePowerIrp@KPnpDevice@@QAEJEW4_DEVICE_POWER_STATE@@P6GXPAU_DEVICE_OBJECT@@ET_POWER_STATE@@PAXPAU_IO_STATUS_BLOCK@@@Z@Z 0001a342 f   vdw_wdm:kpnpdev.obj
+ 0001:0000a200       ?RequestWaitWakeCompletionCallbackLINK@KPnpDevice@@KGXPAU_DEVICE_OBJECT@@ET_POWER_STATE@@PAXPAU_IO_STATUS_BLOCK@@@Z 0001a500 f i vdw_wdm:kpnpdev.obj
+ 0001:0000a230       ?CancelWaitWakeIrp@KPnpDevice@@QAEEXZ 0001a530 f   vdw_wdm:kpnpdev.obj
+ 0001:0000a30a       ?RegisterInterface@KPnpDevice@@QAEPAU_UNICODE_STRING@@PBU_GUID@@PAU2@@Z 0001a60a f   vdw_wdm:kpnpdev.obj
+ 0001:0000a3c0       ??0INTERFACE_LIST_ENTRY@@QAE@PBU_GUID@@@Z 0001a6c0 f i vdw_wdm:kpnpdev.obj
+ 0001:0000a410       ?EnableInterfaces@KPnpDevice@@QAEXPAU_UNICODE_STRING@@@Z 0001a710 f   vdw_wdm:kpnpdev.obj
+ 0001:0000a480       ?DisableInterfaces@KPnpDevice@@QAEXPAU_UNICODE_STRING@@@Z 0001a780 f   vdw_wdm:kpnpdev.obj
+ 0001:0000a4f0       ?OnStartDevice@KPnpDevice@@UAEJVKIrp@@@Z 0001a7f0 f   vdw_wdm:kpnpdev.obj
+ 0001:0000a530       ?OnStopDevice@KPnpDevice@@UAEJVKIrp@@@Z 0001a830 f   vdw_wdm:kpnpdev.obj
+ 0001:0000a590       ?OnQueryRemoveDevice@KPnpDevice@@UAEJVKIrp@@@Z 0001a890 f   vdw_wdm:kpnpdev.obj
+ 0001:0000a5f0       ?OnRemoveDevice@KPnpDevice@@UAEJVKIrp@@@Z 0001a8f0 f   vdw_wdm:kpnpdev.obj
+ 0001:0000a650       ?OnSurpriseRemoval@KPnpDevice@@UAEJVKIrp@@@Z 0001a950 f   vdw_wdm:kpnpdev.obj
+ 0001:0000a6b0       ?OnCancelRemoveDevice@KPnpDevice@@UAEJVKIrp@@@Z 0001a9b0 f   vdw_wdm:kpnpdev.obj
+ 0001:0000a700       ?OnQueryStopDevice@KPnpDevice@@UAEJVKIrp@@@Z 0001aa00 f   vdw_wdm:kpnpdev.obj
+ 0001:0000a760       ?OnCancelStopDevice@KPnpDevice@@UAEJVKIrp@@@Z 0001aa60 f   vdw_wdm:kpnpdev.obj
+ 0001:0000a7b0       ?OnQueryDeviceState@KPnpDevice@@UAEJVKIrp@@@Z 0001aab0 f   vdw_wdm:kpnpdev.obj
+ 0001:0000a810       ?OnWaitWake@KPnpDevice@@UAEJVKIrp@@@Z 0001ab10 f   vdw_wdm:kpnpdev.obj
+ 0001:0000a860       ?OnPowerSequence@KPnpDevice@@UAEJVKIrp@@@Z 0001ab60 f   vdw_wdm:kpnpdev.obj
+ 0001:0000a8b0       ?OnSetPower@KPnpDevice@@UAEJVKIrp@@@Z 0001abb0 f   vdw_wdm:kpnpdev.obj
+ 0001:0000a8f0       ?OnQueryPower@KPnpDevice@@UAEJVKIrp@@@Z 0001abf0 f   vdw_wdm:kpnpdev.obj
+ 0001:0000a930       ?OnReadConfig@KPnpDevice@@UAEJVKIrp@@@Z 0001ac30 f   vdw_wdm:kpnpdev.obj
+ 0001:0000a930       ?OnEject@KPnpDevice@@UAEJVKIrp@@@Z 0001ac30 f   vdw_wdm:kpnpdev.obj
+ 0001:0000a930       ?OnQueryBusInformation@KPnpDevice@@UAEJVKIrp@@@Z 0001ac30 f   vdw_wdm:kpnpdev.obj
+ 0001:0000a930       ?OnSetLock@KPnpDevice@@UAEJVKIrp@@@Z 0001ac30 f   vdw_wdm:kpnpdev.obj
+ 0001:0000a930       ?OnDeviceUsageNotification@KPnpDevice@@UAEJVKIrp@@@Z 0001ac30 f   vdw_wdm:kpnpdev.obj
+ 0001:0000a930       ?OnQueryCapabilities@KPnpDevice@@UAEJVKIrp@@@Z 0001ac30 f   vdw_wdm:kpnpdev.obj
+ 0001:0000a930       ?OnBusReset@KPnpDevice@@UAEJVKIrp@@@Z 0001ac30 f   vdw_wdm:kpnpdev.obj
+ 0001:0000a930       ?OnWriteConfig@KPnpDevice@@UAEJVKIrp@@@Z 0001ac30 f   vdw_wdm:kpnpdev.obj
+ 0001:0000a930       ?OnQueryDeviceRelations@KPnpDevice@@UAEJVKIrp@@@Z 0001ac30 f   vdw_wdm:kpnpdev.obj
+ 0001:0000a930       ?OnQueryDeviceText@KPnpDevice@@UAEJVKIrp@@@Z 0001ac30 f   vdw_wdm:kpnpdev.obj
+ 0001:0000a930       ?OnQueryId@KPnpDevice@@UAEJVKIrp@@@Z 0001ac30 f   vdw_wdm:kpnpdev.obj
+ 0001:0000a930       ?OnQueryInterface@KPnpDevice@@UAEJVKIrp@@@Z 0001ac30 f   vdw_wdm:kpnpdev.obj
+ 0001:0000a930       ?OnQueryResources@KPnpDevice@@UAEJVKIrp@@@Z 0001ac30 f   vdw_wdm:kpnpdev.obj
+ 0001:0000a930       ?OnFilterResourceRequirements@KPnpDevice@@UAEJVKIrp@@@Z 0001ac30 f   vdw_wdm:kpnpdev.obj
+ 0001:0000a930       ?OnQueryResourceRequirements@KPnpDevice@@UAEJVKIrp@@@Z 0001ac30 f   vdw_wdm:kpnpdev.obj
+ 0001:0000a950       ??0?$KInterlockedList@U_IRP@@@@QAE@XZ 0001ac50 f i vdw_wdm:kpnpdev.obj
+ 0001:0000a990       ?ListEntryOffset@@YGKPAU_IRP@@@Z 0001ac90 f i vdw_wdm:kpnpdev.obj
+ 0001:0000a9a0       ?InsertTail@?$KInterlockedList@U_IRP@@@@QAEXPAU_IRP@@@Z 0001aca0 f i vdw_wdm:kpnpdev.obj
+ 0001:0000a9d0       ?Remove@?$KInterlockedList@U_IRP@@@@QAEPAU_IRP@@PAU2@@Z 0001acd0 f i vdw_wdm:kpnpdev.obj
+ 0001:0000aa10       ?RemoveHead@?$KInterlockedList@U_IRP@@@@QAEPAU_IRP@@XZ 0001ad10 f i vdw_wdm:kpnpdev.obj
+ 0001:0000aa40       ?IsEmpty@?$KInterlockedList@U_IRP@@@@QAEEXZ 0001ad40 f i vdw_wdm:kpnpdev.obj
+ 0001:0000aa70       ?Lock@?$KInterlockedList@U_IRP@@@@QAEXXZ 0001ad70 f i vdw_wdm:kpnpdev.obj
+ 0001:0000aaa0       ?Unlock@?$KInterlockedList@U_IRP@@@@QAEXXZ 0001ada0 f i vdw_wdm:kpnpdev.obj
+ 0001:0000aac0       ??0?$KList@UINTERFACE_LIST_ENTRY@@@@QAE@XZ 0001adc0 f i vdw_wdm:kpnpdev.obj
+ 0001:0000ab00       ?RemoveHead@?$KList@UINTERFACE_LIST_ENTRY@@@@QAEPAUINTERFACE_LIST_ENTRY@@XZ 0001ae00 f i vdw_wdm:kpnpdev.obj
+ 0001:0000ab40       ?Lock@?$KList@UINTERFACE_LIST_ENTRY@@@@UAEXXZ 0001ae40 f i vdw_wdm:kpnpdev.obj
+ 0001:0000ab40       ?Unlock@?$KList@UINTERFACE_LIST_ENTRY@@@@UAEXXZ 0001ae40 f i vdw_wdm:kpnpdev.obj
+ 0001:0000ab40       ?Unlock@KGenericLockNop@@QAEXXZ 0001ae40 f i vdw_wdm:kpnpdev.obj
+ 0001:0000ab40       ?Lock@?$KList@UPreconfiguredInterfaceListEntry@@@@UAEXXZ 0001ae40 f i vdw_wdm:kpnpdev.obj
+ 0001:0000ab40       ?Lock@KGenericLockNop@@QAEXXZ 0001ae40 f i vdw_wdm:kpnpdev.obj
+ 0001:0000ab40       ?Unlock@?$KList@UPreconfiguredInterfaceListEntry@@@@UAEXXZ 0001ae40 f i vdw_wdm:kpnpdev.obj
+ 0001:0000ab50       ?ListEntryOffset@@YGKPAUINTERFACE_LIST_ENTRY@@@Z 0001ae50 f i vdw_wdm:kpnpdev.obj
+ 0001:0000abd4       ?SubmitUrb@KUsbLowerDevice@@QAEJPAU_URB@@P6GJPAU_DEVICE_OBJECT@@PAU_IRP@@PAX@Z3K@Z 0001aed4 f   vdw_wdm:kusb.obj
+ 0001:0000af80       ?PDO@KPnpLowerDevice@@QAEPAU_DEVICE_OBJECT@@XZ 0001b280 f i vdw_wdm:kusb.obj
+ 0001:0000af80       ?MaxInserted@?$KArray@PAVKUsbPipe@@VKGenericLockNop@@@@QAEHXZ 0001b280 f i vdw_wdm:kusb.obj
+ 0001:0000af80       ?MaxInserted@?$KArray@PAVKUsbInterface@@VKGenericLockNop@@@@QAEHXZ 0001b280 f i vdw_wdm:kusb.obj
+ 0001:0000afa0       ?SyncCompleteSubmitUrb@KUsbLowerDevice@@KGJPAU_DEVICE_OBJECT@@PAU_IRP@@PAX@Z 0001b2a0 f   vdw_wdm:kusb.obj
+ 0001:0000b010       ?AsyncCompleteSubmitUrb@KUsbLowerDevice@@KGJPAU_DEVICE_OBJECT@@PAU_IRP@@PAX@Z 0001b310 f   vdw_wdm:kusb.obj
+ 0001:0000b118       ?SubmitUrb@KUsbLowerDevice@@QAEJVKIrp@@PAU_URB@@P6GJPAU_DEVICE_OBJECT@@PAU_IRP@@PAX@Z4K@Z 0001b418 f   vdw_wdm:kusb.obj
+ 0001:0000b3b0       ??1KUsbLowerDevice@@QAE@XZ 0001b6b0 f   vdw_wdm:kusb.obj
+ 0001:0000b3f0       ??1KPnpLowerDevice@@QAE@XZ 0001b6f0 f i vdw_wdm:kusb.obj
+ 0001:0000b410       ?ReleaseResources@KUsbLowerDevice@@QAEXXZ 0001b710 f   vdw_wdm:kusb.obj
+ 0001:0000b538       ?GetDeviceDescriptor@KUsbLowerDevice@@QAEJPAU_USB_DEVICE_DESCRIPTOR@@@Z 0001b838 f   vdw_wdm:kusb.obj
+ 0001:0000b5de       ?Preconfigure@KUsbLowerDevice@@QAEJEK@Z 0001b8de f   vdw_wdm:kusb.obj
+ 0001:0000b70d       ?LocateInterface@KUsbLowerDevice@@QAEPAU_USB_INTERFACE_DESCRIPTOR@@PAPAXPAPAU_USB_ENDPOINT_DESCRIPTOR@@JJJJJ@Z 0001ba0d f   vdw_wdm:kusb.obj
+ 0001:0000b7f6       ?PreconfigureInterface@KUsbLowerDevice@@QAEJPAU_USB_INTERFACE_DESCRIPTOR@@@Z 0001baf6 f   vdw_wdm:kusb.obj
+ 0001:0000b890       ?NumberOfPipes@KUsbInterface@@QAEKXZ 0001bb90 f i vdw_wdm:kusb.obj
+ 0001:0000b8d0       ?Pipes@KUsbInterface@@QAEPAU_USBD_PIPE_INFORMATION@@H@Z 0001bbd0 f i vdw_wdm:kusb.obj
+ 0001:0000ba42       ?ActivateConfiguration@KUsbLowerDevice@@QAE?AW4AC_STATUS@@EK@Z 0001bd42 f   vdw_wdm:kusb.obj
+ 0001:0000bf10       ?Open@KUsbPipe@@QAEJAAVKUsbInterface@@@Z 0001c210 f i vdw_wdm:kusb.obj
+ 0001:0000bfa0       ?Close@KUsbPipe@@QAEXXZ    0001c2a0 f i vdw_wdm:kusb.obj
+ 0001:0000bfd0       ?Open@KUsbInterface@@QAEJXZ 0001c2d0 f i vdw_wdm:kusb.obj
+ 0001:0000c090       ?Close@KUsbInterface@@QAEXXZ 0001c390 f i vdw_wdm:kusb.obj
+ 0001:0000c1ed       ?Configure@KUsbLowerDevice@@IAEJAAV?$KArray@PAVKUsbPipe@@VKGenericLockNop@@@@PAU_USB_ENDPOINT_DESCRIPTOR@@@Z 0001c4ed f   vdw_wdm:kusb.obj
+ 0001:0000c69c       ?InitializePreConfiguredInterface@KUsbLowerDevice@@IAEXPAU_USB_INTERFACE_DESCRIPTOR@@PAUPreconfiguredInterfaceListEntry@@@Z 0001c99c f   vdw_wdm:kusb.obj
+ 0001:0000c867       ?DeActivateConfiguration@KUsbLowerDevice@@QAEJP6GJPAU_DEVICE_OBJECT@@PAU_IRP@@PAX@Z2@Z 0001cb67 f   vdw_wdm:kusb.obj
+ 0001:0000ca2d       ?Unconfigure@KUsbLowerDevice@@QAEJP6GJPAU_DEVICE_OBJECT@@PAU_IRP@@PAX@Z2@Z 0001cd2d f   vdw_wdm:kusb.obj
+ 0001:0000cbcd       ?Initialize@KUsbPipe@@QAEJAAVKUsbLowerDevice@@EK@Z 0001cecd f   vdw_wdm:kusb.obj
+ 0001:0000cc9a       ?RegisterPipe@KUsbLowerDevice@@QAEJPAVKUsbPipe@@@Z 0001cf9a f   vdw_wdm:kusb.obj
+ 0001:0000cda9       ?BuildInterruptTransfer@KUsbPipe@@QAEPAU_URB@@PAXKEPAU2@1E@Z 0001d0a9 f   vdw_wdm:kusb.obj
+ 0001:0000cf5c       ?BuildBulkTransfer@KUsbPipe@@QAEPAU_URB@@AAVKMemory@@KEPAU2@E1@Z 0001d25c f   vdw_wdm:kusb.obj
+ 0001:0000d080       ??1?$KArray@PAVKUsbPipe@@VKGenericLockNop@@@@QAE@XZ 0001d380 f i vdw_wdm:kusb.obj
+ 0001:0000d080       ??1?$KArray@PAVKUsbInterface@@VKGenericLockNop@@@@QAE@XZ 0001d380 f i vdw_wdm:kusb.obj
+ 0001:0000d0b0       ?Invalidate@?$KArray@PAVKUsbInterface@@VKGenericLockNop@@@@QAEXXZ 0001d3b0 f i vdw_wdm:kusb.obj
+ 0001:0000d0b0       ?Invalidate@?$KArray@PAVKUsbPipe@@VKGenericLockNop@@@@QAEXXZ 0001d3b0 f i vdw_wdm:kusb.obj
+ 0001:0000d110       ?IsValid@?$KArray@PAVKUsbPipe@@VKGenericLockNop@@@@QAEEXZ 0001d410 f i vdw_wdm:kusb.obj
+ 0001:0000d110       ?IsValid@?$KArray@PAVKUsbInterface@@VKGenericLockNop@@@@QAEEXZ 0001d410 f i vdw_wdm:kusb.obj
+ 0001:0000d150       ??A?$KArray@PAVKUsbPipe@@VKGenericLockNop@@@@QAEAAPAVKUsbPipe@@H@Z 0001d450 f i vdw_wdm:kusb.obj
+ 0001:0000d150       ??A?$KArray@PAVKUsbInterface@@VKGenericLockNop@@@@QAEAAPAVKUsbInterface@@H@Z 0001d450 f i vdw_wdm:kusb.obj
+ 0001:0000d1b0       ?Resize@?$KArray@PAVKUsbInterface@@VKGenericLockNop@@@@QAEJHE@Z 0001d4b0 f i vdw_wdm:kusb.obj
+ 0001:0000d1b0       ?Resize@?$KArray@PAVKUsbPipe@@VKGenericLockNop@@@@QAEJHE@Z 0001d4b0 f i vdw_wdm:kusb.obj
+ 0001:0000d2d0       ?Head@?$KList@UINTERFACE_LIST_ENTRY@@@@QAEPAUINTERFACE_LIST_ENTRY@@XZ 0001d5d0 f i vdw_wdm:kusb.obj
+ 0001:0000d2d0       ?Head@?$KList@UPreconfiguredInterfaceListEntry@@@@QAEPAUPreconfiguredInterfaceListEntry@@XZ 0001d5d0 f i vdw_wdm:kusb.obj
+ 0001:0000d310       ?Next@?$KList@UINTERFACE_LIST_ENTRY@@@@QAEPAUINTERFACE_LIST_ENTRY@@PAU2@@Z 0001d610 f i vdw_wdm:kusb.obj
+ 0001:0000d310       ?Next@?$KList@UPreconfiguredInterfaceListEntry@@@@QAEPAUPreconfiguredInterfaceListEntry@@PAU2@@Z 0001d610 f i vdw_wdm:kusb.obj
+ 0001:0000d350       ?InsertTail@?$KList@UPreconfiguredInterfaceListEntry@@@@QAEXPAUPreconfiguredInterfaceListEntry@@@Z 0001d650 f i vdw_wdm:kusb.obj
+ 0001:0000d350       ?InsertTail@?$KList@UINTERFACE_LIST_ENTRY@@@@QAEXPAUINTERFACE_LIST_ENTRY@@@Z 0001d650 f i vdw_wdm:kusb.obj
+ 0001:0000d390       ?Count@?$KList@UPreconfiguredInterfaceListEntry@@@@QAEKXZ 0001d690 f i vdw_wdm:kusb.obj
+ 0001:0000d3d0       ?Reset@?$KList@UPreconfiguredInterfaceListEntry@@@@QAEXXZ 0001d6d0 f i vdw_wdm:kusb.obj
+ 0001:0000d400       ??BKDevice@@QAEPAU_DEVICE_OBJECT@@XZ 0001d700 f i vdw_wdm:kpnplow.obj
+ 0001:0000d480       ?Initialize@KPnpLowerDevice@@QAEJPAVKDevice@@PAU_DEVICE_OBJECT@@@Z 0001d780 f   vdw_wdm:kpnplow.obj
+ 0001:0000d530       ??0KPnpLowerDevice@@QAE@XZ 0001d830 f   vdw_wdm:kpnplow.obj
+ 0001:0000d5bc       ?PowerCallWaitComplete@KPnpLowerDevice@@QAEJVKIrp@@EPAK@Z 0001d8bc f   vdw_wdm:kpnplow.obj
+ 0001:0000d6e0       ??0_listcore@@IAE@K@Z      0001d9e0 f   vdw_wdm:klist.obj
+ 0001:0000d710       ?_head@_listcore@@QAEPAXXZ 0001da10 f   vdw_wdm:klist.obj
+ 0001:0000d740       ?Container@_listcore@@QAEPAXPAU_LIST_ENTRY@@@Z 0001da40 f i vdw_wdm:klist.obj
+ 0001:0000d770       ?_insertTail@_listcore@@QAEXPAX@Z 0001da70 f   vdw_wdm:klist.obj
+ 0001:0000d7e0       ?ListEntryPointer@_listcore@@QAEPAU_LIST_ENTRY@@PAX@Z 0001dae0 f i vdw_wdm:klist.obj
+ 0001:0000d800       ?_next@_listcore@@QAEPAXPAX@Z 0001db00 f   vdw_wdm:klist.obj
+ 0001:0000d850       ?_remove@_listcore@@QAEPAXPAX@Z 0001db50 f   vdw_wdm:klist.obj
+ 0001:0000d8a0       ?_isEmpty@_listcore@@QAEEXZ 0001dba0 f   vdw_wdm:klist.obj
+ 0001:0000d8c0       ?_removeHead@_listcore@@QAEPAXXZ 0001dbc0 f   vdw_wdm:klist.obj
+ 0001:0000d920       ?_count@_listcore@@QAEKXZ  0001dc20 f   vdw_wdm:klist.obj
+ 0001:0000d970       ?_reset@_listcore@@QAEXXZ  0001dc70 f   vdw_wdm:klist.obj
+ 0001:0000d990       ??0KLowerDevice@@QAE@XZ    0001dc90 f   vdw_wdm:klower.obj
+ 0001:0000d9c0       ??0KLowerDevice@@QAE@PBGK@Z 0001dcc0 f   vdw_wdm:klower.obj
+ 0001:0000dabc       ?CallWaitComplete@KLowerDevice@@QAEJVKIrp@@EPAK@Z 0001ddbc f   vdw_wdm:klower.obj
+ 0001:0000dbe0       ?SynchCallCompletionRoutine@KLowerDevice@@KGJPAU_DEVICE_OBJECT@@PAU_IRP@@PAX@Z 0001dee0 f   vdw_wdm:klower.obj
+ 0001:0000dc90       ?DeviceIoControl@KLowerDevice@@QAEJKPAXK0KEPAK@Z 0001df90 f   vdw_wdm:klower.obj
+ 0001:0000ddb0       ?ustrlen@@YGKPBG@Z         0001e0b0 f   vdw_wdm:util.obj
+ 0001:0000ddf0       ?ustrsiz@@YGKPBG@Z         0001e0f0 f   vdw_wdm:util.obj
+ 0001:0000de10       ?GetObjectName@@YGPAU_UNICODE_STRING@@PAX@Z 0001e110 f   vdw_wdm:util.obj
+ 0001:0000de50       ??0KUstring@@QAE@GW4_POOL_TYPE@@@Z 0001e150 f   vdw_wdm:kustring.obj
+ 0001:0000dec0       ?Assign@KUstring@@QAEJAAV1@@Z 0001e1c0 f   vdw_wdm:kustring.obj
+ 0001:0000df20       ?Assign@KUstring@@QAEJPBG@Z 0001e220 f   vdw_wdm:kustring.obj
+ 0001:0000df90       ?GrowMaxBy@KUstring@@QAEJGW4_POOL_TYPE@@@Z 0001e290 f   vdw_wdm:kustring.obj
+ 0001:0000e050       ?Invalidate@KEvent@@QAEXXZ 0001e350 f   vdw_wdm:kevent.obj
+ 0001:0000e0a0       ??0KDispatcherObject@@IAE@PAXE@Z 0001e3a0 f i vdw_wdm:kevent.obj
+ 0001:0000e0e0       ?RemoveSpecificEntry@KDeviceQueue@@QAEEPAU_IRP@@@Z 0001e3e0 f i vdw_wdm:kdevque.obj
+ 0001:0000e100       ?_lock@KDeviceQueue@@QAEEE@Z 0001e400 f i vdw_wdm:kdevque.obj
+ 0001:0000e130       ??0KSpinLock@@QAE@PAK@Z    0001e430 f i vdw_wdm:kdevque.obj
+ 0001:0000e150       ?_lock@KSpinLock@@QAEEE@Z  0001e450 f i vdw_wdm:kdevque.obj
+ 0001:0000e190       ?_unlock@KDeviceQueue@@QAEXE@Z 0001e490 f i vdw_wdm:kdevque.obj
+ 0001:0000e1c0       ?_unlock@KSpinLock@@QAEXE@Z 0001e4c0 f i vdw_wdm:kdevque.obj
+ 0001:0000e200       ?Head@KDeviceQueue@@QAEPAU_IRP@@XZ 0001e500 f i vdw_wdm:kdevque.obj
+ 0001:0000e220       ?Tail@KDeviceQueue@@QAEPAU_IRP@@XZ 0001e520 f i vdw_wdm:kdevque.obj
+ 0001:0000e240       ?Next@KDeviceQueue@@QAEPAU_IRP@@PAU2@@Z 0001e540 f i vdw_wdm:kdevque.obj
+ 0001:0000e280       ?Container@KDeviceQueue@@IAEPAU_IRP@@PAU_KDEVICE_QUEUE_ENTRY@@@Z 0001e580 f i vdw_wdm:kdevque.obj
+ 0001:0000e2b0       ?PnpCleanUp@KDeviceQueue@@QAEXPAVKPnpDevice@@PAU_FILE_OBJECT@@@Z 0001e5b0 f   vdw_wdm:kdevque.obj
+ 0001:0000e42e       _memmove                   0001e72e f   wdm:NTOSKRNL.EXE
+ 0001:0000e434       _strchr                    0001e734 f   wdm:NTOSKRNL.EXE
+ 0001:0000e43a       __vsnprintf                0001e73a f   wdm:NTOSKRNL.EXE
+ 0001:0000e440       _DbgPrint                  0001e740 f   wdm:NTOSKRNL.EXE
+ 0001:0000e450       __allmul                   0001e750 f   wdm:llmul.obj
+ 0002:00000000       ?____CR@@3PADA             0001e7a0     Usb_Wdm.obj
+ 0002:00000004       ?DefaultPoolTag@@3KA       0001e7a4     Usb_Wdm.obj
+ 0002:00000010       ?Usb_WdmDevice_Guid@@3U_GUID@@A 0001e7b0     Usb_WdmDevice.obj
+ 0002:00000084       ?ScratchBufferIndex@@3JA   0001e824     vdw_wdm:ktrace.obj
+ 0002:000000fc       ?IrpDispatchTable@@3PAP8KDevice@@AEJVKIrp@@@ZA 0001e89c     vdw_wdm:kdevice.obj
+ 0002:00000170       ?t@@3VKTrace@@A            0001e910     Usb_Wdm.obj
+ 0002:00000198       ?m_TheDriver@KDriver@@1PAV1@A 0001e938     Usb_Wdm.obj
+ 0002:0000019c       ?m_bFilterDispatch@KDriver@@1EA 0001e93c     Usb_Wdm.obj
+ 0002:000001a0       ?m_DriverClass@KDriver@@2U_UNICODE_STRING@@A 0001e940     Usb_Wdm.obj
+ 0002:000001a8       ?_bWindows98_@@3EA         0001e948     Usb_Wdm.obj
+ 0002:000001b0       ?ScratchBuffers@@3PAUKTRACESCRATCHBUFFER@@A 0001e950     vdw_wdm:ktrace.obj
+ 0002:000005b0       ?m_Open@KTrace@@1P6GPAXPAU_UNICODE_STRING@@PAU_KINTERRUPT@@K@ZA 0001ed50     vdw_wdm:ktrace.obj
+ 0002:000005b4       ?m_Post@KTrace@@1P6GXPAXPAD@ZA 0001ed54     vdw_wdm:ktrace.obj
+ 0002:000005b8       ?m_Close@KTrace@@1P6GXPAX@ZA 0001ed58     vdw_wdm:ktrace.obj
+ 0002:000005bc       ?m_ListHead@AtExitCall@@2PAV1@A 0001ed5c     vdw_wdm:stcinit.obj
+ 0002:000005c0       ?m_Status@AtExitCall@@2JA  0001ed60     vdw_wdm:stcinit.obj
+ 0002:000005c8       ?DriverInstance@BoundsChecker@@3PAVKDriver@@A 0001ed68     vdw_wdm:kchecker.obj
+ 0002:000005d0       ?BchkdInfo@BoundsChecker@@3UBchkdInfo_t@@A 0001ed70     vdw_wdm:kchecker.obj
+ 0002:000005e8       ?m_DummyEvent@KLowerDevice@@1U_KEVENT@@A 0001ed88     vdw_wdm:klower.obj
+ 0002:000005f8       ?m_PreviousState@CancelSpinLock@@1EA 0001ed98     vdw_wdm:kspin.obj
+ 0003:00000000       ?___StartInitCalls__@@3PAP6GXXZA 0001eda0     vdw_wdm:stcinit.obj
+ 0003:00000008       ?___EndInitCalls__@@3PAP6GXXZA 0001eda8     vdw_wdm:stcinit.obj
+ 0004:00000000       ?___StlStartInitCalls__@@3PAP6GXXZA 0001edc0     vdw_wdm:stcinit.obj
+ 0004:00000004       ?___StlEndInitCalls__@@3PAP6GXXZA 0001edc4     vdw_wdm:stcinit.obj
+ 0004:00000008       ?___StlStartTerminateCalls__@@3PAP6GXXZA 0001edc8     vdw_wdm:stcinit.obj
+ 0004:0000000c       ?___StlEndTerminateCalls__@@3PAP6GXXZA 0001edcc     vdw_wdm:stcinit.obj
+ 0005:0000006b       ?UnloadDispatch@KDriver@@KGXPAU_DRIVER_OBJECT@@@Z 0001ee4b f   Usb_Wdm.obj
+ 0005:000000f0       ?Unload@KDriver@@UAEXXZ    0001eed0 f   Usb_Wdm.obj
+ 0005:00000110       ?_DeleteDeviceChain@@YGXPAU_DEVICE_OBJECT@@@Z 0001eef0 f   Usb_Wdm.obj
+ 0005:00000150       ?DeleteDevices@KDriver@@QAEXXZ 0001ef30 f   Usb_Wdm.obj
+ 0005:000001dc       ??0KRegistryKey@@QAE@PAU_UNICODE_STRING@@PBGEKKK@Z 0001efbc f   vdw_wdm:kregkey.obj
+ 0005:000002ec       ??0KRegistryKey@@QAE@W4__registryRoot@@PBGEKKK@Z 0001f0cc f   vdw_wdm:kregkey.obj
+ 0005:00000416       ?Reconstruct@KRegistryKey@@QAEJPAU_UNICODE_STRING@@0KKEK@Z 0001f1f6 f   vdw_wdm:kregkey.obj
+ 0005:00000775       ?QueryValue@KRegistryKey@@QAEJPBGPAKAAKPAX@Z 0001f555 f   vdw_wdm:kregkey.obj
+ 0005:0000093c       ?QueryValue@KRegistryKey@@QAEJPBGPAK@Z 0001f71c f   vdw_wdm:kregkey.obj
+ 0005:00000bea       ?GetRootPath@KRegistryKey@@SGPAU_UNICODE_STRING@@PAU2@W4__registryRoot@@@Z 0001f9ca f   vdw_wdm:kregkey.obj
+ 0005:00000ca0       ??0KDevice@@QAE@XZ         0001fa80 f   vdw_wdm:kdevice.obj
+ 0005:00000d00       ?CatNames@@YGJAAVKUstring@@PBG1W4_POOL_TYPE@@@Z 0001fae0 f   vdw_wdm:kdevice.obj
+ 0005:00000d80       ??1KDevice@@QAE@XZ         0001fb60 f   vdw_wdm:kdevice.obj
+ 0005:00000ec0       ??2KDevice@@SAPAXIPBGK0KK@Z 0001fca0 f   vdw_wdm:kdevice.obj
+ 0005:00000f10       ??3KDevice@@SAXPAX@Z       0001fcf0 f   vdw_wdm:kdevice.obj
+ 0005:00000fb6       ?__construct@KDevice@@KGPAV1@PAV1@KPBGK1KKAAJ@Z 0001fd96 f   vdw_wdm:kdevice.obj
+ 0005:00001380       ?CheckDriverFunctions@KDevice@@IAEXXZ 00020160 f   vdw_wdm:kdevice.obj
+ 0005:00001400       ?SubscribeShutdownNotification@KDevice@@QAEJXZ 000201e0 f   vdw_wdm:kdevice.obj
+ 0005:00001420       ?CancelShutdownNotification@KDevice@@QAEXXZ 00020200 f   vdw_wdm:kdevice.obj
+ 0005:00001430       ??0KUnitizedName@@QAE@PBGKK@Z 00020210 f   vdw_wdm:kunitnam.obj
+ 0005:0000159c       ?__construct@KUnitizedName@@IAEXPAU_UNICODE_STRING@@@Z 0002037c f   vdw_wdm:kunitnam.obj
+ 0005:000016c0       ?Invalidate@KUnitizedName@@QAEXXZ 000204a0 f   vdw_wdm:kunitnam.obj
+ 0005:00001700       ?NextUnit@KUnitizedName@@QAEXXZ 000204e0 f   vdw_wdm:kunitnam.obj
+ 0005:000017fc       ??0KEvent@@QAE@W4_EVENT_TYPE@@E@Z 000205dc f   vdw_wdm:kevent.obj
+ 0005:000018dc       ??0KMutex@@QAE@K@Z         000206bc f   vdw_wdm:kmutex.obj
+ 0006:00000000       ?__create_driver_class_instance@@YGXXZ 00020740 f   Usb_Wdm.obj
+ 0006:00000040       ??0Usb_Wdm@@QAE@XZ         00020780 f i Usb_Wdm.obj
+ 0006:000000c6       ?DriverEntry@Usb_Wdm@@UAEJPAU_UNICODE_STRING@@@Z 00020806 f   Usb_Wdm.obj
+ 0006:000001bb       ?LoadRegistryParameters@Usb_Wdm@@QAEXAAVKRegistryKey@@@Z 000208fb f   Usb_Wdm.obj
+ 0006:000002d6       _DriverEntry@8             00020a16 f   Usb_Wdm.obj
+ 0006:000004b8       ??0KDriver@@QAE@XZ         00020bf8 f   Usb_Wdm.obj
+ 0006:00000510       ?DriverInit@KDriver@@SGJPAU_DRIVER_OBJECT@@PAU_UNICODE_STRING@@@Z 00020c50 f   Usb_Wdm.obj
+ 0006:000006b0       ?SetUpDispatchCalls@KDriver@@IAEXXZ 00020df0 f   Usb_Wdm.obj
+ 0006:00000788       __IMPORT_DESCRIPTOR_NTOSKRNL 00020ec8     wdm:NTOSKRNL.EXE
+ 0006:0000079c       __IMPORT_DESCRIPTOR_USBD   00020edc     usbd:USBD.SYS
+ 0006:000007b0       __IMPORT_DESCRIPTOR_HAL    00020ef0     wdm:HAL.DLL
+ 0006:000007c4       __NULL_IMPORT_DESCRIPTOR   00020f04     wdm:NTOSKRNL.EXE
+
+ entry point at        0000:00000000
+
+ Static symbols
+
+ 0001:000007b0       _$E14                      00010ab0 f   Usb_Wdm.obj
+ 0001:000007c0       _$E11                      00010ac0 f   Usb_Wdm.obj
+ 0001:000007e0       _$E13                      00010ae0 f   Usb_Wdm.obj
+ 0001:00000800       _$E12                      00010b00 f   Usb_Wdm.obj
+ 0001:00003fc8       ?GetIrpName@@YGPADK@Z      000142c8 f   vdw_wdm:ktrace.obj
+
+ 2580 bytes saved through ICF
+

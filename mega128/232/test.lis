@@ -1,0 +1,214 @@
+                        .module test.c
+                        .area lit(rom, con, rel)
+ 0000           _buffer::
+ 0000 687474703A2F2F7777772E6176727669  .byte 'h,'t,'t,'p,58,47,47,'w,'w,'w,46,'a,'v,'r,'v,'i
+ 0010 2E636F6D00        .byte 46,'c,'o,'m,0
+ 0015                   .dbfile F:\工程文件\avr\例程\mega128\232\test.c
+ 0015                   .dbsym e buffer _buffer A[21:21]kc
+                        .area text(rom, con, rel)
+ 0000                   .dbfile F:\工程文件\avr\例程\mega128\232\test.c
+ 0000                   .dbfunc e USART0_Init _USART0_Init fV
+ 0000           ;            tmp -> R10,R11
+ 0000           ;           baud -> R10,R11
+                        .even
+ 0000           _USART0_Init::
+ 0000 0E940000          xcall push_gset3
+ 0004 5801              movw R10,R16
+ 0006                   .dbline -1
+ 0006                   .dbline 8
+ 0006           ; #include <iom128v.h>
+ 0006           ; #include <macros.h>
+ 0006           ; 
+ 0006           ; #define F_CPU 2000000
+ 0006           ; const unsigned char buffer[]="http://www.avrvi.com";
+ 0006           ; 
+ 0006           ; void USART0_Init( unsigned int baud )
+ 0006           ; {
+ 0006                   .dbline 11
+ 0006           ; unsigned int tmp;
+ 0006           ; /* 设置波特率*/
+ 0006           ; tmp= F_CPU/baud/16-1;
+ 0006 1501              movw R2,R10
+ 0008 4424              clr R4
+ 000A 5524              clr R5
+ 000C 40E8              ldi R20,128
+ 000E 54E8              ldi R21,132
+ 0010 6EE1              ldi R22,30
+ 0012 70E0              ldi R23,0
+ 0014 5A92              st -y,R5
+ 0016 4A92              st -y,R4
+ 0018 3A92              st -y,R3
+ 001A 2A92              st -y,R2
+ 001C 8A01              movw R16,R20
+ 001E 9B01              movw R18,R22
+ 0020 0E940000          xcall div32s
+ 0024 40E1              ldi R20,16
+ 0026 50E0              ldi R21,0
+ 0028 60E0              ldi R22,0
+ 002A 70E0              ldi R23,0
+ 002C 7A93              st -y,R23
+ 002E 6A93              st -y,R22
+ 0030 5A93              st -y,R21
+ 0032 4A93              st -y,R20
+ 0034 0E940000          xcall div32s
+ 0038 1801              movw R2,R16
+ 003A 2901              movw R4,R18
+ 003C 41E0              ldi R20,1
+ 003E 50E0              ldi R21,0
+ 0040 60E0              ldi R22,0
+ 0042 70E0              ldi R23,0
+ 0044 241A              sub R2,R20
+ 0046 350A              sbc R3,R21
+ 0048 460A              sbc R4,R22
+ 004A 570A              sbc R5,R23
+ 004C 5101              movw R10,R2
+ 004E                   .dbline 12
+ 004E           ; UBRR0H = (unsigned char)(tmp>>8);
+ 004E 232C              mov R2,R3
+ 0050 3324              clr R3
+ 0052 20929000          sts 144,R2
+ 0056                   .dbline 13
+ 0056           ; UBRR0L = (unsigned char)tmp;
+ 0056 A9B8              out 0x9,R10
+ 0058                   .dbline 15
+ 0058           ; /* 接收器与发送器使能*/
+ 0058           ; UCSR0B = (1<<RXEN0)|(1<<TXEN0);
+ 0058 88E1              ldi R24,24
+ 005A 8AB9              out 0xa,R24
+ 005C                   .dbline 17
+ 005C           ; /* 设置帧格式: 8 个数据位, 1个停止位*/
+ 005C           ; UCSR0C = (1<<UCSZ00)|(1<<UCSZ01);
+ 005C 86E0              ldi R24,6
+ 005E 80939500          sts 149,R24
+ 0062                   .dbline -2
+ 0062                   .dbline 18
+ 0062           ; }
+ 0062           L1:
+ 0062 0E940000          xcall pop_gset3
+ 0066                   .dbline 0 ; func end
+ 0066 0895              ret
+ 0068                   .dbsym r tmp 10 i
+ 0068                   .dbsym r baud 10 i
+ 0068                   .dbend
+ 0068                   .dbfunc e USART0_Transmit _USART0_Transmit fV
+ 0068           ;           data -> R16
+                        .even
+ 0068           _USART0_Transmit::
+ 0068                   .dbline -1
+ 0068                   .dbline 22
+ 0068           ; 
+ 0068           ; // 数据发送【发送5 到8 位数据位的帧】
+ 0068           ; void USART0_Transmit( unsigned char data )
+ 0068           ; {
+ 0068           L3:
+ 0068                   .dbline 25
+ 0068           L4:
+ 0068                   .dbline 24
+ 0068           ; /* 等待发送缓冲器为空 */
+ 0068           ; while ( !( UCSR0A & (1<<UDRE0)) )
+ 0068 5D9B              sbis 0xb,5
+ 006A FECF              rjmp L3
+ 006C                   .dbline 27
+ 006C           ; ;
+ 006C           ; /* 将数据放入缓冲器，发送数据 */
+ 006C           ; UDR0 = data;
+ 006C 0CB9              out 0xc,R16
+ 006E                   .dbline -2
+ 006E                   .dbline 28
+ 006E           ; } 
+ 006E           L2:
+ 006E                   .dbline 0 ; func end
+ 006E 0895              ret
+ 0070                   .dbsym r data 16 c
+ 0070                   .dbend
+ 0070                   .dbfunc e USART0_Receive _USART0_Receive fc
+                        .even
+ 0070           _USART0_Receive::
+ 0070                   .dbline -1
+ 0070                   .dbline 33
+ 0070           ; 
+ 0070           ; 
+ 0070           ; // 数据接收【以5 到8 个数据位的方式接收数 据帧】
+ 0070           ; unsigned char USART0_Receive( void )
+ 0070           ; {
+ 0070           L7:
+ 0070                   .dbline 36
+ 0070           L8:
+ 0070                   .dbline 35
+ 0070           ; /* 等待接收数据*/
+ 0070           ; while ( !(UCSR0A & (1<<RXC0)) )
+ 0070 5F9B              sbis 0xb,7
+ 0072 FECF              rjmp L7
+ 0074                   .dbline 38
+ 0074           ; ;
+ 0074           ; /* 从缓冲器中获取并返回数据*/
+ 0074           ; return UDR0;
+ 0074 0CB1              in R16,0xc
+ 0076                   .dbline -2
+ 0076           L6:
+ 0076                   .dbline 0 ; func end
+ 0076 0895              ret
+ 0078                   .dbend
+ 0078                   .dbfunc e main _main fV
+ 0078           ;              n -> R20
+ 0078           ;            tmp -> R20
+                        .even
+ 0078           _main::
+ 0078                   .dbline -1
+ 0078                   .dbline 45
+ 0078           ; } 
+ 0078           ; 
+ 0078           ; 
+ 0078           ; 
+ 0078           ; 
+ 0078           ; void main(void)
+ 0078           ; {
+ 0078                   .dbline 46
+ 0078           ; unsigned char n=0,tmp=0;
+ 0078 4427              clr R20
+ 007A                   .dbline 46
+ 007A                   .dbline 48
+ 007A           ; 
+ 007A           ; USART0_Init(9600); //波特率9600 初始化串口
+ 007A 00E8              ldi R16,9600
+ 007C 15E2              ldi R17,37
+ 007E C0DF              xcall _USART0_Init
+ 0080 05C0              xjmp L12
+ 0082           L11:
+ 0082                   .dbline 52
+ 0082           ; // uart0_init();
+ 0082           ; 
+ 0082           ; while(1)
+ 0082           ; {
+ 0082                   .dbline 53
+ 0082           ; if(UCSR0A&(1<<RXC0)) //如果接收缓存区有数据
+ 0082 5F9B              sbis 0xb,7
+ 0084 03C0              rjmp L14
+ 0086                   .dbline 54
+ 0086           ; {
+ 0086                   .dbline 55
+ 0086           ; tmp=USART0_Receive(); //接收数据
+ 0086 F4DF              xcall _USART0_Receive
+ 0088 402F              mov R20,R16
+ 008A                   .dbline 56
+ 008A           ; USART0_Transmit(tmp); //发送数据
+ 008A EEDF              xcall _USART0_Transmit
+ 008C                   .dbline 58
+ 008C           ; 
+ 008C           ; }
+ 008C           L14:
+ 008C                   .dbline 59
+ 008C           L12:
+ 008C                   .dbline 51
+ 008C FACF              xjmp L11
+ 008E           X0:
+ 008E                   .dbline -2
+ 008E                   .dbline 60
+ 008E           ; }
+ 008E           ; }
+ 008E           L10:
+ 008E                   .dbline 0 ; func end
+ 008E 0895              ret
+ 0090                   .dbsym r n 20 c
+ 0090                   .dbsym r tmp 20 c
+ 0090                   .dbend

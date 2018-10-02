@@ -1,0 +1,28 @@
+<html>
+<body>
+<pre>
+<h1>礦ision2 Build Log</h1>
+<h2>Project:</h2>
+F:\winf\ME300系列\ME300B\samples_release\WL028_12864LCD(不带汉字库)上下滚动显示\wl028.uv2
+Project File Date:  08/19/2005
+
+<h2>Output:</h2>
+Build target 'Target 1'
+assembling wl028.asm...
+wl028.asm(308): error A22: EXPRESSION TYPE DOES NOT MATCH INSTRUCTION
+wl028.asm(323): error A22: EXPRESSION TYPE DOES NOT MATCH INSTRUCTION
+wl028.asm(330): error A22: EXPRESSION TYPE DOES NOT MATCH INSTRUCTION
+wl028.asm(346): error A22: EXPRESSION TYPE DOES NOT MATCH INSTRUCTION
+Target not created
+Build target 'Target 1'
+assembling wl028.asm...
+linking...
+Program Size: data=8.0 xdata=0 code=1142
+creating hex file from "wl028"...
+"wl028" - 0 Error(s), 0 Warning(s).
+Build target 'Target 1'
+assembling wl028.asm...
+linking...
+Program Size: data=8.0 xdata=0 code=1142
+creating hex file from "wl028"...
+"wl028" - 0 Error(s), 0 Warning(s).

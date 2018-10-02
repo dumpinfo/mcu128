@@ -1,0 +1,6 @@
+executable : main.o io.o                                # 生成的目标文件依赖main.o和io.o
+     gcc main.o  io.o  -o executable
+main.o : main.c                                         # 依赖文件是main.c
+     gcc -Wall -O -g  -c main.c -o main.o
+io.o : io.c 
+     gcc -Wall -O -g  -c io.c -o io.o  

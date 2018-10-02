@@ -1,0 +1,380 @@
+                        .module dianzhen.c
+                        .area data(ram, con, rel)
+ 0000           _data1::
+ 0000                   .blkb 2
+                        .area idata
+ 0000 FFFD              .byte 255,253
+                        .area data(ram, con, rel)
+ 0002                   .blkb 2
+                        .area idata
+ 0002 BDBD              .byte 189,189
+                        .area data(ram, con, rel)
+ 0004                   .blkb 2
+                        .area idata
+ 0004 81BD              .byte 129,189
+                        .area data(ram, con, rel)
+ 0006                   .blkb 2
+                        .area idata
+ 0006 BDFD              .byte 189,253
+                        .area data(ram, con, rel)
+ 0008                   .dbfile E:\avr资料\例程\m16\点阵\dianzhen.c
+ 0008                   .dbsym e data1 _data1 A[8:8]c
+ 0008           _data2::
+ 0008                   .blkb 2
+                        .area idata
+ 0008 FFFD              .byte 255,253
+                        .area data(ram, con, rel)
+ 000A                   .dbfile E:\avr资料\例程\m16\点阵\dianzhen.c
+ 000A                   .blkb 2
+                        .area idata
+ 000A EBE7              .byte 235,231
+                        .area data(ram, con, rel)
+ 000C                   .dbfile E:\avr资料\例程\m16\点阵\dianzhen.c
+ 000C                   .blkb 2
+                        .area idata
+ 000C 8FE7              .byte 143,231
+                        .area data(ram, con, rel)
+ 000E                   .dbfile E:\avr资料\例程\m16\点阵\dianzhen.c
+ 000E                   .blkb 2
+                        .area idata
+ 000E EBFD              .byte 235,253
+                        .area data(ram, con, rel)
+ 0010                   .dbfile E:\avr资料\例程\m16\点阵\dianzhen.c
+ 0010                   .dbsym e data2 _data2 A[8:8]c
+ 0010           _addr::
+ 0010                   .blkb 1
+                        .area idata
+ 0010 01                .byte 1
+                        .area data(ram, con, rel)
+ 0011                   .dbfile E:\avr资料\例程\m16\点阵\dianzhen.c
+ 0011                   .dbsym e addr _addr c
+ 0011           _i::
+ 0011                   .blkb 1
+                        .area idata
+ 0011 00                .byte 0
+                        .area data(ram, con, rel)
+ 0012                   .dbfile E:\avr资料\例程\m16\点阵\dianzhen.c
+ 0012                   .dbsym e i _i c
+ 0012           _j::
+ 0012                   .blkb 4
+                        .area idata
+ 0012 00000000          .word 0,0
+                        .area data(ram, con, rel)
+ 0016                   .dbfile E:\avr资料\例程\m16\点阵\dianzhen.c
+ 0016                   .dbsym e j _j L
+                        .area text(rom, con, rel)
+ 0000                   .dbfile E:\avr资料\例程\m16\点阵\dianzhen.c
+ 0000                   .dbfunc e port_init _port_init fV
+                        .even
+ 0000           _port_init::
+ 0000                   .dbline -1
+ 0000                   .dbline 14
+ 0000           ; //ICC-AVR application builder : 2007-6-12 20:23:24
+ 0000           ; // Target : M16
+ 0000           ; // Crystal: 4.0000Mhz
+ 0000           ; //该程序采用了循环扫描方式现在汉字，其中用B口作为地址口，用A口作为数据口
+ 0000           ; //循环扫描地址，显示相应的数据，达到显示整个汉字的目的
+ 0000           ; 
+ 0000           ; #include <iom16v.h>
+ 0000           ; #include <macros.h>
+ 0000           ; unsigned char data1[]={0xff,0xfd,0xbd,0xbd,0x81,0xbd,0xbd,0xfd};//需要显示的汉字1
+ 0000           ; unsigned char data2[]={0xff,0xfd,0xeb,0xe7,0x8f,0xe7,0xeb,0xfd};//需要显示的汉字2
+ 0000           ; unsigned char addr = 1,i = 0;//addr是用来循环扫描的地址位，即某一位如果为高的话，该列就显示发来的数据
+ 0000           ; long int j = 0;   //j用来做为选择是否显示汉字1或者汉字2
+ 0000           ; void port_init(void)
+ 0000           ; {
+ 0000                   .dbline 15
+ 0000           ;  PORTA = 0x00;   //PA
+ 0000 2224              clr R2
+ 0002 2BBA              out 0x1b,R2
+ 0004                   .dbline 16
+ 0004           ;  DDRA  = 0xFF;   //PA口输出
+ 0004 8FEF              ldi R24,255
+ 0006 8ABB              out 0x1a,R24
+ 0008                   .dbline 17
+ 0008           ;  PORTB = 0x00;
+ 0008 28BA              out 0x18,R2
+ 000A                   .dbline 18
+ 000A           ;  DDRB  = 0xFF;   //PB口输出
+ 000A 87BB              out 0x17,R24
+ 000C                   .dbline 19
+ 000C           ;  PORTC = 0x00; //m103 output only
+ 000C 25BA              out 0x15,R2
+ 000E                   .dbline 20
+ 000E           ;  DDRC  = 0x00;
+ 000E 24BA              out 0x14,R2
+ 0010                   .dbline 21
+ 0010           ;  PORTD = 0x00;
+ 0010 22BA              out 0x12,R2
+ 0012                   .dbline 22
+ 0012           ;  DDRD  = 0x00;
+ 0012 21BA              out 0x11,R2
+ 0014                   .dbline -2
+ 0014           L1:
+ 0014                   .dbline 0 ; func end
+ 0014 0895              ret
+ 0016                   .dbend
+ 0016                   .dbfunc e timer0_init _timer0_init fV
+                        .even
+ 0016           _timer0_init::
+ 0016                   .dbline -1
+ 0016                   .dbline 30
+ 0016           ; }
+ 0016           ; 
+ 0016           ; //TIMER0 initialize - prescale:64
+ 0016           ; // WGM: Normal
+ 0016           ; // desired value: 1KHz
+ 0016           ; // actual value:  1.008KHz (0.8%)
+ 0016           ; void timer0_init(void)
+ 0016           ; {
+ 0016                   .dbline 31
+ 0016           ;  TCCR0 = 0x00; //stop
+ 0016 2224              clr R2
+ 0018 23BE              out 0x33,R2
+ 001A                   .dbline 32
+ 001A           ;  TCNT0 = 0xC2; //set count
+ 001A 82EC              ldi R24,194
+ 001C 82BF              out 0x32,R24
+ 001E                   .dbline 33
+ 001E           ;  OCR0  = 0x3E;  //set compare
+ 001E 8EE3              ldi R24,62
+ 0020 8CBF              out 0x3c,R24
+ 0022                   .dbline 34
+ 0022           ;  TCCR0 = 0x03; //start timer
+ 0022 83E0              ldi R24,3
+ 0024 83BF              out 0x33,R24
+ 0026                   .dbline -2
+ 0026           L2:
+ 0026                   .dbline 0 ; func end
+ 0026 0895              ret
+ 0028                   .dbend
+                        .area vector(rom, abs)
+                        .org 36
+ 0024 0C941400          jmp _timer0_ovf_isr
+                        .area text(rom, con, rel)
+ 0028                   .dbfile E:\avr资料\例程\m16\点阵\dianzhen.c
+ 0028                   .dbfunc e timer0_ovf_isr _timer0_ovf_isr fV
+                        .even
+ 0028           _timer0_ovf_isr::
+ 0028 2A92              st -y,R2
+ 002A 3A92              st -y,R3
+ 002C 4A92              st -y,R4
+ 002E 5A92              st -y,R5
+ 0030 8A92              st -y,R8
+ 0032 9A92              st -y,R9
+ 0034 8A93              st -y,R24
+ 0036 9A93              st -y,R25
+ 0038 AA93              st -y,R26
+ 003A BA93              st -y,R27
+ 003C EA93              st -y,R30
+ 003E FA93              st -y,R31
+ 0040 2FB6              in R2,0x3f
+ 0042 2A92              st -y,R2
+ 0044 0E940000          xcall push_gset2
+ 0048                   .dbline -1
+ 0048                   .dbline 39
+ 0048           ; }
+ 0048           ; 
+ 0048           ; #pragma interrupt_handler timer0_ovf_isr:10
+ 0048           ; void timer0_ovf_isr(void)
+ 0048           ; {
+ 0048                   .dbline 40
+ 0048           ;  TCNT0 = 0xC2; //reload counter value
+ 0048 82EC              ldi R24,194
+ 004A 82BF              out 0x32,R24
+ 004C                   .dbline 43
+ 004C           ;                //在定时器中完成显示
+ 004C           ;  
+ 004C           ;  PORTB = addr;  //地址送入PB口  
+ 004C 20901000          lds R2,_addr
+ 0050 28BA              out 0x18,R2
+ 0052                   .dbline 45
+ 0052           ;  
+ 0052           ;  j++;          //选择汉字变量+1
+ 0052 41E0              ldi R20,1
+ 0054 50E0              ldi R21,0
+ 0056 60E0              ldi R22,0
+ 0058 70E0              ldi R23,0
+ 005A 40901400          lds R4,_j+2
+ 005E 50901500          lds R5,_j+2+1
+ 0062 20901200          lds R2,_j
+ 0066 30901300          lds R3,_j+1
+ 006A 240E              add R2,R20
+ 006C 351E              adc R3,R21
+ 006E 461E              adc R4,R22
+ 0070 571E              adc R5,R23
+ 0072 30921300          sts _j+1,R3
+ 0076 20921200          sts _j,R2
+ 007A 50921500          sts _j+2+1,R5
+ 007E 40921400          sts _j+2,R4
+ 0082                   .dbline 46
+ 0082           ;  if(j<5000)    //如果小于5000，显示A
+ 0082 48E8              ldi R20,136
+ 0084 53E1              ldi R21,19
+ 0086 60E0              ldi R22,0
+ 0088 70E0              ldi R23,0
+ 008A 2416              cp R2,R20
+ 008C 3506              cpc R3,R21
+ 008E 4606              cpc R4,R22
+ 0090 5706              cpc R5,R23
+ 0092 54F4              brge L4
+ 0094                   .dbline 47
+ 0094           ;  PORTA = data1[i];
+ 0094 80E0              ldi R24,<_data1
+ 0096 90E0              ldi R25,>_data1
+ 0098 E0911100          lds R30,_i
+ 009C FF27              clr R31
+ 009E E80F              add R30,R24
+ 00A0 F91F              adc R31,R25
+ 00A2 2080              ldd R2,z+0
+ 00A4 2BBA              out 0x1b,R2
+ 00A6 09C0              xjmp L5
+ 00A8           L4:
+ 00A8                   .dbline 49
+ 00A8           ;  else
+ 00A8           ;  PORTA = data2[i]; //如果大于5000，显示B
+ 00A8 80E0              ldi R24,<_data2
+ 00AA 90E0              ldi R25,>_data2
+ 00AC E0911100          lds R30,_i
+ 00B0 FF27              clr R31
+ 00B2 E80F              add R30,R24
+ 00B4 F91F              adc R31,R25
+ 00B6 2080              ldd R2,z+0
+ 00B8 2BBA              out 0x1b,R2
+ 00BA           L5:
+ 00BA                   .dbline 51
+ 00BA           ;  
+ 00BA           ;  if(j>10000)     //大于10000，清零
+ 00BA 40E1              ldi R20,16
+ 00BC 57E2              ldi R21,39
+ 00BE 60E0              ldi R22,0
+ 00C0 70E0              ldi R23,0
+ 00C2 40901400          lds R4,_j+2
+ 00C6 50901500          lds R5,_j+2+1
+ 00CA 20901200          lds R2,_j
+ 00CE 30901300          lds R3,_j+1
+ 00D2 4215              cp R20,R2
+ 00D4 5305              cpc R21,R3
+ 00D6 6405              cpc R22,R4
+ 00D8 7505              cpc R23,R5
+ 00DA 64F4              brge L6
+ 00DC                   .dbline 52
+ 00DC           ;  j=0;
+ 00DC 40E0              ldi R20,0
+ 00DE 50E0              ldi R21,0
+ 00E0 60E0              ldi R22,0
+ 00E2 70E0              ldi R23,0
+ 00E4 50931300          sts _j+1,R21
+ 00E8 40931200          sts _j,R20
+ 00EC 70931500          sts _j+2+1,R23
+ 00F0 60931400          sts _j+2,R22
+ 00F4           L6:
+ 00F4                   .dbline 54
+ 00F4 80911100          lds R24,_i
+ 00F8 8F5F              subi R24,255    ; addi 1
+ 00FA 80931100          sts _i,R24
+ 00FE                   .dbline 56
+ 00FE 20901000          lds R2,_addr
+ 0102 220C              lsl R2
+ 0104 20921000          sts _addr,R2
+ 0108                   .dbline 58
+ 0108 2220              tst R2
+ 010A 31F4              brne L8
+ 010C                   .dbline 59
+ 010C                   .dbline 60
+ 010C 81E0              ldi R24,1
+ 010E 80931000          sts _addr,R24
+ 0112                   .dbline 61
+ 0112 2224              clr R2
+ 0114 20921100          sts _i,R2
+ 0118                   .dbline 62
+ 0118           L8:
+ 0118                   .dbline -2
+ 0118           L3:
+ 0118 0E940000          xcall pop_gset2
+ 011C 2990              ld R2,y+
+ 011E 2FBE              out 0x3f,R2
+ 0120 F991              ld R31,y+
+ 0122 E991              ld R30,y+
+ 0124 B991              ld R27,y+
+ 0126 A991              ld R26,y+
+ 0128 9991              ld R25,y+
+ 012A 8991              ld R24,y+
+ 012C 9990              ld R9,y+
+ 012E 8990              ld R8,y+
+ 0130 5990              ld R5,y+
+ 0132 4990              ld R4,y+
+ 0134 3990              ld R3,y+
+ 0136 2990              ld R2,y+
+ 0138                   .dbline 0 ; func end
+ 0138 1895              reti
+ 013A                   .dbend
+ 013A                   .dbfunc e init_devices _init_devices fV
+                        .even
+ 013A           _init_devices::
+ 013A                   .dbline -1
+ 013A                   .dbline 67
+ 013A           ;  
+ 013A           ;  i++;            //数据数组地址+1
+ 013A           ;  
+ 013A           ;  addr= addr<<1;  //显示口地址左移
+ 013A           ;  
+ 013A           ;  if(addr == 0)   //判断是否显示完8个位，如果显示完，回到初始值
+ 013A           ;   {
+ 013A           ;    addr =1;
+ 013A           ;    i=0;
+ 013A           ;   }
+ 013A           ; }
+ 013A           ; 
+ 013A           ; //call this routine to initialize all peripherals
+ 013A           ; void init_devices(void)
+ 013A           ; {
+ 013A                   .dbline 69
+ 013A           ;  //stop errant interrupts until set up
+ 013A           ;  CLI(); //disable all interrupts
+ 013A F894              cli
+ 013C                   .dbline 70
+ 013C           ;  port_init();
+ 013C 61DF              xcall _port_init
+ 013E                   .dbline 71
+ 013E           ;  timer0_init();
+ 013E 6BDF              xcall _timer0_init
+ 0140                   .dbline 73
+ 0140           ; 
+ 0140           ;  MCUCR = 0x00;
+ 0140 2224              clr R2
+ 0142 25BE              out 0x35,R2
+ 0144                   .dbline 74
+ 0144           ;  GICR  = 0x00;
+ 0144 2BBE              out 0x3b,R2
+ 0146                   .dbline 75
+ 0146           ;  TIMSK = 0x01; //timer interrupt sources
+ 0146 81E0              ldi R24,1
+ 0148 89BF              out 0x39,R24
+ 014A                   .dbline 76
+ 014A           ;  SEI(); //re-enable interrupts
+ 014A 7894              sei
+ 014C                   .dbline -2
+ 014C           L10:
+ 014C                   .dbline 0 ; func end
+ 014C 0895              ret
+ 014E                   .dbend
+ 014E                   .dbfunc e main _main fV
+                        .even
+ 014E           _main::
+ 014E                   .dbline -1
+ 014E                   .dbline 82
+ 014E           ;  //all peripherals are now initialized
+ 014E           ; }
+ 014E           ; 
+ 014E           ; //
+ 014E           ; void main(void)
+ 014E           ; {
+ 014E                   .dbline 83
+ 014E           ;  init_devices();
+ 014E F5DF              xcall _init_devices
+ 0150                   .dbline -2
+ 0150           L11:
+ 0150                   .dbline 0 ; func end
+ 0150 0895              ret
+ 0152                   .dbend

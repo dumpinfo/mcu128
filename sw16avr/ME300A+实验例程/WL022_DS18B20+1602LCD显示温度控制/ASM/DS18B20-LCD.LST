@@ -1,0 +1,978 @@
+A51 MACRO ASSEMBLER  DS18B20_LCD                                                          03/29/2005 16:16:18 PAGE     1
+
+
+MACRO ASSEMBLER A51 V7.10
+OBJECT MODULE PLACED IN DS18B20-LCD.OBJ
+ASSEMBLER INVOKED BY: C:\Keil\C51\BIN\A51.EXE DS18B20-LCD.asm SET(SMALL) DEBUG EP
+
+LOC  OBJ            LINE     SOURCE
+
+                       1     ;********************************************************************************
+                       2     ;*  标题:  伟纳电子ME300B单片机开发系统演示程序 - DS18B20温度控制1602LCD显示    *
+                       3     ;*  文件:  DS18B20-LCD.asm                                                      *
+                       4     ;*  日期:  2005-3-20                                                            *
+                       5     ;*  版本:  1.0                                                                  *
+                       6     ;*  作者:  gguoqing                                                             *
+                       7     ;*  邮箱:  gguoqing@willar.com                                                  *
+                       8     ;*  网站： http://www.willar.com                                                *
+                       9     ;********************************************************************************
+                      10     ;*  描述:                                                                       *
+                      11     ;*          DS18B20温度控制1602LCD显示                                          *
+                      12     ;*                                                                              *
+                      13     ;*          使用方法参考readme.txt文档                                          *
+                      14     ;*                                                                              *
+                      15     ;*                                                                              *
+                      16     ;********************************************************************************
+                      17     ;* 【版权】 Copyright(C)伟纳电子 www.willar.com  All Rights Reserved            *
+                      18     ;* 【声明】 此程序仅用于学习与参考，引用请注明版权和作者信息！                  *
+                      19     ;********************************************************************************
+                      20     
+                      21     
+                      22     
+  0024                23               TEMP_ZH   DATA  24H     ;实时温度值存放单元
+  0025                24               TEMPL     DATA  25H     ;
+  0026                25               TEMPH     DATA  26H     ;
+  0027                26               TEMP_TH   DATA  27H     ;高温报警值存放单元
+  0028                27               TEMP_TL   DATA  28H     ;低温报警值存放单元
+  0029                28               TEMPHC    DATA  29H     ;
+  002A                29               TEMPLC    DATA  2AH
+                      30     
+  0094                31               K1     EQU  P1.4
+  0095                32               K2     EQU  P1.5
+  0096                33               K3     EQU  P1.6
+  0097                34               K4     EQU  P1.7
+                      35     
+  00B7                36               BEEP   EQU  P3.7
+  0093                37               RELAY  EQU  P1.3
+  002F                38               LCD_X     EQU  2FH      ;LCD 地址变量
+  00A0                39               LCD_RS    EQU  P2.0
+  00A1                40               LCD_RW    EQU  P2.1
+  00A2                41               LCD_EN    EQU  P2.2
+  0000                42               flag1     equ  20H.0    ;DS18B20是否存在标记
+  0001                43               KEY_UD    EQU  20H.1    ;设定 KEY 的UP与DOWN 标记
+  00B3                44               date_line equ p3.3
+                      45     ;=====================================================
+0000                  46                ORG  0000H
+0000 8000             47                JMP  MAIN
+                      48     
+0002 758160           49     MAIN:     MOV  SP,#60H
+0005 7400             50               MOV  A,#00H
+0007 7820             51               MOV  R0,#20H       ;将 20H-2FH 单元清零
+0009 7910             52               MOV  R1,#10H
+000B F6               53     CLEAR:    MOV  @R0,A
+000C 08               54               INC  R0
+000D D9FC             55               DJNZ  R1,CLEAR
+                      56     
+000F 9115             57               CALL  SET_LCD
+0011 31EF             58               CALL  RE_18B20
+A51 MACRO ASSEMBLER  DS18B20_LCD                                                          03/29/2005 16:16:18 PAGE     2
+
+                      59     
+0013 31C3             60     start:    CALL  RESET          ;18B20复位子程序
+0015 300008           61               JNB   FLAG1,START1   ;DS1820不存在
+0018 3161             62               CALL  MENU_OK
+001A 511C             63               CALL  READ_E2
+001C 314C             64               CALL  TEMP_BJ        ;显示温度标记
+001E 8006             65               JMP   START2
+0020 3192             66     START1:   CALL  MENU_ERROR
+0022 314C             67               CALL  TEMP_BJ        ;显示温度标记
+0024 80FE             68               JMP  $
+                      69     
+0026                  70     START2:
+0026 31C3             71               CALL  RESET
+0028 3000F5           72               JNB  FLAG1,START1    ;DS1820不存在
+002B 74CC             73               MOV   A,#0CCH        ; 跳过ROM匹配
+002D 5143             74               CALL  WRITE
+002F 7444             75               MOV   A,#44H         ; 发出温度转换命令
+0031 5143             76               CALL  WRITE
+0033 31C3             77               CALL  RESET
+0035 74CC             78               MOV   A,#0CCH        ; 跳过ROM匹配
+0037 5143             79               CALL  WRITE
+0039 74BE             80               MOV   A,#0BEH        ; 发出读温度命令
+003B 5143             81               CALL  WRITE
+003D 515B             82               CALL  READ
+003F 5180             83               call CONVTEMP
+0041 719B             84               Call DISPBCD
+0043 71CF             85               CALL CONV
+0045 3110             86               CALL TEMP_COMP
+0047 114B             87               CALL  PROC_KEY       ; 键扫描
+                      88     
+0049 80DB             89               SJMP  START2
+                      90     ;-----------------------------------------------------
+004B                  91     PROC_KEY:
+004B 209415           92              JB  K1,PROC_K1           ; 按键K1处理
+004E 91A4             93              CALL  BEEP_BL
+0050 3094FD           94              JNB  K1,$
+0053 900319           95              MOV  DPTR,#M_ALAX1
+0056 7401             96              MOV  A,#1
+0058 9148             97              CALL  LCD_PRINT
+005A 51FB             98              CALL  LOOK_ALARM
+005C 2096FD           99              JB  K3,$
+005F 91A4            100              CALL  BEEP_BL
+0061 8015            101              JMP  PROC_K2
+0063                 102     PROC_K1:                          ; 按键K2处理
+0063 209516          103              JB  K2,PROC_END
+0066 91A4            104              CALL  BEEP_BL
+0068 3095FD          105              JNB  K2,$
+006B 900100          106              MOV   DPTR,#RESET_A1
+006E 7401            107              MOV   A,#1
+0070 9148            108              CALL  LCD_PRINT
+0072 117D            109              CALL  SET_ALARM
+0074 31EF            110              CALL  RE_18B20           ;将设定的TH,TL值写入DS18B20内
+0076 510F            111              CALL  WRITE_E2
+0078                 112     PROC_K2:
+0078 3161            113              CALL  MENU_OK
+007A 314C            114              CALL  TEMP_BJ
+007C                 115     PROC_END:
+007C 22              116              RET
+                     117     ;============================================
+                     118     ;设定报警值 TH、TL
+                     119     ;============================================
+007D                 120     SET_ALARM:
+                     121              ;CALL  RESET_ALARM
+007D 51FB            122              CALL  LOOK_ALARM
+007F                 123     AS0:
+007F 209407          124              JB   K1,AS00
+A51 MACRO ASSEMBLER  DS18B20_LCD                                                          03/29/2005 16:16:18 PAGE     3
+
+0082 91A4            125              CALL  BEEP_BL
+0084 3094FD          126              JNB  K1,$
+0087 B201            127              CPL  20H.1            ;UP/DOWN 标记
+0089 200102          128     AS00:    JB  20H.1,ASZ01       ;20H.1=1，UP
+008C 8037            129              JMP  ASJ01            ;20H.1=0，DOWN
+                     130     
+008E 209514          131     ASZ01:   JB  K2,ASZ02          ;TH值调整（增加）
+0091 91A4            132              CALL  BEEP_BL
+0093 0527            133              INC  TEMP_TH
+0095 E527            134              MOV  A,TEMP_TH
+0097 B47803          135              CJNE  A,#120,ASZ011
+009A 752700          136              MOV  TEMP_TH,#0
+009D 51FB            137     ASZ011:  CALL  LOOK_ALARM
+009F 7D0A            138              MOV  R5,#10
+00A1 91B7            139              CALL  DELAY
+00A3 80E9            140              JMP  ASZ01
+                     141     
+00A5 209614          142     ASZ02:   JB  K3,ASZ03          ;TL值调整（增加）
+00A8 91A4            143              CALL  BEEP_BL
+00AA 0528            144              INC  TEMP_TL
+00AC E528            145              MOV  A,TEMP_TL
+00AE B46303          146              CJNE  A,#99,ASZ021
+00B1 752800          147              MOV  TEMP_TL,#00H
+00B4 51FB            148     ASZ021:  CALL  LOOK_ALARM    ;
+00B6 7D0A            149              MOV  R5,#10
+00B8 91B7            150              CALL  DELAY
+00BA 80E9            151              JMP  ASZ02
+00BC 2097C0          152     ASZ03:   JB  K4,AS0          ;确定调整 OK
+00BF 91A4            153              CALL  BEEP_BL
+00C1 3097FD          154              JNB  K4,$
+00C4 22              155              RET
+                     156     
+00C5                 157     ASJ01:
+00C5 209513          158              JB  K2,ASJ02          ;TH值调整 （减少）
+00C8 91A4            159              CALL  BEEP_BL
+00CA 1527            160              DEC   TEMP_TH
+00CC E527            161              MOV  A,TEMP_TH
+00CE B4FF02          162              CJNE  A,#0FFH,ASJ011
+00D1 801E            163              JMP  ASJ022
+00D3 51FB            164     ASJ011:  CALL  LOOK_ALARM
+00D5 7D0A            165              MOV  R5,#10
+00D7 91B7            166              CALL  DELAY
+00D9 80A4            167              JMP  AS0
+                     168     
+00DB 209617          169     ASJ02:   JB  K3,ASJ03         ;TL值调整（减少）
+00DE 91A4            170              CALL  BEEP_BL
+00E0 1528            171              DEC  TEMP_TL
+00E2 E528            172              MOV  A,TEMP_TL
+00E4 B4FF02          173              CJNE  A,#0FFH,ASJ021
+00E7 8008            174              JMP  ASJ022
+00E9 51FB            175     ASJ021:  CALL  LOOK_ALARM    ;
+00EB 7D0A            176              MOV  R5,#10
+00ED 91B7            177              CALL  DELAY
+00EF 808E            178              JMP  AS0
+00F1 B201            179     ASJ022:  CPL  20H.1
+00F3 8099            180              JMP  ASZ01
+00F5 80C5            181     ASJ03:   JMP  ASZ03
+00F7 22              182              RET
+                     183     
+                     184     
+00F8                 185     RESET_ALARM:
+00F8 900100          186               MOV  DPTR,#RESET_A1  ;指针指到显示信息区
+00FB 7401            187               MOV  A,#1            ;显示在第一行
+00FD 9148            188               CALL  LCD_PRINT
+00FF 22              189               RET
+0100                 190     RESET_A1:
+A51 MACRO ASSEMBLER  DS18B20_LCD                                                          03/29/2005 16:16:18 PAGE     4
+
+0100 52455345        191          DB  "RESET ALERT CODE"
+0104 5420414C                
+0108 45525420                
+010C 434F4445                
+                     192     ;====================================================
+                     193     ;实际温度值与标记温度值比较子程序
+                     194     ;====================================================
+0110                 195     TEMP_COMP:
+0110 E527            196               MOV  A,TEMP_TH       
+0112 9524            197               SUBB  A,TEMP_ZH       ;减数>被减数，则
+0114 400E            198               JC  CHULI1            ;借位标志位C=1，转
+0116 E524            199               MOV  A,TEMP_ZH
+0118 9528            200               SUBB  A,TEMP_TL       ;减数>被减数，则
+011A 4012            201               JC  CHULI2            ;借位标志位C=1，转
+011C 90014A          202               MOV  DPTR,#BJ5
+011F 3136            203               CALL  TEMP_BJ3
+0121 C293            204               CLR   RELAY           ;继电器吸合
+0123 22              205               RET
+0124                 206      CHULI1:
+0124 900146          207               MOV  DPTR,#BJ3
+0127 3136            208               CALL  TEMP_BJ3
+0129 D293            209               SETB  RELAY           ;继电器关闭
+012B 91A4            210               CALL  BEEP_BL
+012D 22              211               RET
+012E                 212      CHULI2:
+012E 900148          213               MOV  DPTR,#BJ4
+0131 3136            214               CALL  TEMP_BJ3
+0133 91A4            215               CALL  BEEP_BL
+0135 22              216               RET
+                     217     ;-----------------------------------------
+0136                 218     TEMP_BJ3:
+0136 74CE            219               MOV  A,#0CEH
+0138 917B            220               CALL WCOM
+013A 7900            221               MOV  R1,#0
+013C 7802            222               MOV  R0,#2
+                     223     
+013E E9              224     BBJJ3:    MOV  A,R1
+013F 93              225               MOVC A,@A+DPTR
+0140 9188            226               CALL  WDATA
+0142 09              227               INC R1
+0143 D8F9            228               DJNZ  R0,BBJJ3
+0145 22              229               RET
+0146                 230     BJ3:
+0146 3E48            231           DB  ">H"
+0148                 232     BJ4:
+0148 3C4C            233           DB  "<L"
+014A                 234     BJ5:
+014A 2021            235           DB  " !"
+                     236     ;==================================================
+                     237     ;显示温度标记子程序
+                     238     ;==================================================
+014C                 239     TEMP_BJ:
+014C 74CB            240               MOV  A,#0CBH
+014E 917B            241               CALL WCOM
+0150 90015F          242               MOV  DPTR,#BJ1  ;指针指到显示消息
+0153 7900            243               MOV  R1,#0
+0155 7802            244               MOV  R0,#2
+                     245     
+0157 E9              246     BBJJ1:    MOV  A,R1
+0158 93              247               MOVC A,@A+DPTR
+0159 9188            248               CALL  WDATA
+015B 09              249               INC R1
+015C D8F9            250               DJNZ  R0,BBJJ1
+015E 22              251               RET
+015F                 252     BJ1:
+015F 0043            253           DB  00H,"C"
+A51 MACRO ASSEMBLER  DS18B20_LCD                                                          03/29/2005 16:16:18 PAGE     5
+
+                     254     ;=================================================
+0161                 255     MENU_OK:
+                     256     
+0161 900170          257               MOV  DPTR,#M_OK1  ;指针指到显示消息
+0164 7401            258               MOV  A,#1          ;显示在第一行
+0166 9148            259               CALL  LCD_PRINT
+0168 900181          260               MOV  DPTR,#M_OK2  ;指针指到显示消息
+016B 7402            261               MOV  A,#2          ;显示在第一行
+016D 9148            262               CALL  LCD_PRINT
+                     263     
+016F 22              264               RET
+0170                 265     M_OK1:
+0170 20202044        266         DB   "   DS18B20 OK   ",0
+0174 53313842                
+0178 3230204F                
+017C 4B202020                
+0180 00                      
+0181                 267     M_OK2:
+0181 2054454D        268         DB   " TEMP:          ",0
+0185 503A2020                
+0189 20202020                
+018D 20202020                
+0191 00                      
+                     269     ;-----------------------------------------------
+0192                 270     MENU_ERROR:
+0192 9001A1          271               MOV  DPTR,#M_ERROR1  ;指针指到显示消息1
+0195 7401            272               MOV  A,#1          ;显示在第一行
+0197 9148            273               CALL  LCD_PRINT
+0199 9001B2          274               MOV  DPTR,#M_ERROR2  ;指针指到显示消息1
+019C 7402            275               MOV  A,#2          ;显示在第一行
+019E 9148            276               CALL  LCD_PRINT
+01A0 22              277               RET
+01A1                 278     M_ERROR1:
+01A1 20445331        279         DB   " DS18B20 ERROR  ",0
+01A5 38423230                
+01A9 20455252                
+01AD 4F522020                
+01B1 00                      
+01B2                 280     M_ERROR2:
+01B2 2054454D        281         DB   " TEMP: ----     ",0
+01B6 503A202D                
+01BA 2D2D2D20                
+01BE 20202020                
+01C2 00                      
+                     282     ;====================================================
+01C3 D2B3            283     reset:  setb date_line
+01C5 00              284             nop
+01C6 C2B3            285             clr date_line
+01C8 786B            286             mov r0,#6bh         ;主机发出延时复位低脉冲
+01CA 7904            287             mov r1,#04h
+01CC D8FE            288     tsr1:   djnz r0,$
+01CE 786B            289             mov r0,#6bh
+01D0 D9FA            290             djnz r1,tsr1
+01D2 D2B3            291             setb date_line        ;然后拉高数据线
+01D4 00              292             nop
+01D5 00              293             nop
+01D6 00              294             nop
+01D7 7832            295             mov r0,#32h
+01D9 30B304          296     tsr2:   jnb date_line,tsr3   ;等待DS18B20回应
+01DC D8FB            297             djnz r0,tsr2
+01DE 8004            298             jmp tsr4             ; 延时
+01E0 D200            299     tsr3:   setb flag1           ; 置标志位,表示DS1820存在
+01E2 8004            300             jmp tsr5
+01E4 C200            301     tsr4:   clr flag1            ; 清标志位,表示DS1820不存在
+01E6 8004            302             jmp tsr7
+01E8 786B            303     tsr5:   mov r0,#06bh
+A51 MACRO ASSEMBLER  DS18B20_LCD                                                          03/29/2005 16:16:18 PAGE     6
+
+01EA D8FE            304     tsr6:   djnz r0,$            ; 时序要求延时一段时间
+01EC D2B3            305     tsr7:   setb date_line
+01EE 22              306             ret
+                     307     ;=======================================================
+01EF                 308     RE_18B20:
+01EF 200001          309             JB  FLAG1,RE_18B20A
+01F2 22              310             RET
+01F3                 311     RE_18B20A:
+01F3 31C3            312             CALL  RESET
+01F5 74CC            313             MOV  A,#0CCH       ;跳过ROM匹配
+01F7 120243          314             LCALL  WRITE
+01FA 744E            315             MOV  A,#4EH        ;写暂存寄存器
+01FC 120243          316             LCALL  WRITE
+01FF E527            317             MOV  A,TEMP_TH     ;TH(报警上限）
+0201 120243          318             LCALL  WRITE
+0204 E528            319             MOV  A,TEMP_TL     ;TL(报警下限）
+0206 120243          320             LCALL  WRITE
+0209 747F            321             MOV  A,#7FH        ;12位精确度
+020B 120243          322             LCALL  WRITE
+020E 22              323             RET
+                     324     ;------------------------------------------------------------
+020F                 325     WRITE_E2:
+020F 31C3            326             CALL  RESET
+0211 74CC            327             MOV  A,#0CCH        ;跳过ROM匹配
+0213 120243          328             LCALL  WRITE
+0216 7448            329             MOV  A,#48H         ;把暂存器里的温度报警值拷贝到EEROM
+0218 120243          330             LCALL  WRITE
+021B 22              331             RET
+                     332     ;--------------------------------------------------------------
+021C                 333     READ_E2:
+021C 31C3            334             CALL  RESET
+021E 74CC            335             MOV  A,#0CCH        ;跳过ROM匹配
+0220 120243          336             LCALL  WRITE
+0223 74B8            337             MOV  A,#0B8H        ;把EEROM里的温度报警值拷贝回暂存器
+0225 5143            338             CALL  WRITE
+0227 22              339             RET
+                     340     ;--------------------------------------------------------------
+                     341     ;将自定义字符写入LCD1602的CGRAM中
+                     342     ;--------------------------------------------------------------
+0228                 343     STORE_DATA:
+0228 7440            344             MOV  A,#40H
+022A 917B            345             CALL  WCOM
+022C 7A08            346             MOV  R2,#08H
+022E 90023B          347             MOV  DPTR,#D_DATA
+0231 7B00            348             MOV  R3,#00H
+0233                 349     S_DATA:
+0233 EB              350             MOV  A,R3
+0234 93              351             MOVC  A,@A+DPTR
+0235 9188            352             CALL  WDATA      ;写入数据
+0237 0B              353             INC  R3
+0238 DAF9            354             DJNZ  R2,S_DATA
+023A 22              355             RET
+                     356     
+023B                 357     D_DATA:
+023B 0C12120C        358         DB  0CH,12H,12H,0CH,00H,00H,00H,00H
+023F 00000000                
+                     359     ;==============================================================
+0243 7A08            360     write:  mov r2,#8            ;一共8位数据
+0245 C3              361             CLR  C
+0246                 362     wr1:
+0246 C2B3            363             clr date_line        ;开始写入DS18B20总线要处于复位（低）状态
+0248 7B07            364             mov r3,#07
+024A DBFE            365             djnz r3,$            ;总线复位保持16微妙以上
+024C 13              366             rrc a                ;把一个字节DATA 分成8个BIT环移给C
+024D 92B3            367             mov date_line,c      ;写入一个BIT
+024F 7B3C            368             mov r3,#3CH
+A51 MACRO ASSEMBLER  DS18B20_LCD                                                          03/29/2005 16:16:18 PAGE     7
+
+0251 DBFE            369             djnz r3,$            ;等待100微妙
+0253 D2B3            370             setb date_line       ;重新释放总线
+0255 00              371             nop
+0256 DAEE            372             djnz r2,wr1          ;写入下一个BIT
+0258 D2B3            373             setb date_line
+025A 22              374             ret
+                     375     ;--------------------------------------------------------------------
+025B 7C04            376     read:    mov r4,#4          ; 将温度低位、高位、TH、TL从DS18B20中读出
+025D 7925            377              mov r1,#TEMPL        ; 存入25H、26H、27H、28H
+025F 7A08            378     re00:    mov r2,#8
+0261 C2D7            379     re01:    clr cy
+0263 D2B3            380              setb date_line
+0265 00              381              nop
+0266 00              382              nop
+0267 C2B3            383              clr date_line        ;读前总线保持为低
+0269 00              384              nop
+026A 00              385              nop
+026B 00              386              nop
+026C D2B3            387              setb date_line       ;开始读总线释放
+026E 7B09            388              mov r3,#09           ;延时18微妙
+0270 DBFE            389              djnz r3,$
+0272 A2B3            390              mov c,date_line      ;从DS18B20总线读得一个BIT
+0274 7B3C            391              mov r3,#3CH
+0276 DBFE            392              djnz r3,$            ;等待100微妙
+0278 13              393              rrc a                ;把读得的位值环移给A
+0279 DAE6            394              djnz r2,re01         ;读下一个BIT
+027B F7              395              mov @r1,a
+027C 09              396              inc r1
+027D DCE0            397              djnz r4,re00
+027F 22              398              ret
+                     399     
+                     400     
+                     401     ;*****************************************************
+                     402     ;  处理温度 BCD 码子程序
+                     403     ;****************************************************
+0280 E526            404     CONVTEMP:      MOV  A,TEMPH       ;判温度是否零下
+0282 5480            405                    ANL  A,#80H
+0284 6011            406                    JZ  TEMPC1         ;温度零上转
+0286 C3              407                    CLR  C
+0287 E525            408                    MOV  A,TEMPL       ;二进制数求补（双字节）
+0289 F4              409                    CPL  A             ;取反加1
+028A 2401            410                    ADD  A,#01H
+028C F525            411                    MOV  TEMPL,A
+028E E526            412                    MOV  A,TEMPH
+0290 F4              413                    CPL  A
+0291 3400            414                    ADDC  A,#00H
+0293 F526            415                    MOV  TEMPH,A
+0295 8003            416                    SJMP  TEMPC11
+                     417     
+0297 75290A          418     TEMPC1:        MOV  TEMPHC,#0AH     ;+
+029A E529            419     TEMPC11:       MOV  A,TEMPHC
+029C C4              420                    SWAP  A
+029D F529            421                    MOV  TEMPHC,A
+029F E525            422                    MOV  A,TEMPL
+02A1 540F            423                    ANL  A,#0FH              ;乘0.0625
+02A3 9002EB          424                    MOV  DPTR,#TEMPDOTTAB
+02A6 93              425                    MOVC  A,@A+DPTR
+02A7 F52A            426                    MOV  TEMPLC,A            ;TEMPLC LOW=小数部分 BCD
+                     427     
+02A9 E525            428                    MOV  A,TEMPL             ;整数部分
+02AB 54F0            429                    ANL  A,#0F0H             ;取出高四位
+02AD C4              430                    SWAP  A
+02AE F525            431                    MOV  TEMPL,A
+02B0 E526            432                    MOV  A,TEMPH             ;取出低四位
+02B2 540F            433                    ANL  A,#0FH
+02B4 C4              434                    SWAP  A
+A51 MACRO ASSEMBLER  DS18B20_LCD                                                          03/29/2005 16:16:18 PAGE     8
+
+02B5 4525            435                    ORL  A,TEMPL             ;重新组合
+02B7 F524            436                    MOV  TEMP_ZH,A
+02B9 1202DD          437                    LCALL  HEX2BCD1
+02BC F525            438                    MOV  TEMPL,A
+02BE 54F0            439                    ANL  A,#0F0H
+02C0 C4              440                    SWAP  A
+02C1 4529            441                    ORL  A,TEMPHC            ;TEMPHC LOW = 十位数 BCD
+02C3 F529            442                    MOV  TEMPHC,A
+02C5 E525            443                    MOV  A,TEMPL
+02C7 540F            444                    ANL  A,#0FH
+02C9 C4              445                    SWAP  A                  ;TEMPLC HI = 个位数 BCD
+02CA 452A            446                    ORL  A,TEMPLC
+02CC F52A            447                    MOV  TEMPLC,A
+02CE EC              448                    MOV  A,R4
+02CF 600B            449                    JZ  TEMPC12
+02D1 540F            450                    ANL  A,#0FH
+02D3 C4              451                    SWAP  A
+02D4 FC              452                    MOV  R4,A
+02D5 E529            453                    MOV  A,TEMPHC            ;TEMPHC HI = 百位数 BCD
+02D7 540F            454                    ANL  A,#0FH
+02D9 4C              455                    ORL  A,R4
+02DA F529            456                    MOV  TEMPHC,A
+02DC 22              457     TEMPC12:       RET
+                     458     ;---------------------------------------------------------------
+02DD                 459     HEX2BCD1:
+02DD 75F064          460                   MOV  B,#064H          ;十六进制-> BCD
+02E0 84              461                   DIV  AB               ;B= A % 100
+02E1 FC              462                   MOV  R4,A             ;R7 = 百位数
+02E2 740A            463                   MOV  A,#0AH
+02E4 C5F0            464                   XCH  A,B
+02E6 84              465                   DIV  AB               ;B = A % B
+02E7 C4              466                   SWAP  A
+02E8 45F0            467                   ORL  A,B
+02EA 22              468                   RET
+                     469     ;-------------------------------------------------------------
+                     470     ;  小数部分码表
+                     471     ;-------------------------------------------------------------
+02EB                 472     TEMPDOTTAB:
+02EB 00000101        473              DB   00H,00H,01H,01H,02H,03H,03H,04H
+02EF 02030304                
+02F3 05050606        474              DB   05H,05H,06H,06H,07H,08H,08H,09H
+02F7 07080809                
+                     475     ;=====================================================
+02FB                 476     LOOK_ALARM:
+                     477     
+02FB 90032A          478               MOV  DPTR,#M_ALAX2   ;指针指到显示信息区
+02FE 7402            479               MOV  A,#2            ;显示在第二行
+0300 9148            480               CALL  LCD_PRINT
+                     481     
+0302 74C6            482               MOV  A,#0C6H
+0304 713B            483               CALL  TEMP_BJ1
+0306 E527            484               MOV  A,TEMP_TH       ;加载TH数据
+0308 752F03          485               MOV  LCD_X,#3        ;设置位置
+030B 714E            486               CALL  SHOW_DIG2H     ;显示数据
+                     487     
+030D 74CE            488               MOV  A,#0CEH
+030F 713B            489               CALL  TEMP_BJ1
+0311 E528            490               MOV  A,TEMP_TL       ;加载TL数据
+0313 752F0C          491               MOV  LCD_X,#12       ;设置位置
+0316 717B            492               CALL  SHOW_DIG2L     ;显示数据
+0318 22              493               RET
+                     494     ;--------------------------------------------
+0319                 495     M_ALAX1:
+0319 204C4F4F        496          DB   " LOOK ALERT CODE",0
+031D 4B20414C                
+0321 45525420                
+A51 MACRO ASSEMBLER  DS18B20_LCD                                                          03/29/2005 16:16:18 PAGE     9
+
+0325 434F4445                
+0329 00                      
+032A                 497     M_ALAX2:
+032A 54483A20        498          DB   "TH:      TL:    ",0
+032E 20202020                
+0332 20544C3A                
+0336 20202020                
+033A 00                      
+                     499     ;--------------------------------------------
+033B                 500     TEMP_BJ1:
+033B 917B            501               CALL WCOM
+033D 90034C          502               MOV  DPTR,#BJ2      ;指针指到显示信息区
+0340 7900            503               MOV  R1,#0
+0342 7802            504               MOV  R0,#2
+                     505     
+0344 E9              506     BBJJ2:    MOV  A,R1
+0345 93              507               MOVC A,@A+DPTR
+0346 9188            508               CALL  WDATA
+0348 09              509               INC R1
+0349 D8F9            510               DJNZ  R0,BBJJ2
+034B 22              511               RET
+034C                 512     BJ2:
+034C 0043            513           DB  00H,"C"
+                     514     
+                     515     ;---------------------------------------------------
+034E                 516     SHOW_DIG2H:                ;在 LCD 的第二行显示数字
+034E 75F064          517               MOV  B,#100
+0351 84              518               DIV  AB
+0352 2430            519               ADD  A,#30H
+0354 C0F0            520               PUSH  B
+0356 852FF0          521               MOV  B,LCD_X
+0359 9108            522               CALL  LCDP2
+035B D0F0            523               POP  B
+035D 740A            524               MOV  A,#0AH
+035F C5F0            525               XCH  A,B
+0361 84              526               DIV  AB
+0362 2430            527               ADD  A,#30H
+0364 052F            528               INC  LCD_X
+0366 C0F0            529               PUSH  B
+0368 852FF0          530               MOV  B,LCD_X
+036B 9108            531               CALL  LCDP2
+036D D0F0            532               POP  B
+036F 052F            533               INC  LCD_X
+0371 E5F0            534               MOV  A,B
+0373 852FF0          535               MOV  B,LCD_X
+0376 2430            536               ADD  A,#30H
+0378 9108            537               CALL  LCDP2
+037A 22              538               RET
+                     539     
+037B                 540     SHOW_DIG2L:                ;在 LCD 的第二行显示数字
+037B 75F064          541               MOV  B,#100
+037E 84              542               DIV  AB
+037F 740A            543               MOV  A,#0AH
+0381 C5F0            544               XCH  A,B
+0383 84              545               DIV  AB
+0384 2430            546               ADD  A,#30H
+0386 C0F0            547               PUSH  B
+0388 852FF0          548               MOV  B,LCD_X
+038B 9108            549               CALL  LCDP2
+038D D0F0            550               POP  B
+038F 052F            551               INC  LCD_X
+0391 E5F0            552               MOV  A,B
+0393 852FF0          553               MOV  B,LCD_X
+0396 2430            554               ADD  A,#30H
+0398 9108            555               CALL  LCDP2
+039A 22              556               RET
+A51 MACRO ASSEMBLER  DS18B20_LCD                                                          03/29/2005 16:16:18 PAGE    10
+
+                     557     ;-------------------------------------------------------------
+                     558     ;显示区 BCD 码温度值刷新子程序
+                     559     ;-------------------------------------------------------------
+039B                 560     DISPBCD:
+039B E52A            561                   MOV  A,TEMPLC
+039D 540F            562                   ANL  A,#0FH
+039F F570            563                   MOV  70H,A                 ;小数位
+03A1 E52A            564                   MOV  A,TEMPLC
+03A3 C4              565                   SWAP  A
+03A4 540F            566                   ANL  A,#0FH
+03A6 F571            567                   MOV  71H,A                 ;个位
+03A8 E529            568                   MOV  A,TEMPHC
+03AA 540F            569                   ANL  A,#0FH
+03AC F572            570                   MOV  72H,A                 ;十位
+03AE E529            571                   MOV  A,TEMPHC
+03B0 C4              572                   SWAP  A
+03B1 540F            573                   ANL  A,#0FH
+03B3 F573            574                   MOV  73H,A                 ;百位
+03B5 E529            575                   MOV  A,TEMPHC
+03B7 54F0            576                   ANL  A,#0F0H
+03B9 B41002          577                   CJNE  A,#010H,DISPBCD0
+03BC 8010            578                   SJMP  DISPBCD2
+                     579     
+03BE E529            580     DISPBCD0:     MOV  A,TEMPHC
+03C0 540F            581                   ANL  A,#0FH
+03C2 700A            582                   JNZ  DISPBCD2               ;十位数是0
+03C4 E529            583                   MOV  A,TEMPHC
+03C6 C4              584                   SWAP  A
+03C7 540F            585                   ANL  A,#0FH
+03C9 75730A          586                   MOV  73H,#0AH               ;符号位不显示
+03CC F572            587                   MOV  72H,A                  ;十位数显示符号
+03CE 22              588     DISPBCD2:     RET
+                     589     
+                     590     ;==========================================================
+                     591     ; LCD 1602 显示子程序
+                     592     ;==========================================================
+03CF                 593     CONV:
+03CF E573            594               MOV  A,73H         ;加载百位数据
+03D1 752F06          595               MOV  LCD_X,#6      ;设置位置
+03D4 B40102          596               CJNE A,#1,CONV1
+03D7 8009            597               JMP  CONV2
+03D9 7420            598     CONV1:    MOV  A,#" "
+03DB 852FF0          599               MOV  B,LCD_X
+03DE 9108            600               CALL  LCDP2
+03E0 8002            601               JMP  CONV3
+03E2 9100            602     CONV2:    CALL  SHOW_DIG2    ;显示数据
+03E4 052F            603     CONV3:    INC  LCD_X             ;
+03E6 E572            604               mov  a,72h         ;十位
+03E8 9100            605               CALL  SHOW_DIG2
+03EA 052F            606               inc  LCD_X
+03EC E571            607               mov  a,71h         ;个位
+03EE 9100            608               CALL  SHOW_DIG2
+03F0 052F            609               inc  LCD_X
+03F2 742E            610               MOV  A,#'.'
+03F4 852FF0          611               MOV  B,LCD_X
+03F7 9108            612               CALL  LCDP2
+03F9 E570            613               MOV  A,70h         ;加载小数点位
+03FB 052F            614               INC  LCD_X         ;设置位置
+03FD 9100            615               CALL  SHOW_DIG2    ;显示数据
+03FF 22              616               RET
+                     617     ;-------------------------------------------------------
+0400                 618     SHOW_DIG2:                 ;在 LCD 的第二行显示数字
+0400 2430            619               ADD  A,#30H
+0402 852FF0          620               MOV  B,LCD_X
+0405 9108            621               CALL  LCDP2
+0407 22              622               RET
+A51 MACRO ASSEMBLER  DS18B20_LCD                                                          03/29/2005 16:16:18 PAGE    11
+
+                     623     ;---------------------------------------------------------
+0408                 624     LCDP2:                    ;在LCD的第二行显示字符
+0408 C0E0            625              PUSH  ACC        ;
+040A E5F0            626              MOV  A,B         ;设置显示地址
+040C 24C0            627              ADD  A,#0C0H     ;设置LCD的第二行地址
+040E 917B            628              CALL  WCOM       ;写入命令
+0410 D0E0            629              POP  ACC         ;由堆栈取出A
+0412 9188            630              CALL  WDATA      ;写入数据
+0414 22              631              RET
+                     632     ;---------------------------------------------------------
+                     633     
+                     634     
+0415                 635     SET_LCD:                     ;对 LCD 做初始化设置及测试
+0415 C2A2            636               CLR  LCD_EN
+0417 911C            637               CALL  INIT_LCD     ;初始化 LCD
+0419 5128            638               CALL  STORE_DATA   ;将自定义字符存入LCD的CGRAM
+041B 22              639               RET
+041C                 640     INIT_LCD:                  ;8位I/O控制 LCD 接口初始化
+041C 7438            641               MOV  A,#38H        ;双列显示，字形5*7点阵
+041E 917B            642               CALL  WCOM
+0420 91C2            643               call  delay1
+0422 7438            644               MOV  A,#38H
+0424 917B            645               CALL  WCOM
+0426 91C2            646               call  delay1
+                     647     
+0428 7438            648               MOV  A,#38H
+042A 917B            649               CALL  WCOM
+042C 91C2            650               call  delay1
+042E 740C            651               MOV  A,#0CH        ;开显示，显示光标，光标不闪烁
+0430 917B            652               CALL  WCOM
+0432 91C2            653               call  delay1
+0434 7401            654               MOV  A,#01H        ;清除 LCD 显示屏
+0436 917B            655               CALL  WCOM
+0438 91C2            656               call  delay1
+043A 22              657               RET
+                     658     ;==================================================
+043B                 659     CLR_LINE1:                   ;清除LCD的第一行字符
+043B 7480            660               MOV  A,#80H        ;设置 LCD 的第一行地址
+043D 917B            661               CALL  WCOM         ;
+043F 7818            662               MOV  R0,#24        ;设置计数值
+0441 7420            663         C1:   MOV  A,#' '        ;载入空格符至LCD
+0443 9188            664               CALL  WDATA        ;输出字符至LCD
+0445 D8FA            665               DJNZ  R0,C1        ;计数结束
+0447 22              666               RET
+                     667     ;==================================================
+0448                 668     LCD_PRINT:       ;在LCD的第一行或第二行显示字符
+                     669     
+0448 B4010C          670               CJNE  A,#1,LINE2  ;判断是否为第一行
+044B 7480            671       LINE1:  MOV  A,#80H       ;设置 LCD 的第一行地址
+044D 917B            672               CALL  WCOM        ;写入命令
+044F 916D            673               CALL  CLR_LINE    ;清除该行字符数据
+0451 7480            674               MOV  A,#80H       ;设置 LCD 的第一行地址
+0453 917B            675               CALL  WCOM        ;写入命令
+0455 800A            676               JMP  FILL
+                     677     
+0457 74C0            678       LINE2:  MOV  A,#0C0H      ;设置 LCD 的第二行地址
+0459 917B            679               CALL  WCOM        ;写入命令
+045B 916D            680               CALL  CLR_LINE    ;清除该行字符数据
+045D 74C0            681               MOV  A,#0C0H      ;设置 LCD 的第二行地址
+045F 917B            682               CALL  WCOM
+0461 E4              683       FILL:   CLR  A            ;填入字符
+0462 93              684               MOVC  A,@A+DPTR   ;由消息区取出字符
+0463 B40001          685               CJNE  A,#0,LC1    ;判断是否为结束码
+0466 22              686               RET
+0467 9188            687       LC1:    CALL  WDATA       ;写入数据
+0469 A3              688               INC  DPTR         ;指针加1
+A51 MACRO ASSEMBLER  DS18B20_LCD                                                          03/29/2005 16:16:18 PAGE    12
+
+046A 80F5            689               JMP  FILL         ;继续填入字符
+046C 22              690               RET
+                     691     ;=========================================
+046D                 692     CLR_LINE:                  ;清除该行 LCD 的字符
+046D 7818            693               MOV  R0,#24
+046F 7420            694        CL1:   MOV  A,#' '
+0471 9188            695               CALL  WDATA
+0473 D8FA            696               DJNZ  R0,CL1
+0475 22              697               RET
+0476 7FFA            698        DE:    MOV  R7,#250
+0478 DFFE            699               DJNZ  R7,$
+047A 22              700               RET
+                     701     ;============================================
+047B                 702     WCOM:                     ;以8位控制方式将命令写至LCD
+047B F580            703               MOV  P0,A       ;写入命令
+047D C2A0            704               CLR LCD_RS      ;RS=L,RW=L,D0-D7=指令码，E=高脉冲
+047F C2A1            705               CLR LCD_RW
+0481 D2A2            706               SETB LCD_EN
+0483 91C2            707               ACALL DELAY1        
+0485 C2A2            708               CLR LCD_EN
+0487 22              709               RET
+                     710     ;=============================================
+0488                 711     WDATA:                    ;以8位控制方式将数据写至LCD
+0488 F580            712               MOV  P0,A       ;写入数据
+048A D2A0            713               SETB  LCD_RS        
+048C C2A1            714               CLR  LCD_RW
+048E D2A2            715               SETB  LCD_EN        
+0490 9176            716               CALL  DE
+0492 C2A2            717               CLR  LCD_EN
+0494 9176            718               CALL  DE
+0496 22              719               RET
+                     720     ;=============================================
+                     721     ;PRINT A CHAR ON LINE 1
+                     722     ;A=ASC DATA, B=LINE X POS
+                     723     ;==============================================
+0497                 724     LCDP1:                    ;在LCD的第一行显示字符
+0497 C0E0            725              PUSH  ACC        ;
+0499 E5F0            726              MOV  A,B         ;设置显示地址
+049B 2480            727              ADD  A,#80H      ;设置LCD的第一行地址
+049D 917B            728              CALL  WCOM       ;写入命令
+049F D0E0            729              POP  ACC         ;由堆栈取出A
+04A1 9188            730              CALL  WDATA      ;写入数据
+04A3 22              731              RET
+                     732     
+                     733     ;==============================================
+04A4                 734     BEEP_BL:
+04A4 7E64            735              MOV  R6,#100
+04A6 91B1            736      BL2:    CALL  DEX1
+04A8 B2B7            737              CPL  BEEP
+04AA DEFA            738              DJNZ  R6,BL2
+04AC 7D0A            739              MOV  R5,#10
+04AE 91B7            740              CALL  DELAY
+04B0 22              741              RET
+04B1 7FB4            742      DEX1:   MOV  R7,#180
+04B3 00              743      DE2:    NOP
+04B4 DFFD            744              DJNZ  R7,DE2
+04B6 22              745              RET
+04B7                 746     DELAY:                    ;(R5)*延时10MS
+04B7 7E32            747              MOV  R6,#50
+04B9 7F64            748      DL1:    MOV  R7,#100
+04BB DFFE            749              DJNZ  R7,$
+04BD DEFA            750              DJNZ  R6,DL1
+04BF DDF6            751              DJNZ  R5,DELAY
+04C1 22              752              RET
+                     753     
+04C2                 754     DELAY1:                    ;延时5MS
+A51 MACRO ASSEMBLER  DS18B20_LCD                                                          03/29/2005 16:16:18 PAGE    13
+
+04C2 7E19            755              MOV  R6,#25
+04C4 7F64            756      DL2:    MOV  R7,#100
+04C6 DFFE            757              DJNZ  R7,$
+04C8 DEFA            758              DJNZ  R6,DL2
+04CA 22              759              RET
+                     760     ;================================================
+                     761              END
+A51 MACRO ASSEMBLER  DS18B20_LCD                                                          03/29/2005 16:16:18 PAGE    14
+
+SYMBOL TABLE LISTING
+------ ----- -------
+
+
+N A M E             T Y P E  V A L U E   ATTRIBUTES
+
+ACC. . . . . . . .  D ADDR   00E0H   A   
+AS0. . . . . . . .  C ADDR   007FH   A   
+AS00 . . . . . . .  C ADDR   0089H   A   
+ASJ01. . . . . . .  C ADDR   00C5H   A   
+ASJ011 . . . . . .  C ADDR   00D3H   A   
+ASJ02. . . . . . .  C ADDR   00DBH   A   
+ASJ021 . . . . . .  C ADDR   00E9H   A   
+ASJ022 . . . . . .  C ADDR   00F1H   A   
+ASJ03. . . . . . .  C ADDR   00F5H   A   
+ASZ01. . . . . . .  C ADDR   008EH   A   
+ASZ011 . . . . . .  C ADDR   009DH   A   
+ASZ02. . . . . . .  C ADDR   00A5H   A   
+ASZ021 . . . . . .  C ADDR   00B4H   A   
+ASZ03. . . . . . .  C ADDR   00BCH   A   
+B. . . . . . . . .  D ADDR   00F0H   A   
+BBJJ1. . . . . . .  C ADDR   0157H   A   
+BBJJ2. . . . . . .  C ADDR   0344H   A   
+BBJJ3. . . . . . .  C ADDR   013EH   A   
+BEEP . . . . . . .  B ADDR   00B0H.7 A   
+BEEP_BL. . . . . .  C ADDR   04A4H   A   
+BJ1. . . . . . . .  C ADDR   015FH   A   
+BJ2. . . . . . . .  C ADDR   034CH   A   
+BJ3. . . . . . . .  C ADDR   0146H   A   
+BJ4. . . . . . . .  C ADDR   0148H   A   
+BJ5. . . . . . . .  C ADDR   014AH   A   
+BL2. . . . . . . .  C ADDR   04A6H   A   
+C1 . . . . . . . .  C ADDR   0441H   A   
+CHULI1 . . . . . .  C ADDR   0124H   A   
+CHULI2 . . . . . .  C ADDR   012EH   A   
+CL1. . . . . . . .  C ADDR   046FH   A   
+CLEAR. . . . . . .  C ADDR   000BH   A   
+CLR_LINE . . . . .  C ADDR   046DH   A   
+CLR_LINE1. . . . .  C ADDR   043BH   A   
+CONV . . . . . . .  C ADDR   03CFH   A   
+CONV1. . . . . . .  C ADDR   03D9H   A   
+CONV2. . . . . . .  C ADDR   03E2H   A   
+CONV3. . . . . . .  C ADDR   03E4H   A   
+CONVTEMP . . . . .  C ADDR   0280H   A   
+CY . . . . . . . .  B ADDR   00D0H.7 A   
+DATE_LINE. . . . .  B ADDR   00B0H.3 A   
+DE . . . . . . . .  C ADDR   0476H   A   
+DE2. . . . . . . .  C ADDR   04B3H   A   
+DELAY. . . . . . .  C ADDR   04B7H   A   
+DELAY1 . . . . . .  C ADDR   04C2H   A   
+DEX1 . . . . . . .  C ADDR   04B1H   A   
+DISPBCD. . . . . .  C ADDR   039BH   A   
+DISPBCD0 . . . . .  C ADDR   03BEH   A   
+DISPBCD2 . . . . .  C ADDR   03CEH   A   
+DL1. . . . . . . .  C ADDR   04B9H   A   
+DL2. . . . . . . .  C ADDR   04C4H   A   
+D_DATA . . . . . .  C ADDR   023BH   A   
+FILL . . . . . . .  C ADDR   0461H   A   
+FLAG1. . . . . . .  B ADDR   0020H.0 A   
+HEX2BCD1 . . . . .  C ADDR   02DDH   A   
+INIT_LCD . . . . .  C ADDR   041CH   A   
+K1 . . . . . . . .  B ADDR   0090H.4 A   
+K2 . . . . . . . .  B ADDR   0090H.5 A   
+K3 . . . . . . . .  B ADDR   0090H.6 A   
+K4 . . . . . . . .  B ADDR   0090H.7 A   
+KEY_UD . . . . . .  B ADDR   0020H.1 A   
+A51 MACRO ASSEMBLER  DS18B20_LCD                                                          03/29/2005 16:16:18 PAGE    15
+
+LC1. . . . . . . .  C ADDR   0467H   A   
+LCDP1. . . . . . .  C ADDR   0497H   A   
+LCDP2. . . . . . .  C ADDR   0408H   A   
+LCD_EN . . . . . .  B ADDR   00A0H.2 A   
+LCD_PRINT. . . . .  C ADDR   0448H   A   
+LCD_RS . . . . . .  B ADDR   00A0H.0 A   
+LCD_RW . . . . . .  B ADDR   00A0H.1 A   
+LCD_X. . . . . . .  N NUMB   002FH   A   
+LINE1. . . . . . .  C ADDR   044BH   A   
+LINE2. . . . . . .  C ADDR   0457H   A   
+LOOK_ALARM . . . .  C ADDR   02FBH   A   
+MAIN . . . . . . .  C ADDR   0002H   A   
+MENU_ERROR . . . .  C ADDR   0192H   A   
+MENU_OK. . . . . .  C ADDR   0161H   A   
+M_ALAX1. . . . . .  C ADDR   0319H   A   
+M_ALAX2. . . . . .  C ADDR   032AH   A   
+M_ERROR1 . . . . .  C ADDR   01A1H   A   
+M_ERROR2 . . . . .  C ADDR   01B2H   A   
+M_OK1. . . . . . .  C ADDR   0170H   A   
+M_OK2. . . . . . .  C ADDR   0181H   A   
+P0 . . . . . . . .  D ADDR   0080H   A   
+P1 . . . . . . . .  D ADDR   0090H   A   
+P2 . . . . . . . .  D ADDR   00A0H   A   
+P3 . . . . . . . .  D ADDR   00B0H   A   
+PROC_END . . . . .  C ADDR   007CH   A   
+PROC_K1. . . . . .  C ADDR   0063H   A   
+PROC_K2. . . . . .  C ADDR   0078H   A   
+PROC_KEY . . . . .  C ADDR   004BH   A   
+RE00 . . . . . . .  C ADDR   025FH   A   
+RE01 . . . . . . .  C ADDR   0261H   A   
+READ . . . . . . .  C ADDR   025BH   A   
+READ_E2. . . . . .  C ADDR   021CH   A   
+RELAY. . . . . . .  B ADDR   0090H.3 A   
+RESET. . . . . . .  C ADDR   01C3H   A   
+RESET_A1 . . . . .  C ADDR   0100H   A   
+RESET_ALARM. . . .  C ADDR   00F8H   A   
+RE_18B20 . . . . .  C ADDR   01EFH   A   
+RE_18B20A. . . . .  C ADDR   01F3H   A   
+SET_ALARM. . . . .  C ADDR   007DH   A   
+SET_LCD. . . . . .  C ADDR   0415H   A   
+SHOW_DIG2. . . . .  C ADDR   0400H   A   
+SHOW_DIG2H . . . .  C ADDR   034EH   A   
+SHOW_DIG2L . . . .  C ADDR   037BH   A   
+SP . . . . . . . .  D ADDR   0081H   A   
+START. . . . . . .  C ADDR   0013H   A   
+START1 . . . . . .  C ADDR   0020H   A   
+START2 . . . . . .  C ADDR   0026H   A   
+STORE_DATA . . . .  C ADDR   0228H   A   
+S_DATA . . . . . .  C ADDR   0233H   A   
+TEMPC1 . . . . . .  C ADDR   0297H   A   
+TEMPC11. . . . . .  C ADDR   029AH   A   
+TEMPC12. . . . . .  C ADDR   02DCH   A   
+TEMPDOTTAB . . . .  C ADDR   02EBH   A   
+TEMPH. . . . . . .  D ADDR   0026H   A   
+TEMPHC . . . . . .  D ADDR   0029H   A   
+TEMPL. . . . . . .  D ADDR   0025H   A   
+TEMPLC . . . . . .  D ADDR   002AH   A   
+TEMP_BJ. . . . . .  C ADDR   014CH   A   
+TEMP_BJ1 . . . . .  C ADDR   033BH   A   
+TEMP_BJ3 . . . . .  C ADDR   0136H   A   
+TEMP_COMP. . . . .  C ADDR   0110H   A   
+TEMP_TH. . . . . .  D ADDR   0027H   A   
+TEMP_TL. . . . . .  D ADDR   0028H   A   
+TEMP_ZH. . . . . .  D ADDR   0024H   A   
+TSR1 . . . . . . .  C ADDR   01CCH   A   
+TSR2 . . . . . . .  C ADDR   01D9H   A   
+A51 MACRO ASSEMBLER  DS18B20_LCD                                                          03/29/2005 16:16:18 PAGE    16
+
+TSR3 . . . . . . .  C ADDR   01E0H   A   
+TSR4 . . . . . . .  C ADDR   01E4H   A   
+TSR5 . . . . . . .  C ADDR   01E8H   A   
+TSR6 . . . . . . .  C ADDR   01EAH   A   
+TSR7 . . . . . . .  C ADDR   01ECH   A   
+WCOM . . . . . . .  C ADDR   047BH   A   
+WDATA. . . . . . .  C ADDR   0488H   A   
+WR1. . . . . . . .  C ADDR   0246H   A   
+WRITE. . . . . . .  C ADDR   0243H   A   
+WRITE_E2 . . . . .  C ADDR   020FH   A   
+
+
+REGISTER BANK(S) USED: 0 
+
+
+ASSEMBLY COMPLETE.  0 WARNING(S), 0 ERROR(S)

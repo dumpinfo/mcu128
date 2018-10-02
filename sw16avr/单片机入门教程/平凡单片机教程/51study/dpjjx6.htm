@@ -1,0 +1,85 @@
+<HTML>
+<HEAD>
+<META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=gb_2312-80">
+<META NAME="Generator" CONTENT="Microsoft FrontPage 5.0">
+<TITLE>单片机第五课</TITLE>
+</HEAD>
+<BODY background="../back.jpg">
+<FONT FACE="宋体" LANG="ZH-CN" SIZE=2>
+<P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">单片机第五课：单片机的内外部结构分析（三）</P>
+<P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">一、延时程序分析</P>
+</FONT>
+<P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">
+<FONT FACE="宋体" LANG="ZH-CN" SIZE=2>上一次课中，我们已经知道，程序中的符号</font><FONT SIZE=2>R7</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>、</FONT><FONT SIZE=2>R6</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>是代表了一个个的</FONT><FONT SIZE=2>RAM</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>单元，是用来放一些数据的，下面我们再来看一下其它符号的含义。</font></P>
+<table width="77%" border="1">
+  <tr>
+    <td width="67%">
+      <p style="line-height: 150%; margin-top: 0; margin-bottom: 0">
+      <font size="2">DELAY： MOV R7，#250　 　；（６）</font></p>
+      <p style="line-height: 150%; margin-top: 0; margin-bottom: 0"> 
+      <font size="2">D1： MOV R6，#250 　　；（７） </font> </p>
+      <p style="line-height: 150%; margin-top: 0; margin-bottom: 0">
+      <font size="2">D2： DJNZ R6，D2 　　　；（８）</font></p>
+      <p style="line-height: 150%; margin-top: 0; margin-bottom: 0"> 
+      <font size="2">DJNZ R7，D1　　　；（９） 　 　</font></p>
+      <p style="line-height: 150%; margin-top: 0; margin-bottom: 0">
+      <font size="2">RET 　　　　　　　；（１０） </font> </p>
+    </td>
+    <td width="33%">
+    <p style="line-height: 150%; margin-top: 0; margin-bottom: 0">
+    <font face="宋体" lang="ZH-CN" size=2><img src="reset.gif" width="162" height="204"></font></td>
+  </tr>
+</table>
+<P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">　</P>
+<OL>
+<FONT SIZE=3>
+<P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0"></FONT><LI>
+<p style="line-height: 150%; margin-top: 0; margin-bottom: 0"><FONT SIZE=2>MOV</font><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>：这是一条指令，意思是传递数据。说到传递，我们都很清楚，传东西要从一个人的手上传到另一个人的手上，也就是说要有一个接受者，一个传递者和一样东西。从指令</FONT><FONT SIZE=2>MOV   R7</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>，</FONT><FONT SIZE=2>#250</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>中来分析，</FONT><FONT SIZE=2>R7</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>是一个接受者，</FONT><FONT SIZE=2>250</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>是被传递的数，传递者在这条指令中被省略了（注意：并不是每一条传递指令都会省的，事实上大部份数据传递指令都会有传递者）。它的意义也很明显：将数据</FONT><FONT SIZE=2>250</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>送到</FONT><FONT SIZE=2>R7</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>中去，因此执行完这条指令后，</FONT><FONT SIZE=2>R7</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>单元中的值就应当是</FONT><FONT SIZE=2>250</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>。在</FONT><FONT SIZE=2>250</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>前面有个</FONT><FONT SIZE=2>#</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>号，这又是什么意思呢？这个</FONT><FONT SIZE=2>#</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>就是用来说明</FONT><FONT SIZE=2>250</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>就是一个被传递的东西本身，而不是传递者。那么</FONT><FONT SIZE=2>MOV   R6</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>，</FONT><FONT SIZE=2>#250</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>是什么意思，应当不用分析了吧。</font><font size="2"></LI></font><FONT FACE="宋体" LANG="ZH-CN" SIZE=3></p>
+<p style="line-height: 150%; margin-top: 0; margin-bottom: 0"></P>
+</FONT><FONT SIZE=3>
+<P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0"></FONT><LI>
+<p style="line-height: 150%; margin-top: 0; margin-bottom: 0"><FONT SIZE=2>DJNZ</font><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>：这是另一条指令，我们来看一下这条指令后面跟着的两个东西，一个是</FONT><FONT SIZE=2>R6</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>，一个是</FONT><FONT SIZE=2>D2</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>，</FONT><FONT SIZE=2>R6</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>我们当然已知是什么了，查一下</FONT><FONT SIZE=2>D2</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>是什么。</FONT><FONT SIZE=2>D2</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>在本行的前面，我们已学过，这称之为标号。标号的用途是什么呢？就是给本行起一个名字。</FONT><FONT SIZE=2>DJNZ</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>指令的执行过程是这样的，它将其后面的第一个参数中的值减</FONT><FONT SIZE=2>1</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>，然后看一下，这个值是否等于</FONT><FONT SIZE=2>0</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>，如果等于</FONT><FONT SIZE=2>0</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>，就往下执行，如果不等于</FONT><FONT SIZE=2>0</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>，就转移，转到什么地方去呢？可能大家已猜到了，转到第二个参数所指定的地方去（请大家用自已的话讲一下这条语句是怎样执行的）。本条指令的最终执行结果就是，在原地转圈</FONT><FONT SIZE=2>250</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>次。</font><font size="2"></LI></font><FONT FACE="宋体" LANG="ZH-CN" SIZE=3></p>
+<p style="line-height: 150%; margin-top: 0; margin-bottom: 0"></P>
+<P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0"></FONT><LI>
+<p style="line-height: 150%; margin-top: 0; margin-bottom: 0">
+<FONT FACE="宋体" LANG="ZH-CN" SIZE=2>执行完了</font><FONT SIZE=2>DJNZ    R6</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>，</FONT><FONT SIZE=2>D2</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>之后（也就是</FONT><FONT SIZE=2>R6</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>的值等于</FONT><FONT SIZE=2>0</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>之后），就会去执行下面一行，也就是</FONT><FONT SIZE=2>DJNZ    R7</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>，</FONT><FONT SIZE=2>D1</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>，请大家自行分析一下这句话执行的结果。（转去执行</FONT><FONT SIZE=2>MOV   R6</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>，</FONT><FONT SIZE=2>#250</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>，同时</FONT><FONT SIZE=2>R7</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>中的值减</FONT><FONT SIZE=2>1</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>），最终</FONT><FONT SIZE=2>DJNZ  R6</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>，</FONT><FONT SIZE=2>D2</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>这句话将被执行</FONT><FONT SIZE=2>250*250=62500</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>次，执行这么多次同一条指令干吗？就是为了延时。</font><font size="2"></LI></font><FONT FACE="宋体" LANG="ZH-CN" SIZE=3></p>
+<p style="line-height: 150%; margin-top: 0; margin-bottom: 0"></P>
+<P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0"></FONT><LI>
+<p style="line-height: 150%; margin-top: 0; margin-bottom: 0">
+<FONT FACE="宋体" LANG="ZH-CN" SIZE=2>一个问题：如果在</font><FONT SIZE=2>R6</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>中放入</FONT><FONT SIZE=2>0</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>，会有什么样的结果。</font><font size="2"></LI></font><FONT FACE="宋体" LANG="ZH-CN" SIZE=3></p>
+<p style="line-height: 150%; margin-top: 0; margin-bottom: 0"></P></font></OL>
+<FONT FACE="宋体" LANG="ZH-CN" SIZE=2>
+
+<P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">二、时序分析：</P>
+</FONT>
+<P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">
+<FONT FACE="宋体" LANG="ZH-CN" SIZE=2>&#9;前面我们介绍了延时程序，但这还不完善，因为，我们只知道</font><FONT SIZE=2>DJNZ   R6</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>，</FONT><FONT SIZE=2>D2</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>这句话会被执行</FONT><FONT SIZE=2>62500</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>次，但是执行这么多次需要多长时间呢？是否满足我们的要求呢？我们还不知道，所以下面要来解决这个问题。</font></P>
+<FONT FACE="宋体" LANG="ZH-CN" SIZE=2>
+<P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">先提一个问题：我们学校里什么是最重要的。（铃声）校长可以出差，老师可以休息，但学校一日无铃声必定大乱。整个学校就是在铃声的统一指挥下，步调一致，统一协调地工作着。这个铃是按一定的时间安排来响的，我们可以称之为“时序&#0;&#0;时间的顺序”。一个由人组成的单位尚且要有一定的时序，计算机当然更要有严格的时序。事实上，计算机更象一个大钟，什么时候分针动，什么时候秒针动，什么时候时针动，都有严格的规定，一点也不能乱。计算机要完成的事更复杂，所以它的时序也更复杂。</P>
+</FONT>
+<P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">
+<FONT FACE="宋体" LANG="ZH-CN" SIZE=2>我们已知，计算机工作时，是一条一条地从</font><FONT SIZE=2>ROM</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>中取指令，然后一步一步地执行，我们规定：计算机访问一次存储器的时间，称之为一个机器周期。这是一个时间基准，好象我们人用“秒”作为我们的时间基准一样，为什么不干脆用“秒”，多好，很习惯，学下去我们就会知道用“秒”反而不习惯。</font></P>
+<P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">
+<FONT FACE="宋体" LANG="ZH-CN" SIZE=2>一个机器周期包括</font><FONT SIZE=2>12</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>个时钟周期。下面让我们算一下一个机器周期是多长时间吧。设一个单片机工作于</FONT><FONT SIZE=2>12M</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>晶振，它的时钟周期是</FONT><FONT SIZE=2>1/12</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>（微秒）。它的一个机器周期是</FONT><FONT SIZE=2>12*</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>（</FONT><FONT SIZE=2>1/12</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>）也就是</FONT><FONT SIZE=2>1</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>微秒。（请计算一个工作于</FONT><FONT SIZE=2>6M</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>晶振的单片机，它的机器周期是多少）。</font></P>
+<P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">
+<FONT SIZE=2>MCS-51</font><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>单片机的所有指令中，有一些完成得比较快，只要一个机器周期就行了，有一些完成得比较慢，得要</FONT><FONT SIZE=2>2</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>个机器周期，还有两条指令要</FONT><FONT SIZE=2>4</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>个机器周期才行。这也不难再解，不是吗？我让你扫地的执行要完成总得比要你完成擦黑板的指令时间要长。为了恒量指令执行时间的长短，又引入一个新的概念：指令周期。所谓指令周期就是指执行一条指令的时间。</FONT><FONT SIZE=2>INTEL</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>对每一条指令都给出了它的指令周期数，这些数据，大部份不需要我们去记忆，但是有一些指令是需要记住的，如</FONT><FONT SIZE=2>DJNZ</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>指令是双周期指令。</font></P>
+<P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">
+<FONT FACE="宋体" LANG="ZH-CN" SIZE=2>下面让我们来计算刚才的延时。首先必须要知道晶振的频率，我们设所用晶振为</font><FONT SIZE=2>12M</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>，则一个机器周期就是</FONT><FONT SIZE=2>1</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>微秒。而</FONT><FONT SIZE=2>DJNZ</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>指令是双周期指令，所以执行一次要</FONT><FONT SIZE=2>2</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>个微秒。一共执行</FONT><FONT SIZE=2>62500</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>次，正好</FONT><FONT SIZE=2>125000</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>微秒，也就是</FONT><FONT SIZE=2>125</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>毫秒。</font></P>
+<P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">
+<FONT FACE="宋体" LANG="ZH-CN" SIZE=2>练习：设计一个延时</font><FONT SIZE=2>100</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>毫秒的延时程序。</font></P>
+<P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">
+<FONT FACE="宋体" LANG="ZH-CN" SIZE=2>要点分析：</font><FONT SIZE=2>1</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>、一个单元中的数是否可以超过</FONT><FONT SIZE=2>255</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>。</FONT><FONT SIZE=2>2</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>、如何分配两个数。</font></P>
+<FONT FACE="宋体" LANG="ZH-CN" SIZE=2>
+<P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">三、复位电路</P>
+</FONT>
+<P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">
+<FONT FACE="宋体" LANG="ZH-CN" SIZE=2>任何单片机在工作之前都要有个复位的过程，复位是什么意思呢？它就象是我们上课之前打的预备铃。预备铃一响，大家就自动地从操场、其它地方进入教室了，在这一段时间里，是没有老师干预的，对单片机来说，是程序还没有开始执行，是在做准备工作。显然，准备工作不需要太长的时间，复位只需要</font><FONT SIZE=2>5ms</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>的时间就可以了。如何进行复位呢？只要在单片机的</FONT><FONT SIZE=2>RST</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>引脚上加上高电平，就可以了，按上面所说，时间不少于</FONT><FONT SIZE=2>5ms</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>。为了达到这个要求，可以用很多种方法，这里提供一种供参考，见图</FONT><FONT SIZE=2>1</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>。实际上，我们在上一次实验的图中已见到过了。</font></P>
+<P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0"> 
+<FONT FACE="宋体" LANG="ZH-CN" SIZE=2>这种复位电路的工作原理是：通电时，电容两端相当于是短路，于是</font><FONT SIZE=2>RST</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>引脚上为高电平，然后电源通过电阻对电容充电，</FONT><FONT SIZE=2>RST</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>端电压慢慢下降，降到一定程序，即为低电平，单片机开始正常工作。</font></P>
+<P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">　</P>
+<p align="center" style="line-height: 150%; margin-top: 0; margin-bottom: 0">　</p>
+<p style="line-height: 150%; margin-top: 0; margin-bottom: 0">　</p><FONT FACE="宋体" LANG="ZH-CN" SIZE=3>
+<P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0"></P>
+</FONT> 
+</BODY>
+</HTML>

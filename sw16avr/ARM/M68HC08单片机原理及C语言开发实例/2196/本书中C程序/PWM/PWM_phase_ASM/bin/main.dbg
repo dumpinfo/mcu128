@@ -1,0 +1,181 @@
+;**************************************************************
+;* This stationery is meant to serve as the framework for a   *
+;* user application. For a more comprehensive program that    *
+;* demonstrates the more advanced functionality of this       *
+;* processor, please see the demonstration applications       *
+;* located in the examples subdirectory of the                *
+;* Metrowerks Codewarrior for the HC08 Program directory      *
+;**************************************************************
+
+; export symbols
+            XDEF Entry, main
+            ; we use export 'Entry' as symbol. This allows us to
+            ; reference 'Entry' either in the linker .prm file
+            ; or from C/C++ later on
+                       
+; include derivative specific macros
+            Include 'sr12_registers.inc'
+ ; 68HC908SR12 Equates
+
+PTA    EQU $0000     ; Ports and data direction
+PORTA  EQU $0000     ; Port A Data register
+PTB    EQU $0001
+PORTB  EQU $0001     ; Port B data register
+PTC    EQU $0002
+PORTC  EQU $0002     ; Port C data register
+PTD    EQU $0003
+PORTD  EQU $0003     ; Port D data register
+DDRA   EQU $0004     ; Port A data direction register
+DDRB   EQU $0005     ; Port B data direction register
+DDRC   EQU $0006     ; Port C data direction register
+DDRD   EQU $0007     ; Port D data direction register
+
+LEDA   EQU $000C     ; Port-A LED Control Register
+LEDC   EQU $000D     ; Port-C LED Control Register
+
+AMCR   EQU $000E     ; Analog Module Control Register
+AMGCR  EQU $000F     ; Analog Module Gain Control Register
+AMSCR  EQU $0010     ; Analog Module Status & Control Register
+
+SCC1   EQU $0013     ; SCI Control Register 1
+SCC2   EQU $0014     ; SCI Control Register 2
+SCC3   EQU $0015     ; SCI Control Register 3
+SCS1   EQU $0016     ; SCI Status Register 1
+SCS2   EQU $0017     ; SCI Status Register 2
+SCDR   EQU $0018     ; SCI Data Register
+SCBR   EQU $0019     ; SCI Baud Rate Register
+
+KBSCR  EQU $001A     ; Keyboard Status & Control register
+KBIER  EQU $001B     ; Keyboard interrupt enable register
+
+IRQ1     EQU $001E   ; IRQ1 Status & Control Register
+INTSCR1  EQU $001E
+
+IRQ2     EQU $001C    ; IRQ2 Status & Control Register
+INTSCR2  EQU $001C
+
+CONFIG1  EQU $001F    ; Configuration Register 1
+CONFIG2  EQU $001D    ; Configuration Register 2
+
+T1SC     EQU $0020    ; Timer 1 Status & Control Register
+T1CNTH   EQU $0021    ; Timer 1 Counter Register High
+T1CNTL   EQU $0022    ; Timer 1 Counter Register Low
+T1MODH   EQU $0023    ; Timer 1 Counter Modulo Register High
+T1MODL   EQU $0024    ; Timer 1 Counter Modulo Register Low
+T1SC0    EQU $0025    ; Timer 1 Channel 0 Status & Control Register
+T1CH0H   EQU $0026    ; Timer 1 Channel 0 Register High
+T1CH0L   EQU $0027    ; Timer 1 Channel 0 Register Low
+T1SC1    EQU $0028    ; Timer 1 Channel 1 Status & Control Register
+T1CH1H   EQU $0029    ; Timer 1 Channel 1 Register High
+T1CH1L   EQU $002A    ; Timer 1 Channel 1 Register Low
+T2SC     EQU $002B    ; Timer 2 Status & Control Register
+T2CNTH   EQU $002C    ; Timer 2 Counter Register High
+T2CNTL   EQU $002D    ; Timer 2 Counter Register Low
+T2MODH   EQU $002E    ; Timer 2 Counter Modulo Register High
+T2MODL   EQU $002F    ; Timer 2 Counter Modulo Register Low
+T2SC0    EQU $0030    ; Timer 2 Channel 0 Status & Control Register
+T2CH0H   EQU $0031    ; Timer 2 Channel 0 Register High
+T2CH0L   EQU $0032    ; Timer 2 Channel 0 Register Low
+T2SC1    EQU $0033    ; Timer 2 Channel 1 Status & Control Register
+T2CH1H   EQU $0034    ; Timer 2 Channel 1 Register High
+T2CH1L   EQU $0035    ; Timer 2 Channel 1 Register Low
+
+PTCL     EQU $0036    ; PLL Control Register
+PBWC     EQU $0037    ; PLL Bandwidth Control Register
+PMSH     EQU $0038    ; PLL Multiplier Select Register High
+PMSL     EQU $0039    ; PLL Multiplier Select Register Low
+PMRS     EQU $003A    ; PLL VCO Range Select
+PMDS     EQU $003B    ; PLL Reference Divider Select Register
+
+TBCR     EQU $0046    ; Timebase Control Register
+
+MMADR    EQU $0048    ; MMIIC Address Register
+MMCR1    EQU $0049    ; MMIIC Control Register 1
+MMCR2    EQU $004A    ; MMIIC Control Register 2
+MMSR     EQU $004B    ; MMIIC Status Register
+MMDTR    EQU $004C    ; MMIIC Data Transmit Register
+MDDRR    EQU $004D    ; MMIIC Data Receive Register
+MMCRDR   EQU $004E    ; MMIIC CRC Data Register
+MMFDR    EQU $004F    ; MMIIC Frequency Divider Register
+
+PWMCR    EQU $0051    ; PWM Control Register
+PWMCCR   EQU $0052    ; PWM Clock Control Register
+PWMDR0   EQU $0053    ; PWM Data Register 0
+PWMDR1   EQU $0054    ; PWM Data Register 1
+PWMDR2   EQU $0055    ; PWM Data Register 2
+PWMPCR   EQU $0056    ; PWM Phase Control Register
+
+ADSCR    EQU $0057    ; ADC Status & Control Register
+ADICLK   EQU $0058    ; ADC Clock Control Register
+ADRH0    EQU $0059    ; ADC Data Register High 0
+ADRL0    EQU $005A    ; ADC Data Register Low 0
+ADRL1    EQU $005B    ; ADC Data Register Low 1
+ADRL2    EQU $005C    ; ADC Data Register Low 2
+ADRL3    EQU $005D    ; ADC Data Register Low 3
+ADASCR   EQU $005E    ; ADC Auto-scan Control Register
+
+SBSR     EQU $FE00    ; SIM Break Status Register
+SRSR     EQU $FE01    ; SIM Reset Status Register
+SBFCR    EQU $FE03    ; SIM Break Flag Control Register
+
+INT1     EQU $FE04    ; Interrupt Status Register 1
+INT2     EQU $FE05    ; Interrupt Status Register 2
+INT3     EQU $FE06    ; Interrupt Status Register 3
+
+FLCR     EQU $FE08    ; FLASH Control Register
+FLBPR    EQU $FE09    ; FLASH Block Protect Register
+
+BRKH     EQU $FE0C    ; Break Address Register High
+BRKL     EQU $FE0D    ; Break Address Register Low
+BRKSCR   EQU $FE0E    ; Break Status & Control Register
+
+LVISR    EQU $FE0F    ; Low-Voltage Inhibit Status Register
+
+MOR      EQU $FF80    ; Mask Option Register
+
+COPCTL   EQU $FFFF    ; COP Control Register
+
+
+; variable/data section
+MY_ZEROPAGE: SECTION  SHORT
+; Insert here your data definition. For demonstration, temp_byte is used.
+temp_byte ds.b 1
+delay  ds.b   1
+num  EQU  5
+; code section
+MyCode:     SECTION
+main
+            SEI 
+            CLRA
+            CLRX
+            LDA  #$09
+            STA  CONFIG1  ;COP禁止， 5V模式
+            BCLR 5,PTCL   ;关闭锁相环
+            LDA  #$40
+            STA  PWMDR2
+            STA  PWMDR1
+            STA  PWMDR0
+            LDA  #$02
+            STA  PWMCCR   ;选用CGMOUT作为PWM的输入时钟，预分频系数为4
+            LDA  #$1A     ;设置PWM2与PWM1之间的相位差为52个总线时钟周期
+            STA  PWMPCR
+            BSET 7,PWMPCR ;使能相位差控制。
+            MOV  #num, delay
+            LDA  #$E7
+            STA  PWMCR     ;启动PWM，  ￥￥￥
+      LOOP: LDA  delay
+            CMP  #0
+            DECA
+            STA  delay
+            BHI  LOOP
+            LDA  #$8D      ;设置PWM1与PWM0之间的相位差为26个总线时钟周期
+            STA  PWMPCR    
+            JMP  *         ;从 ￥￥￥到此总共运行65个时钟周期
+            
+Entry:
+            CLI               ; enable interrupts
+            MOV #1,temp_byte  ; just some demonstration code
+            BSR main          ; Insert here your own code
+            BRA Entry         ; endless loop
+
+

@@ -1,0 +1,308 @@
+__text_start:
+__start:
+    0035 E5CF      LDI	R28,0x5F
+    0036 E0D4      LDI	R29,4
+    0037 BFCD      OUT	0x3D,R28
+    0038 BFDE      OUT	0x3E,R29
+    0039 51C0      SUBI	R28,0x10
+    003A 40D0      SBCI	R29,0
+    003B EA0A      LDI	R16,0xAA
+    003C 8308      STD	Y+0,R16
+    003D 2400      CLR	R0
+    003E E7E6      LDI	R30,0x76
+    003F E0F0      LDI	R31,0
+    0040 E010      LDI	R17,0
+    0041 37E6      CPI	R30,0x76
+    0042 07F1      CPC	R31,R17
+    0043 F011      BEQ	0x0046
+    0044 9201      ST	R0,Z+
+    0045 CFFB      RJMP	0x0041
+    0046 8300      STD	Z+0,R16
+    0047 E5E4      LDI	R30,0x54
+    0048 E0F0      LDI	R31,0
+    0049 E6A0      LDI	R26,0x60
+    004A E0B0      LDI	R27,0
+    004B E010      LDI	R17,0
+    004C 36EA      CPI	R30,0x6A
+    004D 07F1      CPC	R31,R17
+    004E F021      BEQ	0x0053
+    004F 95C8      LPM
+    0050 9631      ADIW	R30,1
+    0051 920D      ST	R0,X+
+    0052 CFF9      RJMP	0x004C
+    0053 940E00FD  CALL	_main
+_exit:
+    0055 CFFF      RJMP	_exit
+FILE: E:\avr资料\例程\m16\点阵\dianzhen.c
+(0001) //ICC-AVR application builder : 2007-6-12 20:23:24
+(0002) // Target : M16
+(0003) // Crystal: 4.0000Mhz
+(0004) //该程序采用了循环扫描方式现在汉字，其中用B口作为地址口，用A口作为数据口
+(0005) //循环扫描地址，显示相应的数据，达到显示整个汉字的目的
+(0006) 
+(0007) #include <iom16v.h>
+(0008) #include <macros.h>
+(0009) unsigned char data1[]={0xff,0xfd,0xbd,0xbd,0x81,0xbd,0xbd,0xfd};//需要显示的汉字1
+(0010) unsigned char data2[]={0xff,0xfd,0xeb,0xe7,0x8f,0xe7,0xeb,0xfd};//需要显示的汉字2
+(0011) unsigned char addr = 1,i = 0;//addr是用来循环扫描的地址位，即某一位如果为高的话，该列就显示发来的数据
+(0012) long int j = 0;   //j用来做为选择是否显示汉字1或者汉字2
+(0013) void port_init(void)
+(0014) {
+(0015)  PORTA = 0x00;   //PA
+_port_init:
+    0056 2422      CLR	R2
+    0057 BA2B      OUT	0x1B,R2
+(0016)  DDRA  = 0xFF;   //PA口输出
+    0058 EF8F      LDI	R24,0xFF
+    0059 BB8A      OUT	0x1A,R24
+(0017)  PORTB = 0x00;
+    005A BA28      OUT	0x18,R2
+(0018)  DDRB  = 0xFF;   //PB口输出
+    005B BB87      OUT	0x17,R24
+(0019)  PORTC = 0x00; //m103 output only
+    005C BA25      OUT	0x15,R2
+(0020)  DDRC  = 0x00;
+    005D BA24      OUT	0x14,R2
+(0021)  PORTD = 0x00;
+    005E BA22      OUT	0x12,R2
+(0022)  DDRD  = 0x00;
+    005F BA21      OUT	0x11,R2
+    0060 9508      RET
+(0023) }
+(0024) 
+(0025) //TIMER0 initialize - prescale:64
+(0026) // WGM: Normal
+(0027) // desired value: 1KHz
+(0028) // actual value:  1.008KHz (0.8%)
+(0029) void timer0_init(void)
+(0030) {
+(0031)  TCCR0 = 0x00; //stop
+_timer0_init:
+    0061 2422      CLR	R2
+    0062 BE23      OUT	0x33,R2
+(0032)  TCNT0 = 0xC2; //set count
+    0063 EC82      LDI	R24,0xC2
+    0064 BF82      OUT	0x32,R24
+(0033)  OCR0  = 0x3E;  //set compare
+    0065 E38E      LDI	R24,0x3E
+    0066 BF8C      OUT	0x3C,R24
+(0034)  TCCR0 = 0x03; //start timer
+    0067 E083      LDI	R24,3
+    0068 BF83      OUT	0x33,R24
+    0069 9508      RET
+_timer0_ovf_isr:
+    006A 922A      ST	R2,-Y
+    006B 923A      ST	R3,-Y
+    006C 924A      ST	R4,-Y
+    006D 925A      ST	R5,-Y
+    006E 928A      ST	R8,-Y
+    006F 929A      ST	R9,-Y
+    0070 938A      ST	R24,-Y
+    0071 939A      ST	R25,-Y
+    0072 93AA      ST	R26,-Y
+    0073 93BA      ST	R27,-Y
+    0074 93EA      ST	R30,-Y
+    0075 93FA      ST	R31,-Y
+    0076 B62F      IN	R2,0x3F
+    0077 922A      ST	R2,-Y
+    0078 940E0108  CALL	push_gset2
+(0035) }
+(0036) 
+(0037) #pragma interrupt_handler timer0_ovf_isr:10
+(0038) void timer0_ovf_isr(void)
+(0039) {
+(0040)  TCNT0 = 0xC2; //reload counter value
+    007A EC82      LDI	R24,0xC2
+    007B BF82      OUT	0x32,R24
+(0041)                //在定时器中完成显示
+(0042)  
+(0043)  PORTB = addr;  //地址送入PB口  
+    007C 90200070  LDS	R2,addr
+    007E BA28      OUT	0x18,R2
+(0044)  
+(0045)  j++;          //选择汉字变量+1
+    007F E041      LDI	R20,1
+    0080 E050      LDI	R21,0
+    0081 E060      LDI	R22,0
+    0082 E070      LDI	R23,0
+    0083 90400074  LDS	R4,j+2
+    0085 90500075  LDS	R5,j+3
+    0087 90200072  LDS	R2,j
+    0089 90300073  LDS	R3,j+1
+    008B 0E24      ADD	R2,R20
+    008C 1E35      ADC	R3,R21
+    008D 1E46      ADC	R4,R22
+    008E 1E57      ADC	R5,R23
+    008F 92300073  STS	j+1,R3
+    0091 92200072  STS	j,R2
+    0093 92500075  STS	j+3,R5
+    0095 92400074  STS	j+2,R4
+(0046)  if(j<5000)    //如果小于5000，显示A
+    0097 E848      LDI	R20,0x88
+    0098 E153      LDI	R21,0x13
+    0099 E060      LDI	R22,0
+    009A E070      LDI	R23,0
+    009B 1624      CP	R2,R20
+    009C 0635      CPC	R3,R21
+    009D 0646      CPC	R4,R22
+    009E 0657      CPC	R5,R23
+    009F F454      BGE	0x00AA
+(0047)  PORTA = data1[i];
+    00A0 E680      LDI	R24,0x60
+    00A1 E090      LDI	R25,0
+    00A2 91E00071  LDS	R30,i
+    00A4 27FF      CLR	R31
+    00A5 0FE8      ADD	R30,R24
+    00A6 1FF9      ADC	R31,R25
+    00A7 8020      LDD	R2,Z+0
+    00A8 BA2B      OUT	0x1B,R2
+    00A9 C009      RJMP	0x00B3
+(0048)  else
+(0049)  PORTA = data2[i]; //如果大于5000，显示B
+    00AA E688      LDI	R24,0x68
+    00AB E090      LDI	R25,0
+    00AC 91E00071  LDS	R30,i
+    00AE 27FF      CLR	R31
+    00AF 0FE8      ADD	R30,R24
+    00B0 1FF9      ADC	R31,R25
+    00B1 8020      LDD	R2,Z+0
+    00B2 BA2B      OUT	0x1B,R2
+(0050)  
+(0051)  if(j>10000)     //大于10000，清零
+    00B3 E140      LDI	R20,0x10
+    00B4 E257      LDI	R21,0x27
+    00B5 E060      LDI	R22,0
+    00B6 E070      LDI	R23,0
+    00B7 90400074  LDS	R4,j+2
+    00B9 90500075  LDS	R5,j+3
+    00BB 90200072  LDS	R2,j
+    00BD 90300073  LDS	R3,j+1
+    00BF 1542      CP	R20,R2
+    00C0 0553      CPC	R21,R3
+    00C1 0564      CPC	R22,R4
+    00C2 0575      CPC	R23,R5
+    00C3 F464      BGE	0x00D0
+(0052)  j=0;
+    00C4 E040      LDI	R20,0
+    00C5 E050      LDI	R21,0
+    00C6 E060      LDI	R22,0
+    00C7 E070      LDI	R23,0
+    00C8 93500073  STS	j+1,R21
+    00CA 93400072  STS	j,R20
+    00CC 93700075  STS	j+3,R23
+    00CE 93600074  STS	j+2,R22
+(0053)  
+(0054)  i++;            //数据数组地址+1
+    00D0 91800071  LDS	R24,i
+    00D2 5F8F      SUBI	R24,0xFF
+    00D3 93800071  STS	i,R24
+(0055)  
+(0056)  addr= addr<<1;  //显示口地址左移
+    00D5 90200070  LDS	R2,addr
+    00D7 0C22      LSL	R2
+    00D8 92200070  STS	addr,R2
+(0057)  
+(0058)  if(addr == 0)   //判断是否显示完8个位，如果显示完，回到初始值
+    00DA 2022      TST	R2
+    00DB F431      BNE	0x00E2
+(0059)   {
+(0060)    addr =1;
+    00DC E081      LDI	R24,1
+    00DD 93800070  STS	addr,R24
+(0061)    i=0;
+    00DF 2422      CLR	R2
+    00E0 92200071  STS	i,R2
+(0062)   }
+    00E2 940E00FF  CALL	pop_gset2
+    00E4 9029      LD	R2,Y+
+    00E5 BE2F      OUT	0x3F,R2
+    00E6 91F9      LD	R31,Y+
+    00E7 91E9      LD	R30,Y+
+    00E8 91B9      LD	R27,Y+
+    00E9 91A9      LD	R26,Y+
+    00EA 9199      LD	R25,Y+
+    00EB 9189      LD	R24,Y+
+    00EC 9099      LD	R9,Y+
+    00ED 9089      LD	R8,Y+
+    00EE 9059      LD	R5,Y+
+    00EF 9049      LD	R4,Y+
+    00F0 9039      LD	R3,Y+
+    00F1 9029      LD	R2,Y+
+    00F2 9518      RETI
+(0063) }
+(0064) 
+(0065) //call this routine to initialize all peripherals
+(0066) void init_devices(void)
+(0067) {
+(0068)  //stop errant interrupts until set up
+(0069)  CLI(); //disable all interrupts
+_init_devices:
+    00F3 94F8      BCLR	7
+(0070)  port_init();
+    00F4 DF61      RCALL	_port_init
+(0071)  timer0_init();
+    00F5 DF6B      RCALL	_timer0_init
+(0072) 
+(0073)  MCUCR = 0x00;
+    00F6 2422      CLR	R2
+    00F7 BE25      OUT	0x35,R2
+(0074)  GICR  = 0x00;
+    00F8 BE2B      OUT	0x3B,R2
+(0075)  TIMSK = 0x01; //timer interrupt sources
+    00F9 E081      LDI	R24,1
+    00FA BF89      OUT	0x39,R24
+(0076)  SEI(); //re-enable interrupts
+    00FB 9478      BSET	7
+    00FC 9508      RET
+(0077)  //all peripherals are now initialized
+(0078) }
+(0079) 
+(0080) //
+(0081) void main(void)
+(0082) {
+(0083)  init_devices();
+FILE: <library>
+_main:
+    00FD DFF5      RCALL	_init_devices
+    00FE 9508      RET
+pop_gset2:
+    00FF E0E2      LDI	R30,2
+    0100 940C010E  JMP	pop
+push_gset5:
+    0102 92FA      ST	R15,-Y
+    0103 92EA      ST	R14,-Y
+push_gset4:
+    0104 92DA      ST	R13,-Y
+    0105 92CA      ST	R12,-Y
+push_gset3:
+    0106 92BA      ST	R11,-Y
+    0107 92AA      ST	R10,-Y
+push_gset2:
+    0108 937A      ST	R23,-Y
+    0109 936A      ST	R22,-Y
+push_gset1:
+    010A 935A      ST	R21,-Y
+    010B 934A      ST	R20,-Y
+    010C 9508      RET
+pop_gset1:
+    010D E0E1      LDI	R30,1
+pop:
+    010E 9149      LD	R20,Y+
+    010F 9159      LD	R21,Y+
+    0110 FDE0      SBRC	R30,0
+    0111 9508      RET
+    0112 9169      LD	R22,Y+
+    0113 9179      LD	R23,Y+
+    0114 FDE1      SBRC	R30,1
+    0115 9508      RET
+    0116 90A9      LD	R10,Y+
+    0117 90B9      LD	R11,Y+
+    0118 FDE2      SBRC	R30,2
+    0119 9508      RET
+    011A 90C9      LD	R12,Y+
+    011B 90D9      LD	R13,Y+
+    011C FDE3      SBRC	R30,3
+    011D 9508      RET
+    011E 90E9      LD	R14,Y+
+    011F 90F9      LD	R15,Y+
+    0120 9508      RET

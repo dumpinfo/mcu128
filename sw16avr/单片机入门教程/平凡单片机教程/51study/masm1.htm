@@ -1,0 +1,478 @@
+<html>
+<head>
+<title>宏汇编软件的使用</title>
+<meta http-equiv="Content-Type" content="text/html; charset=gb2312">
+</head>
+
+<body bgcolor="#cccccc">
+<div align="center">
+  <p style="line-height: 150%; margin-top: 0; margin-bottom: 0"><b>
+  <font face="宋体" lang="ZH-CN" size=2>宏汇编软件</font><font face="宋体" size=2>MASM51</font><font face="宋体" lang="ZH-CN" size=2>的使用</font></b></div>
+<ol>
+  <ol>
+    <p align="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0"> 
+    <div align="center">
+      <p style="line-height: 150%; margin-top: 0; margin-bottom: 0"><b>
+      <font face="宋体" lang="ZH-CN" size=2>第一</font></b><font size="2" face="宋体">
+      </font> <b><font face="宋体" lang="ZH-CN" size=2>节</font><font size=2 face="宋体">  
+      </font><font face="宋体" lang="ZH-CN" size=2>概</font><font size=2 face="宋体">  
+      </font><font face="宋体" lang="ZH-CN" size=2>述 </font> </b> </div>
+    <p style="line-height: 150%; margin-top: 0; margin-bottom: 0"></p>
+  </ol>
+  <ol>
+  </ol>
+  <ol>
+    <font face="宋体" lang="ZH-CN" size=4> 
+    <p align="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0"></p>
+    </font> 
+    <p align="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">
+    <font face="宋体" lang="ZH-CN" size=2>单片机开发可以用手工汇编和机器汇编两种方法。采用手工汇编就是先编写出汇编程序，然后对照单片机汇编表手工将汇编程序翻译成机器码，最后将机器码一个一个地送入开发仿真器的ＲＡＭ中去进行调试。</font></p>
+    <p align="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">
+    <font face="宋体" lang="ZH-CN" size=2>由于采用手工汇编的机器码是相对于存储器的绝对地址进行定位的，因此在调试时，若要在程序中增加或删除一条指令，就会造成指令的绝对地址发生变化。这样除修改那条指令外，几乎所有转移、调用指令的操作数都要作相应的修改，稍有疏忽程序就会出错。</font></p>
+    <p align="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">
+    <font face="宋体" lang="ZH-CN" size=2>而采用机器汇编，在很大程度上可以避免上述麻烦。只要通过键盘输入源程序后，其余作工作都由计算机来进行，即查出相应的机器码，对地址进行定位，建立能被开发装置接收的机器码文件、建立能打印出清单的列表文件等等。机器码不需要再一个一个地从仿真器的键盘上键入，只要从ＰＣ机的通讯口直接传送到开发装置中去。因此使用机器汇编大大提高了单片机开发的速度。</font></p>
+    <p align="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">
+    <font face="宋体" lang="ZH-CN" size=2>源程序被输入到机器中后，以一个文件的形式保存起来，然后就可以对这个文件进行处理了，要对这个文件进行汇编，必须有相应的汇编程序。在ＰＣ机上进行汇编的程序有多种，以下介绍的ＭＡＳＭ５１软件就是其中的一种，它的主要特点有：</font></p>
+    <p align="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">
+    <font face="宋体" lang="ZH-CN" size=2>１．对用户编写的源程序格式要求不太严格，例如，英文字母的大、小写不受限制，变量名或标号名没有长度限制，对源程序中的空格数也没有严格的要求等等。这些给用户编写程序带来很大的方便。</font></p>
+    <p align="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">
+    <font face="宋体" lang="ZH-CN" size=2>２．具有较强的功能，例如支持宏语句，使同一程序中类似的程序结构，只要输入一次，在使用时可用宏语句调用。此外还允许用条件汇编语句以及完善的伪指令系统等。减少了编写、输入源程序的工作量。</font></p>
+    <p align="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">
+    <font face="宋体" lang="ZH-CN" size=2>３．不管用户的源程序有多少错误，它都能全部汇编完，并能形成列表文件及目标文件，以供用户修改错误。</font></p>
+    <p align="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">
+    <font face="宋体" lang="ZH-CN" size=2>４．可以接收汉字注释，并能完整的将汉字注释复制到列表文件，而其它一些汇编软件则不能处理汉字，或会使列表文件中的汉字注释混乱。</font></p>
+    <p align="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">
+    <font face="宋体" lang="ZH-CN" size=2>运行ＭＡＳＭ５１软件的条件很低，现在的ＰＣ机都能达到。</font></p>
+    <font face="宋体" lang="ZH-CN" size=3> 
+    <p align="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0"> 
+    </font> 
+    <div align="center">
+      <p style="line-height: 150%; margin-top: 0; margin-bottom: 0">
+      <font face="宋体" lang="ZH-CN" size=2>第二节</font><font size=2 face="宋体"> 
+      </font><font face="宋体" lang="ZH-CN" size=2>如何启动ＭＡＳＭ５１宏汇编程序</font><b><font face="宋体" lang="ZH-CN" size=2>  
+      </font></b></div>
+    <b><font face="黑体" lang="ZH-CN" size=4> 
+    <p style="line-height: 150%; margin-top: 0; margin-bottom: 0"></p>
+    </font></b> 
+    <ol>
+      <b> 
+      <p align="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0"> <font face="宋体" lang="ZH-CN">
+      <font size="2">一、启动和退出 </font> 
+      <p style="line-height: 150%; margin-top: 0; margin-bottom: 0"></p>
+      </font></b><font face="宋体" lang="ZH-CN" size=3> 
+      <p align="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0"></p>
+      </font> 
+      <p align="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">
+      <font face="宋体" lang="ZH-CN" size=2>ＭＡＳＭ５１软件有两个文件：ＭＡＳＭ５１．ＥＸＥ和ＭＡＳＭ５１．ＯＶＬ，只要将这两个文件拷入硬盘的一个目录中（如ＭＡＳＭ５１）中，然后在ＤＯＳ命令行中打入：</font></p>
+      <p align="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">
+      <font face="宋体" lang="ZH-CN" size=2>ＭＡＳＭ５１（回车）</font></p>
+      <p align="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">
+      <font face="宋体" lang="ZH-CN" size=2>即在显示器上显示如下信息：</font></p>
+      <font face="宋体" size=2> 
+      <p align="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0"> The Cybernetic Micro Systems</p> 
+      <p align="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0"> CYS-8051 Software Package</p>
+      <p align="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0"> Version 3.03`</p>
+      <p align="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0"> for the IBM Personal Computer</p>
+      <p align="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0"> (C)Copy right Cybrenetic MIcro Systems,Inc 1983,1984,1985,</p>
+      <p align="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0"> 1986</p>
+      <p align="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">High Level Language Commands</p>
+      <p align="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0"> ASM51[file] P8751 file P8744 file//</p>
+      <p align="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0"> P27XX file COMP[file] READ[kbytes] DISP[start,num]</p>
+      <p align="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0"> INITIALIZE CLEAR LIST EXIT</p>
+      <p align="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0"> RUN[file] GOTO Label STOP CONT</p>
+      <p align="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0"> DIR[spec] TYPE file DOS cmd HELP</p>
+      <p align="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0"> PRINT arglist EQU = WARBLE</p>
+      <p align="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0"> DELAY[secs] CLS HLSEARCH flag BEEP</p>
+      <p align="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0"> OFFSET pc[,loc] PROM type SECURE SAVE file[,start,num]</p>
+      <p align="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0"> LOAD file EDBYTE pc PVOLT value PSETUP num,value</p>
+      <p align="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0"> &gt;</p>
+      </font> 
+      <p align="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">
+      <font face="宋体" lang="ZH-CN" size=2>信息的出现说明已进入ＭＡＳＭ５１宏汇编程序，在屏幕下方出现的符号‘〉’是宏汇编程序提示符，它的出现告诉用户，宏汇编程序处于接收命令状态。</font></p>
+      <p align="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">
+      <font face="宋体" lang="ZH-CN" size=2>虽然屏幕上提供了很多的命令，但大部份命令要在相应的硬件配合下才能实现。当用来汇编源程序时，使用的主要命令是：</font></p>
+      <p align="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">
+      <font face="宋体" lang="ZH-CN" size=2>ＡＳＭ５１</font><font size=2 face="宋体"> 
+        </font><font face="宋体" lang="ZH-CN" size=2>盘号：文件名</font><font size=2 face="宋体">  
+        </font><font face="宋体" lang="ZH-CN" size=2>〈回车〉</font><font size=2 face="宋体">  
+        </font><font face="宋体" lang="ZH-CN" size=2>进行汇编</font></p> 
+      <p align="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">
+      <font face="宋体" lang="ZH-CN" size=2>ＤＩＲ</font><font size=2 face="宋体"> 
+        </font><font face="宋体" lang="ZH-CN" size=2>盘号：文件名</font><font size=2 face="宋体">  
+        </font><font face="宋体" lang="ZH-CN" size=2>〈回车〉</font><font size=2 face="宋体">  
+        </font><font face="宋体" lang="ZH-CN" size=2>显示目录</font></p> 
+      <p align="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">
+      <font face="宋体" lang="ZH-CN" size=2>ＥＸＩＴ</font><font size=2 face="宋体"> 
+        </font><font face="宋体" lang="ZH-CN" size=2>〈回车〉</font><font size=2 face="宋体">  
+        </font><font face="宋体" lang="ZH-CN" size=2>退出宏汇编</font></p> 
+      <b><font face="宋体" lang="ZH-CN"> 
+      <p align="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0"> 
+      <li></li>
+      <p style="line-height: 150%; margin-top: 0; margin-bottom: 0">　</p>
+      <p align="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0"> 
+      <li>
+      <p style="line-height: 150%; margin-top: 0; margin-bottom: 0"><a name="_Toc416236549">
+      <font size="2">二、进行汇编</font></a><font size="2"></li> </font></p>
+      <p style="line-height: 150%; margin-top: 0; margin-bottom: 0"></p>
+      </font></b> 
+    </ol>
+    <font face="宋体" lang="ZH-CN" size=3> 
+    <p align="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0"></p>
+    </font> 
+    <p align="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">
+    <font face="宋体" lang="ZH-CN" size=2>用户在使用宏汇编程序之前，应该已使用编缉器（如ＥＤＩＴ、ＣＣＥＤ等）编好了８０５１汇编语言的源程序，并已作为一个文件存盘，该文件一般以．ＡＳＭ为扩展名。</font></p>
+    <p align="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">
+    <font face="宋体" lang="ZH-CN" size=2>进入ＭＡＳＭ５１后，键入</font></p>
+    <p align="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">
+    <font face="宋体" size=2> ASM51 [d:filename[.asm] [</font><font face="宋体" lang="ZH-CN" size=2>选项</font><font face="宋体" size=2>]</font></p> 
+    <p align="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0"> 
+    <font face="宋体" lang="ZH-CN" size=2>如果省略扩展名，则系统默认为</font><font face="宋体" size=2>.asm</font><font face="宋体" lang="ZH-CN" size=2>，如果不以</font><font face="宋体" size=2>.asm</font><font face="宋体" lang="ZH-CN" size=2>为扩展名，则应键入文件的全名。汇编后，将产生两个输出文件：一个是１６进制代码文件，以</font><font face="宋体" size=2>.hex</font><font face="宋体" lang="ZH-CN" size=2>为扩展名，另一个是列表文件，以</font><font face="宋体" size=2>.lst</font><font face="宋体" lang="ZH-CN" size=2>为扩展名，文件名与输入文件的文件名相同。</font></p>
+    <p align="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">
+    <font face="宋体" lang="ZH-CN" size=2>在汇编时，可以加入一些选项进行控制，可加的选项如下：</font></p>
+    <p align="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">
+    <font face="宋体" lang="ZH-CN" size=2>１．</font><font face="宋体" size=2>/L</font><font face="宋体" lang="ZH-CN" size=2>选项：只在屏幕上显示列表文件的内容，不生成列表文件。</font></p>
+    <p align="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">
+    <font face="宋体" lang="ZH-CN" size=2>２．</font><font face="宋体" size=2>/H</font><font face="宋体" lang="ZH-CN" size=2>选项：汇编后不在磁盘上产生</font><font face="宋体" size=2>.hex</font><font face="宋体" lang="ZH-CN" size=2>文件。</font></p>
+    <p align="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">
+    <font face="宋体" lang="ZH-CN" size=2>３．</font><font face="宋体" size=2>/S</font><font face="宋体" lang="ZH-CN" size=2>选项：产生的列表文件中将不包括符号表。</font></p>
+    <p align="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">
+    <font face="宋体" lang="ZH-CN" size=2>４．</font><font face="宋体" size=2>/P</font><font face="宋体" lang="ZH-CN" size=2>选项：汇编程序序所生成的符号表将成为能被其他源程序引用的永久符号表的一部份，即如果不退出宏汇编，该符号表将保留在内存中，在汇编其它源程序时可以引用它们，以便连接几个源文件。</font></p>
+    <p align="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">
+    <font face="宋体" lang="ZH-CN" size=2>５．</font><font face="宋体" size=2>/N</font><font face="宋体" lang="ZH-CN" size=2>选项：使生成的列表文件在打印（或显示）时不分页。不加</font><font face="宋体" size=2>'/N'</font><font face="宋体" lang="ZH-CN" size=2>则每隔５５行源代码生成一个新页头。</font></p>
+    <p align="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">
+    <font face="宋体" lang="ZH-CN" size=2>一般情况下，我们不需要在命令后面加任何选项。</font></p>
+    <p align="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">
+    <font face="宋体" lang="ZH-CN" size=2>如下面所示：</font></p>
+    <p align="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">
+    <font face="宋体" size=2> ASM51 Filename[.asm] [</font><font face="宋体" lang="ZH-CN" size=2>回车</font><font face="宋体" size=2>]</font><font face="宋体" lang="ZH-CN" size=2>即可</font></p> 
+    <p align="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">
+    <font face="宋体" lang="ZH-CN" size=2>下面列出ＤＥＭＯ５１．ＡＳＭ的源文件，及用ＭＡＳＭ５１汇编后产生的代码文件和列表文件，以供参考。</font></p>
+    <i><font face="宋体" size=2> 
+    <p align="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">T0_flag bit 0</p> 
+    <p align="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">T1_flag bit 1</p>
+    <p align="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">INIT_Timer0 equ 0FE80H</p>
+    <p align="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">INIT_Timer1 equ 0FD00H</p>
+    </font><font face="Arial" size=3> 
+    <p align="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0"></p>
+    </font><font face="宋体" size=2> 
+    <p align="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">X0_vector equ 0003H</p>
+    <p align="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">X1_vector equ 0013H</p>
+    <p align="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">T0_vector equ 000BH</p>
+    <p align="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">T1_vector equ 001BH</p>
+    <p align="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">S0_vector equ 0023H</p>
+    </font><font face="Arial" size=3> 
+    <p align="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0"></p>
+    <font face="宋体" size=2> 
+    <p align="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">INIT: AJMP SETUP</p>
+    </font>
+    <p align="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0"></p>
+    <font face="宋体" size=2> 
+    <p align="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">;Interrept Jump Table</p>
+    <p align="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0"> ORG X0_vector</p>
+    <p align="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">INT_0: SETB P3.2</p>
+    <p align="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0"> RETI ;int0 interrupt</p>
+    </font>
+    <p align="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0"></p>
+    <font face="宋体" size=2> 
+    <p align="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0"> ORG T0_vector</p>
+    <p align="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">T0INT: ACALL TIM0 ;timer0 interrupt</p>
+    <p align="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0"> RETI</p>
+    </font>
+    <p align="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0"></p>
+    <font face="宋体" size=2> 
+    <p align="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0"> ORG X1_vector</p>
+    <p align="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">INT_1: SETB P3.3</p>
+    <p align="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0"> RETI ;int1 interrupt</p>
+    </font>
+    <p align="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0"></p>
+    <font face="宋体" size=2> 
+    <p align="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0"> ORG T1_vector</p>
+    <p align="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">T1INT: ACALL TIM1 ;timer1 interrupt</p>
+    <p align="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0"> RETI</p>
+    </font>
+    <p align="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0"></p>
+    <font face="宋体" size=2> 
+    <p align="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0"> ORG S0_vector</p>
+    <p align="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0"> AJMP SERIAL ;UART interrupt</p>
+    </font>
+    <p align="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0"></p>
+    <font face="宋体" size=2> 
+    <p align="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">DB 'This is demo program for MCS-51TM'</p>
+    </font>
+    <p align="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0"></p>
+    <font face="宋体" size=2> 
+    <p align="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">SETUP: MOV SP,#5FH ;set sp point</p>
+    <p align="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0"> MOV TMOD,#11H ;set timer mode</p>
+    <p align="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0"> MOV TH0,#HIGH(INIT_Timer0)</p>
+    <p align="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0"> MOV TL0,#LOW(INIT_Timer0)</p>
+    <p align="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0"> MOV TH1,#HIGH(INIT_Timer1)</p>
+    <p align="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0"> MOV TL1,#LOW(INIT_Timer1)</p>
+    <p align="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0"> SETB EX0</p>
+    <p align="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0"> SETB PX0</p>
+    <p align="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0"> SETB EX1</p>
+    <p align="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0"> CLR PX1</p>
+    <p align="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0"> SETB PT1</p>
+    <p align="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0"> SETB ET0</p>
+    <p align="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0"> SETB ET1</p>
+    <p align="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0"> SETB TR0</p>
+    <p align="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0"> SETB TR1</p>
+    <p align="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0"> SETB ES</p>
+    <p align="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0"> MOV SCON,#99H</p>
+    <p align="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0"> SETB EA ;enable interrupt</p>
+    <p align="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">WAIT: NOP</p>
+    <p align="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0"> AJMP WAIT ;wait</p>
+    </font>
+    <p align="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0"></p>
+    <font face="宋体" size=2> 
+    <p align="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">SERIAL: NOP ;serial interrupt process</p>
+    <p align="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0"> CLR RI</p>
+    <p align="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0"> RETI</p>
+    </font>
+    <p align="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0"></p>
+    <font face="宋体" size=2> 
+    <p align="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">TIM0: CLR TR0 ;timer0 interrupt process</p>
+    <p align="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0"> CPL T0_flag</p>
+    <p align="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0"> MOV TL0,#LOW(INIT_Timer0)</p>
+    <p align="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0"> MOV A,#HIGH(INIT_Timer0)</p>
+    <p align="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0"> MOV TH0,A</p>
+    <p align="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0"> SETB TR0</p>
+    <p align="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0"> CLR P3.3</p>
+    <p align="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0"> RET</p>
+    </font>
+    <p align="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0"></p>
+    <font face="宋体" size=2> 
+    <p align="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">TIM1: CLR TR1 ;timer1 interrupt process</p>
+    <p align="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0"> CPL T1_flag</p>
+    <p align="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0"> MOV TL1,#LOW(INIT_Timer1)</p>
+    <p align="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0"> MOV A,#HIGH(INIT_Timer1)</p>
+    <p align="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0"> MOV TH1,A</p>
+    <p align="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0"> SETB TR1</p>
+    <p align="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0"> CLR P3.2</p>
+    <p align="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0"> RET</p>
+    <p align="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0"> END</p>
+    <p align="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">;********************************************************</p>
+    <p align="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">;DEMO51.ASM FILE END</p>
+    <p align="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">;********************************************************</p>
+    </font>
+    </font></i> 
+    <p align="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">
+    <font face="宋体" lang="ZH-CN" size=2>以上是ＤＥＭＯ５１．ＡＳＭ源程序文件。</font></p>
+    <i><font face="宋体" size=2> 
+    <p align="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">The Cybernetic Micro Systems 8051 Family Assembler, Version  
+      3.03 Page 1</p> 
+    <p align="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0"> 08-25-96</p>
+    </font><font face="Arial" size=3> 
+    <p align="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0"></p>
+    <p align="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">
+    </font><font size=2 face="宋体"> 
+    　
+    </font></p>
+    <font face="宋体" size=2> 
+    <p align="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0"> 0000 = T0_flag bit 0</p> 
+    <p align="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0"> 0001 = T1_flag bit 1</p>
+    <p align="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0"> FE80 = INIT_Timer0 equ 0FE80H</p>
+    <p align="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0"> FD00 = INIT_Timer1 equ 0FD00H</p>
+    </font>
+    <font face="Arial" size=3> 
+    <p align="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0"></p>
+    </font>
+    <font face="宋体" size=2> 
+    <p align="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0"> 0003 = X0_vector equ 0003H</p>
+    <p align="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0"> 0013 = X1_vector equ 0013H</p>
+    <p align="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0"> 000B = T0_vector equ 000BH</p>
+    <p align="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0"> 001B = T1_vector equ 001BH</p>
+    <p align="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0"> 0023 = S0_vector equ 0023H</p>
+    </font>
+    <font face="Arial" size=3> 
+    <p align="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0"></p>
+    <font face="宋体" size=2> 
+    <p align="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0"> 0000 0146 INIT: AJMP SETUP</p>
+    </font>
+    <p align="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0"></p>
+    <font face="宋体" size=2> 
+    <p align="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0"> ;Interrept Jump Table</p>
+    <p align="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0"> 0003 ORG X0_vector</p>
+    <p align="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0"> 0003 D2B2 INT_0: SETB P3.2</p>
+    <p align="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0"> 0005 32 RETI ;int0 interrupt</p>
+    </font>
+    <p align="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0"></p>
+    <font face="宋体" size=2> 
+    <p align="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0"> 000B ORG T0_vector</p>
+    <p align="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0"> 000B 1178 T0INT: ACALL TIM0 ;timer0 interrupt</p>
+    <p align="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0"> 000D 32 RETI</p>
+    </font>
+    <p align="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0"></p>
+    <font face="宋体" size=2> 
+    <p align="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0"> 0013 ORG X1_vector</p>
+    <p align="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0"> 0013 D2B3 INT_1: SETB P3.3</p>
+    <p align="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0"> 0015 32 RETI ;int1 interrupt</p>
+    </font>
+    <p align="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0"></p>
+    <font face="宋体" size=2> 
+    <p align="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0"> 001B ORG T1_vector</p>
+    <p align="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0"> 001B 1188 T1INT: ACALL TIM1 ;timer1 interrupt</p>
+    <p align="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0"> 001D 32 RETI</p>
+    </font>
+    <p align="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0"></p>
+    <font face="宋体" size=2> 
+    <p align="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0"> 0023 ORG S0_vector</p>
+    <p align="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0"> 0023 0174 AJMP SERIAL ;UART interrupt</p>
+    </font>
+    <p align="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0"></p>
+    <font face="宋体" size=2> 
+    <p align="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0"> 0025 54 68 69 DB 'This is demo program for MCS-51TM'</p>
+    <p align="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0"> 0028 73 20 69 73 20 64 65 6D 6F 20</p>
+    <p align="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0"> 0032 70 72 6F 67 72 61 6D 20 66 6F</p>
+    <p align="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0"> 003C 72 20 4D 43 53 2D 35 31 54 4D</p>
+    </font>
+    <p align="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0"></p>
+    <font face="宋体" size=2> 
+    <p align="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0"> 0046 75815F SETUP: MOV SP,#5FH ;set sp point</p>
+    <p align="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0"> 0049 758911 MOV TMOD,#11H ;set timer mode</p>
+    <p align="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0"> 004C 758CFE MOV TH0,#HIGH(INIT_Timer0)</p>
+    <p align="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0"> 004F 758A80 MOV TL0,#LOW(INIT_Timer0)</p>
+    <p align="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0"> 0052 758DFD MOV TH1,#HIGH(INIT_Timer1)</p>
+    <p align="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0"> 0055 758B00 MOV TL1,#LOW(INIT_Timer1)</p>
+    <p align="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0"> 0058 D2A8 SETB EX0</p>
+    <p align="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0"> 005A D2B8 SETB PX0</p>
+    <p align="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0"> 005C D2AA SETB EX1</p>
+    <p align="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0"> 005E C2BA CLR PX1</p>
+    <p align="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0"> 0060 D2BB SETB PT1</p>
+    <p align="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0"> 0062 D2A9 SETB ET0</p>
+    <p align="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0"> 0064 D2AB SETB ET1</p>
+    <p align="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0"> 0066 D28C SETB TR0</p>
+    <p align="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0"> 0068 D28E SETB TR1</p>
+    <p align="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0"> 006A D2AC SETB ES</p>
+    <p align="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0"> 006C 759899 MOV SCON,#99H</p>
+    </font>
+    <p align="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0"></p>
+    <font face="宋体" size=2> 
+    <p align="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">The Cybernetic Micro Systems 8051 Family Assembler, Version 
+      3.03 Page 2</p>
+    <p align="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0"> 08-25-96</p>
+    </font>
+    <p align="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0"></p>
+    </font>
+    <p align="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">
+    <font size=2 face="宋体"> 
+    　
+    </font></p>
+    <font face="宋体" size=2> 
+    <p align="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0"> 006F D2AF SETB EA ;enable interrupt</p> 
+    <p align="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0"> 0071 00 WAIT: NOP</p>
+    <p align="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0"> 0072 0171 AJMP WAIT ;wait</p>
+    </font>
+    <font face="Arial" size=3> 
+    <p align="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0"></p>
+    </font>
+    <font face="宋体" size=2> 
+    <p align="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0"> 0074 00 SERIAL: NOP ;serial interrupt process</p>
+    <p align="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0"> 0075 C298 CLR RI</p>
+    <p align="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0"> 0077 32 RETI</p>
+    </font>
+    <font face="Arial" size=3> 
+    <p align="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0"></p>
+    <font face="宋体" size=2> 
+    <p align="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0"> 0078 C28C TIM0: CLR TR0 ;timer0 interrupt process</p>
+    <p align="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0"> 007A B200 CPL T0_flag</p>
+    <p align="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0"> 007C 758A80 MOV TL0,#LOW(INIT_Timer0)</p>
+    <p align="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0"> 007F 74FE MOV A,#HIGH(INIT_Timer0)</p>
+    <p align="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0"> 0081 F58C MOV TH0,A</p>
+    <p align="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0"> 0083 D28C SETB TR0</p>
+    <p align="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0"> 0085 C2B3 CLR P3.3</p>
+    <p align="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0"> 0087 22 RET</p>
+    </font>
+    <p align="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0"></p>
+    <font face="宋体" size=2> 
+    <p align="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0"> 0088 C28E TIM1: CLR TR1 ;timer1 interrupt process</p>
+    <p align="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0"> 008A B201 CPL T1_flag</p>
+    <p align="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0"> 008C 758B00 MOV TL1,#LOW(INIT_Timer1)</p>
+    <p align="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0"> 008F 74FD MOV A,#HIGH(INIT_Timer1)</p>
+    <p align="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0"> 0091 F58D MOV TH1,A</p>
+    <p align="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0"> 0093 D28E SETB TR1</p>
+    <p align="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0"> 0095 C2B2 CLR P3.2</p>
+    <p align="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0"> 0097 22 RET</p>
+    <p align="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0"> 0000 END</p>
+    </font>
+    <p align="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0"></p>
+    <font face="宋体" size=2> 
+    <p align="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">The Cybernetic Micro Systems 8051 Family Assembler, Version 
+      3.03 Page 3</p>
+    <p align="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0"> 08-25-96</p>
+    </font>
+    <p align="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0"></p>
+    </font>
+    <p align="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">
+    <font size=2 face="宋体"> 
+    　
+    </font></p>
+    <font face="Arial" size=3> 
+    <p align="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">　</p>
+    </font>
+    <font face="宋体" size=2> 
+    <p align="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0"> ;%T Symbol Name Type Value</p> 
+    </font>
+    <font face="Arial" size=3> 
+    <p align="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0"></p>
+    <font face="宋体" size=2> 
+    <p align="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0"> INIT. . . . . . . . . . . . . . L 0000</p>
+    <p align="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0"> INIT_TIMER0 . . . . . . . . . . I FE80</p>
+    <p align="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0"> INIT_TIMER1 . . . . . . . . . . I FD00</p>
+    <p align="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0"> INT_0 . . . . . . . . . . . . . L 0003</p>
+    <p align="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0"> INT_1 . . . . . . . . . . . . . L 0013</p>
+    <p align="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0"> S0_VECTOR . . . . . . . . . . . I 0023</p>
+    <p align="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0"> SERIAL. . . . . . . . . . . . . L 0074</p>
+    <p align="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0"> SETUP . . . . . . . . . . . . . L 0046</p>
+    <p align="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0"> T0INT . . . . . . . . . . . . . L 000B</p>
+    <p align="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0"> T0_FLAG . . . . . . . . . . . . B 0000</p>
+    <p align="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0"> T0_VECTOR . . . . . . . . . . . I 000B</p>
+    <p align="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0"> T1INT . . . . . . . . . . . . . L 001B</p>
+    <p align="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0"> T1_FLAG . . . . . . . . . . . . B 0001</p>
+    <p align="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0"> T1_VECTOR . . . . . . . . . . . I 001B</p>
+    <p align="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0"> TIM0. . . . . . . . . . . . . . L 0078</p>
+    <p align="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0"> TIM1. . . . . . . . . . . . . . L 0088</p>
+    <p align="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0"> WAIT. . . . . . . . . . . . . . L 0071</p>
+    <p align="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0"> X0_VECTOR . . . . . . . . . . . I 0003</p>
+    <p align="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0"> X1_VECTOR . . . . . . . . . . . I 0013</p>
+    <p align="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0"> ;%Z</p>
+    <p align="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0"> 00 Errors (0000)</p>
+    </font>
+    </font></i><font face="宋体" lang="ZH-CN" size=2> 
+    <p align="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">以上是ＤＥＭＯ５１．ＬＳＴ文件。</p>
+    </font><i><font face="宋体" size=2> 
+    <p align="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">:020000000146B7</p>
+    <p align="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">:03000300D2B23244</p>
+    <p align="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">:03000B0011783237</p>
+    <p align="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">:03001300D2B33233</p>
+    <p align="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">:03001B0011883217</p>
+    <p align="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">:0D0023000174546869732069732064656D71</p>
+    <p align="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">:100030006F2070726F6772616D20666F72204D4322</p>
+    <p align="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">:10004000532D3531544D75815F758911758CFE7551</p>
+    <p align="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">:100050008A80758DFD758B00D2A8D2B8D2AAC2BA9B</p>
+    <p align="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">:10006000D2BBD2A9D2ABD28CD28ED2AC759899D257</p>
+    <p align="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">:10007000AF00017100C29832C28CB200758A8074E0</p>
+    <p align="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">:10008000FEF58CD28CC2B322C28EB201758B007485</p>
+    <p align="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">:08009000FDF58DD28EC2B222F3</p>
+    </font></i> 
+    <p align="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">
+    <font face="宋体" lang="ZH-CN" size=2>以上是ＤＥＭＯ５１．ＨＥＸ文件。</font></p>
+    <p align="center"><a href="dpjjx.htm"><img src="back1.gif" border="0" width="43" height="55"></a></p>
+    <div align="center"><b> <font face="Arial" size=4></font><font face="黑体" lang="ZH-CN" size=4></font></b></div>
+  </ol>
+</ol>
+
+<p>　</p>
+
+          <hr width="550" SIZE="1" align="center">     
+
+<p align="center" style="line-height: 150%; margin-top: 0; margin-bottom: 0"><font size="2">伟纳电子 COPYRIGHT &reg; 2000  
+<a href="http://www.willar.com">http://www.willar.com</a><br>                                           
+&nbsp; E-mail:<a href="mailto:support@willar.com">support@willar.com</a></font>      
+ 
+<p align="center" style="line-height: 150%; margin-top: 0; margin-bottom: 0">　     
+
+<p align="center" style="line-height: 150%; margin-top: 0; margin-bottom: 0">　     
+
+<p align="center" style="line-height: 150%; margin-top: 0; margin-bottom: 0">　
+</body>
+</html>

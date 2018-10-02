@@ -1,0 +1,194 @@
+A51 MACRO ASSEMBLER  WL004                                                                02/12/2004 11:52:09 PAGE     1
+
+
+MACRO ASSEMBLER A51 V7.08a
+OBJECT MODULE PLACED IN wl004.OBJ
+ASSEMBLER INVOKED BY: d:\Keil\C51\BIN\A51.EXE wl004.asm SET(SMALL) DEBUG EP
+
+LOC  OBJ            LINE     SOURCE
+
+                       1     ;/*******************************************************************************
+                       2     ;*                                                                              *
+                       3     ;*    File       : wl004.asm                                                    *
+                       4     ;*    Date       : 2004-1-5                                                     *
+                       5     ;*    Version    : 1.0                                                          *
+                       6     ;*                                                                              *
+                       7     ;*    Author     : Freeman          freeman@willar.com                          *
+                       8     ;*    Company    : Willar           www.willar.com                              *
+                       9     ;*                                                                              *
+                      10     ;********************************************************************************
+                      11     ;*    Description:                                                              *
+                      12     ;*                 LED数码管显示演示程序                                        *
+                      13     ;*                 在8个LED数码管上依次显示1,2,3,4,5,6,7,8                      *
+                      14     ;*                                                                              *
+                      15     ;*                                                                              *
+                      16     ;*                                                                              *
+                      17     ;*******************************************************************************/
+                      18     CODE_SEG        SEGMENT CODE 
+                      19     
+                      20     DATA_SEG        SEGMENT DATA 
+                      21     
+----                  22             RSEG  DATA_SEG
+                      23             
+0000                  24     dis_digit:      DS              1
+0001                  25     dis_index:      DS              1
+0002                  26     dis_buf:        DS              8
+000A                  27     stack:          DS              20
+                      28     
+                      29     ;===========================================================
+                      30     
+----                  31     CSEG    AT      00000H                          ; Reset向量
+0000 020000   F       32             LJMP    MAIN
+                      33     
+----                  34     CSEG    AT      0000BH                          ; 定时器0中断向量
+                      35     
+000B 020000   F       36             LJMP    TIMER0
+                      37     
+                      38     
+                      39     ;===========================================================
+----                  40             RSEG  CODE_SEG  
+0000                  41     MAIN:
+0000 758100   F       42             MOV     SP,#(stack-1)                   ; 初始化堆栈指针
+0003 7580FF           43             MOV     P0,#0FFH                        ; 初始化I/O口
+0006 75A0FF           44             MOV     P2,#0FFH
+0009 758901           45             MOV     TMOD,#01H                       ; 初始化timer0
+000C 758CFC           46             MOV     TH0,#0FCH
+000F 758A17           47             MOV     TL0,#017H
+0012 75A882           48             MOV     IE,#082H
+                      49             
+0015 900000   F       50             MOV     DPTR, #DIS_CODE         ; 设定显示初值
+0018 7401             51             MOV     A,#1
+001A 93               52             MOVC    A,@A+DPTR
+001B F500     F       53             MOV     dis_buf,A
+001D 7402             54             MOV     A,#2
+001F 93               55             MOVC    A,@A+DPTR       
+0020 F500     F       56             MOV     dis_buf+01H,A
+0022 7403             57             MOV     A,#3
+0024 93               58             MOVC    A,@A+DPTR
+A51 MACRO ASSEMBLER  WL004                                                                02/12/2004 11:52:09 PAGE     2
+
+0025 F500     F       59             MOV     dis_buf+02H,A
+0027 7404             60             MOV     A,#4
+0029 93               61             MOVC    A,@A+DPTR
+002A F500     F       62             MOV     dis_buf+03H,A
+002C 7405             63             MOV     A,#5
+002E 93               64             MOVC    A,@A+DPTR
+002F F500     F       65             MOV     dis_buf+04H,A
+0031 7406             66             MOV     A,#6
+0033 93               67             MOVC    A,@A+DPTR
+0034 F500     F       68             MOV     dis_buf+05H,A
+0036 7407             69             MOV     A,#7
+0038 93               70             MOVC    A,@A+DPTR
+0039 F500     F       71             MOV     dis_buf+06H,A
+003B 7408             72             MOV     A,#8
+003D 93               73             MOVC    A,@A+DPTR
+003E F500     F       74             MOV     dis_buf+07H,A
+                      75             
+0040 7500FE   F       76             MOV     dis_digit,#0FEH         ; 初始从第一个数码管开始扫描
+0043 F500     F       77             MOV     dis_index,A
+                      78     
+0045 D28C             79             SETB    TR0                                     ; 启动定时器0，开始动态扫描显示
+                      80     
+0047                  81     MAIN_LP:                                        
+                      82     
+                      83             ; 主程序循环，增加其它代码                              
+                      84     
+0047 80FE             85             SJMP    MAIN_LP
+                      86     
+                      87     ; END OF main
+                      88     
+                      89     
+                      90     ;===========================================================
+                      91     
+                      92             USING   0
+0049                  93     TIMER0:
+                      94     ; 定时器0中断服程序, 用于数码管的动态扫描
+                      95     ; DIS_INDEX --- 显示索引, 用于标识当前显示的数码管和缓冲区的偏移量
+                      96     ; DIS_DIGIT --- 位选通值, 传送到P2口用于选通当前数码管的数值, 如等于0xfe时,
+                      97     ;               选通P2.0口数码管
+                      98     ; DIS_BUF   --- 显于缓冲区基地址                
+                      99     
+0049 C0E0            100             PUSH    ACC
+004B C0D0            101             PUSH    PSW
+004D C000            102             PUSH    AR0
+                     103             
+004F 758CFC          104             MOV     TH0,#0FCH
+0052 758A17          105             MOV     TL0,#017H
+                     106             
+0055 75A0FF          107             MOV     P2,#0FFH                ; 先关闭所有数码管
+                     108             
+0058 7400     F      109             MOV     A,#DIS_BUF              ; 获得显示缓冲区基地址
+005A 2500     F      110             ADD     A,DIS_INDEX             ; 获得偏移量
+005C F8              111             MOV     R0,A                    ; R0 = 基地址 + 偏移量
+005D E6              112             MOV     A,@R0                   ; 获得显示代码
+005E F580            113             MOV     P0,A                    ; 显示代码传送到P0口
+                     114             
+0060 8500A0   F      115             MOV     P2,DIS_DIGIT            ; 
+                     116     
+0063 E500     F      117             MOV     A,DIS_DIGIT             ; 位选通值左移, 下次中断时选通下一位数码管
+0065 23              118             RL      A
+0066 F500     F      119             MOV     DIS_DIGIT,A
+                     120             
+0068 0500     F      121             INC     DIS_INDEX               ; DIS_INDEX加1, 下次中断时显示下一位
+006A 530007   F      122             ANL     DIS_INDEX,#0x07         ; 当DIS_INDEX等于8(0000 1000)时, 清0
+                     123     
+006D D000            124             POP     AR0
+A51 MACRO ASSEMBLER  WL004                                                                02/12/2004 11:52:09 PAGE     3
+
+006F D0D0            125             POP     PSW
+0071 D0E0            126             POP     ACC
+                     127             
+0073 32              128             RETI 
+                     129     ; END OF timer0
+                     130     ;===========================================================
+                     131     
+----                 132             RSEG  CODE_SEG
+0074                 133     DIS_CODE:
+0074 C0              134             DB      0C0H
+0075 F9              135             DB      0F9H
+0076 A4              136             DB      0A4H
+0077 B0              137             DB      0B0H
+0078 99              138             DB      099H
+0079 92              139             DB      092H
+007A 82              140             DB      082H
+007B F8              141             DB      0F8H
+007C 80              142             DB      080H
+007D 90              143             DB      090H
+007E FF              144             DB      0FFH
+                     145     
+                     146             END
+A51 MACRO ASSEMBLER  WL004                                                                02/12/2004 11:52:09 PAGE     4
+
+SYMBOL TABLE LISTING
+------ ----- -------
+
+
+N A M E             T Y P E  V A L U E   ATTRIBUTES
+
+ACC. . . . . . . .  D ADDR   00E0H   A   
+AR0. . . . . . . .  D ADDR   0000H   A   
+CODE_SEG . . . . .  C SEG    007FH       REL=UNIT
+DATA_SEG . . . . .  D SEG    001EH       REL=UNIT
+DIS_BUF. . . . . .  D ADDR   0002H   R   SEG=DATA_SEG
+DIS_CODE . . . . .  C ADDR   0074H   R   SEG=CODE_SEG
+DIS_DIGIT. . . . .  D ADDR   0000H   R   SEG=DATA_SEG
+DIS_INDEX. . . . .  D ADDR   0001H   R   SEG=DATA_SEG
+IE . . . . . . . .  D ADDR   00A8H   A   
+MAIN . . . . . . .  C ADDR   0000H   R   SEG=CODE_SEG
+MAIN_LP. . . . . .  C ADDR   0047H   R   SEG=CODE_SEG
+P0 . . . . . . . .  D ADDR   0080H   A   
+P2 . . . . . . . .  D ADDR   00A0H   A   
+PSW. . . . . . . .  D ADDR   00D0H   A   
+SP . . . . . . . .  D ADDR   0081H   A   
+STACK. . . . . . .  D ADDR   000AH   R   SEG=DATA_SEG
+TH0. . . . . . . .  D ADDR   008CH   A   
+TIMER0 . . . . . .  C ADDR   0049H   R   SEG=CODE_SEG
+TL0. . . . . . . .  D ADDR   008AH   A   
+TMOD . . . . . . .  D ADDR   0089H   A   
+TR0. . . . . . . .  B ADDR   0088H.4 A   
+
+
+REGISTER BANK(S) USED: 0 
+
+
+ASSEMBLY COMPLETE.  0 WARNING(S), 0 ERROR(S)

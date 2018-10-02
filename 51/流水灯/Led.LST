@@ -1,0 +1,153 @@
+C51 COMPILER V7.50   LED                                                                   11/27/2006 19:19:20 PAGE 1   
+
+
+C51 COMPILER V7.50, COMPILATION OF MODULE LED
+OBJECT MODULE PLACED IN Led.OBJ
+COMPILER INVOKED BY: C:\Keil\C51\BIN\C51.EXE Led.c BROWSE DEBUG OBJECTEXTEND
+
+line level    source
+
+   1          #include"reg51.h"
+   2          #include"51usb.h"                  //51USB实验板的头文件
+   3          
+   4          #define  uchar unsigned char
+   5          #define  uint  unsigned int
+   6          
+   7          void delay(uint ticks);// 延时程序的声明
+   8          
+   9          void Left(void);                //向左移动
+  10          void Right(void);               //向右移动
+  11          void Left_A(void);              //向左移动增亮
+  12          void Right_A(void);             //向左动减灭
+  13          void Left_B(void);              //向右移动增亮
+  14          void Right_B(void);             //向右动减灭
+  15          
+  16          void main()
+  17          {
+  18   1       P1=0x0C;//选通LED,74HC138的Y6=0；请看原理图
+  19   1       while(1)
+  20   1       {
+  21   2        Left();
+  22   2        Right();
+  23   2        Left_A();
+  24   2        Right_A();
+  25   2        Left_B();
+  26   2        Right_B();
+  27   2       }
+  28   1      }
+  29          //////////// 延时程序的实现////////////////////
+  30          void delay(uint ticks)
+  31          {
+  32   1       uchar i;
+  33   1       for(;ticks!=0;ticks--)
+  34   1              for(i=1000;i!=0;i--);
+  35   1      }
+  36          
+  37          void Left()
+  38          {
+  39   1       unsigned char i,temp;
+  40   1       temp=0xfe;                             
+  41   1       LED=0xff;                              //灭所有LED
+  42   1       delay(100);                    //延时
+  43   1       for(i=8;i!=0;i--)
+  44   1       {
+  45   2         LED=temp;                    //输出LED数据
+  46   2         temp<<=1;                    //LED数据左移动一位
+  47   2         temp++;                              //加一，为了熄灭最后一位LED
+  48   2         delay(100);                  //延时
+  49   2       }
+  50   1      
+  51   1      }
+  52          
+  53          void Right()
+  54          {
+  55   1       unsigned char i,temp;
+C51 COMPILER V7.50   LED                                                                   11/27/2006 19:19:20 PAGE 2   
+
+  56   1       temp=0x7f;
+  57   1       LED=0xff;                                //灭所有LED
+  58   1       delay(100);
+  59   1       for(i=8;i!=0;i--)
+  60   1       {
+  61   2         LED=temp;                     //输出LED数据
+  62   2         temp>>=1;                     //LED数据右移动一位
+  63   2         temp|=0x80;
+  64   2         delay(100);    
+  65   2       }
+  66   1      
+  67   1      }
+  68          
+  69          void Left_A(void)
+  70          {
+  71   1       unsigned char i,temp;
+  72   1       temp=0xff;
+  73   1       LED=0xff;                                //灭所有LED
+  74   1       delay(100);
+  75   1       for(i=8;i!=0;i--)
+  76   1       {
+  77   2         temp<<=1;                      //LED数据左移动一位
+  78   2         LED=temp;                      //输出LED数据
+  79   2         delay(100);     
+  80   2       }
+  81   1      }
+  82          
+  83          void Right_A(void)
+  84          {
+  85   1       unsigned char i,temp;
+  86   1       temp=0;
+  87   1       LED=0;                                    //亮所有
+  88   1       delay(100);
+  89   1       for(i=8;i!=0;i--)
+  90   1       {
+  91   2         temp<<=1;                       //LED数据左移动一位
+  92   2         temp++;                                 //加一，为了熄灭最后一位LED
+  93   2         LED=temp;                       //输出LED数据
+  94   2         delay(100);    
+  95   2       }
+  96   1      }
+  97          
+  98          void Left_B(void)
+  99          {
+ 100   1       unsigned char i,temp;
+ 101   1       temp=0xff;
+ 102   1       LED=0xff;                                 //灭所有LED
+ 103   1       delay(100);
+ 104   1       for(i=8;i!=0;i--)
+ 105   1       {
+ 106   2         temp>>=1;                       //LED数据右移动一位
+ 107   2         LED=temp;                       //输出LED数据
+ 108   2         delay(100);     
+ 109   2       }
+ 110   1      }
+ 111          
+ 112          void Right_B(void)
+ 113          {
+ 114   1       unsigned char i,temp;
+ 115   1       temp=0xFF;
+ 116   1       LED=0;                                    //亮所有LED
+ 117   1       delay(100);
+C51 COMPILER V7.50   LED                                                                   11/27/2006 19:19:20 PAGE 3   
+
+ 118   1       for(i=8;i!=0;i--)
+ 119   1       {
+ 120   2         temp>>=1;                       //LED数据右移动一位
+ 121   2         temp|=0x80;                     //最高位置一，为了熄灭最高一位LED
+ 122   2         LED=temp;                       //输出LED数据
+ 123   2         delay(100);    
+ 124   2       }
+ 125   1      }
+ 126          
+
+
+MODULE INFORMATION:   STATIC OVERLAYABLE
+   CODE SIZE        =    185    ----
+   CONSTANT SIZE    =   ----    ----
+   XDATA SIZE       =   ----    ----
+   PDATA SIZE       =   ----    ----
+   DATA SIZE        =   ----    ----
+   IDATA SIZE       =   ----    ----
+   BIT SIZE         =   ----    ----
+END OF MODULE INFORMATION.
+
+
+C51 COMPILATION COMPLETE.  0 WARNING(S),  0 ERROR(S)

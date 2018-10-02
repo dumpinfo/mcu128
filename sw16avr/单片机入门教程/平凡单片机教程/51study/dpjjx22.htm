@@ -1,0 +1,102 @@
+<HTML>
+<HEAD>
+<META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=gb_2312-80">
+<META NAME="Generator" CONTENT="Microsoft FrontPage 5.0">
+<TITLE>定时/计数器实验2</TITLE>
+</HEAD>
+<BODY background="../back.jpg">
+<P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">
+<FONT FACE="宋体" LANG="ZH-CN" SIZE=2>定时</font><FONT SIZE=2 face="宋体">/</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>计数器实验</FONT><FONT SIZE=2 face="宋体">2</font></P>
+<P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">
+<FONT FACE="宋体" LANG="ZH-CN" SIZE=2>前面我们做了定时器的实验，现在来看一看计数实验，在工作中计数通常会有两种要求：第一、将计数的值显示出来，第二、计数值到一定程度即中断报警。第一种如各种计数器、里程表，第二种如前面例中讲到的生产线上的计数。先看第一种吧。我们的硬件中是这样连线的：</font><FONT SIZE=2 face="宋体">324</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>构成的振荡器连到定时</FONT><FONT SIZE=2 face="宋体">/</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>计数器</FONT><FONT SIZE=2 face="宋体">1</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>的外部引脚</FONT><FONT SIZE=2 face="宋体">T1</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>上面，我们就利用这个来做一个计数实验，要将计数的值显示出来，当然最好用数码管了，可我们还没讲到这一部份，为了避免把问题复杂化，我们用</FONT><FONT SIZE=2 face="宋体">P1</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>口的</FONT><FONT SIZE=2 face="宋体">8</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>个</FONT><FONT SIZE=2 face="宋体">LED</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>来显示计到的数据。</font></P>
+<FONT FACE="宋体" LANG="ZH-CN" SIZE=2> 
+<P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">程序如下：</P>
+<P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">ORG 0000H </P>
+<P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">AJMP START </P>
+<P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">ORG 30H </P>
+<P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">START: </P>
+<P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">MOV SP,#5FH </P>
+<P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">MOV TMOD,#01000000B ;定时/计数器1作计数用,0不用全置0 </P>
+<P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">SETB TR1 ;启动计数器1开始运行. </P>
+<P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">LOOP: MOV A,TL0 </P>
+<P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">MOV P1,A </P>
+<P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">AJMP LOOP</P>
+<P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0"> END </P>
+</FONT>
+<P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">
+<FONT FACE="宋体" LANG="ZH-CN" SIZE=2>在硬件上用线将</font><FONT SIZE=2 face="宋体">324</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>的输出与</FONT><FONT SIZE=2 face="宋体">T1</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>连通</FONT><FONT SIZE=2 face="宋体">(</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>印板上有焊盘</FONT><FONT SIZE=2 face="宋体">)</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>运行这种程序，注意将板按正确的位置放置（</FONT><FONT SIZE=2 face="宋体">LM324</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>放在左手边，</FONT><FONT SIZE=2 face="宋体">LED</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>排列是按从高位到低们排列）看到什么？随着</FONT><FONT SIZE=2 face="宋体">324</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>后接的</FONT><FONT SIZE=2 face="宋体">LED</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>的闪烁，单片机的</FONT><FONT SIZE=2 face="宋体">8</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>只</FONT><FONT SIZE=2 face="宋体">LED</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>也在不断变化，注意观察，是不是按二进制：</font></P>
+<FONT SIZE=2>
+<P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">
+<font face="宋体">00000000</font></P>
+<P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">
+<font face="宋体">00000001</font></P>
+<P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">
+<font face="宋体">00000010</font></P>
+<P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">
+<font face="宋体">00000011</font></P>
+</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>
+<P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">。</P>
+<P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">。</P>
+<P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">。</P>
+</FONT>
+<P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">
+<FONT FACE="宋体" LANG="ZH-CN" SIZE=2>这样的顺序在变呢？这就对了，这就是</font><FONT SIZE=2 face="宋体">TL0</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>中的数据。</font></P>
+<FONT FACE="宋体" LANG="ZH-CN" SIZE=2> 
+<P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">程序二：</P>
+<P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">ORG 0000H </P>
+<P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">AJMP START </P>
+<P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">ORG 001BH </P>
+<P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">AJMP TIMER1 ;定时器1的中断处理</P>
+<P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0"> ORG 30H </P>
+<P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">START: MOV SP,#5FH </P>
+<P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">MOV TMOD,#01010000B ;定时/计数器1作计数用,模式1,0不用全置0 </P>
+<P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">MOV TH1,#0FFH </P>
+<P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">MOV TL1,#0FAH ;预置值,要求每计到6个脉冲即为一个事件 </P>
+<P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">SETB EA</P>
+<P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">SETB ET1 ;开总中断和定时器1中断允许 </P>
+<P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">SETB TR1 ;启动计数器1开始运行. </P>
+<P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">AJMP $ </P>
+<P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">TIMER1: </P>
+<P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">PUSH ACC </P>
+<P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">PUSH PSW </P>
+<P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">CPL P1.0 ;计数值到,即取反P1.0 </P>
+<P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">MOV TH1,#0FFH </P>
+<P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">MOV TL1,#0FAH ;重置计数初值</P>
+<P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0"> POP PSW </P>
+<P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">POP ACC </P>
+<P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">RETI </P>
+<P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">END </P>
+</FONT> 
+<P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">
+<FONT FACE="宋体" LANG="ZH-CN" SIZE=2>&#9;上面这个程序完成的工作很简单，就是在每</font><FONT SIZE=2 face="宋体">6</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>个脉冲到来后取反一次</FONT><FONT SIZE=2 face="宋体">P1</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>。</FONT><FONT SIZE=2 face="宋体">0</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>，因此实验的结果应当是：</FONT><FONT SIZE=2 face="宋体">LM324</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>后接的</FONT><FONT SIZE=2 face="宋体">LED</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>亮、灭</FONT><FONT SIZE=2 face="宋体">6</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>次，则</FONT><FONT SIZE=2 face="宋体">P1</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>。</FONT><FONT SIZE=2 face="宋体">0</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>口所接</FONT><FONT SIZE=2 face="宋体">LED</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>亮或灭一次。这实际就是我们上面讲的计数器的第二种应用。</font></P>
+<FONT FACE="宋体" LANG="ZH-CN" SIZE=2> 
+<P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">&#9;程序三：外部中断实验</P>
+<P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">ORG 0000H </P>
+<P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">AJMP START </P>
+<P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">ORG 0003H ;外部中断地直入口 </P>
+<P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">AJMP INT0 </P>
+<P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">ORG 30H </P>
+<P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">START: MOV SP,#5FH </P>
+<P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">MOV P1,#0FFH ;灯全灭 </P>
+<P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">MOV P3,#0FFH ;P3口置高电平 </P>
+<P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">SETB EA </P>
+<P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">SETB EX0 </P>
+<P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0"> AJMP $ </P>
+<P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">INT0: </P>
+<P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">PUSH ACC </P>
+<P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">PUSH PSW </P>
+<P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">CPL P1.0 </P>
+<P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">POP PSW </P>
+<P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">POP ACC </P>
+<P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">RETI </P>
+<P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">END </P>
+</FONT>
+<P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">
+<FONT FACE="宋体" LANG="ZH-CN" SIZE=2>&#9;本程序的功能很简单，按一次按键</font><FONT SIZE=2 face="宋体">1</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>（接在</FONT><FONT SIZE=2 face="宋体">12</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>引脚上的）就引发一次中断0，取反一次</FONT><FONT SIZE=2 face="宋体">P1</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>。</FONT><FONT SIZE=2 face="宋体">0</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>，因此理论上按一下灯亮，按一下灯灭，但在实际做实验时，可能会发觉有时不“灵”，按了它没反应，但在大部份时候是对的，这是怎么回事呢？我们在讲解键盘时再作解释，这个程序本身是没有问题的。</font></P>
+<P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">
+<font face="宋体"><a href="down/exec065.asm"><font size="2">程序1下载</font></a><font size="2"> <a href="down/Exec065.hex">程序1代码</a> 
+  <a href="down/exec066.asm">程序2下载</a> <a href="down/Exec066.hex">程序2代码</a> <a href="down/exec067.asm">程序3下载</a>
+</font> 
+  <a href="down/Exec067.hex"><font size="2">程序3代码</font></a></font></P>
+</BODY>
+</HTML>

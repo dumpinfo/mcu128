@@ -1,0 +1,395 @@
+XL
+H 3 areas 14 global symbols
+M huomen.c
+S push_gset2 Ref0000
+S push_gset3 Ref0000
+S push_gset5 Ref0000
+S push_arg4 Ref0000
+S pop_gset2 Ref0000
+S pop_gset3 Ref0000
+S pop_gset5 Ref0000
+S mod8u Ref0000
+A text size 2BE flags 0
+dbfile F:\备份文件\m16\m16\KS0108标准12864N/font.h
+dbfile F:\备份文件\m16\m16\KS0108标准12864N/12864.h
+dbfunc e OutI 0 fV
+dbsym r aa A c
+dbsym r Com 14 c
+dbsym r CtroCode 16 c
+dbline FFFFFFFF 8
+dbline 2A 8
+dbline 2B 8
+dbline 2C C
+dbline 2D 26
+dbline 2D 26
+dbline 2E 28
+dbline 30 2A
+dbline 31 2C
+dbline 32 2E
+dbline 34 30
+dbline 35 32
+dbline 36 34
+dbline 38 36
+dbline 3B 36
+dbline 3C 3A
+dbline 49 3C
+dbline 4A 3E
+dbline 4B 40
+dbline 4C 42
+dbline 4D 44
+dbline 4E 48
+dbline 50 4A
+dbline 51 4C
+dbline 52 4E
+dbline 53 50
+dbline 54 52
+dbline 56 54
+dbline 57 56
+dbline FFFFFFFE 58
+dbline 0 5C
+dbfunc e OutD 5E fV
+dbsym r aa A c
+dbsym r Dat 14 c
+dbsym r CtroCode 16 c
+dbline FFFFFFFF 66
+dbline 5C 66
+dbline 5D 66
+dbline 5E 6A
+dbline 5F 84
+dbline 5F 84
+dbline 60 86
+dbline 62 88
+dbline 63 8A
+dbline 64 8C
+dbline 66 8E
+dbline 67 90
+dbline 68 92
+dbline 6A 94
+dbline 6D 94
+dbline 77 98
+dbline 78 9A
+dbline 79 9C
+dbline 7A 9E
+dbline 7B A0
+dbline 7C A2
+dbline 7E A4
+dbline 7F A6
+dbline 80 A8
+dbline 81 AC
+dbline 82 AE
+dbline 83 B0
+dbline 86 B2
+dbline 87 B4
+dbline 88 B6
+dbline 89 B8
+dbline FFFFFFFE BA
+dbline 0 BE
+dbfunc e LCD_NOP C0 fV
+dbsym r i 10 i
+dbline FFFFFFFF C0
+dbline 8E C0
+dbline 90 C0
+dbline 90 C6
+dbline 90 C6
+dbline 90 CA
+dbline FFFFFFFE D2
+dbline 0 D2
+dbfunc e ClearDisplay D4 fV
+dbsym r i 14 c
+dbsym r j 16 c
+dbline FFFFFFFF D8
+dbline 94 D8
+dbline 96 D8
+dbline 97 DC
+dbline 97 DC
+dbline 98 E4
+dbline 99 EA
+dbline 9A EE
+dbline 99 F4
+dbline 99 F6
+dbline 9B FA
+dbline 96 FA
+dbline 96 FC
+dbline FFFFFFFE 100
+dbline 0 104
+dbfunc e DisplayWord 106 fV
+dbsym r m 14 c
+dbsym r dat E c
+dbsym r i 16 c
+dbsym r flag A c
+dbsym r num C c
+dbsym l SelscP 10 c
+dbsym l yAdd E c
+dbsym l xAdd C c
+dbsym l Add A i
+dbline FFFFFFFF 112
+dbline A1 112
+dbline A1 112
+dbline A3 114
+dbline A4 122
+dbline A6 12A
+dbline A6 12A
+dbline A7 12E
+dbline A7 12E
+dbline A7 132
+dbline A8 136
+dbline A9 154
+dbline AA 15A
+dbline A6 15A
+dbline A6 15C
+dbline AB 160
+dbline AC 16E
+dbline AD 174
+dbline AE 176
+dbline A5 176
+dbline FFFFFFFE 17E
+dbline 0 184
+dbfunc e DisplayLine 186 fV
+dbsym l p 8 c
+dbsym r r 14 c
+dbsym r l 16 c
+dbsym r i A c
+dbsym r flag C c
+dbsym r line E c
+dbsym r com 16 c
+dbsym l Add 11 i
+dbline FFFFFFFF 196
+dbline B2 196
+dbline B4 196
+dbline B5 19A
+dbline B6 1A2
+dbline B7 1A6
+dbline B6 1E2
+dbline B6 1E4
+dbline FFFFFFFE 1E8
+dbline 0 1F0
+dbfile F:\备份文件\m16\m16\KS0108标准12864N\huomen.c
+dbfunc e port_init 1F2 fV
+dbline FFFFFFFF 1F2
+dbline C 1F2
+dbline D 1F2
+dbline E 1F6
+dbline F 1F8
+dbline 10 1FA
+dbline 11 1FC
+dbline 12 1FE
+dbline 13 200
+dbline 14 202
+dbline FFFFFFFE 204
+dbline 0 204
+dbfunc e init_devices 206 fV
+dbline FFFFFFFF 206
+dbline 19 206
+dbline 1B 206
+dbline 1C 208
+dbline 1E 20A
+dbline 1F 20E
+dbline 20 210
+dbline 21 212
+dbline FFFFFFFE 214
+dbline 0 214
+dbfunc e main 216 fV
+dbsym l k 4 I
+dbline FFFFFFFF 218
+dbline 27 218
+dbline 29 218
+dbline 2C 21A
+dbline 2D 220
+dbline 2E 226
+dbline 30 22C
+dbline 31 232
+dbline 32 238
+dbline 33 23A
+dbline 34 23C
+dbline 35 24C
+dbline 36 25A
+dbline 37 26A
+dbline 38 27A
+dbline 39 28A
+dbline 3A 29A
+dbline 3B 2AA
+dbline FFFFFFFE 2BA
+dbline 0 2BC
+S _main Def0216
+S _ClearDisplay Def00D4
+S _port_init Def01F2
+S _init_devices Def0206
+S _LCD_NOP Def00C0
+S _DisplayLine Def0186
+S _DisplayWord Def0106
+S _OutD Def005E
+S _OutI Def0000
+A lit size 180 flags 0
+dbfile F:\备份文件\m16\m16\KS0108标准12864N/font.h
+dbsym e font 0 A[384:384]kc
+S _font Def0000
+A bss size 4 flags 20
+dbfile F:\备份文件\m16\m16\KS0108标准12864N\huomen.c
+dbsym e j 0 I
+dbsym e i 2 I
+S _i Def0002
+S _j Def0000
+T 00 00 14 24 44 84 64 1C 20 18 0F E8 08 08 28 18
+R 00 00 01 00
+T 0E 00 08 00 20 10 4C 43 43 2C 20 10 0C 03 06 18
+R 00 00 01 00
+T 1C 00 30 60 20 00 40 41 CE 04 00 FC 04 02 02 FC
+R 00 00 01 00
+T 2A 00 04 04 04 FC 00 00 40 20 1F 20 40 47 42 41
+R 00 00 01 00
+T 38 00 40 5F 40 42 44 43 40 00 40 20 F0 1C 07 F2
+R 00 00 01 00
+T 46 00 94 94 94 FF 94 94 94 F4 04 00 00 00 7F 00
+R 00 00 01 00
+T 54 00 40 41 22 14 0C 13 10 30 20 61 20 00 00 00
+R 00 00 01 00
+T 62 00 00 FE 22 22 22 22 FE 22 22 22 22 FE 00 00
+R 00 00 01 00
+T 70 00 80 40 30 0F 02 02 02 02 FF 02 02 42 82 7F
+R 00 00 01 00
+T 7E 00 00 00 10 0C 84 44 24 14 05 06 04 14 24 44
+R 00 00 01 00
+T 8C 00 84 14 0C 00 00 40 40 41 41 41 41 7F 41 41
+R 00 00 01 00
+T 9A 00 41 41 40 40 00 00 20 21 EE 04 00 00 FF 29
+R 00 00 01 00
+T A8 00 A9 BF A9 A9 01 FF 00 00 00 00 1F 88 44 30
+R 00 00 01 00
+T B6 00 0F 00 0F 04 04 4F 80 7F 00 00 08 08 F8 49
+R 00 00 01 00
+T C4 00 4E C8 88 40 38 CF 0A 08 88 78 08 00 40 30
+R 00 00 01 00
+T D2 00 0F 40 80 7F 00 40 20 10 0B 0E 31 60 20 00
+R 00 00 01 00
+T E0 00 20 20 20 20 20 20 A0 7F A0 20 20 20 20 20
+R 00 00 01 00
+T EE 00 20 00 00 80 40 20 10 0C 03 00 01 06 08 30
+R 00 00 01 00
+T FC 00 60 C0 40 00 40 40 4F 49 49 C9 CF 70 C0 CF
+R 00 00 01 00
+T 0A 01 49 59 69 4F 00 00 02 02 7E 45 45 44 7C 00
+R 00 00 01 00
+T 18 01 7C 44 45 45 7E 06 02 00 08 88 68 FF 28 48
+R 00 00 01 00
+T 26 01 10 48 44 43 44 48 50 10 10 00 02 01 00 7F
+R 00 00 01 00
+T 34 01 00 20 22 2C 21 2E 30 28 27 22 20 00 08 31
+R 00 00 01 00
+T 42 01 86 60 00 FE 02 F2 02 FE 00 F8 00 00 FF 00
+R 00 00 01 00
+T 50 01 04 FC 03 00 80 47 30 0F 10 67 00 07 40 80
+R 00 00 01 00
+T 5E 01 7F 00 40 20 F0 0C 03 00 38 C0 01 0E 04 E0
+R 00 00 01 00
+T 6C 01 1C 00 00 00 00 00 FF 00 40 40 20 10 0B 04
+R 00 00 01 00
+T 7A 01 0B 10 20 60 20 00
+R 00 00 01 00
+T 00 00 0E 94 00 00 42 2F 60 2F AA 24 A3 94 77 27
+R 00 00 00 00 12 04 01 00
+T 0E 00 60 30 67 07 49 F0 61 30 E0 E0 7E 07 41 F0
+R 00 00 00 00
+T 1C 00 62 30 E0 E0 7E 07 39 F0 08 C0 92 98 93 98
+R 00 00 00 00
+T 2A 00 05 C0 92 98 93 9A 02 C0 92 9A 93 98 22 24
+R 00 00 00 00
+T 38 00 2A BA 96 98 41 D0 40 D0 3F D0 3E D0 8F EF
+R 00 00 00 00
+T 46 00 8A BB 95 98 97 9A 39 D0 4B BB 37 D0 97 98
+R 00 00 00 00
+T 54 00 92 9A 93 9A 0E 94 00 00 08 95
+R 00 00 00 00 12 08 05 00
+T 5E 00 0E 94 00 00 42 2F 60 2F AA 24 A3 94 77 27
+R 00 00 00 00 12 04 01 00
+T 6C 00 60 30 67 07 49 F0 61 30 E0 E0 7E 07 41 F0
+R 00 00 00 00
+T 7A 00 62 30 E0 E0 7E 07 39 F0 08 C0 92 98 93 98
+R 00 00 00 00
+T 88 00 05 C0 92 98 93 9A 02 C0 92 9A 93 98 22 24
+R 00 00 00 00
+T 96 00 2A BA 13 D0 12 D0 11 D0 10 D0 0F D0 0E D0
+R 00 00 00 00
+T A4 00 95 98 96 9A 8F EF 8A BB 97 9A 08 D0 4B BB
+R 00 00 00 00
+T B2 00 06 D0 97 98 92 9A 93 9A 0E 94 00 00 08 95
+R 00 00 00 00 12 0C 05 00
+T C0 00 00 27 11 27 02 C0 0F 5F 1F 4F 02 33 E0 E0
+R 00 00 00 00
+T CE 00 1E 07 D0 F3 08 95
+R 00 00 00 00
+T D4 00 0E 94 00 00 44 27 10 C0 24 2F 28 54 00 27
+R 00 00 00 00 12 04 00 00
+T E2 00 8E DF 20 E4 00 27 8B DF 66 27 04 C0 22 27
+R 00 00 00 00
+T F0 00 00 27 B5 DF 63 95 60 34 D0 F3 43 95 48 30
+R 00 00 00 00
+T FE 00 70 F3 0E 94 00 00 08 95
+R 00 00 00 00 12 06 04 00
+T 06 01 0E 94 00 00 0E 94 00 00 CA 88 AC 88 44 27
+R 00 00 00 00 12 04 03 00 12 08 02 00
+T 14 01 2C 84 82 2D 8F 5F 8C 87 22 2D 08 89 6F DF
+R 00 00 00 00
+T 22 01 2E 85 08 89 6C DF 26 C0 66 27 17 C0 AA 20
+R 00 00 00 00
+T 30 01 11 F4 EE 24 0F C0 26 2E 33 24 EA 85 FB 85
+R 00 00 00 00
+T 3E 01 E2 0D F3 1D 24 2E 33 24 E2 0D F3 1D 80 E0
+R 00 00 00 00 20 0E 01 00 00 00
+T 4C 01 90 E0 E8 0F F9 1F E4 90 2E 2D 08 89 82 DF
+R 00 00 00 00 40 02 01 00 00 00
+T 5A 01 63 95 6C 15 38 F3 2C 84 82 2D 8F 5F 8C 87
+R 00 00 00 00
+T 68 01 22 2D 08 89 49 DF 2E 85 08 89 46 DF 4C 0D
+R 00 00 00 00
+T 76 01 8C 2D 8E 5F 48 17 B0 F2 0E 94 00 00 24 96
+R 00 00 00 00 12 0C 06 00
+T 84 01 08 95
+R 00 00 00 00
+T 86 01 0E 94 00 00 0E 94 00 00 62 2F 27 97 ED 88
+R 00 00 00 00 12 04 03 00 12 08 02 00
+T 94 01 CF 88 46 2F 4F 70 86 2F 82 95 8F 70 68 2F
+R 00 00 00 00
+T A2 01 AA 24 1F C0 CE 82 80 E1 8C 83 8E 2D 86 95
+R 00 00 00 00
+T B0 01 86 95 8F 5F 8A 83 2A 2C 26 0E 80 E1 82 9D
+R 00 00 00 00
+T BE 01 80 2D 80 5C 88 83 14 E0 0E 2D 0E 94 00 00
+R 00 00 00 00 12 0E 07 00
+T CC 01 82 E0 80 9F 20 2D 28 54 80 E2 8A 9D 09 89
+R 00 00 00 00
+T DA 01 1A 89 00 0D 11 1D 92 DF A3 94 A4 16 F8 F2
+R 00 00 00 00
+T E8 01 27 96 0E 94 00 00 24 96 08 95
+R 00 00 00 00 12 06 06 00
+T F2 01 8F EF 8B BB 8A BB 88 BB 87 BB 85 BB 84 BB
+R 00 00 00 00
+T 00 02 82 BB 81 BB 08 95
+R 00 00 00 00
+T 06 02 F8 94 F4 DF 22 24 25 BE 2B BE 29 BE 78 94
+R 00 00 00 00
+T 14 02 08 95
+R 00 00 00 00
+T 16 02 23 97 F6 DF 2E E3 00 27 F0 DE 28 EB 00 27
+R 00 00 00 00
+T 24 02 ED DE 20 E4 00 27 EA DE 20 EC 00 27 E7 DE
+R 00 00 00 00
+T 32 02 2F E3 00 27 E4 DE 4D DF 4C DF 81 E0 8A 83
+R 00 00 00 00
+T 40 02 22 24 28 82 24 E0 00 27 11 27 9D DF 81 E0
+R 00 00 00 00
+T 4E 02 8A 83 88 83 24 E0 00 E2 10 E0 96 DF 81 E0
+R 00 00 00 00
+T 5C 02 8A 83 82 E0 88 83 24 E0 00 E4 10 E0 8E DF
+R 00 00 00 00
+T 6A 02 81 E0 8A 83 83 E0 88 83 24 E0 00 E6 10 E0
+R 00 00 00 00
+T 78 02 86 DF 81 E0 8A 83 84 E0 88 83 24 E0 00 27
+R 00 00 00 00
+T 86 02 11 27 7E DF 81 E0 8A 83 85 E0 88 83 24 E0
+R 00 00 00 00
+T 94 02 00 E2 10 E0 76 DF 81 E0 8A 83 86 E0 88 83
+R 00 00 00 00
+T A2 02 24 E0 00 E4 10 E0 6E DF 81 E0 8A 83 87 E0
+R 00 00 00 00
+T B0 02 88 83 24 E0 00 E6 10 E0 66 DF 23 96 08 95
+R 00 00 00 00

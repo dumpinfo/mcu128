@@ -1,0 +1,71 @@
+C51 COMPILER V7.08   WL014                                                                 02/12/2004 12:13:20 PAGE 1   
+
+
+C51 COMPILER V7.08, COMPILATION OF MODULE WL014
+OBJECT MODULE PLACED IN wl014.OBJ
+COMPILER INVOKED BY: d:\Keil\C51\BIN\C51.EXE wl014.C BROWSE DEBUG OBJECTEXTEND
+
+line level    source
+
+   1          /*******************************************************************************
+   2          *                                                                              *
+   3          *    File       : wl014.c                                                      *
+   4          *    Date       : 2004-1-5                                                     *
+   5          *    Version    : 1.0                                                          *
+   6          *                                                                              *
+   7          *    Author     : Freeman          freeman@willar.com                          *
+   8          *    Company    : Willar           www.willar.com                              *
+   9          *                                                                              *
+  10          ********************************************************************************
+  11          *    Descriptoon:                                                              *
+  12          *                 AT89S51/52片内看门狗使用示例                                 *
+  13          *                                                                              *
+  14          *                                                                              *
+  15          *                                                                              *
+  16          *                                                                              *
+  17          *                                                                              *
+  18          *******************************************************************************/
+  19          #include <reg51.h>
+  20          #include <intrins.h>
+  21          
+  22          
+  23          sfr AUXR    = 0x8E;             //定义AT89S51扩展寄存器
+  24          sfr WDTRST  = 0xA6;
+  25          
+  26          
+  27          void clr_wdt();
+  28          
+  29          main()
+  30          {
+  31   1              AUXR = 0xff;            // 初始化看门狗相关寄存器
+  32   1              while(1)                        // 主循环
+  33   1              {
+  34   2                      clr_wdt();              // 8191个机器周期内必须至少调用此程序一次
+  35   2                                                      // 否则看门狗会溢出
+  36   2                      
+  37   2                      // 其它子程序   
+  38   2                      //      
+  39   2              }
+  40   1      }
+  41          
+  42          void clr_wdt()
+  43          {
+  44   1              WDTRST = 0x1E;          // 清除看门狗指令
+  45   1              WDTRST = 0xE1;          // 
+  46   1      }
+
+
+MODULE INFORMATION:   STATIC OVERLAYABLE
+   CODE SIZE        =     15    ----
+   CONSTANT SIZE    =   ----    ----
+   XDATA SIZE       =   ----    ----
+   PDATA SIZE       =   ----    ----
+   DATA SIZE        =   ----    ----
+   IDATA SIZE       =   ----    ----
+C51 COMPILER V7.08   WL014                                                                 02/12/2004 12:13:20 PAGE 2   
+
+   BIT SIZE         =   ----    ----
+END OF MODULE INFORMATION.
+
+
+C51 COMPILATION COMPLETE.  0 WARNING(S),  0 ERROR(S)

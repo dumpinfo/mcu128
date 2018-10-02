@@ -1,0 +1,89 @@
+BL51 BANKED LINKER/LOCATER V5.11                                                        02/19/2005  16:38:41  PAGE 1
+
+
+BL51 BANKED LINKER/LOCATER V5.11, INVOKED BY:
+C:\KEIL\C51\BIN\BL51.EXE LED_0-99.obj TO LED_0-99
+
+
+INPUT MODULES INCLUDED:
+  LED_0-99.obj (LED_0_99)
+
+
+LINK MAP OF MODULE:  LED_0-99 (LED_0_99)
+
+
+            TYPE    BASE      LENGTH    RELOCATION   SEGMENT NAME
+            -----------------------------------------------------
+
+            * * * * * * *   D A T A   M E M O R Y   * * * * * * *
+            REG     0000H     0008H     ABSOLUTE     "REG BANK 0"
+
+            * * * * * * *   C O D E   M E M O R Y   * * * * * * *
+            CODE    0000H     0052H     ABSOLUTE     
+
+
+
+SYMBOL TABLE OF MODULE:  LED_0-99 (LED_0_99)
+
+  VALUE           TYPE          NAME
+  ----------------------------------
+
+  -------         MODULE        LED_0_99
+  N:0020H         SYMBOL        A_BIT
+  D:00F0H         SYMBOL        B
+  N:0021H         SYMBOL        B_BIT
+  C:0041H         SYMBOL        D1
+  C:003FH         SYMBOL        D1MS
+  C:0043H         SYMBOL        D2
+  C:0012H         SYMBOL        DISPLAY
+  C:0022H         SYMBOL        DPL1
+  C:0024H         SYMBOL        DPLOP
+  C:000FH         SYMBOL        NEXT
+  C:0048H         SYMBOL        NUMTAB
+  D:0080H         SYMBOL        P0
+  D:00A0H         SYMBOL        P2
+  C:0000H         SYMBOL        STAR
+  C:0003H         SYMBOL        STLOP
+  N:0022H         SYMBOL        TEMP
+  C:0000H         LINE#         4
+  C:0003H         LINE#         5
+  C:0005H         LINE#         6
+  C:0007H         LINE#         7
+  C:0009H         LINE#         8
+  C:000CH         LINE#         9
+  C:000FH         LINE#         11
+  C:0012H         LINE#         14
+  C:0014H         LINE#         15
+  C:0017H         LINE#         16
+  C:0018H         LINE#         17
+  C:001AH         LINE#         18
+  C:001DH         LINE#         19
+  C:0020H         LINE#         20
+BL51 BANKED LINKER/LOCATER V5.11                                                      02/19/2005  16:38:41  PAGE 2
+
+
+  C:0022H         LINE#         22
+  C:0024H         LINE#         23
+  C:0026H         LINE#         24
+  C:0027H         LINE#         25
+  C:0029H         LINE#         26
+  C:002BH         LINE#         27
+  C:002DH         LINE#         28
+  C:002FH         LINE#         29
+  C:0031H         LINE#         30
+  C:0032H         LINE#         31
+  C:0034H         LINE#         32
+  C:0036H         LINE#         33
+  C:0038H         LINE#         34
+  C:003AH         LINE#         35
+  C:003CH         LINE#         36
+  C:003EH         LINE#         37
+  C:003FH         LINE#         39
+  C:0041H         LINE#         40
+  C:0043H         LINE#         41
+  C:0045H         LINE#         42
+  C:0047H         LINE#         43
+  -------         ENDMOD        LED_0_99
+
+Program Size: data=8.0 xdata=0 code=82
+LINK/LOCATE RUN COMPLETE.  0 WARNING(S),  0 ERROR(S)

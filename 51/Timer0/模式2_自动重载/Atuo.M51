@@ -1,0 +1,157 @@
+BL51 BANKED LINKER/LOCATER V5.12                                                        12/03/2006  09:00:17  PAGE 1
+
+
+BL51 BANKED LINKER/LOCATER V5.12, INVOKED BY:
+C:\KEIL\C51\BIN\BL51.EXE MAIN.obj TO Atuo RAMSIZE (256)
+
+
+MEMORY MODEL: SMALL
+
+
+INPUT MODULES INCLUDED:
+  MAIN.obj (MAIN)
+  C:\KEIL\C51\LIB\C51S.LIB (?C_STARTUP)
+  C:\KEIL\C51\LIB\C51S.LIB (?C_INIT)
+
+
+LINK MAP OF MODULE:  Atuo (MAIN)
+
+
+            TYPE    BASE      LENGTH    RELOCATION   SEGMENT NAME
+            -----------------------------------------------------
+
+            * * * * * * *   D A T A   M E M O R Y   * * * * * * *
+            REG     0000H     0008H     ABSOLUTE     "REG BANK 0"
+            DATA    0008H     0009H     UNIT         ?DT?MAIN
+            DATA    0011H     0001H     UNIT         _DATA_GROUP_
+            IDATA   0012H     0001H     UNIT         ?STACK
+
+            * * * * * * *   C O D E   M E M O R Y   * * * * * * *
+            CODE    0000H     0003H     ABSOLUTE     
+                    0003H     0008H                  *** GAP ***
+            CODE    000BH     0003H     ABSOLUTE     
+            CODE    000EH     008CH     UNIT         ?C_C51STARTUP
+            CODE    009AH     0060H     UNIT         ?PR?MAIN?MAIN
+            CODE    00FAH     002BH     UNIT         ?PR?DISPLAY?MAIN
+            CODE    0125H     0018H     UNIT         ?CO?MAIN
+            CODE    013DH     0010H     UNIT         ?PR?INITTIMER?MAIN
+            CODE    014DH     0010H     UNIT         ?PR?_DELAY?MAIN
+            CODE    015DH     000EH     UNIT         ?C_INITSEG
+            CODE    016BH     000DH     UNIT         ?PR?ISR_TIMER0?MAIN
+
+
+
+OVERLAY MAP OF MODULE:   Atuo (MAIN)
+
+
+SEGMENT                          DATA_GROUP 
+  +--> CALLED SEGMENT          START    LENGTH
+----------------------------------------------
+?C_C51STARTUP                  -----    -----
+  +--> ?PR?MAIN?MAIN
+  +--> ?C_INITSEG
+
+?PR?MAIN?MAIN                  -----    -----
+  +--> ?PR?INITTIMER?MAIN
+  +--> ?PR?DISPLAY?MAIN
+
+?PR?DISPLAY?MAIN               0011H    0001H
+  +--> ?CO?MAIN
+  +--> ?PR?_DELAY?MAIN
+
+BL51 BANKED LINKER/LOCATER V5.12                                                      12/03/2006  09:00:17  PAGE 2
+
+
+
+
+SYMBOL TABLE OF MODULE:  Atuo (MAIN)
+
+  VALUE           TYPE          NAME
+  ----------------------------------
+
+  -------         MODULE        MAIN
+  C:0000H         SYMBOL        _ICE_DUMMY_
+  D:0090H         PUBLIC        P1
+  D:00B0H         PUBLIC        P3
+  C:016BH         PUBLIC        ISR_Timer0
+  B:00A8H.7       PUBLIC        EA
+  C:012DH         PUBLIC        Tab
+  C:009AH         PUBLIC        main
+  D:0008H         PUBLIC        count
+  D:0089H         PUBLIC        TMOD
+  B:00A8H.1       PUBLIC        ET0
+  D:008CH         PUBLIC        TH0
+  D:008AH         PUBLIC        TL0
+  B:0088H.4       PUBLIC        TR0
+  C:013DH         PUBLIC        inittimer
+  C:0125H         PUBLIC        SEG
+  D:000AH         PUBLIC        ShuMa
+  C:014DH         PUBLIC        _delay
+  C:00FAH         PUBLIC        display
+  -------         PROC          ISR_TIMER0
+  C:016BH         LINE#         20
+  C:016DH         LINE#         22
+  C:0175H         LINE#         23
+  -------         ENDPROC       ISR_TIMER0
+  -------         PROC          MAIN
+  C:009AH         LINE#         26
+  C:009AH         LINE#         27
+  C:009AH         LINE#         28
+  C:009DH         LINE#         29
+  C:009DH         LINE#         30
+  C:009DH         LINE#         31
+  C:00A8H         LINE#         32
+  C:00A8H         LINE#         33
+  C:00ADH         LINE#         34
+  C:00B9H         LINE#         35
+  C:00C5H         LINE#         36
+  C:00D1H         LINE#         37
+  C:00DDH         LINE#         38
+  C:00E9H         LINE#         39
+  C:00F5H         LINE#         40
+  C:00F5H         LINE#         42
+  C:00F8H         LINE#         43
+  -------         ENDPROC       MAIN
+  -------         PROC          INITTIMER
+  C:013DH         LINE#         46
+  C:013DH         LINE#         47
+  C:013DH         LINE#         48
+  C:0140H         LINE#         49
+  C:0143H         LINE#         50
+  C:0146H         LINE#         51
+BL51 BANKED LINKER/LOCATER V5.12                                                      12/03/2006  09:00:17  PAGE 3
+
+
+  C:0148H         LINE#         52
+  C:014AH         LINE#         53
+  C:014CH         LINE#         54
+  -------         ENDPROC       INITTIMER
+  -------         PROC          DISPLAY
+  -------         DO            
+  D:0011H         SYMBOL        index
+  -------         ENDDO         
+  C:00FAH         LINE#         56
+  C:00FAH         LINE#         57
+  C:00FAH         LINE#         60
+  C:00FDH         LINE#         61
+  C:00FDH         LINE#         62
+  C:0100H         LINE#         63
+  C:010EH         LINE#         64
+  C:0116H         LINE#         65
+  C:011DH         LINE#         66
+  C:0124H         LINE#         67
+  -------         ENDPROC       DISPLAY
+  -------         PROC          _DELAY
+  D:0006H         SYMBOL        ticks
+  -------         DO            
+  D:0005H         SYMBOL        i
+  -------         ENDDO         
+  C:014DH         LINE#         69
+  C:014DH         LINE#         70
+  C:014DH         LINE#         72
+  C:015CH         LINE#         73
+  -------         ENDPROC       _DELAY
+  -------         ENDMOD        MAIN
+
+Program Size: data=19.0 xdata=0 code=368
+LINK/LOCATE RUN COMPLETE.  0 WARNING(S),  0 ERROR(S)

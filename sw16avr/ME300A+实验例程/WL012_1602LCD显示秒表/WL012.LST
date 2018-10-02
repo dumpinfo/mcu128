@@ -1,0 +1,515 @@
+A51 MACRO ASSEMBLER  WL012                                                                03/29/2005 15:59:05 PAGE     1
+
+
+MACRO ASSEMBLER A51 V7.10
+OBJECT MODULE PLACED IN WL012.OBJ
+ASSEMBLER INVOKED BY: C:\Keil\C51\BIN\A51.EXE WL012.asm SET(SMALL) DEBUG EP
+
+LOC  OBJ            LINE     SOURCE
+
+                       1     ;********************************************************************************
+                       2     ;*  标题:  伟纳电子ME300B单片机开发系统演示程序 - 1602LCD显示秒表               *
+                       3     ;*  文件:  WL012.asm                                                            *
+                       4     ;*  日期:  2004-1-5                                                             *
+                       5     ;*  版本:  1.0                                                                  *
+                       6     ;*  作者:  gguoqing                                                             *
+                       7     ;*  邮箱:  gguoqing@willar.com                                                  *
+                       8     ;*  网站： http://www.willar.com                                                *
+                       9     ;********************************************************************************
+                      10     ;*  描述:                                                                       *
+                      11     ;*          1602LCD显示秒表                                                     *
+                      12     ;*          K3 --- 控制按键                                                     *
+                      13     ;*                 第一次按下时,开始计时，第二次按下时,暂停计时。               *
+                      14     ;*                 第三次按下时,累计计时，第四次按下时,暂停计时。               *
+                      15     ;*          K4 --- 清零按键：                                                   *
+                      16     ;*                 在任何状态下，按一下K4，均可清零。                           *
+                      17     ;*                                                                              *
+                      18     ;********************************************************************************
+                      19     ;* 【版权】 Copyright(C)伟纳电子 www.willar.com  All Rights Reserved            *
+                      20     ;* 【声明】 此程序仅用于学习与参考，引用请注明版权和作者信息！                  *
+                      21     ;********************************************************************************
+                      22     
+                      23     
+                      24     ;---------------------------------------
+                      25     ;晶振 11.0592M
+                      26     ;定时器0,方式1
+                      27     ;计时中断程序每隔10ms中断一次
+                      28     ;---------------------------------------
+  000C                29               TLOW   EQU  0CH     ;定时器初值
+  00DC                30               THIGH  EQU  0DCH
+                      31     
+  0030                32               HOUR   EQU  30H
+  0031                33               MIN    EQU  31H
+  0032                34               SEC    EQU  32H
+  0033                35               SEC0   EQU  33H     ;10ms计数值
+  0034                36               KEY_S  EQU  34H     ;为键当前的端口状况
+  0035                37               KEY_V  EQU  35H     ;为键上次的端口状况
+  0036                38               X      EQU  36H     ;LCD 地址变量
+  0037                39               KEY_C  EQU  37H     ;键计数单元
+                      40     
+  0094                41               K1     EQU  P1.4
+  0095                42               K2     EQU  P1.5
+  0096                43               K3     EQU  P1.6
+  0097                44               K4     EQU  P1.7
+                      45     
+  00B7                46               BEEP  EQU  P3.7
+  00A0                47               RS    EQU  P2.0     ;LCD控制端口定义
+  00A1                48               RW    EQU  P2.1
+  00A2                49               EN    EQU  P2.2
+                      50     
+                      51     ;----------------------------------------------------
+0000                  52               ORG   0000H
+0000 800B             53               JMP  START
+000B                  54               ORG  0BH
+000B 01CD             55               JMP  T0_INT
+                      56     ;----------------------------------------------------
+000D 758160           57     START:    MOV  SP,#60H
+0010 C2A2             58               CLR  EN
+A51 MACRO ASSEMBLER  WL012                                                                03/29/2005 15:59:05 PAGE     2
+
+0012 3159             59               CALL  SET_LCD
+0014 11AC             60               CALL  INIT            ;初始化变量
+0016 753501           61               MOV  KEY_V,#01H
+0019 11C0             62               CALL  INIT_TIMER      ;初始化定时器
+001B 5179             63               CALL  MENU
+001D 3124             64     LOOP:     CALL   CONV           ;时间计数处理
+001F 1132             65               CALL LOOP1
+0021 117D             66               CALL  SKEY            ;判是否有键按下
+0023 60F8             67               JZ  LOOP              ;无键按下转LOOP
+0025 3124             68               CALL   CONV
+0027 117D             69               CALL  SKEY
+0029 60F2             70               JZ  LOOP
+002B 853435           71               MOV  KEY_V,KEY_S      ;交换数据
+002E 113A             72               CALL  P_KEY
+0030 80EB             73               JMP  LOOP
+                      74     ;-----------------------------------------------------
+0032 209704           75     LOOP1:    JB  K4,LOOP2         ;判清零键是否按下
+0035 5111             76               CALL  BZ
+0037 80D4             77               JMP  START
+0039 22               78     LOOP2:    RET
+                      79     ;-----------------------------------------------------
+003A                  80     P_KEY:                          ;
+003A E535             81               MOV  A,KEY_V
+003C 20E02F           82               JB  ACC.0,P_KEY3
+003F 0537             83               INC  KEY_C
+0041 E537             84               MOV  A,KEY_C          ;K3键是否第一次按下？
+0043 B4010A           85               CJNE  A,#01H,P_KEY1
+0046 900235           86               MOV    DPTR,#MADJ    ;显示执行信息
+0049 7401             87               MOV    A,#1          ;
+004B 318E             88               CALL   LCD_PRINT
+004D D28C             89               SETB  TR0            ;启动中断
+004F 22               90               RET
+0050                  91     P_KEY1:                          ;K3键是否第二次按下？
+0050 E537             92               MOV   A,KEY_C
+0052 B4020A           93               CJNE  A,#02H,P_KEY2
+0055 900246           94               MOV   DPTR,#MADJ1      ;显示执行信息
+0058 7401             95               MOV   A,#1
+005A 318E             96               CALL  LCD_PRINT
+005C C28C             97               CLR   TR0              ;停止中断
+005E 22               98               RET
+005F                  99     P_KEY2:                          ;K3键是否第三次按下？
+005F E537            100               MOV   A,KEY_C
+0061 B4030A          101               CJNE  A,#03H,P_KEY3
+0064 900257          102               MOV   DPTR,#MADJ2      ;显示执行信息
+0067 7401            103               MOV   A,#1
+0069 318E            104               CALL  LCD_PRINT
+006B D28C            105               SETB   TR0             ;启动中断
+006D 22              106               RET
+006E                 107     P_KEY3:                          ;K3键是否第四次按下？
+006E E537            108               MOV   A,KEY_C
+0070 B40409          109               CJNE  A,#04H,P_KEY4
+0073 900268          110               MOV   DPTR,#MADJ3      ;显示执行信息
+0076 7401            111               MOV   A,#1
+0078 318E            112               CALL  LCD_PRINT
+007A C28C            113               CLR   TR0              ;启动中断
+007C 22              114     P_KEY4:   RET
+                     115     ;-------------------------------------------------------
+007D E4              116     SKEY:     CLR  A                ;判是否有键按下子程序
+007E F534            117               MOV  KEY_S,A
+0080 A296            118               MOV  C,K3
+0082 33              119               RLC  A
+0083 4234            120               ORL  KEY_S,A
+0085 E534            121               MOV  A,KEY_S
+0087 6535            122               XRL  A,KEY_V          ;有键按下，A 中内容不为零
+0089 22              123               RET
+                     124     ;--------------------------------------------------------
+A51 MACRO ASSEMBLER  WL012                                                                03/29/2005 15:59:05 PAGE     3
+
+008A 20202020        125     LMESS1:  DB  "                ",0  ;LCD 第一行显示消息
+008E 20202020                
+0092 20202020                
+0096 20202020                
+009A 00                      
+009B 54494D45        126     LMESS2:  DB  "TIME            ",0  ;LCD 第二行显示消息
+009F 20202020                
+00A3 20202020                
+00A7 20202020                
+00AB 00                      
+                     127     ;--------------------------------------------------------
+00AC E4              128     INIT:    CLR  A
+00AD F537            129              MOV  KEY_C,A         ;初始化控制变量
+00AF F533            130              MOV  SEC0,A
+00B1 F532            131              MOV  SEC,A
+00B3 F531            132              MOV  MIN,A
+00B5 F530            133              MOV  HOUR,A
+00B7 F534            134              MOV  KEY_S,A
+00B9 F535            135              MOV  KEY_V,A
+00BB D2B7            136              SETB  BEEP
+00BD C28C            137              CLR  TR0
+00BF 22              138              RET
+                     139     ;------------------------------------------------------------
+00C0                 140     INIT_TIMER:                     ;初始化定时器接口
+00C0 758901          141              MOV  TMOD,#01H         ;设置定时器0 工作模式为模式1
+00C3 75A882          142              MOV  IE,  #82H         ;启用定时器0 中断产生
+00C6 758A0C          143              MOV  TL0,#TLOW
+00C9 758CDC          144              MOV  TH0,#THIGH
+00CC 22              145              RET
+                     146     ;-------------------------------------------------------------
+00CD                 147     T0_INT:
+00CD C0E0            148              PUSH  ACC           ;定时器0计时中断程序
+00CF 758A0C          149              MOV  TL0,#TLOW
+00D2 758CDC          150              MOV  TH0,#THIGH
+00D5 0533            151              INC  SEC0
+00D7 E533            152              MOV  A,SEC0         ;10ms 计数值加1
+00D9 B4642A          153              CJNE  A,#100,TT
+00DC 753300          154              MOV  SEC0,#0
+00DF 0532            155              INC  SEC            ;秒加1
+00E1 E532            156              MOV  A,SEC
+00E3 B43C20          157              CJNE  A,#60,TT
+00E6 0531            158              INC  MIN            ;分加1
+00E8 753200          159              MOV  SEC,#0
+00EB E531            160              MOV  A,MIN
+00ED B43C16          161              CJNE  A,#60,TT
+00F0 0530            162              INC  HOUR           ;时加1
+00F2 753100          163              MOV  MIN,#0
+00F5 E530            164              MOV  A,HOUR
+00F7 B4180C          165              CJNE  A,#24,TT
+00FA 753300          166              MOV  SEC0,#0
+00FD 753200          167              MOV  SEC,#0          ;秒、分、时单元清0
+0100 753100          168              MOV  MIN,#0
+0103 753000          169              MOV  HOUR,#0
+0106 D0E0            170      TT:     POP  ACC
+0108 32              171              RETI
+                     172     ;-------------------------------------------------------
+                     173     ;   在第二行显示数字
+                     174     ;-------------------------------------------------------
+0109                 175     SHOW_DIG2:                    ;在 LCD 的第二行显示数字
+0109 75F00A          176               MOV  B,#10         ;设置被除数
+010C 84              177               DIV  AB            ;结果A存商数，B存余数
+010D 2430            178               ADD  A,#30H        ;A为十位数，转换为字符
+010F C0F0            179               PUSH  B            ;B放入堆栈暂存
+0111 8536F0          180               MOV  B,X           ;设置 LCD 显示的位置
+0114 31F0            181               CALL  LCDP2        ;由 LCD 显示出来
+0116 D0F0            182               POP  B             ;
+A51 MACRO ASSEMBLER  WL012                                                                03/29/2005 15:59:05 PAGE     4
+
+0118 E5F0            183               MOV  A,B           ;B为个位数
+011A 2430            184               ADD  A,#30H        ;转换为字符
+011C 0536            185               INC  X             ;LCD 显示位置加1
+011E 8536F0          186               MOV  B,X           ;设置 LCD 显示的位置
+0121 31F0            187               CALL  LCDP2        ;由 LCD 显示出来
+0123 22              188               RET
+                     189     ;-------------------------------------------
+                     190     ;转换为 ASCII 码并显示
+                     191     ;-------------------------------------------
+0124                 192     CONV:
+0124 E530            193               MOV  A,HOUR        ;加载小时数据
+0126 753605          194               MOV  X,#5          ;设置位置
+0129 3109            195               CALL  SHOW_DIG2    ;显示数据
+012B 0536            196               INC  X             ;
+012D 743A            197               MOV  A,#':'        ;
+012F 8536F0          198               MOV  B,X           ;
+0132 31F0            199               CALL  LCDP2        ;
+0134 E531            200               MOV  A,MIN         ;加载分钟数据
+0136 0536            201               INC  X             ;设置位置
+0138 3109            202               CALL  SHOW_DIG2    ;显示数据
+013A 0536            203               INC  X             ;
+013C 743A            204               MOV  A,#':'        ;
+013E 8536F0          205               MOV  B,X           ;
+0141 31F0            206               CALL  LCDP2        ;
+0143 E532            207               MOV  A,SEC         ;加载秒数数据
+0145 0536            208               INC  X             ;设置位置
+0147 3109            209               CALL  SHOW_DIG2    ;显示数据
+0149 0536            210               INC  X             ;
+014B 743A            211               MOV  A,#':'        ;
+014D 8536F0          212               MOV  B,X           ;
+0150 31F0            213               CALL  LCDP2        ;
+0152 E533            214               MOV  A,SEC0        ;加载秒数数据
+0154 0536            215               INC  X             ;设置位置
+0156 3109            216               CALL  SHOW_DIG2
+0158 22              217               RET
+                     218     ;---------------------------------------------------------
+                     219     ;  LCD  CONTROL
+                     220     ;---------------------------------------------------------
+0159                 221     SET_LCD:                     ;对 LCD 做初始化设置及测试
+0159 C2A2            222               CLR  EN
+015B 31CC            223               CALL  INIT_LCD     ;初始化 LCD
+015D 7D0A            224               MOV  R5,#10
+015F 31FD            225               CALL  DELAY
+0161 90008A          226               MOV  DPTR,#LMESS1  ;指针指到显示消息1
+0164 7401            227               MOV  A,#1          ;显示在第一行
+0166 318E            228               CALL  LCD_PRINT
+0168 90009B          229               MOV  DPTR,#LMESS2  ;指针指到显示消息2
+016B 7402            230               MOV  A,#2          ;显示在第二行
+016D 318E            231               CALL  LCD_PRINT
+016F 22              232               RET
+                     233     ;----------------------------------------------------------
+0170                 234     INIT_LCD1:                   ;LCD 控制指令初始化
+0170 7438            235               MOV  A,#38H        ;双列显示，字形5*7点阵
+0172 31E4            236               CALL  WCOM         ;
+0174 5108            237               call  delay1
+0176 740C            238               MOV  A,#0CH        ;开显示，显示光标，光标不闪烁
+0178 31E4            239               CALL  WCOM         ;
+017A 5108            240               call  delay1
+017C 7401            241               MOV  A,#01H        ;清除 LCD 显示屏
+017E 31E4            242               CALL  WCOM         ;
+0180 5108            243               call  delay1
+0182 22              244               RET
+                     245     ;----------------------------------------------------------
+0183                 246     ENABLE:                       ;写指令
+0183 C2A0            247               CLR RS              ;RS=L,RW=L,E=高脉冲
+0185 C2A1            248               CLR RW              ;D0-D7=指令码
+A51 MACRO ASSEMBLER  WL012                                                                03/29/2005 15:59:05 PAGE     5
+
+0187 D2A2            249               SETB EN
+0189 5108            250               ACALL DELAY1          
+018B C2A2            251               CLR EN
+018D 22              252               RET
+                     253     ;----------------------------------------------------------
+018E                 254     LCD_PRINT:       ;在LCD的第一行或第二行显示字符
+                     255     
+018E B4010C          256               CJNE  A,#1,LINE2  ;判断是否为第一行
+0191 7480            257       LINE1:  MOV  A,#80H       ;设置 LCD 的第一行地址
+0193 31E4            258               CALL  WCOM        ;写入命令
+0195 31B3            259               CALL  CLR_LINE    ;清除该行字符数据
+0197 7480            260               MOV  A,#80H       ;设置 LCD 的第一行地址
+0199 31E4            261               CALL  WCOM        ;写入命令
+019B 800A            262               JMP  FILL
+019D 74C0            263       LINE2:  MOV  A,#0C0H      ;设置 LCD 的第二行地址
+019F 31E4            264               CALL  WCOM        ;写入命令
+01A1 31B3            265               CALL  CLR_LINE    ;清除该行字符数据
+01A3 74C0            266               MOV  A,#0C0H      ;设置 LCD 的第二行地址
+01A5 31E4            267               CALL  WCOM
+01A7 E4              268       FILL:   CLR  A            ;填入字符
+01A8 93              269               MOVC  A,@A+DPTR   ;由消息区取出字符
+01A9 B40001          270               CJNE  A,#0,LC1    ;判断是否为结束码
+01AC 22              271               RET
+01AD 31E9            272       LC1:    CALL  WDATA       ;写入数据
+01AF A3              273               INC  DPTR         ;指针加1
+01B0 80F5            274               JMP  FILL         ;继续填入字符
+01B2 22              275               RET
+                     276     ;-------------------------------------------------------
+01B3                 277     CLR_LINE:                  ;清除该行 LCD 的字符
+01B3 7818            278               MOV  R0,#24
+01B5 7420            279        CL1:   MOV  A,#' '
+01B7 31E9            280               CALL  WDATA
+01B9 D8FA            281               DJNZ  R0,CL1
+01BB 22              282               RET
+                     283     ;-------------------------------------------------------
+01BC 7FFA            284        DE:    MOV  R7,#250      ;延时500微秒
+01BE DFFE            285               DJNZ  R7,$
+01C0 22              286               RET
+                     287     ;-------------------------------------------------------
+01C1                 288        EN1:
+01C1 C2A1            289               CLR   RW
+01C3 D2A2            290               SETB  EN         ;短脉冲产生启用信号
+01C5 31BC            291               CALL  DE
+01C7 C2A2            292               CLR  EN
+01C9 31BC            293               CALL  DE
+01CB 22              294               RET
+                     295     ;------------------------------------------------------
+01CC                 296     INIT_LCD:                  ;8位I/O控制 LCD 接口初始化
+01CC 758038          297               MOV  P0,#38H     ;双列显示，字形5*7点阵
+01CF 3183            298               call  enable
+01D1 5108            299               call  delay1
+01D3 758038          300               MOV  P0,#38H     ;双列显示，字形5*7点阵
+01D6 3183            301               call  enable
+01D8 5108            302               call  delay1
+01DA 758038          303               MOV  P0,#38H     ;双列显示，字形5*7点阵
+01DD 3183            304               call  enable
+01DF 5108            305               call  delay1
+01E1 3170            306               CALL  INIT_LCD1
+01E3 22              307               RET
+                     308     ;-----------------------------------------------------
+01E4                 309     WCOM:                     ;以8位控制方式将命令写至LCD
+01E4 F580            310               MOV  P0,A       ;写入命令
+01E6 3183            311               call  enable
+01E8 22              312               RET
+                     313     ;-----------------------------------------------------
+01E9                 314     WDATA:                    ;以8位控制方式将数据写至LCD
+A51 MACRO ASSEMBLER  WL012                                                                03/29/2005 15:59:05 PAGE     6
+
+01E9 F580            315               MOV  P0,A       ;写入数据
+01EB D2A0            316               SETB  RS        ;设置写入数据
+01ED 31C1            317               CALL  EN1
+01EF 22              318               RET
+                     319     ;-----------------------------------------------------
+                     320     ;第二行显示字符
+                     321     ;-----------------------------------------------------
+01F0                 322     LCDP2:                    ;在LCD的第二行显示字符
+01F0 C0E0            323              PUSH  ACC        ;
+01F2 E5F0            324              MOV  A,B         ;设置显示地址
+01F4 24C0            325              ADD  A,#0C0H     ;设置LCD的第二行地址
+01F6 31E4            326              CALL  WCOM       ;写入命令
+01F8 D0E0            327              POP  ACC         ;由堆栈取出A
+01FA 31E9            328              CALL  WDATA      ;写入数据
+01FC 22              329              RET
+                     330     ;----------------------------------------------------
+01FD                 331     DELAY:                    ;延时10MS
+01FD 7E32            332              MOV  R6,#50
+01FF 7F64            333       D1:    MOV  R7,#100
+0201 DFFE            334              DJNZ  R7,$
+0203 DEFA            335              DJNZ  R6,D1
+0205 DDF6            336              DJNZ  R5,DELAY
+0207 22              337              RET
+                     338     ;-----------------------------------------------------
+0208                 339     DELAY1:                    ;延时5MS
+0208 7E19            340              MOV  R6,#25
+020A 7F64            341       D2:    MOV  R7,#100
+020C DFFE            342              DJNZ  R7,$
+020E DEFA            343              DJNZ  R6,D2
+0210 22              344              RET
+                     345     ;-----------------------------------------------------
+0211                 346     BZ:                        ;蜂鸣器
+0211 7E64            347              MOV  R6,#100
+0213 511E            348       B1:    CALL  DEX
+0215 B2B7            349              CPL  BEEP
+0217 DEFA            350              DJNZ  R6,B1
+0219 7D0A            351              MOV  R5,#10
+021B 31FD            352              CALL  DELAY
+021D 22              353              RET
+021E 7FB4            354      DEX:    MOV  R7,#180
+0220 00              355      DE1:    NOP
+0221 DFFD            356              DJNZ  R7,DE1
+0223 22              357              RET
+                     358     
+                     359     ;-------------------------------------------------
+0224 20534543        360     MMENU:  DB  " SECOND-CLOCK 0 ",0
+0228 4F4E442D                
+022C 434C4F43                
+0230 4B203020                
+0234 00                      
+0235 20424547        361     MADJ:   DB  " BEGIN COUNT  1 ",0
+0239 494E2043                
+023D 4F554E54                
+0241 20203120                
+0245 00                      
+0246 20504155        362     MADJ1:  DB  " PAUST COUNT  2 ",0
+024A 53542043                
+024E 4F554E54                
+0252 20203220                
+0256 00                      
+0257 20424547        363     MADJ2:  DB  " BEGIN COUNT  3 ",0
+025B 494E2043                
+025F 4F554E54                
+0263 20203320                
+0267 00                      
+0268 20504155        364     MADJ3:  DB  " PAUST COUNT  4 ",0
+A51 MACRO ASSEMBLER  WL012                                                                03/29/2005 15:59:05 PAGE     7
+
+026C 53542043                
+0270 4F554E54                
+0274 20203420                
+0278 00                      
+                     365     ;-------------------------------------------------
+0279                 366     MENU:                      ;LCD 显示工作菜单消息
+0279 900224          367              MOV  DPTR,#MMENU
+027C 7401            368              MOV  A,#1
+027E 318E            369              CALL  LCD_PRINT
+0280 22              370              RET
+                     371     ;-------------------------------------------------
+                     372              END
+A51 MACRO ASSEMBLER  WL012                                                                03/29/2005 15:59:05 PAGE     8
+
+SYMBOL TABLE LISTING
+------ ----- -------
+
+
+N A M E             T Y P E  V A L U E   ATTRIBUTES
+
+ACC. . . . . . . .  D ADDR   00E0H   A   
+B. . . . . . . . .  D ADDR   00F0H   A   
+B1 . . . . . . . .  C ADDR   0213H   A   
+BEEP . . . . . . .  B ADDR   00B0H.7 A   
+BZ . . . . . . . .  C ADDR   0211H   A   
+CL1. . . . . . . .  C ADDR   01B5H   A   
+CLR_LINE . . . . .  C ADDR   01B3H   A   
+CONV . . . . . . .  C ADDR   0124H   A   
+D1 . . . . . . . .  C ADDR   01FFH   A   
+D2 . . . . . . . .  C ADDR   020AH   A   
+DE . . . . . . . .  C ADDR   01BCH   A   
+DE1. . . . . . . .  C ADDR   0220H   A   
+DELAY. . . . . . .  C ADDR   01FDH   A   
+DELAY1 . . . . . .  C ADDR   0208H   A   
+DEX. . . . . . . .  C ADDR   021EH   A   
+EN . . . . . . . .  B ADDR   00A0H.2 A   
+EN1. . . . . . . .  C ADDR   01C1H   A   
+ENABLE . . . . . .  C ADDR   0183H   A   
+FILL . . . . . . .  C ADDR   01A7H   A   
+HOUR . . . . . . .  N NUMB   0030H   A   
+IE . . . . . . . .  D ADDR   00A8H   A   
+INIT . . . . . . .  C ADDR   00ACH   A   
+INIT_LCD . . . . .  C ADDR   01CCH   A   
+INIT_LCD1. . . . .  C ADDR   0170H   A   
+INIT_TIMER . . . .  C ADDR   00C0H   A   
+K1 . . . . . . . .  B ADDR   0090H.4 A   
+K2 . . . . . . . .  B ADDR   0090H.5 A   
+K3 . . . . . . . .  B ADDR   0090H.6 A   
+K4 . . . . . . . .  B ADDR   0090H.7 A   
+KEY_C. . . . . . .  N NUMB   0037H   A   
+KEY_S. . . . . . .  N NUMB   0034H   A   
+KEY_V. . . . . . .  N NUMB   0035H   A   
+LC1. . . . . . . .  C ADDR   01ADH   A   
+LCDP2. . . . . . .  C ADDR   01F0H   A   
+LCD_PRINT. . . . .  C ADDR   018EH   A   
+LINE1. . . . . . .  C ADDR   0191H   A   
+LINE2. . . . . . .  C ADDR   019DH   A   
+LMESS1 . . . . . .  C ADDR   008AH   A   
+LMESS2 . . . . . .  C ADDR   009BH   A   
+LOOP . . . . . . .  C ADDR   001DH   A   
+LOOP1. . . . . . .  C ADDR   0032H   A   
+LOOP2. . . . . . .  C ADDR   0039H   A   
+MADJ . . . . . . .  C ADDR   0235H   A   
+MADJ1. . . . . . .  C ADDR   0246H   A   
+MADJ2. . . . . . .  C ADDR   0257H   A   
+MADJ3. . . . . . .  C ADDR   0268H   A   
+MENU . . . . . . .  C ADDR   0279H   A   
+MIN. . . . . . . .  N NUMB   0031H   A   
+MMENU. . . . . . .  C ADDR   0224H   A   
+P0 . . . . . . . .  D ADDR   0080H   A   
+P1 . . . . . . . .  D ADDR   0090H   A   
+P2 . . . . . . . .  D ADDR   00A0H   A   
+P3 . . . . . . . .  D ADDR   00B0H   A   
+P_KEY. . . . . . .  C ADDR   003AH   A   
+P_KEY1 . . . . . .  C ADDR   0050H   A   
+P_KEY2 . . . . . .  C ADDR   005FH   A   
+P_KEY3 . . . . . .  C ADDR   006EH   A   
+P_KEY4 . . . . . .  C ADDR   007CH   A   
+RS . . . . . . . .  B ADDR   00A0H.0 A   
+RW . . . . . . . .  B ADDR   00A0H.1 A   
+A51 MACRO ASSEMBLER  WL012                                                                03/29/2005 15:59:05 PAGE     9
+
+SEC. . . . . . . .  N NUMB   0032H   A   
+SEC0 . . . . . . .  N NUMB   0033H   A   
+SET_LCD. . . . . .  C ADDR   0159H   A   
+SHOW_DIG2. . . . .  C ADDR   0109H   A   
+SKEY . . . . . . .  C ADDR   007DH   A   
+SP . . . . . . . .  D ADDR   0081H   A   
+START. . . . . . .  C ADDR   000DH   A   
+T0_INT . . . . . .  C ADDR   00CDH   A   
+TH0. . . . . . . .  D ADDR   008CH   A   
+THIGH. . . . . . .  N NUMB   00DCH   A   
+TL0. . . . . . . .  D ADDR   008AH   A   
+TLOW . . . . . . .  N NUMB   000CH   A   
+TMOD . . . . . . .  D ADDR   0089H   A   
+TR0. . . . . . . .  B ADDR   0088H.4 A   
+TT . . . . . . . .  C ADDR   0106H   A   
+WCOM . . . . . . .  C ADDR   01E4H   A   
+WDATA. . . . . . .  C ADDR   01E9H   A   
+X. . . . . . . . .  N NUMB   0036H   A   
+
+
+REGISTER BANK(S) USED: 0 
+
+
+ASSEMBLY COMPLETE.  0 WARNING(S), 0 ERROR(S)

@@ -1,0 +1,112 @@
+<HTML>
+<HEAD>
+<META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=gb_2312-80">
+<META NAME="Generator" CONTENT="Microsoft FrontPage 5.0">
+<TITLE>定时/计数器的方式控制字</TITLE>
+</HEAD>
+<BODY background="../back.jpg">
+<B>
+<P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">
+<font size="2">说明：本课部份图请打本单片机书，都有，抱歉，不及画。</font></P>
+<P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">
+<FONT FACE="宋体" LANG="ZH-CN" SIZE=2>定时</font><FONT SIZE=2>/</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>计数器的方式控制字</font></P>
+</B>
+<P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">
+<FONT FACE="宋体" LANG="ZH-CN" SIZE=2>从上一节我们已经得知，单片机中的定时</font><FONT SIZE=2>/</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>计数器都可以有多种用途，那么我怎样才能让它们工作于我所需要的用途呢？这就要通过定时</FONT><FONT SIZE=2>/</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>计数器的方式控制字来设置。</font></P>
+<P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">
+<FONT FACE="宋体" LANG="ZH-CN" SIZE=2>在单片机中有两个特殊功能寄存器与定时</font><FONT SIZE=2>/</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>计数有关，这就是</FONT><FONT SIZE=2>TMOD</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>和</FONT><FONT SIZE=2>TCON</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>。顺便说一下，</FONT><FONT SIZE=2>TMOD</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>和</FONT><FONT SIZE=2>TCON</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>是名称，我们在写程序时就可以直接用这个名称来指定它们，当然也可以直接用它们的地址</FONT><FONT SIZE=2>89H</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>和</FONT><FONT SIZE=2>88H</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>来指定它们（其实用名称也就是直接用地址，汇编软件帮你翻译一下而已）。</font></P>
+<P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0"> 
+<FONT FACE="宋体" LANG="ZH-CN" SIZE=2>&#9;<img src="jx1901.gif" width="553" height="73">从图</font><FONT SIZE=2>1</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>中我们可以看出，</FONT><FONT SIZE=2>TMOD</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>被分成两部份，每部份</FONT><FONT SIZE=2>4</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>位。分别用于控制</FONT><FONT SIZE=2>T1</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>和</FONT><FONT SIZE=2>T0</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>，至于这里面是什么意思，我们下面介绍。</font></P>
+<P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0"> 
+<FONT FACE="宋体" LANG="ZH-CN" SIZE=2>&#9;<img src="jx1902.gif" width="553" height="72">从图</font><FONT SIZE=2>2</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>中我们可以看出，</FONT><FONT SIZE=2>TCON</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>也被分成两部份，高</FONT><FONT SIZE=2>4</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>位用于定时</FONT><FONT SIZE=2>/</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>计数器，低</FONT><FONT SIZE=2>4</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>位则用于中断（我们暂不管）。而</FONT><FONT SIZE=2>TF1</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>（</FONT><FONT SIZE=2>0</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>）我们上节课已提到了，当计数溢出后</FONT><FONT SIZE=2>TF1</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>（</FONT><FONT SIZE=2>0</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>）就由</FONT><FONT SIZE=2>0</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>变为</FONT><FONT SIZE=2>1</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>。原来</FONT><FONT SIZE=2>TF1</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>（</FONT><FONT SIZE=2>0</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>）在这儿！那么</FONT><FONT SIZE=2>TR0</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>、</FONT><FONT SIZE=2>TR1</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>又是什么呢？看上节课的图。</font></P>
+<P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0"> 
+<FONT FACE="宋体" LANG="ZH-CN" SIZE=2>&#9;计数脉冲要进入计数器还真不容易，有层层关要通过，最起码，就是</font><FONT SIZE=2>TR0</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>（</FONT><FONT SIZE=2>1</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>）要为</FONT><FONT SIZE=2>1</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>，开关才能合上，脉冲才能过来。因此，</FONT><FONT SIZE=2>TR0</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>（</FONT><FONT SIZE=2>1</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>）称之为运行控制位，可用指令</FONT><FONT SIZE=2>SETB</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>来置位以启动计数器</FONT><FONT SIZE=2>/</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>定时器运行，用指令</FONT><FONT SIZE=2>CLR</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>来<img src="jx1903.gif" width="555" height="230">关闭定时</FONT><FONT SIZE=2>/</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>计数器的工作，一切尽在自已的掌握中。</font></P>
+<B>
+<P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">
+<FONT FACE="宋体" LANG="ZH-CN" SIZE=2>定时</font><FONT SIZE=2>/</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>计数器的四种工作方式</font></P></B><OL>
+<FONT FACE="宋体" LANG="ZH-CN" SIZE=3>
+<P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0"></FONT><LI>
+<p style="line-height: 150%; margin-top: 0; margin-bottom: 0">
+<FONT FACE="宋体" LANG="ZH-CN" SIZE=2>工作方式</font><FONT SIZE=2>0</LI></font><FONT SIZE=3></p>
+<p style="line-height: 150%; margin-top: 0; margin-bottom: 0"></P></font></OL>
+
+<P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">
+<FONT FACE="宋体" LANG="ZH-CN" SIZE=2>定时器</font><FONT SIZE=2>/</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>计数器的工作方式</FONT><FONT SIZE=2>0</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>称之为</FONT><FONT SIZE=2>13</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>位定时</FONT><FONT SIZE=2>/</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>计数方式。它由</FONT><FONT SIZE=2>TL</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>（</FONT><FONT SIZE=2>1/0</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>）的低</FONT><FONT SIZE=2>5</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>位和</FONT><FONT SIZE=2>TH</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>（</FONT><FONT SIZE=2>0/1</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>）的</FONT><FONT SIZE=2>8</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>位构成</FONT><FONT SIZE=2>13</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>位的计数器，此时</FONT><FONT SIZE=2>TL</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>（</FONT><FONT SIZE=2>1/0</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>）的高</FONT><FONT SIZE=2>3</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>位未用。</font></P>
+<FONT FACE="宋体" LANG="ZH-CN" SIZE=2>
+<P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">我们用这个图来讨论几个问题：</P>
+</FONT><OL><FONT SIZE=3>
+  <P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0"></FONT><LI>
+  <p style="line-height: 150%; margin-top: 0; margin-bottom: 0"><FONT SIZE=2>M1M0</font><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>：定时</FONT><FONT SIZE=2>/</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>计数器一共有四种工作方式，就是用</FONT><FONT SIZE=2>M1M0</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>来控制的，</FONT><FONT SIZE=2>2</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>位正好是四种组合。</font><font size="2"></LI></font><FONT FACE="宋体" LANG="ZH-CN" SIZE=3></p>
+  <p style="line-height: 150%; margin-top: 0; margin-bottom: 0"></P>
+</FONT><FONT SIZE=3>
+  <P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0"></FONT><LI>
+  <p style="line-height: 150%; margin-top: 0; margin-bottom: 0"><FONT SIZE=2>C/T</font><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>：前面我们说过，定时</FONT><FONT SIZE=2>/</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>计数器即可作定时用也可用计数用，到底作什么用，由我们根据需要自行决定，也说是决定权在我们&#0;&#0;编程者。如果</FONT><FONT SIZE=2>C/T</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>为</FONT><FONT SIZE=2>0</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>就是用作定时器（开关往上打），如果</FONT><FONT SIZE=2>C/T</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>为</FONT><FONT SIZE=2>1</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>就是用作计数器（开关往下打）。顺便提一下：一个定时</FONT><FONT SIZE=2>/</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>计数器同一时刻要么作定时用，要么作计数用，不能同时用的，这是个极普通的常识，几乎没有教材会提这一点，但很多初学者却会有此困惑。</font><font size="2"></LI></font><FONT FACE="宋体" LANG="ZH-CN" SIZE=3></p>
+  <p style="line-height: 150%; margin-top: 0; margin-bottom: 0"></P>
+</FONT><FONT SIZE=3>
+  <P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0"></FONT><LI>
+  <p style="line-height: 150%; margin-top: 0; margin-bottom: 0"><FONT SIZE=2>GATE</font><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>：看图，当我们选择了定时或计数工作方式后，定时</FONT><FONT SIZE=2>/</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>计数脉冲却不一定能到达计数器端，中间还有一个开关，显然这个开关不合上，计数脉冲就没法过去，那么开关什么时候过去呢？有两种情况</font><font size="2"></LI></font><FONT FACE="宋体" LANG="ZH-CN" SIZE=3></p>
+  <p style="line-height: 150%; margin-top: 0; margin-bottom: 0"></P></font></OL><OL>
+
+<FONT SIZE=3>
+<P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0"></FONT><LI>
+<p style="line-height: 150%; margin-top: 0; margin-bottom: 0"><FONT SIZE=2>GATE=0</font><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>，分析一下逻辑，</FONT><FONT SIZE=2>GATE</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>非后是</FONT><FONT SIZE=2>1</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>，进入或门，或门总是输出</FONT><FONT SIZE=2>1</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>，和或门的另一个输入端</FONT><FONT SIZE=2>INT1</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>无关，在这种情况下，开关的打开、合上只取决于</FONT><FONT SIZE=2>TR1</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>，只要</FONT><FONT SIZE=2>TR1</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>是</FONT><FONT SIZE=2>1</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>，开关就合上，计数脉冲得以畅通无阻，而如果</FONT><FONT SIZE=2>TR1</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>等于</FONT><FONT SIZE=2>0</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>则开关打开，计数脉冲无法通过，因此定时</FONT><FONT SIZE=2>/</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>计数是否工作，只取决于</FONT><FONT SIZE=2>TR1</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>。</font><font size="2"></LI></font><FONT FACE="宋体" LANG="ZH-CN" SIZE=3></p>
+<p style="line-height: 150%; margin-top: 0; margin-bottom: 0"></P>
+</FONT><FONT SIZE=3>
+<P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0"></FONT><LI>
+<p style="line-height: 150%; margin-top: 0; margin-bottom: 0"><FONT SIZE=2>GATE=1</font><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>，在此种情况下，计数脉冲通路上的开关不仅要由</FONT><FONT SIZE=2>TR1</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>来控制，而且还要受到</FONT><FONT SIZE=2>INT1</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>引脚的控制，只有</FONT><FONT SIZE=2>TR1</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>为</FONT><FONT SIZE=2>1</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>，且</FONT><FONT SIZE=2>INT1</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>引脚也是高电平，开关才合上，计数脉冲才得以通过。这个特性可以用来测量一个信号的高电平的宽度，想想看，怎么测？</font><font size="2"></LI></font><FONT FACE="宋体" LANG="ZH-CN" SIZE=3></p>
+<p style="line-height: 150%; margin-top: 0; margin-bottom: 0"></P></font></OL>
+<P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">
+
+<FONT FACE="宋体" LANG="ZH-CN" SIZE=2>为什&#9;么在这种模式下只用</font><FONT SIZE=2>13</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>位呢？干吗不用</FONT><FONT SIZE=2>16</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>位，这是为了和</FONT><FONT SIZE=2>51</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>机的前辈</FONT><FONT SIZE=2>48</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>系列兼容而设的一种工作式，如果你觉得用得不顺手，那就干脆用第二种工作方式。</font></P><OL>
+<FONT FACE="宋体" LANG="ZH-CN" SIZE=3>
+
+<P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0"></font><LI>
+<p style="line-height: 150%; margin-top: 0; margin-bottom: 0">
+<FONT FACE="宋体" LANG="ZH-CN" SIZE=2>工作方式</font><FONT SIZE=2>1</LI></font><FONT SIZE=3></p>
+<p style="line-height: 150%; margin-top: 0; margin-bottom: 0"></P>
+</FONT>
+<P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">
+<FONT FACE="宋体" LANG="ZH-CN" SIZE=2>工作方式</font><FONT SIZE=2>1</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>是</FONT><FONT SIZE=2>16</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>位的定时</FONT><FONT SIZE=2>/</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>计数方式，将</FONT><FONT SIZE=2>M1M0</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>设为</FONT><FONT SIZE=2>01</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>即可，其它特性与工作方式</FONT><FONT SIZE=2>0</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>相同。</font></P><FONT FACE="宋体" LANG="ZH-CN" SIZE=3>
+<P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0"></FONT><LI>
+<p style="line-height: 150%; margin-top: 0; margin-bottom: 0">
+<FONT FACE="宋体" LANG="ZH-CN" SIZE=2>工作方式</font><FONT SIZE=2>2</LI></font><FONT SIZE=3></p>
+<p style="line-height: 150%; margin-top: 0; margin-bottom: 0"></P>
+</FONT>
+<P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">
+<FONT FACE="宋体" LANG="ZH-CN" SIZE=2>在介绍这种式方式之前先让我们思考一个问题：上一次课我们提到过任意计数及任意定时的问题，比如我要计</font><FONT SIZE=2>1000</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>个数，可是</FONT><FONT SIZE=2>16</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>位的计数器要计到</FONT><FONT SIZE=2>65536</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>才满，怎么办呢？我们讨论后得出的办法是用预置数，先在计数器里放上</FONT><FONT SIZE=2>64536</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>，再来</FONT><FONT SIZE=2>1000</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>个脉冲，不就行了吗？是的，但是计满了之后我们又该怎么办呢？要知道，计数总是不断重复的，流水线上计满后马上又要开始下一次计数，下一次的计数还是</FONT><FONT SIZE=2>1000</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>吗？当计满并溢出后，计数器里面的值变成了</FONT><FONT SIZE=2>0</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>（为什么，可以参考前面课程的说明），因此下一次将要计满</FONT><FONT SIZE=2>65536</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>后才会溢出，这可不符合要求，怎么办？当然办法很简单，就是每次一溢出时执行一段程序（这通常是需要的，要不然要溢出干吗？）可以在这段程序中做把预置数</FONT><FONT SIZE=2>64536</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>送入计数器中的事情。所以采用工作方式</FONT><FONT SIZE=2>0</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>或</FONT><FONT SIZE=2>1</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>都要在溢出后做一个重置预置数的工作，做工作当然就得要时间，一般来说这点时间不算什么，可是有一些场合我们还是要计较的，所以就有了第三种工作方式&#0;&#0;自动再装入预置数的工作方式。</font></P>
+<P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">
+<FONT FACE="宋体" LANG="ZH-CN" SIZE=2>既然要自动得新装入预置数，那么预置数就得放在一个地方，要不然装什么呢？那么预置数放在什么地方呢？它放在</font><FONT SIZE=2>T</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>（</FONT><FONT SIZE=2>0/1</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>）的高</FONT><FONT SIZE=2>8</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>位，那么这样高</FONT><FONT SIZE=2>8</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>位不就不能参与计数了吗？是的，在工作方式</FONT><FONT SIZE=2>2</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>，只有低</FONT><FONT SIZE=2>8</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>位参与计数，而高</FONT><FONT SIZE=2>8</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>位不参与计数，用作预置数的存放，这样计数范围就小多了，当然做任可事总有代价的，关键是看值不值，如果我根本不需要计那么多数，那么就可以用这种方式。看图</FONT><FONT SIZE=2>4</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>，每当计数溢出，就会打开</FONT><FONT SIZE=2>T</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>（</FONT><FONT SIZE=2>0/1</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>）的高、低</FONT><FONT SIZE=2>8</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>位之间的开关，计预置数进入低</FONT><FONT SIZE=2>8</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>位。这是由硬件自动完成的，不需要由人工干预。</font></P>
+<P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">
+<FONT FACE="宋体" LANG="ZH-CN" SIZE=2>通常这种式作方式用于波特率发生器（我们将在串行接口中讲解），用于这种用途时，定时器就是为了提供一个时间基准。计数溢出后不需要做事情，要做的仅仅只有一件，就是重新装入预置数，再开始计数，而且中间不要任何延迟，可见这个任务用工作方式</font><FONT SIZE=2>2</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>来完成是最妙不过了。</font></P><FONT FACE="宋体" LANG="ZH-CN" SIZE=3>
+<P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0"></FONT><LI>
+<p style="line-height: 150%; margin-top: 0; margin-bottom: 0">
+<FONT FACE="宋体" LANG="ZH-CN" SIZE=2>工作方式</font><FONT SIZE=2>3</LI></font><FONT SIZE=3></p>
+<p style="line-height: 150%; margin-top: 0; margin-bottom: 0"></P></font></OL>
+
+<P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">
+<FONT FACE="宋体" LANG="ZH-CN" SIZE=2>这种式作方式之下，定时</font><FONT SIZE=2>/</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>计数器</FONT><FONT SIZE=2>0</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>被拆成</FONT><FONT SIZE=2>2</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>个独立的定时</FONT><FONT SIZE=2>/</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>计数器来用。其中，</FONT><FONT SIZE=2>TL0</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>可以构成</FONT><FONT SIZE=2>8</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>位的定时器或计数器的工作方式，而</FONT><FONT SIZE=2>TH0</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>则只能作为定时器来用。我们知道作定时、计数器来用，需要控制，计满后溢出需要有溢出标记，</FONT><FONT SIZE=2>T0</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>被分成两个来用，那就要两套控制及、溢出标记了，从何而来呢？</FONT><FONT SIZE=2>TL0</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>还是用原来的</FONT><FONT SIZE=2>T0</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>的标记，而</FONT><FONT SIZE=2>TH0</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>则借用</FONT><FONT SIZE=2>T1</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>的标记。如此</FONT><FONT SIZE=2>T1</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>不是无标记、控制可用了吗？是的。</font></P>
+<P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">
+<FONT FACE="宋体" LANG="ZH-CN" SIZE=2>一般情况处，只有在</font><FONT SIZE=2>T1</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>以工作方式</FONT><FONT SIZE=2>2</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>运行（当波特率发生器用）时，才让</FONT><FONT SIZE=2>T0</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>工作于方式</FONT><FONT SIZE=2>3</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>的。</font></P>
+<B>
+<P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">
+<FONT FACE="宋体" LANG="ZH-CN" SIZE=2>定时器</font><FONT SIZE=2>/</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>计数器的定时</FONT><FONT SIZE=2>/</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>计数范围</font></P>
+</B>
+<P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">
+<FONT FACE="宋体" LANG="ZH-CN" SIZE=2>工作方式</font><FONT SIZE=2>0</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>：</FONT><FONT SIZE=2>13</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>位定时</FONT><FONT SIZE=2>/</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>计数方式，因此，最多可以计到</FONT><FONT SIZE=2>2</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>的</FONT><FONT SIZE=2>13</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>次方，也就是</FONT><FONT SIZE=2>8192</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>次。</font></P>
+<P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">
+<FONT FACE="宋体" LANG="ZH-CN" SIZE=2>工作方式</font><FONT SIZE=2>1</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>：</FONT><FONT SIZE=2>16</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>位定时</FONT><FONT SIZE=2>/</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>计数方式，因此，最多可以计到</FONT><FONT SIZE=2>2</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>的</FONT><FONT SIZE=2>16</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>次方，也就是</FONT><FONT SIZE=2>65536</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>次。</font></P>
+<P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">
+<FONT FACE="宋体" LANG="ZH-CN" SIZE=2>工作方式</font><FONT SIZE=2>2</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>和工作方式</FONT><FONT SIZE=2>3</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>，都是</FONT><FONT SIZE=2>8</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>位的定时</FONT><FONT SIZE=2>/</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>计数方式，因此，最多可以计到</FONT><FONT SIZE=2>2</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>的</FONT><FONT SIZE=2>8</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>次方，也说是</FONT><FONT SIZE=2>256</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>次。</font></P>
+<FONT FACE="宋体" LANG="ZH-CN" SIZE=2>
+<P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">预置值计算：用最大计数量减去需要的计数次数即可。</P>
+</FONT>
+<P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">
+<FONT FACE="宋体" LANG="ZH-CN" SIZE=2>例：流水线上一个包装是</font><FONT SIZE=2>12</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>盒，要求每到</FONT><FONT SIZE=2>12</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>盒就产生一个动作，用单片机的工作方式</FONT><FONT SIZE=2>0</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>来控制，应当预置多大的值呢？对了，就是</FONT><FONT SIZE=2>8192-12=8180</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>。</font></P>
+<P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0"> 
+<FONT FACE="宋体" LANG="ZH-CN" SIZE=2>以上是计数，明白了这个道理，定时也是一样。这在前面的课程已提到，我们不再重复，请参考前面的例子。</font><font size="2">
+</font> 
+</P>
+<FONT FACE="宋体" LANG="ZH-CN" SIZE=3>
+<P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0"></P>
+<P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">　</P></FONT></BODY>
+</HTML>

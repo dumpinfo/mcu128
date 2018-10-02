@@ -1,0 +1,111 @@
+;; Usb_Wdm.inf
+
+;; *********  PLEASE READ ***********
+;; The wizard cannot create exact INF files for all buses and device types.
+;; You may have to make changes to this file in order to get your device to
+;; install. In particular, hardware IDs and logical configurations require
+;; intervention.
+;;
+;; The Windows DDK documentation contains an excellent INF reference.
+
+;--------- Version Section ---------------------------------------------------
+
+[Version]
+Signature="$Windows 95$"
+Provider=%ProviderName%
+
+; If device fits one of the standard classes, use the name and GUID here,
+; otherwise create your own device class and GUID as this example shows.
+
+Class=NewDeviceClass
+ClassGUID={ff646f80-8def-11d2-9449-00105a075f6b}
+
+;--------- SourceDiskNames and SourceDiskFiles Section -----------------------
+
+; These sections identify source disks and files for installation.  They are
+; shown here as an example, but commented out.
+
+;[SourceDisksNames]
+;1 = "Install Disk",Disk1,,
+
+;[SourceDisksFiles]
+;Usb_Wdm.sys = 1,,
+
+;--------- ClassInstall/ClassInstall32 Section -------------------------------
+
+; Not necessary if using a standard class
+
+; 9X Style
+[ClassInstall]
+Addreg=Class_AddReg
+
+; NT Style
+[ClassInstall32]
+Addreg=Class_AddReg
+
+[Class_AddReg]
+HKR,,,,%DeviceClassName%
+HKR,,Icon,,"-20"
+
+;--------- DestinationDirs Section -------------------------------------------
+
+[DestinationDirs]
+Usb_Wdm_Files_Driver = 10,System32\Drivers
+
+;--------- Manufacturer and Models Sections ----------------------------------
+
+[Manufacturer]
+%MfgName%=Mfg0
+
+[Mfg0]
+%DeviceDesc%=Usb_Wdm_DDI, USB\VID_0471&PID_0677
+
+;---------- DDInstall Sections -----------------------------------------------
+; --------- Windows 9X -----------------
+
+; Experimentation has shown that DDInstall root names greater than 19 characters
+; cause problems in Windows 98
+
+[Usb_Wdm_DDI]
+CopyFiles=Usb_Wdm_Files_Driver
+AddReg=Usb_Wdm_9X_AddReg
+
+[Usb_Wdm_9X_AddReg]
+HKR,,DevLoader,,*ntkern
+HKR,,NTMPDriver,,Usb_Wdm.sys
+HKR, "Parameters", "BreakOnEntry", 0x00010001, 0
+
+; --------- Windows NT -----------------
+
+[Usb_Wdm_DDI.NT]
+CopyFiles=Usb_Wdm_Files_Driver
+AddReg=Usb_Wdm_NT_AddReg
+
+[Usb_Wdm_DDI.NT.Services]
+Addservice = Usb_Wdm, 0x00000002, Usb_Wdm_AddService
+
+[Usb_Wdm_AddService]
+DisplayName    = %SvcDesc%
+ServiceType    = 1                  ; SERVICE_KERNEL_DRIVER
+StartType      = 3                  ; SERVICE_DEMAND_START
+ErrorControl   = 1                  ; SERVICE_ERROR_NORMAL
+ServiceBinary  = %10%\System32\Drivers\Usb_Wdm.sys
+
+[Usb_Wdm_NT_AddReg]
+HKLM, "System\CurrentControlSet\Services\Usb_Wdm\Parameters",\
+	"BreakOnEntry", 0x00010001, 0
+
+
+; --------- Files (common) -------------
+
+[Usb_Wdm_Files_Driver]
+Usb_Wdm.sys
+
+;--------- Strings Section ---------------------------------------------------
+
+[Strings]
+ProviderName="龙岗单片机"
+MfgName="www.lgmcu.com"
+DeviceDesc="51USB实验板"
+DeviceClassName="龙岗单片机"
+SvcDesc="龙岗单片机"

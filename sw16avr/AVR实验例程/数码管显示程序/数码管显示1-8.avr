@@ -1,0 +1,72 @@
+;汇编语言编写：
+
+        .INCLUDE "8515DEF.INC"  ;CPU配置文件
+        .ORG $0000
+         RJMP RESET             ;上电复位跳转到主程序
+        .ORG $0013              ;代码段定位，跳过中断区
+
+RESET:
+        LDI R16,LOW(RAMEND)     ;设置堆栈指针
+        OUT SPL,R16
+        LDI R16,HIGH(RAMEND)
+        OUT SPH,R16
+
+        LDI R16,0xFF             ;设置PA口为输出端口
+        OUT DDRA,R16
+        OUT PORTA,R16
+        OUT DDRC,R16           ;设置PC口为输出端口
+        OUT PORTC,R16
+        
+        LDI R16,$01              ;显示值送显示缓存区
+        STS $6C,R16
+        LDI R16,$02
+        STS $6D,R16
+        LDI R16,$03
+        STS $6E,R16
+        LDI R16,$04
+        STS $6F,R16
+        LDI R16,$05
+        STS $70,R16
+        LDI R16,$06
+        STS $71,R16
+        LDI R16,$07
+        STS $72,R16
+        LDI R16,$08
+        STS $73,R16
+        
+DISPLAY:
+        LDI  R26,$6C             ;显示缓存区首址
+        CLR  R27
+        LDI  R17,$FE
+        MOV  R13,R17             ;位选初始化
+PLAY_A:
+        LD   R17,X+               ;
+        LDI  R31,HIGH(TABLE*2)
+        LDI  R30,LOW(TABLE*2)
+        ADD  R30,R17
+        ADC  R31,R27
+
+        LPM                            ;查表取段码
+        OUT  PORTA,R0          ;段码送PA口
+        OUT  PORTC,R13        ;位选码送PC口
+        SEC   ;                         ;C置1
+        ROL  R13                   ;指向下一位位选
+        LDI  R17,6
+        CLR  R14
+PLAY_B:
+        DEC  R14                    ;延时
+        BRNE  PLAY_B
+        DEC  R17
+        BRNE  PLAY_B
+
+        SER  R17                    ;关闭显示
+        OUT  PORTC,R17
+        CPI  R26,$74             ;8个数码管是否扫描完毕？
+        BRNE  PLAY_A
+        RJMP  DISPLAY
+        RET
+
+TABLE:
+
+.DB     0xc0,0xf9,0xa4,0xb0,0x99,0x92,0x82,0xf8,0x80,0x90,0xFF 
+         ; 0, 1, 2, 3，4, 5, 6, 7, 8, 9,灭 

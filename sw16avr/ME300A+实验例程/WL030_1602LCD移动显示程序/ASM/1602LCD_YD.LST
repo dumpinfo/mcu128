@@ -1,0 +1,296 @@
+A51 MACRO ASSEMBLER  1602LCD_YD                                                           02/05/2006 14:29:27 PAGE     1
+
+
+MACRO ASSEMBLER A51 V7.10
+OBJECT MODULE PLACED IN 1602LCD_YD.OBJ
+ASSEMBLER INVOKED BY: D:\Program Files\Keil\C51\BIN\A51.EXE 1602LCD_YD.asm SET(SMALL) DEBUG EP
+
+LOC  OBJ            LINE     SOURCE
+
+                       1     ;*******************************************************************    
+                       2     ;*                                                                      
+                       3     ;* ME300Bµ¥Æ¬»ú¿ª·¢ÏµÍ³ÑÝÊ¾³ÌÐò - LCD1602 ÒÆ¶¯ÏÔÊ¾C                     
+                       4     ;*                                                                      
+                       5     ;* ÏÔÊ¾ÄÚÈÝ£º   CHINESE                                                 
+                       6     ;*                 NEW  YEAR                                            
+                       7     ;*                                                                      
+                       8     ;* ÏÔÊ¾·½Ê½£º                                                           
+                       9     ;* 1¡¢LCDµÚÒ»ÐÐÏÔÊ¾£º CHINESE                                           
+                      10     ;*      LCDµÚ¶þÐÐÏÔÊ¾£º NEW YEAR                                        
+                      11     ;* 2¡¢ÏÈ½«Á½ÐÐ×Ö·ûÐ´ÈëDDRAMÖÐ£¬È»ºó´ÓÓÒÖÁ×óÖð×ÖÒÆ³öÏÔÊ¾¡£               
+                      12     ;* 3¡¢ÔÚÖ¸¶¨Î»ÖÃÍ£Áô1.6Ãëºó£¬ÉÁË¸2´Î£¬ÇåÆÁ¡£                            
+                      13     ;* 4¡¢·´¸´Ñ­»·ÉÏÊöÏÔÊ¾·½Ê½¡£                                            
+                      14     ;*                                                                      
+                      15     ;* ÓÊÏä£º gguoqing@willar.com                                           
+                      16     ;* ÍøÕ¾£º http://www.willar.com                                         
+                      17     ;* ×÷Õß£º gguoqing                                                      
+                      18     ;* Ê±¼ä£º 2006/01/23                                                    
+                      19     ;*                                                                      
+                      20     ;*¡¾°æÈ¨¡¿COPYRIGHT(C)Î°ÄÉµç×Ó www.willar.com ALL RIGHTS RESERVED       
+                      21     ;*¡¾ÉùÃ÷¡¿´Ë³ÌÐò½öÓÃÓÚÑ§Ï°Óë²Î¿¼£¬ÒÓÃÇë×¢Ã÷°æÈ¨ºÍ×÷ÕßÐÅÏ¢£¡            
+                      22     ;*                                                                      
+                      23     ;*******************************************************************    
+                      24                                                                             
+  00A0                25               LCD_RS  EQU P2.0                                              
+  00A1                26               LCD_RW  EQU P2.1                                              
+  00A2                27               LCD_EN  EQU P2.2                                              
+                      28                                                                             
+                      29     ;*******************************************************************    
+0000                  30                  ORG  0000H                                                 
+0000 0130             31                  AJMP  MAIN                                                 
+0030                  32                  ORG  0030H                                                 
+                      33     ;*******************************************************************    
+0030                  34     MAIN:                                                                   
+0030 758160           35                  MOV SP,#60H                                                
+0033 1181             36                  ACALL LCD_INIT           ;LCD³õÊ¼»¯                        
+0035                  37     MAIN1:                                                                  
+0035 11A6             38                  ACALL CLR_LCD           ;ÇåLCD                             
+0037 7490             39                  MOV A,#90H                ;ÔÚµÚÒ»ÐÐµÚ17ÁÐµÄÎ»ÖÃ            
+0039 11AB             40                  ACALL LCD_CMD                                              
+003B 90005F           41                  MOV DPTR,#LINE1       ;µÚÒ»ÐÐ×Ö·û´®µÄÆðÊ¼µØÖ·ËÍÈëDPTR¡£    
+003E 11E1             42                  ACALL WRITE                                                
+0040 74D0             43                  MOV A,#0D0H              ;ÔÚµÚ¶þÐÐµÚ17ÁÐµÄÎ»ÖÃ             
+0042 11AB             44                  ACALL LCD_CMD                                              
+0044 900070           45                  MOV DPTR,#LINE2       ;µÚ¶þÐÐ×Ö·û´®µÄÆðÊ¼µØÖ·ËÍÈëDPTR¡£    
+0047 11E1             46                  ACALL WRITE                                                
+                      47                                                                             
+0049 7B10             48                  MOV  R3,#10H             ;Ïò×óÒÆ¶¯16¸ñ                     
+004B                  49     LOOPA:                                                                  
+004B 7418             50                  MOV  A,#18H               ;×Ö·ûÍ¬Ê±×óÒÆÒ»¸ñ                
+004D 11AB             51                  ACALL LCD_CMD                                              
+004F 7D03             52                  MOV  R5,#03H             ;ÑÓÊ±375MS                        
+0051 3107             53                  ACALL  DELAY125MS                                          
+0053 DBF6             54                  DJNZ  R3,LOOPA                                             
+                      55                                                                             
+0055 3112             56                  ACALL  DELAY4            ;ÑÓÊ±1.6s                         
+0057 3112             57                  ACALL  DELAY4                                              
+0059 7C02             58                  MOV  R4,#02H            ;ÉèÖÃÉÁË¸´ÎÊ                      
+A51 MACRO ASSEMBLER  1602LCD_YD                                                           02/05/2006 14:29:27 PAGE     2
+
+005B 11EF             59                  ACALL  FLASH              ;¿ªÊ¼ÉÁË¸                        
+005D 0135             60                  AJMP  MAIN1                                                
+                      61                                                                             
+005F                  62     LINE1:                                                                  
+005F 20202020         63             DB "    CHINESE     ",00H                                       
+0063 4348494E                
+0067 45534520                
+006B 20202020                
+006F 00                      
+0070                  64     LINE2:                                                                  
+0070 20202020         65             DB "    NEW YEAR    ",00H                                       
+0074 4E455720                
+0078 59454152                
+007C 20202020                
+0080 00                      
+                      66                                                                             
+                      67     ;***************************************************************        
+                      68     ;LCD³õÊ¼»¯Éè¶¨×Ó³ÌÐò                                                    
+                      69     ;***************************************************************        
+0081                  70     LCD_INIT:                                                               
+0081 11FE             71               ACALL DELAY5MS            ;ÑÓÊ±15MS                           
+0083 11FE             72               ACALL DELAY5MS            ;µÈ´LCDµçÔ´ÎÈ¶¨                    
+0085 11FE             73               ACALL DELAY5MS                                                
+                      74                                                                             
+0087 7438             75               MOV A,#38H                   ;16*2ÏÔÊ¾£¬5*7µãÕó£¬8Î»Ê¾Ý      
+0089 11AD             76               ACALL LCD_CMD_NC      ;²»½øÐÐLCDÃ¦¼ì²â                        
+008B 11FE             77               ACALL DELAY5MS                                                
+                      78                                                                             
+008D 7438             79               MOV A,#38H                   ;16*2ÏÔÊ¾£¬5*7µãÕó£¬8Î»Ê¾Ý      
+008F 11AD             80               ACALL LCD_CMD_NC      ;²»½øÐÐLCDÃ¦¼ì²â                        
+0091 11FE             81               ACALL DELAY5MS                                                
+                      82                                                                             
+0093 7438             83               MOV A,#38H                   ;16*2ÏÔÊ¾£¬5*7µãÕó£¬8Î»Ê¾Ý      
+0095 11AD             84               ACALL LCD_CMD_NC      ;²»½øÐÐLCDÃ¦¼ì²â                        
+0097 11FE             85               ACALL DELAY5MS                                                
+                      86                                                                             
+0099 7408             87               MOV  A,#08H                 ;ÏÔÊ¾¹Ø                           
+009B 11AB             88               ACALL LCD_CMD            ;½øÐÐLCDÃ¦¼ì²â                       
+                      89                                                                             
+009D 7401             90               MOV A,#01H                  ;Çå³ÆÁÄ»                         
+009F 11AB             91               ACALL LCD_CMD            ;½øÐÐLCDÃ¦¼ì²â                       
+                      92                                                                             
+00A1 740C             93               MOV  A,#0CH                ;ÏÔÊ¾¿ª£¬¹Ø¹â±ê                    
+00A3 11AB             94               ACALL LCD_CMD           ;½øÐÐLCDÃ¦¼ì²â                        
+                      95                                                                             
+00A5 22               96               RET                                                           
+                      97     ;***************************************************************        
+                      98     ;ÇåLCD×Ó³ÌÐò                                                            
+                      99     ;***************************************************************        
+00A6                 100     CLR_LCD:                                                                
+00A6 7401            101                MOV A,#01H                ;Çå³ÆÁÄ»                          
+00A8 11AB            102                ACALL LCD_CMD         ;½øÐÐLCDÃ¦¼ì²â                         
+00AA 22              103                RET                                                          
+                     104                                                                             
+                     105     ;***************************************************************        
+                     106     ;Ð´Ö¸ÁîÊ¾Ýµ½LCD                                                        
+                     107     ;RS=L,RW=L,D0-D7=Ö¸ÁîÂë£¬E=¸ßÂö³å                                       
+                     108     ;***************************************************************        
+00AB                 109     LCD_CMD:                                                                
+00AB 11CD            110               CALL  CHECKBUSY                                               
+00AD                 111     LCD_CMD_NC:                                                             
+00AD C2A0            112               CLR LCD_RS                                                    
+00AF C2A1            113               CLR LCD_RW                                                    
+00B1 F580            114               MOV  P0,A                                                     
+00B3 D2A2            115               SETB LCD_EN                                                   
+00B5 00              116               NOP                                                           
+A51 MACRO ASSEMBLER  1602LCD_YD                                                           02/05/2006 14:29:27 PAGE     3
+
+00B6 00              117               NOP                                                           
+00B7 00              118               NOP                                                           
+00B8 00              119               NOP                                                           
+00B9 C2A2            120               CLR  LCD_EN                                                   
+00BB 22              121               RET                                                           
+                     122     ;***************************************************************        
+                     123     ;Ð´ÏÔÊ¾Ê¾Ýµ½LCD                                                        
+                     124     ;RS=H,RW=L,D0-D7=Ê¾Ý£¬E=¸ßÂö³å                                         
+                     125     ;***************************************************************        
+00BC                 126     LCD_WDATA:                                                              
+00BC 11CD            127               ACALL  CHECKBUSY                                              
+00BE D2A0            128               SETB  LCD_RS                                                  
+00C0 C2A1            129               CLR   LCD_RW                                                  
+00C2 F580            130               MOV   P0,A                                                    
+00C4 D2A2            131               SETB  LCD_EN                                                  
+00C6 00              132               NOP                                                           
+00C7 00              133               NOP                                                           
+00C8 00              134               NOP                                                           
+00C9 00              135               NOP                                                           
+00CA C2A2            136               CLR   LCD_EN                                                  
+00CC 22              137               RET                                                           
+                     138     ;***************************************************************        
+                     139     ;¼ì²âLCD¿ØÖÆÆ÷Ã¦×´Ì¬                                                    
+                     140     ;¶ÁÊ¾Ý                                                                 
+                     141     ;RS=L,RW=H,E=H,Êä³ö£ºD0-D7=Ê¾Ý                                         
+                     142     ;P0.7=1£¬LCDÃ¦£¬µÈ´¡£P0.7=0£¬LCDÏÐ£¬¿ÉÒÔ½øÐÐ¶ÁÐ´²Ù×÷¡£                 
+                     143     ;***************************************************************        
+00CD                 144     CHECKBUSY:                                                              
+00CD C0E0            145               PUSH  ACC                                                     
+00CF 7580FF          146               MOV  P0,#0FFH                                                 
+00D2 C2A0            147               CLR   LCD_RS                                                  
+00D4 D2A1            148               SETB  LCD_RW                                                  
+00D6 D2A2            149               SETB  LCD_EN                                                  
+00D8                 150     BUSYLOOP:                                                               
+00D8 00              151               NOP                                                           
+00D9 2087FC          152               JB P0.7,BUSYLOOP                                              
+00DC C2A2            153               CLR  LCD_EN                                                   
+00DE D0E0            154               POP  ACC                                                      
+00E0 22              155               RET                                                           
+                     156     ;***************************************************************        
+                     157     ; ·¢ËÍ×Ö·û´®×Ó³ÌÐò                                                      
+                     158     ;***************************************************************        
+00E1                 159     WRITE:                                                                  
+00E1 C0E0            160               PUSH ACC                                                      
+00E3                 161     WRITE1:                                                                 
+00E3 E4              162               CLR  A                                                        
+00E4 93              163               MOVC  A,@A+DPTR                                               
+00E5 6005            164               JZ  WRITE2                                                    
+00E7 A3              165               INC  DPTR                                                     
+00E8 11BC            166               ACALL LCD_WDATA                                               
+00EA 80F7            167               JMP  WRITE1                                                   
+00EC                 168     WRITE2:                                                                 
+00EC D0E0            169               POP  ACC                                                      
+00EE 22              170               RET                                                           
+                     171     ;***************************************************************        
+                     172     ;ÉÁË¸×Ó³ÌÐò                                                             
+                     173     ;***************************************************************        
+00EF                 174     FLASH:                                                                  
+00EF 7408            175               MOV A,#08H                ;¹Ø±ÕÏÔÊ¾                           
+00F1 11AB            176               ACALL LCD_CMD                                                 
+00F3 3112            177               ACALL DELAY4                                                  
+00F5 740C            178               MOV A,#0CH                ;¿ªÏÔÊ¾£¬¹Ø±Õ¹â±ê                   
+00F7 11AB            179               ACALL LCD_CMD                                                 
+00F9 3112            180               ACALL DELAY4                                                  
+00FB DCF2            181               DJNZ R4,FLASH                                                 
+00FD 22              182               RET                                                           
+A51 MACRO ASSEMBLER  1602LCD_YD                                                           02/05/2006 14:29:27 PAGE     4
+
+                     183     ;***************************************************************        
+                     184     ;ÑÓÊ±5MS×Ó³ÌÐò                                                          
+                     185     ;LCD³õÊ¼»¯Ê¹ÓÃ                                                          
+                     186     ;***************************************************************        
+00FE                 187     DELAY5MS:                                                               
+00FE 7E0A            188               MOV  R6,#10                                                   
+0100                 189      DL1:                                                                   
+0100 7FF9            190               MOV  R7,#249                                                  
+0102                 191      DL2:                                                                   
+0102 DFFE            192               DJNZ R7,DL2                                                   
+0104 DEFA            193               DJNZ R6,DL1                                                   
+0106 22              194               RET                                                           
+                     195     ;***************************************************************        
+                     196     ;ÑÓÊ±125MS×Ó³ÌÐò                                                        
+                     197     ;×Ö·û´®ÒÆ¶¯Ê±Ê¹ÓÃ                                                       
+                     198     ;***************************************************************        
+0107                 199     DELAY125MS:                                                             
+0107                 200      DL3:                                                                   
+0107 7EFA            201               MOV  R6,#250                                                  
+0109                 202      DL4:                                                                   
+0109 7FF9            203               MOV  R7,#249                                                  
+010B                 204      DL5:                                                                   
+010B DFFE            205               DJNZ R7,DL5                                                   
+010D DEFA            206               DJNZ R6,DL4                                                   
+010F DDF6            207               DJNZ R5,DL3                                                   
+0111 22              208               RET                                                           
+                     209     ;***************************************************************        
+                     210     ;ÑÓÊ±800MS×Ó³ÌÐò                                                        
+                     211     ;ÉÁË¸Ê±Ê¹ÓÃ                                                             
+                     212     ;***************************************************************        
+0112                 213     DELAY4:                                                                 
+0112 7D28            214               MOV R5,#40                                                    
+0114                 215      DL6:                                                                   
+0114 7E64            216               MOV R6,#100                                                   
+0116                 217      DL7:                                                                   
+0116 7F64            218               MOV R7,#100                                                   
+0118                 219      DL8:                                                                   
+0118 DFFE            220               DJNZ R7,DL8                                                   
+011A DEFA            221               DJNZ R6,DL7                                                   
+011C DDF6            222               DJNZ R5,DL6                                                   
+011E 22              223               RET                                                           
+                     224     ;***************************************************************        
+                     225               END                                                           
+A51 MACRO ASSEMBLER  1602LCD_YD                                                           02/05/2006 14:29:27 PAGE     5
+
+SYMBOL TABLE LISTING
+------ ----- -------
+
+
+N A M E             T Y P E  V A L U E   ATTRIBUTES
+
+ACC. . . . . . . .  D ADDR   00E0H   A   
+BUSYLOOP . . . . .  C ADDR   00D8H   A   
+CHECKBUSY. . . . .  C ADDR   00CDH   A   
+CLR_LCD. . . . . .  C ADDR   00A6H   A   
+DELAY125MS . . . .  C ADDR   0107H   A   
+DELAY4 . . . . . .  C ADDR   0112H   A   
+DELAY5MS . . . . .  C ADDR   00FEH   A   
+DL1. . . . . . . .  C ADDR   0100H   A   
+DL2. . . . . . . .  C ADDR   0102H   A   
+DL3. . . . . . . .  C ADDR   0107H   A   
+DL4. . . . . . . .  C ADDR   0109H   A   
+DL5. . . . . . . .  C ADDR   010BH   A   
+DL6. . . . . . . .  C ADDR   0114H   A   
+DL7. . . . . . . .  C ADDR   0116H   A   
+DL8. . . . . . . .  C ADDR   0118H   A   
+FLASH. . . . . . .  C ADDR   00EFH   A   
+LCD_CMD. . . . . .  C ADDR   00ABH   A   
+LCD_CMD_NC . . . .  C ADDR   00ADH   A   
+LCD_EN . . . . . .  B ADDR   00A0H.2 A   
+LCD_INIT . . . . .  C ADDR   0081H   A   
+LCD_RS . . . . . .  B ADDR   00A0H.0 A   
+LCD_RW . . . . . .  B ADDR   00A0H.1 A   
+LCD_WDATA. . . . .  C ADDR   00BCH   A   
+LINE1. . . . . . .  C ADDR   005FH   A   
+LINE2. . . . . . .  C ADDR   0070H   A   
+LOOPA. . . . . . .  C ADDR   004BH   A   
+MAIN . . . . . . .  C ADDR   0030H   A   
+MAIN1. . . . . . .  C ADDR   0035H   A   
+P0 . . . . . . . .  D ADDR   0080H   A   
+P2 . . . . . . . .  D ADDR   00A0H   A   
+SP . . . . . . . .  D ADDR   0081H   A   
+WRITE. . . . . . .  C ADDR   00E1H   A   
+WRITE1 . . . . . .  C ADDR   00E3H   A   
+WRITE2 . . . . . .  C ADDR   00ECH   A   
+
+
+REGISTER BANK(S) USED: 0 
+
+
+ASSEMBLY COMPLETE.  0 WARNING(S), 0 ERROR(S)

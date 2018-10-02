@@ -1,0 +1,414 @@
+A51 MACRO ASSEMBLER  WL007                                                                08/19/2005 20:30:40 PAGE     1
+
+
+MACRO ASSEMBLER A51 V7.10
+OBJECT MODULE PLACED IN wl007.OBJ
+ASSEMBLER INVOKED BY: C:\Keil\C51\BIN\A51.EXE wl007.asm SET(SMALL) DEBUG EP
+
+LOC  OBJ            LINE     SOURCE
+
+                       1     ;********************************************************************************
+                       2     ;*  标题:  ME300系列单片机开发系统演示程序 - AT24C02读写演示程序                *
+                       3     ;*  硬件： ME300A+                                                               *
+                       4     ;*  文件:  wl007.asm                                                            *
+                       5     ;*  日期:  2004-1-5                                                             *
+                       6     ;*  版本:  1.0                                                                  *
+                       7     ;*  作者:  伟纳电子 - Freeman                                                   *
+                       8     ;*  邮箱:  freeman@willar.com                                                   *
+                       9     ;*  网站： http://www.willar.com                                                *
+                      10     ;********************************************************************************
+                      11     ;*  描述:                                                                       *
+                      12     ;*         AT24C02读写演示程序                                                  *
+                      13     ;*                                                                              *
+                      14     ;*                                                                              *
+                      15     ;*                                                                              *
+                      16     ;*                                                                              *
+                      17     ;********************************************************************************
+                      18     ;* 【版权】 Copyright(C)伟纳电子 www.willar.com  All Rights Reserved            *
+                      19     ;* 【声明】 此程序仅用于学习与参考，引用请注明版权和作者信息！                  *
+                      20     ;********************************************************************************
+                      21     
+                      22     NAME    WL007
+                      23     
+  00A1                24     OP_READ         EQU     0xa1            ; 器件地址以及读取操作
+  00A0                25     OP_WRITE        EQU     0xa0            ; 器件地址以及写入操作
+  007F                26     MAX_ADDR        EQU     0x7f            ; AT24C02最大地址
+                      27     
+                      28     CODE_SEG        SEGMENT CODE 
+                      29     DATA_SEG        SEGMENT DATA
+                      30     STACK_SEG       SEGMENT IDATA
+                      31     
+                      32     
+----                  33             RSEG  DATA_SEG
+0000                  34     ADDR:   DS      1
+0001                  35     TMP2:   DS      1
+0002                  36     TMP3:   DS      1
+                      37     
+----                  38             RSEG    STACK_SEG
+0000                  39     STACK:          DS      20
+                      40     
+  00B3                41     SCL     BIT     P3.3
+  0093                42     SDA     BIT     P1.3
+                      43     
+                      44     ;===============================================================================
+----                  45     CSEG    AT      0000H                   ; 复位向量
+0000 020000   F       46             JMP     MAIN
+                      47     
+                      48     
+                      49     
+                      50     ;===============================================================================
+----                  51             RSEG  CODE_SEG
+0000                  52     MAIN:
+                      53     ; 主程序开始
+                      54     
+                      55             USING   0
+                      56             
+0000 758100   F       57             MOV     SP, #(STACK-1)          ; 设置堆栈
+                      58             
+A51 MACRO ASSEMBLER  WL007                                                                08/19/2005 20:30:40 PAGE     2
+
+0003 D293             59             SETB    SDA
+0005 D2B3             60             SETB    SCL
+                      61     
+0007 7F5A             62             MOV     R7,#05AH                ; 全部填充0xff
+0009 120000   F       63             LCALL   FILL_BYTE
+                      64     
+000C E4               65             CLR     A
+000D F500     F       66             MOV     ADDR,A
+000F                  67     MAIN_LP1:                               ; 将表格DIS_CODE内数据写入到EEPROM
+                      68     
+000F E500     F       69             MOV     A,ADDR
+0011 900000   F       70             MOV     DPTR,#DIS_CODE
+0014 93               71             MOVC    A,@A+DPTR               ; 查表
+                      72             
+0015 FD               73             MOV     R5,A                    ; 数据到R5      
+0016 AF00     F       74             MOV     R7,ADDR                 ; 地址到R7
+0018 120000   F       75             LCALL   WRITE_BYTE
+                      76     
+001B 0500     F       77             INC     ADDR                    ; 地址加1
+001D E500     F       78             MOV     A,ADDR
+001F C3               79             CLR     C
+0020 9408             80             SUBB    A,#08H                  ; 共8字节，判断是否完成
+0022 40EB             81             JC      MAIN_LP1                ; 
+                      82             
+0024 E4               83             CLR     A                       ; 
+0025 F500     F       84             MOV     ADDR,A                  ; 
+0027                  85     MAIN_LP2:                               ; 循环读取AT24C02内容，并输出到P0口
+0027 AF00     F       86             MOV     R7,ADDR                 ; 地址到R7
+0029 120000   F       87             LCALL   READ_RANDOM
+002C 8F80             88             MOV     P0,R7                   ; 将读取的数据传送到P0
+                      89             
+002E 0500     F       90             INC     ADDR                    ; 地址加1
+0030 530007   F       91             ANL     ADDR,#07H               ; 循环读取范围为0x00～0x07
+                      92             
+0033 7FFA             93             MOV     R7,#0FAH                ; delay
+0035 120000   F       94             LCALL   DELAYMS
+                      95             
+0038 80ED             96             SJMP    MAIN_LP2
+                      97     ; END OF MAIN
+                      98     
+                      99     ;===============================================================================
+----                 100             RSEG  CODE_SEG
+003A                 101     START:
+                     102     ; 开始位
+                     103     ; 传入参数： 无
+                     104     ; 返回值：无
+                     105     
+003A D293            106             SETB    SDA
+003C D2B3            107             SETB    SCL
+003E 00              108             NOP 
+003F 00              109             NOP  
+0040 C293            110             CLR     SDA
+0042 00              111             NOP
+0043 00              112             NOP     
+0044 00              113             NOP     
+0045 00              114             NOP     
+0046 C2B3            115             CLR     SCL
+0048 22              116             RET     
+                     117     ; END OF START
+                     118     
+                     119     ;===============================================================================
+                     120     
+----                 121             RSEG  CODE_SEG
+0049                 122     STOP:
+                     123     ; 停止位
+                     124     ; 传入参数： 无
+A51 MACRO ASSEMBLER  WL007                                                                08/19/2005 20:30:40 PAGE     3
+
+                     125     ; 返回值：无
+                     126     
+0049 C293            127             CLR     SDA
+004B 00              128             NOP     
+004C 00              129             NOP     
+004D D2B3            130             SETB    SCL
+004F 00              131             NOP     
+0050 00              132             NOP     
+0051 00              133             NOP     
+0052 00              134             NOP     
+0053 D293            135             SETB    SDA
+0055 22              136             RET     
+                     137     ; END OF STOP
+                     138     
+                     139     ;===============================================================================
+----                 140             RSEG  CODE_SEG
+0056                 141     SHIN:
+                     142     ; 从AT24Cxx移入数据到MCU
+                     143     ; 传入参数： 无
+                     144     ; 返回值：R7 --- 移出的数据
+                     145     
+                     146             USING   0
+0056 E4              147             CLR     A
+0057 FE              148             MOV     R6,A
+0058                 149     SHIN_LP:
+0058 D2B3            150             SETB    SCL
+005A EF              151             MOV     A,R7
+005B 25E0            152             ADD     A,ACC
+005D FF              153             MOV     R7,A
+005E A293            154             MOV     C,SDA
+0060 E4              155             CLR     A
+0061 33              156             RLC     A
+0062 4207            157             ORL     AR7,A
+0064 C2B3            158             CLR     SCL
+0066 0E              159             INC     R6
+0067 BE08EE          160             CJNE    R6,#08H,SHIN_LP         ; 共8位，判断是否完成
+                     161             
+006A 22              162             RET     
+                     163     ; END OF SHIN
+                     164     
+                     165     ;===============================================================================
+----                 166             RSEG  CODE_SEG
+006B                 167     SHOUT:
+                     168     ; 从MCU移出数据到AT24Cxx
+                     169     ; 传入参数： R7 --- 要移出的数据
+                     170     ; 返回值：C --- AT24Cxx的应答位
+                     171     
+                     172             USING   0
+                     173     
+006B E4              174             CLR     A
+006C FE              175             MOV     R6,A
+006D                 176     SHOUT_LP:                               ; 循环移入8个位
+006D EF              177             MOV     A,R7
+006E 33              178             RLC     A
+006F 9293            179             MOV     SDA,C
+0071 00              180             NOP     
+0072 D2B3            181             SETB    SCL
+0074 00              182             NOP     
+0075 00              183             NOP     
+0076 C2B3            184             CLR     SCL
+0078 EF              185             MOV     A,R7
+0079 25E0            186             ADD     A,ACC
+007B FF              187             MOV     R7,A
+007C 0E              188             INC     R6
+007D BE08ED          189             CJNE    R6,#08H,SHOUT_LP        ; 共8位，判断是否完成
+                     190             
+A51 MACRO ASSEMBLER  WL007                                                                08/19/2005 20:30:40 PAGE     4
+
+0080 D293            191             SETB    SDA                     ; 读取应答
+0082 00              192             NOP     
+0083 00              193             NOP     
+0084 D2B3            194             SETB    SCL
+0086 00              195             NOP     
+0087 00              196             NOP     
+0088 00              197             NOP     
+0089 00              198             NOP     
+008A A293            199             MOV     C,SDA                   ; 保存应答位到C
+008C C2B3            200             CLR     SCL
+008E 22              201             RET     
+                     202     ; END OF SHOUT
+                     203     
+                     204     ;===============================================================================
+----                 205             RSEG  CODE_SEG  
+008F                 206     WRITE_BYTE:
+                     207     ; 在指定地址写入数据
+                     208     ; 传入参数： R7 --- 写入数据的地址
+                     209     ; 传入参数： R5 --- 要写入的数据
+                     210     ; 返回值：无
+                     211     
+                     212             USING   0
+                     213     
+008F AC07            214             MOV     R4,AR7
+0091 120000   F      215             LCALL   START
+                     216             
+0094 7FA0            217             MOV     R7,#OP_WRITE            ; 写入器件地址和写命令
+0096 120000   F      218             LCALL   SHOUT
+                     219             
+0099 AF04            220             MOV     R7,AR4                  ; 地址
+009B 120000   F      221             LCALL   SHOUT
+                     222             
+009E AF05            223             MOV     R7,AR5                  ; 数据
+00A0 120000   F      224             LCALL   SHOUT
+                     225             
+00A3 120000   F      226             LCALL   STOP
+                     227     
+00A6 7F0A            228             MOV     R7,#10                  ; 写入周期, 延时10ms
+00A8 020000   F      229             LJMP    DELAYMS
+                     230             
+                     231     ; END OF WRITE_BYTE
+                     232     
+                     233     ;===============================================================================
+----                 234             RSEG  CODE_SEG
+00AB                 235     FILL_BYTE:
+                     236     ; 填充数据到EEPROM内
+                     237     ; 传入参数： R7 --- 要填充的数据
+                     238     ; 返回值：无
+                     239     
+                     240             USING   0
+                     241             
+00AB 8F00     F      242             MOV     TMP3,R7
+                     243     
+00AD E4              244             CLR     A
+00AE F500     F      245             MOV     TMP2,A
+00B0                 246     FILL_LP:
+00B0 AD00     F      247             MOV     R5,TMP3
+00B2 AF00     F      248             MOV     R7,TMP2
+00B4 120000   F      249             LCALL   WRITE_BYTE
+                     250     
+00B7 0500     F      251             INC     TMP2
+00B9 E500     F      252             MOV     A,TMP2
+00BB C3              253             CLR     C
+00BC 947F            254             SUBB    A,#07FH
+00BE 40F0            255             JC      FILL_LP
+                     256             
+A51 MACRO ASSEMBLER  WL007                                                                08/19/2005 20:30:40 PAGE     5
+
+                     257     ; END OF FILL_BYTE
+                     258     
+                     259     ;===============================================================================
+----                 260             RSEG  CODE_SEG
+00C0                 261     READ_CURRENT:
+                     262     ; 在当前地址读取
+                     263     ; 传入参数：无 
+                     264     ; 返回值：R7 --- 读出的数据
+                     265     
+                     266             USING   0
+00C0 120000   F      267             LCALL   START
+                     268     
+00C3 7FA1            269             MOV     R7,#OP_READ             ; 写入器件地址和读取命令
+00C5 120000   F      270             LCALL   SHOUT
+                     271             
+00C8 120000   F      272             LCALL   SHIN                    ; 读取数据，保存在R7
+                     273     
+00CB 120000   F      274             LCALL   STOP
+                     275     
+00CE 22              276             RET     
+                     277     ; END OF read_current
+                     278     
+                     279     ;===============================================================================
+----                 280             RSEG  CODE_SEG
+00CF                 281     READ_RANDOM:
+                     282     ; 在指定地址读取
+                     283     ; 传入参数：R7 --- 地址 
+                     284     ; 返回值：R7 --- 读出的数据
+                     285             
+                     286             USING   0
+00CF AD07            287             MOV     R5,AR7                  ; 暂存地址
+                     288     
+00D1 120000   F      289             LCALL   START
+                     290     
+00D4 7FA0            291             MOV     R7,#OP_WRITE            ; 写入器件地址和写入命令
+00D6 120000   F      292             LCALL   SHOUT
+                     293     
+00D9 AF05            294             MOV     R7,AR5                  ; 写入地址
+00DB 120000   F      295             LCALL   SHOUT
+                     296     
+00DE 120000   F      297             LCALL   READ_CURRENT            ; 在当前地址读取
+                     298     
+00E1 22              299             RET     
+                     300     ; END OF READ_RANDOM
+                     301     
+                     302     ;===============================================================================
+                     303     
+----                 304             RSEG  CODE_SEG
+00E2                 305     DELAYMS:
+                     306     ; 延时子程序
+                     307     ; 传入参数：R7 --- 延时值(MS) 
+                     308     ; 返回值：无
+                     309     
+00E2 EF              310             MOV     A,R7
+00E3 6009            311             JZ      END_DLYMS       
+00E5                 312     DLY_LP1:
+00E5 7EB9            313             MOV     R6,#185
+00E7                 314     DLY_LP2:
+00E7 00              315             NOP
+00E8 00              316             NOP
+00E9 00              317             NOP
+00EA DEFB            318             DJNZ    R6,DLY_LP2
+00EC DFF7            319             DJNZ    R7,DLY_LP1
+                     320     
+00EE                 321     END_DLYMS:
+00EE 22              322             RET 
+A51 MACRO ASSEMBLER  WL007                                                                08/19/2005 20:30:40 PAGE     6
+
+                     323             
+                     324     ; END OF DELAYMS
+                     325     
+                     326     ;===============================================================================
+----                 327             RSEG  CODE_SEG
+00EF                 328     DIS_CODE:
+                     329     ; 写入到AT24C02的数据串
+                     330     
+00EF 7E              331             DB      07EH
+00F0 BD              332             DB      0BDH
+00F1 DB              333             DB      0DBH
+00F2 E7              334             DB      0E7H
+00F3 DB              335             DB      0DBH
+00F4 BD              336             DB      0BDH
+00F5 7E              337             DB      07EH
+00F6 FF              338             DB      0FFH
+                     339     
+                     340     
+                     341             END
+A51 MACRO ASSEMBLER  WL007                                                                08/19/2005 20:30:40 PAGE     7
+
+SYMBOL TABLE LISTING
+------ ----- -------
+
+
+N A M E             T Y P E  V A L U E   ATTRIBUTES
+
+ACC. . . . . . . .  D ADDR   00E0H   A   
+ADDR . . . . . . .  D ADDR   0000H   R   SEG=DATA_SEG
+AR4. . . . . . . .  D ADDR   0004H   A   
+AR5. . . . . . . .  D ADDR   0005H   A   
+AR7. . . . . . . .  D ADDR   0007H   A   
+CODE_SEG . . . . .  C SEG    00F7H       REL=UNIT
+DATA_SEG . . . . .  D SEG    0003H       REL=UNIT
+DELAYMS. . . . . .  C ADDR   00E2H   R   SEG=CODE_SEG
+DIS_CODE . . . . .  C ADDR   00EFH   R   SEG=CODE_SEG
+DLY_LP1. . . . . .  C ADDR   00E5H   R   SEG=CODE_SEG
+DLY_LP2. . . . . .  C ADDR   00E7H   R   SEG=CODE_SEG
+END_DLYMS. . . . .  C ADDR   00EEH   R   SEG=CODE_SEG
+FILL_BYTE. . . . .  C ADDR   00ABH   R   SEG=CODE_SEG
+FILL_LP. . . . . .  C ADDR   00B0H   R   SEG=CODE_SEG
+MAIN . . . . . . .  C ADDR   0000H   R   SEG=CODE_SEG
+MAIN_LP1 . . . . .  C ADDR   000FH   R   SEG=CODE_SEG
+MAIN_LP2 . . . . .  C ADDR   0027H   R   SEG=CODE_SEG
+MAX_ADDR . . . . .  N NUMB   007FH   A   
+OP_READ. . . . . .  N NUMB   00A1H   A   
+OP_WRITE . . . . .  N NUMB   00A0H   A   
+P0 . . . . . . . .  D ADDR   0080H   A   
+P1 . . . . . . . .  D ADDR   0090H   A   
+P3 . . . . . . . .  D ADDR   00B0H   A   
+READ_CURRENT . . .  C ADDR   00C0H   R   SEG=CODE_SEG
+READ_RANDOM. . . .  C ADDR   00CFH   R   SEG=CODE_SEG
+SCL. . . . . . . .  B ADDR   00B0H.3 A   
+SDA. . . . . . . .  B ADDR   0090H.3 A   
+SHIN . . . . . . .  C ADDR   0056H   R   SEG=CODE_SEG
+SHIN_LP. . . . . .  C ADDR   0058H   R   SEG=CODE_SEG
+SHOUT. . . . . . .  C ADDR   006BH   R   SEG=CODE_SEG
+SHOUT_LP . . . . .  C ADDR   006DH   R   SEG=CODE_SEG
+SP . . . . . . . .  D ADDR   0081H   A   
+STACK. . . . . . .  I ADDR   0000H   R   SEG=STACK_SEG
+STACK_SEG. . . . .  I SEG    0014H       REL=UNIT
+START. . . . . . .  C ADDR   003AH   R   SEG=CODE_SEG
+STOP . . . . . . .  C ADDR   0049H   R   SEG=CODE_SEG
+TMP2 . . . . . . .  D ADDR   0001H   R   SEG=DATA_SEG
+TMP3 . . . . . . .  D ADDR   0002H   R   SEG=DATA_SEG
+WL007. . . . . . .  N NUMB   -----       
+WRITE_BYTE . . . .  C ADDR   008FH   R   SEG=CODE_SEG
+
+
+REGISTER BANK(S) USED: 0 
+
+
+ASSEMBLY COMPLETE.  0 WARNING(S), 0 ERROR(S)

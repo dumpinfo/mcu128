@@ -1,0 +1,165 @@
+                        .module demo.c
+                        .area text(rom, con, rel)
+ 0000                   .dbfile D:\AVR\demo\demo.c
+ 0000                   .dbfunc e delay _delay fV
+ 0000           ;              i -> R16
+ 0000           ;              j -> R18
+                        .even
+ 0000           _delay::
+ 0000                   .dbline -1
+ 0000                   .dbline 27
+ 0000           ; ///////////////////////////////////////////////////////
+ 0000           ; //
+ 0000           ; //          DEMO
+ 0000           ; //
+ 0000           ; // MCU: ATmega16   
+ 0000           ; // RST:       外部RST
+ 0000           ; // BOD: BOD功能允许，电平4V
+ 0000           ; // BOOTRST: 复位后从0地址执行
+ 0000           ; // OCDEN JTAGEN SP1EN CKOPT EESAVE BOOTSZ1 BOOTSZ0 BOOTRST
+ 0000           ; //   1      0         0         1      0      0       0       1       
+ 0000           ; // 时钟源: 内部RC 8M     
+ 0000           ; // BODLEVEL BODEN SUT1 SUT0 CKSEL3 CKSEL2 CKSEL1 CKSEL0
+ 0000           ; //     0      0    0     0    0       1     0       0
+ 0000           ; // 时钟源: 外部晶振   
+ 0000           ; // BODLEVEL BODEN SUT1 SUT0 CKSEL3 CKSEL2 CKSEL1 CKSEL0
+ 0000           ; //     0      0    0     1    1       1     1       1                  
+ 0000           ; //注: 1 - 未编程（检查框不打钩） 
+ 0000           ; //////////////////////////////////////////////////////                 
+ 0000           ; #include <iom16v.h>
+ 0000           ; 
+ 0000           ; typedef  unsigned char uchar;
+ 0000           ; typedef  unsigned int  uint;
+ 0000           ; typedef  unsigned long ulong;
+ 0000           ; 
+ 0000           ; uchar i;
+ 0000           ; 
+ 0000           ; void delay(void) {
+ 0000                   .dbline 29
+ 0000 0027              clr R16
+ 0002 0EC0              xjmp L5
+ 0004           L2:
+ 0004                   .dbline 29
+ 0004           ;        uchar i,j;
+ 0004           ;        for (i=0;i<255;i++) {
+ 0004                   .dbline 30
+ 0004 2227              clr R18
+ 0006 09C0              xjmp L9
+ 0008           L6:
+ 0008                   .dbline 30
+ 0008                   .dbline 31
+ 0008 0000              NOP
+ 000A                   .dbline 32
+ 000A 0000              NOP
+ 000C                   .dbline 33
+ 000C 0000              NOP
+ 000E                   .dbline 34
+ 000E 0000              NOP
+ 0010                   .dbline 35
+ 0010 0000              NOP
+ 0012                   .dbline 36
+ 0012 0000              NOP
+ 0014                   .dbline 37
+ 0014 0000              NOP
+ 0016                   .dbline 38
+ 0016 0000              NOP
+ 0018                   .dbline 39
+ 0018           L7:
+ 0018                   .dbline 30
+ 0018 2395              inc R18
+ 001A           L9:
+ 001A                   .dbline 30
+ 001A 2F3F              cpi R18,255
+ 001C A8F3              brlo L6
+ 001E                   .dbline 40
+ 001E           L3:
+ 001E                   .dbline 29
+ 001E 0395              inc R16
+ 0020           L5:
+ 0020                   .dbline 29
+ 0020 0F3F              cpi R16,255
+ 0022 80F3              brlo L2
+ 0024                   .dbline -2
+ 0024           L1:
+ 0024                   .dbline 0 ; func end
+ 0024 0895              ret
+ 0026                   .dbsym r i 16 c
+ 0026                   .dbsym r j 18 c
+ 0026                   .dbend
+ 0026                   .dbfunc e main _main fV
+                        .even
+ 0026           _main::
+ 0026                   .dbline -1
+ 0026                   .dbline 42
+ 0026           ;                for (j=0;j<255;j++) {
+ 0026           ;                        asm("NOP");
+ 0026           ;                        asm("NOP");
+ 0026           ;                        asm("NOP");
+ 0026           ;                        asm("NOP");
+ 0026           ;                        asm("NOP");
+ 0026           ;                        asm("NOP");
+ 0026           ;                        asm("NOP");
+ 0026           ;                        asm("NOP");
+ 0026           ;               }
+ 0026           ;        }
+ 0026           ; }
+ 0026           ; void main(void){
+ 0026                   .dbline 44
+ 0026           ;        
+ 0026           ;        DDRA=0xff;                      //A口为输出口          
+ 0026 8FEF              ldi R24,255
+ 0028 8ABB              out 0x1a,R24
+ 002A                   .dbline 45
+ 002A           ;        PORTA=0xff;             //A口全部输出1
+ 002A 8BBB              out 0x1b,R24
+ 002C 1AC0              xjmp L12
+ 002E           L11:
+ 002E                   .dbline 47
+ 002E           ; 
+ 002E           ;        while(1){
+ 002E                   .dbline 48
+ 002E 2224              clr R2
+ 0030 20920000          sts _i,R2
+ 0034 12C0              xjmp L17
+ 0036           L14:
+ 0036                   .dbline 48
+ 0036                   .dbline 49
+ 0036 8FEF              ldi R24,255
+ 0038 8BBB              out 0x1b,R24
+ 003A                   .dbline 50
+ 003A 10910000          lds R17,_i
+ 003E 01E0              ldi R16,1
+ 0040 0E940000          xcall lsl8
+ 0044 202E              mov R2,R16
+ 0046 2094              com R2
+ 0048 3BB2              in R3,0x1b
+ 004A 3220              and R3,R2
+ 004C 3BBA              out 0x1b,R3
+ 004E                   .dbline 51
+ 004E D8DF              xcall _delay
+ 0050                   .dbline 52
+ 0050           L15:
+ 0050                   .dbline 48
+ 0050 80910000          lds R24,_i
+ 0054 8F5F              subi R24,255    ; addi 1
+ 0056 80930000          sts _i,R24
+ 005A           L17:
+ 005A                   .dbline 48
+ 005A 80910000          lds R24,_i
+ 005E 8830              cpi R24,8
+ 0060 50F3              brlo L14
+ 0062                   .dbline 53
+ 0062           L12:
+ 0062                   .dbline 47
+ 0062 E5CF              xjmp L11
+ 0064           X0:
+ 0064                   .dbline -2
+ 0064           L10:
+ 0064                   .dbline 0 ; func end
+ 0064 0895              ret
+ 0066                   .dbend
+                        .area bss(ram, con, rel)
+ 0000                   .dbfile D:\AVR\demo\demo.c
+ 0000           _i::
+ 0000                   .blkb 1
+ 0001                   .dbsym e i _i c

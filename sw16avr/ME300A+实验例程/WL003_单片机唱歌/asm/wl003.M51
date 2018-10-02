@@ -1,0 +1,99 @@
+BL51 BANKED LINKER/LOCATER V5.11                                                        02/04/2005  14:23:49  PAGE 1
+
+
+BL51 BANKED LINKER/LOCATER V5.11, INVOKED BY:
+C:\KEIL\C51\BIN\BL51.EXE wl003.obj TO wl003 CODE (0X0000-0X0FFF)
+
+
+INPUT MODULES INCLUDED:
+  wl003.obj (WL003)
+
+
+LINK MAP OF MODULE:  wl003 (WL003)
+
+
+            TYPE    BASE      LENGTH    RELOCATION   SEGMENT NAME
+            -----------------------------------------------------
+
+            * * * * * * *   D A T A   M E M O R Y   * * * * * * *
+            REG     0000H     0008H     ABSOLUTE     "REG BANK 0"
+
+            * * * * * * *   C O D E   M E M O R Y   * * * * * * *
+            CODE    0000H     0113H     ABSOLUTE     
+
+
+
+SYMBOL TABLE OF MODULE:  wl003 (WL003)
+
+  VALUE           TYPE          NAME
+  ----------------------------------
+
+  -------         MODULE        WL003
+  C:007EH         SYMBOL        DELAY_T
+  C:003FH         SYMBOL        DL1
+  C:0021H         SYMBOL        EIGHTH
+  C:001BH         SYMBOL        KEEP
+  C:0004H         SYMBOL        NEXT
+  C:002DH         SYMBOL        NEXTCYC
+  D:00B0H         SYMBOL        P3
+  C:001CH         SYMBOL        REPEAT
+  C:003BH         SYMBOL        SDELAY
+  C:0015H         SYMBOL        SONG
+  C:0032H         SYMBOL        SOUND
+  B:00B0H.7       SYMBOL        SPK
+  C:0002H         SYMBOL        START
+  C:0045H         SYMBOL        S_PARA
+  C:00B7H         SYMBOL        TABLE
+  C:003DH         SYMBOL        XL2
+  C:0000H         LINE#         21
+  C:0002H         LINE#         24
+  C:0004H         LINE#         26
+  C:0005H         LINE#         27
+  C:0008H         LINE#         28
+  C:0009H         LINE#         29
+  C:000BH         LINE#         30
+  C:000CH         LINE#         31
+  C:000DH         LINE#         32
+  C:000EH         LINE#         33
+  C:000FH         LINE#         34
+  C:0010H         LINE#         35
+  C:0012H         LINE#         36
+  C:0013H         LINE#         37
+BL51 BANKED LINKER/LOCATER V5.11                                                      02/04/2005  14:23:49  PAGE 2
+
+
+  C:0015H         LINE#         43
+  C:0016H         LINE#         44
+  C:0017H         LINE#         45
+  C:0019H         LINE#         46
+  C:001BH         LINE#         48
+  C:001CH         LINE#         50
+  C:001EH         LINE#         51
+  C:0020H         LINE#         52
+  C:0021H         LINE#         57
+  C:0022H         LINE#         58
+  C:0025H         LINE#         59
+  C:0026H         LINE#         60
+  C:0027H         LINE#         61
+  C:0028H         LINE#         62
+  C:002BH         LINE#         63
+  C:002CH         LINE#         64
+  C:002DH         LINE#         66
+  C:002FH         LINE#         67
+  C:0031H         LINE#         68
+  C:0032H         LINE#         73
+  C:0034H         LINE#         74
+  C:0036H         LINE#         75
+  C:0038H         LINE#         76
+  C:003AH         LINE#         77
+  C:003BH         LINE#         82
+  C:003CH         LINE#         83
+  C:003DH         LINE#         85
+  C:003FH         LINE#         87
+  C:0040H         LINE#         88
+  C:0042H         LINE#         89
+  C:0044H         LINE#         90
+  -------         ENDMOD        WL003
+
+Program Size: data=8.0 xdata=0 code=275
+LINK/LOCATE RUN COMPLETE.  0 WARNING(S),  0 ERROR(S)

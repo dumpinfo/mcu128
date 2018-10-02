@@ -1,0 +1,21 @@
+<html>
+<body>
+<pre>
+<h1>µVision2 Build Log</h1>
+<h2>Project:</h2>
+E:\study\schip\SNOW2002\C51\SNOW.uv2
+Project File Date:  01/01/2005
+
+<h2>Output:</h2>
+Build target 'Target 1'
+compiling SNOW.C...
+linking...
+Program Size: data=11.0 xdata=0 code=824
+creating hex file from "SNOW"...
+"SNOW" - 0 Error(s), 0 Warning(s).
+Build target 'Target 1'
+compiling SNOW.C...
+linking...
+Program Size: data=11.0 xdata=0 code=824
+creating hex file from "SNOW"...
+"SNOW" - 0 Error(s), 0 Warning(s).

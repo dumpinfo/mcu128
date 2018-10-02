@@ -1,0 +1,109 @@
+XL
+H 4 areas 8 global symbols
+M main.c
+A text size 78 flags 0
+dbfile E:\新建文件夹\例程\m16\步进驱动\main.c
+dbfunc e port_init 0 fV
+dbline FFFFFFFF 0
+dbline 15 0
+dbline 16 0
+dbline 17 4
+dbline 18 8
+dbline 19 A
+dbline 1A C
+dbline 1B E
+dbline 1C 10
+dbline 1D 12
+dbline FFFFFFFE 14
+dbline 0 14
+dbfunc e timer0_init 16 fV
+dbline FFFFFFFF 16
+dbline 25 16
+dbline 26 16
+dbline 27 1A
+dbline 28 1E
+dbline 29 22
+dbline FFFFFFFE 26
+dbline 0 26
+dbfunc e timer0_ovf_isr 28 fV
+dbline FFFFFFFF 30
+dbline 2E 30
+dbline 2F 30
+dbline 43 34
+dbline 44 3C
+dbline 44 3C
+dbline 45 42
+dbline 46 44
+dbline 47 46
+dbline 49 48
+dbline 49 48
+dbline 4A 4E
+dbline 4B 50
+dbline 4C 52
+dbline FFFFFFFE 52
+dbline 0 5A
+dbfunc e init_devices 5C fV
+dbline FFFFFFFF 5C
+dbline 51 5C
+dbline 53 5C
+dbline 54 5E
+dbline 55 60
+dbline 57 62
+dbline 58 66
+dbline 59 68
+dbline 5A 6C
+dbline FFFFFFFE 6E
+dbline 0 6E
+dbfunc e main 70 fV
+dbline FFFFFFFF 70
+dbline 60 70
+dbline 61 70
+dbline 62 72
+dbline 63 74
+dbline FFFFFFFE 76
+dbline 0 76
+S _main Def0070
+S _timer0_ovf_isr Def0028
+S _port_init Def0000
+S _init_devices Def005C
+S _timer0_init Def0016
+A data size 4 flags 20
+dbfile E:\新建文件夹\例程\m16\步进驱动\main.c
+dbsym e data 0 i
+dbsym e choose 2 c
+dbsym e key 3 c
+S _key Def0003
+S _choose Def0002
+S _data Def0000
+A idata size 4 flags 0
+A vector size 28 flags C
+T 00 00 00 00
+R 00 00 02 00
+T 02 00 00
+R 00 00 02 00
+T 03 00 00
+R 00 00 02 00
+T 00 00 22 24 2B BA 8F EF 8A BB 28 BA 27 BA 25 BA
+R 00 00 00 00
+T 0E 00 24 BA 22 BA 21 BA 08 95
+R 00 00 00 00
+T 16 00 22 24 23 BE 8D E3 82 BF 83 EC 8C BF 85 E0
+R 00 00 00 00
+T 24 00 83 BF 08 95
+R 00 00 00 00
+T 24 00 0C 94 14 00
+R 00 00 03 00 10 04 00 00
+T 28 00 2A 92 8A 93 2F B6 2A 92 8D E3 82 BF 20 90
+R 00 00 00 00
+T 36 00 03 00 22 20 31 F4 81 E0 80 93 03 00 D8 9A
+R 00 00 00 00 00 02 01 00 00 0C 01 00
+T 44 00 DB 9A 05 C0 22 24 20 92 03 00 D8 98 DB 98
+R 00 00 00 00 00 0A 01 00
+T 52 00 29 90 2F BE 89 91 29 90 18 95
+R 00 00 00 00
+T 5C 00 F8 94 D0 DF DA DF 22 24 25 BE 2B BE 81 E0
+R 00 00 00 00
+T 6A 00 89 BF 78 94 08 95
+R 00 00 00 00
+T 70 00 F5 DF D9 98 C4 98 08 95
+R 00 00 00 00

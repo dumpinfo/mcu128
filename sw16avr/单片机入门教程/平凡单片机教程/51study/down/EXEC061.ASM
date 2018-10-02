@@ -1,0 +1,16 @@
+ORG	0000H
+AJMP	START
+ORG	30H
+START:
+	MOV	P1,#0FFH  ;关所 灯
+	MOV	TMOD,#00000001B ;定时/计数器0工作于方式1
+	MOV	TH0,#15H	
+	MOV	TL0,#0A0H  ;即数5536
+	SETB	TR0	       ;定时/计数器0开始运行
+LOOP:JBC	TF0,NEXT ;如果TF0等于1，则清TF0并转NEXT处
+	AJMP	LOOP           ;否则跳转到LOOP处运行
+NEXT:CPL	P1.0
+	MOV	TH0,#15H
+	MOV	TL0,#9FH;重置定时/计数器的初值
+	AJMP	LOOP
+	END

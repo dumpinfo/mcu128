@@ -1,0 +1,112 @@
+BL51 BANKED LINKER/LOCATER V5.03                                                        02/12/2004  11:44:44  PAGE 1
+
+
+BL51 BANKED LINKER/LOCATER V5.03, INVOKED BY:
+D:\KEIL\C51\BIN\BL51.EXE wl004.obj TO wl004 CODE (0X0000-0X0FFF)
+
+
+MEMORY MODEL: SMALL
+
+
+INPUT MODULES INCLUDED:
+  wl004.obj (WL004)
+  D:\KEIL\C51\LIB\C51S.LIB (?C_STARTUP)
+
+
+LINK MAP OF MODULE:  wl004 (WL004)
+
+
+            TYPE    BASE      LENGTH    RELOCATION   SEGMENT NAME
+            -----------------------------------------------------
+
+            * * * * * * *   D A T A   M E M O R Y   * * * * * * *
+            REG     0000H     0008H     ABSOLUTE     "REG BANK 0"
+            DATA    0008H     000AH     UNIT         ?DT?WL004
+            IDATA   0012H     0001H     UNIT         ?STACK
+
+            * * * * * * *   C O D E   M E M O R Y   * * * * * * *
+            CODE    0000H     0003H     ABSOLUTE     
+                    0003H     0008H                  *** GAP ***
+            CODE    000BH     0003H     ABSOLUTE     
+            CODE    000EH     0046H     UNIT         ?PR?MAIN?WL004
+            CODE    0054H     003AH     UNIT         ?PR?TIMER0?WL004
+            CODE    008EH     000CH     UNIT         ?C_C51STARTUP
+            CODE    009AH     000BH     UNIT         ?CO?WL004
+
+
+
+OVERLAY MAP OF MODULE:   wl004 (WL004)
+
+
+SEGMENT
+  +--> CALLED SEGMENT
+---------------------
+?C_C51STARTUP
+  +--> ?PR?MAIN?WL004
+
+?PR?MAIN?WL004
+  +--> ?CO?WL004
+
+
+
+SYMBOL TABLE OF MODULE:  wl004 (WL004)
+
+  VALUE           TYPE          NAME
+  ----------------------------------
+
+  -------         MODULE        WL004
+  C:0000H         SYMBOL        _ICE_DUMMY_
+  D:0080H         PUBLIC        P0
+  D:00A0H         PUBLIC        P2
+  D:00A8H         PUBLIC        IE
+BL51 BANKED LINKER/LOCATER V5.03                                                      02/12/2004  11:44:44  PAGE 2
+
+
+  C:000EH         PUBLIC        main
+  D:0089H         PUBLIC        TMOD
+  D:0008H         PUBLIC        dis_digit
+  D:0009H         PUBLIC        dis_index
+  C:009AH         PUBLIC        dis_code
+  D:008CH         PUBLIC        TH0
+  D:008AH         PUBLIC        TL0
+  C:0054H         PUBLIC        timer0
+  B:0088H.4       PUBLIC        TR0
+  D:000AH         PUBLIC        dis_buf
+  -------         PROC          MAIN
+  C:000EH         LINE#         27
+  C:000EH         LINE#         28
+  C:000EH         LINE#         29
+  C:0011H         LINE#         30
+  C:0014H         LINE#         31
+  C:0017H         LINE#         32
+  C:001AH         LINE#         33
+  C:001DH         LINE#         34
+  C:0020H         LINE#         36
+  C:0027H         LINE#         37
+  C:002CH         LINE#         38
+  C:0031H         LINE#         39
+  C:0036H         LINE#         40
+  C:003BH         LINE#         41
+  C:0040H         LINE#         42
+  C:0045H         LINE#         43
+  C:004AH         LINE#         45
+  C:004DH         LINE#         46
+  C:0050H         LINE#         48
+  C:0052H         LINE#         49
+  -------         ENDPROC       MAIN
+  -------         PROC          TIMER0
+  C:0054H         LINE#         53
+  C:005FH         LINE#         60
+  C:0062H         LINE#         61
+  C:0065H         LINE#         63
+  C:0068H         LINE#         64
+  C:0070H         LINE#         65
+  C:0073H         LINE#         67
+  C:0080H         LINE#         68
+  C:0082H         LINE#         70
+  C:0085H         LINE#         71
+  -------         ENDPROC       TIMER0
+  -------         ENDMOD        WL004
+
+Program Size: data=19.0 xdata=0 code=157
+LINK/LOCATE RUN COMPLETE.  0 WARNING(S),  0 ERROR(S)

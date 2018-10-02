@@ -1,0 +1,238 @@
+C51 COMPILER V7.20   WL006                                                                 03/29/2005 15:45:49 PAGE 1   
+
+
+C51 COMPILER V7.20, COMPILATION OF MODULE WL006
+OBJECT MODULE PLACED IN wl006.OBJ
+COMPILER INVOKED BY: C:\Keil\C51\BIN\C51.EXE wl006.c BROWSE DEBUG OBJECTEXTEND
+
+line level    source
+
+   1          /*******************************************************************************
+   2          *  标题:  伟纳电子ME300B单片机开发系统演示程序 -  AT93C46读写演示程序          *
+   3          *  文件:  wl006.C                                                              *
+   4          *  日期:  2004-1-5                                                             *
+   5          *  版本:  1.0                                                                  *
+   6          *  作者:  伟纳电子 - Freeman                                                   *
+   7          *  邮箱:  freeman@willar.com                                                   *
+   8          *  网站： http://www.willar.com                                                *
+   9          ********************************************************************************
+  10          *  描述:                                                                       *
+  11          *         AT93C46读写演示程序                                                  *
+  12          *         从地址0x00开始写入数据“www.willar.com”， 然后再读出                  *
+  13          *                                                                              *
+  14          *         注意：在擦除或写入数据之前，必须先写入EWEN指令，93C46右边的JP7跳线   *
+  15          *               用于8位和16位模式选择，默认为8位模式                           *
+  16          *                                                                              *
+  17          *                                                                              *
+  18          ********************************************************************************
+  19          * 【版权】 Copyright(C)伟纳电子 www.willar.com  All Rights Reserved            *
+  20          * 【声明】 此程序仅用于学习与参考，引用请注明版权和作者信息！                  *
+  21          *******************************************************************************/
+  22          
+  23          
+  24          #include <reg51.h>
+  25          #include <intrins.h>
+  26          
+  27          //define OP code
+  28          #define OP_EWEN_H               0x00    // 00                                   write enable
+  29          #define OP_EWEN_L               0x60    // 11X XXXX                             write enable
+  30          #define OP_EWDS_H               0x00    // 00                                   disable
+  31          #define OP_EWDS_L               0x00    // 00X XXXX                             disable
+  32          
+  33          #define OP_WRITE_H              0x40    // 01 A6-A0                             write data
+  34          #define OP_READ_H               0x80    // 10 A6-A0                             read data
+  35          
+  36          #define OP_ERASE_H              0xc0    // 11 A6-A0                             erase a word
+  37          
+  38          #define OP_ERAL_H               0x00    // 00                                   erase all
+  39          #define OP_ERAL_L               0x40    // 10X XXXX                             erase all
+  40          #define OP_WRAL_H               0x00    // 00                                   write all       
+  41          #define OP_WRAL_L               0x20    // 01X XXXX                             write all       
+  42          
+  43          
+  44          //define pin
+  45          sbit CS = P3^4;
+  46          sbit SK = P3^3;
+  47          sbit DI = P3^5;
+  48          sbit DO = P3^6;
+  49          
+  50          unsigned char code dis_code[] = {0x7e,0xbd,0xdb,0xe7,0xdb,0xbd,0x7e,0xff};
+  51          
+  52          void start();
+  53          void ewen();
+  54          void ewds();
+  55          void erase();
+C51 COMPILER V7.20   WL006                                                                 03/29/2005 15:45:49 PAGE 2   
+
+  56          void write(unsigned char addr, unsigned char indata);
+  57          unsigned char read(unsigned char addr);
+  58          void inop(unsigned char op_h, unsigned char op_l);
+  59          void shin(unsigned char indata);
+  60          unsigned char shout();
+  61          void delayms(unsigned char ms);
+  62          
+  63          main()
+  64          {
+  65   1              unsigned char i;
+  66   1              CS = 0;                         //初始化端口
+  67   1              SK = 0;
+  68   1              DI = 1;
+  69   1              DO = 1;
+  70   1      
+  71   1              ewen();                         // 使能写入操作
+  72   1              erase();                        // 擦除全部内容
+  73   1                      
+  74   1              for(i = 0 ; i < 8; i++)         //写入显示代码到AT93C46
+  75   1              {
+  76   2                      write(i, dis_code[i]);
+  77   2              }
+  78   1              
+  79   1              ewds();                         // 禁止写入操作 
+  80   1              
+  81   1              i = 0;
+  82   1              while(1)
+  83   1              {
+  84   2                      P0 = read(i);   // 循环读取AT93C46内容，并输出到P0口
+  85   2                      i++;
+  86   2                      i &= 0x07;              // 循环读取地址为0x00～0x07
+  87   2                      delayms(250);           
+  88   2              }
+  89   1      }
+  90          
+  91          
+  92          void write(unsigned char addr, unsigned char indata)
+  93          // 写入数据indata到addr
+  94          {
+  95   1              inop(OP_WRITE_H, addr); // 写入指令和地址
+  96   1                      shin(indata);
+  97   1                      CS = 0;
+  98   1              delayms(10);                    // Twp
+  99   1      }
+ 100          
+ 101          unsigned char read(unsigned char addr)
+ 102          // 读取addr处的数据
+ 103          {
+ 104   1              unsigned char out_data;
+ 105   1              inop(OP_READ_H, addr);  // 写入指令和地址
+ 106   1              out_data = shout();
+ 107   1              CS = 0; 
+ 108   1              return out_data;
+ 109   1      }
+ 110          
+ 111          void ewen()
+ 112          {
+ 113   1              inop(OP_EWEN_H, OP_EWEN_L);
+ 114   1              CS= 0;
+ 115   1      }
+ 116          
+ 117          void ewds()
+C51 COMPILER V7.20   WL006                                                                 03/29/2005 15:45:49 PAGE 3   
+
+ 118          {
+ 119   1              inop(OP_EWDS_H, OP_EWDS_L);
+ 120   1              CS= 0;  
+ 121   1      }
+ 122          
+ 123          void erase()
+ 124          {
+ 125   1              inop(OP_ERAL_H, OP_ERAL_L);
+ 126   1              delayms(30);
+ 127   1              CS = 0;
+ 128   1      }
+ 129          
+ 130          
+ 131          void inop(unsigned char op_h, unsigned char op_l)
+ 132          //移入op_h的高两位和op_l的低7位
+ 133          //op_h为指令码的高两位
+ 134          //op_l为指令码的低7位或7位地址
+ 135          {       
+ 136   1      
+ 137   1              unsigned char i;
+ 138   1              
+ 139   1              SK = 0;         // 开始位
+ 140   1              DI = 1;
+ 141   1              CS = 1;
+ 142   1              _nop_();
+ 143   1              _nop_(); 
+ 144   1              SK = 1;
+ 145   1              _nop_();
+ 146   1              _nop_();
+ 147   1              SK = 0;         // 开始位结束
+ 148   1      
+ 149   1              DI = (bit)(op_h & 0x80);        // 先移入指令码高位
+ 150   1              SK = 1;
+ 151   1              op_h <<= 1;
+ 152   1              SK = 0;         
+ 153   1      
+ 154   1              DI = (bit)(op_h & 0x80);        // 移入指令码次高位
+ 155   1              SK = 1;
+ 156   1              _nop_();
+ 157   1              _nop_();        
+ 158   1              SK = 0;
+ 159   1              
+ 160   1              // 移入余下的指令码或地址数据
+ 161   1              op_l <<= 1;     
+ 162   1              for(i = 0; i < 7; i++)          
+ 163   1              {
+ 164   2                      DI = (bit)(op_l & 0x80);        // 先移入高位
+ 165   2                      SK = 1;
+ 166   2                      op_l <<= 1;
+ 167   2                      SK = 0;         
+ 168   2              }
+ 169   1              DI = 1;         
+ 170   1      }
+ 171          
+ 172          
+ 173          void shin(unsigned char indata)         
+ 174          //移入数据
+ 175          {
+ 176   1              unsigned char i;
+ 177   1              for(i = 0; i < 8; i++)
+ 178   1              {
+ 179   2                      DI = (bit)(indata & 0x80);      // 先移入高位
+C51 COMPILER V7.20   WL006                                                                 03/29/2005 15:45:49 PAGE 4   
+
+ 180   2                      SK = 1;
+ 181   2                      indata <<= 1;
+ 182   2                      SK = 0;         
+ 183   2              }
+ 184   1              DI = 1;
+ 185   1      }
+ 186          
+ 187          unsigned char shout(void)                       
+ 188          // 移出数据
+ 189          {
+ 190   1              unsigned char i, out_data;
+ 191   1              for(i = 0; i < 8; i++)
+ 192   1              {
+ 193   2                      SK = 1;
+ 194   2                      out_data <<= 1;
+ 195   2                      SK = 0;
+ 196   2                      out_data |= (unsigned char)DO;
+ 197   2              }
+ 198   1              return(out_data);
+ 199   1      }
+ 200          
+ 201          void delayms(unsigned char ms)  
+ 202          // 延时子程序
+ 203          {                                               
+ 204   1              unsigned char i;
+ 205   1              while(ms--)
+ 206   1              {
+ 207   2                      for(i = 0; i < 120; i++);
+ 208   2              }
+ 209   1      }
+
+
+MODULE INFORMATION:   STATIC OVERLAYABLE
+   CODE SIZE        =    250    ----
+   CONSTANT SIZE    =      8    ----
+   XDATA SIZE       =   ----    ----
+   PDATA SIZE       =   ----    ----
+   DATA SIZE        =   ----       2
+   IDATA SIZE       =   ----    ----
+   BIT SIZE         =   ----    ----
+END OF MODULE INFORMATION.
+
+
+C51 COMPILATION COMPLETE.  0 WARNING(S),  0 ERROR(S)

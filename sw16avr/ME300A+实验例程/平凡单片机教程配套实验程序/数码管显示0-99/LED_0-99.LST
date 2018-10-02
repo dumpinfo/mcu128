@@ -1,0 +1,90 @@
+A51 MACRO ASSEMBLER  LED_0_99                                                             02/19/2005 16:38:40 PAGE     1
+
+
+MACRO ASSEMBLER A51 V7.10
+OBJECT MODULE PLACED IN LED_0-99.OBJ
+ASSEMBLER INVOKED BY: C:\Keil\C51\BIN\A51.EXE LED_0-99.asm SET(SMALL) DEBUG EP
+
+LOC  OBJ            LINE     SOURCE
+
+  0020                 1     A_BIT EQU 20H                  ;个位数存放处
+  0021                 2     B_BIT EQU 21H                  ;十位数存放处
+  0022                 3     TEMP EQU 22H                   ;计数器寄存处
+0000 752200            4     STAR: MOV TEMP,#0              ;初始化计数器
+0003 1112              5     STLOP: ACALL DISPLAY           ;
+0005 0522              6            INC TEMP
+0007 E522              7            MOV A,TEMP
+0009 B46403            8            CJNE A,#100,NEXT        ;等于100重来
+000C 752200            9            MOV TEMP,#0
+                      10     
+000F 020003           11         NEXT: LJMP STLOP
+                      12     
+                      13     ;显示子程序
+0012 E522             14     DISPLAY: MOV A,TEMP
+0014 75F00A           15              MOV B,#10
+0017 84               16              DIV AB 
+0018 F521             17              MOV B_BIT,A
+001A 85F020           18              MOV A_BIT,B
+001D 900048           19              MOV DPTR,#NUMTAB
+0020 7804             20              MOV R0,#4
+                      21     
+0022 7905             22     DPL1:   MOV R1,#5
+0024 E520             23     DPLOP:  MOV A,A_BIT
+0026 93               24             MOVC A,@A+DPTR
+0027 F580             25             MOV P0,A
+0029 C2A7             26             CLR P2.7
+002B 113F             27             ACALL D1MS
+002D D2A7             28             SETB P2.7
+002F E521             29             MOV A,B_BIT
+0031 93               30             MOVC A,@A+DPTR
+0032 F580             31             MOV P0,A
+0034 C2A6             32             CLR P2.6
+0036 113F             33             ACALL D1MS
+0038 D2A6             34             SETB P2.6
+003A D9E8             35             DJNZ R1,DPLOP
+003C D8E4             36             DJNZ R0,DPL1
+003E 22               37             RET
+003F                  38     D1MS:
+003F 7F32             39        MOV R7,#50
+0041 7E14             40        D1: MOV R6,#20
+0043 DEFE             41        D2: DJNZ R6,$
+0045 DFFA             42            DJNZ R7,D1
+0047 22               43            RET
+                      44     
+0048                  45     NUMTAB:
+0048 C0F9A4B0         46     DB 0C0H,0F9H,0A4H,0B0H,99H,92H,82H,0F8H,80H,90H   ;013456789字形码
+004C 999282F8                
+0050 8090                    
+                      47     
+                      48     
+                      49     END
+A51 MACRO ASSEMBLER  LED_0_99                                                             02/19/2005 16:38:40 PAGE     2
+
+SYMBOL TABLE LISTING
+------ ----- -------
+
+
+N A M E             T Y P E  V A L U E   ATTRIBUTES
+
+A_BIT. . . . . . .  N NUMB   0020H   A   
+B. . . . . . . . .  D ADDR   00F0H   A   
+B_BIT. . . . . . .  N NUMB   0021H   A   
+D1 . . . . . . . .  C ADDR   0041H   A   
+D1MS . . . . . . .  C ADDR   003FH   A   
+D2 . . . . . . . .  C ADDR   0043H   A   
+DISPLAY. . . . . .  C ADDR   0012H   A   
+DPL1 . . . . . . .  C ADDR   0022H   A   
+DPLOP. . . . . . .  C ADDR   0024H   A   
+NEXT . . . . . . .  C ADDR   000FH   A   
+NUMTAB . . . . . .  C ADDR   0048H   A   
+P0 . . . . . . . .  D ADDR   0080H   A   
+P2 . . . . . . . .  D ADDR   00A0H   A   
+STAR . . . . . . .  C ADDR   0000H   A   
+STLOP. . . . . . .  C ADDR   0003H   A   
+TEMP . . . . . . .  N NUMB   0022H   A   
+
+
+REGISTER BANK(S) USED: 0 
+
+
+ASSEMBLY COMPLETE.  0 WARNING(S), 0 ERROR(S)

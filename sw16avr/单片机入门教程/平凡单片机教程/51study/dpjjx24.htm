@@ -1,0 +1,190 @@
+<html>
+<head>
+<title>串行口中断应用实验</title>
+<meta http-equiv="Content-Type" content="text/html; charset=gb2312">
+</head>
+
+<body bgcolor="#FFFFFF" background="../back.jpg">
+<p style="line-height: 150%; margin-top: 0; margin-bottom: 0"> 
+<font size="2" face="宋体">串行口应用编程实例</font></p>
+<p style="line-height: 150%; margin-top: 0; margin-bottom: 0">
+<font size="2" face="宋体">1． 串口方式0应用编程 8051单片机串行口方式0为移位寄存器方式，外接一个串入并出的移位寄存器，就可以扩展一个并行口。</font></p> 
+<p style="line-height: 150%; margin-top: 0; margin-bottom: 0">
+<font size="2" face="宋体"><img src="dpjjx246.gif" width="368" height="214"></font></p>
+<p style="line-height: 150%; margin-top: 0; margin-bottom: 0">
+<font size="2" face="宋体">例：用8051串行口外接CD4094扩展8位并行输出口，如图所示，8位并行口的各位都接一个发光二极管，要求发光管呈流水灯状态。 串行口方式0的数据传送可采用中断方式，也可采用查询方式，无论哪种方式，都要借助于TI或RI标志。串行发送时，可以靠TI置位（发完一帧数据后）引起中断申请，在中断服务程序中发送下一帧数据，或者通过查询TI的状态，只要TI为0就继续查询，TI为1就结束查询，发送下一帧数据。在串行接收时，则由RI引起中断或对RI查询来确定何时接收下一帧数据。无论采用什么方式，在开始通讯之前，都要先对控制寄存器SCON进行初始化。在方式0中将，将00H送SCON就可以了。 
+</font>  
+</p>
+<p style="line-height: 150%; margin-top: 0; margin-bottom: 0">
+<font size="2" face="宋体">ORG 2000H </font> </p> 
+<p style="line-height: 150%; margin-top: 0; margin-bottom: 0">
+<font size="2" face="宋体">START: MOV SCON,#00H ;置串行口工作方式0 </font> </p> 
+<p style="line-height: 150%; margin-top: 0; margin-bottom: 0">
+<font size="2" face="宋体">MOV A,#80H ;最高位灯先亮 </font> </p> 
+<p style="line-height: 150%; margin-top: 0; margin-bottom: 0">
+<font size="2" face="宋体">CLR P1.0 ;关闭并行输出（避象传输过程中，各LED的"暗红"现象）</font></p> 
+<p style="line-height: 150%; margin-top: 0; margin-bottom: 0"> 
+<font size="2" face="宋体">OUT0: MOV SBUF,A ;开始串行输出 </font> </p> 
+<p style="line-height: 150%; margin-top: 0; margin-bottom: 0">
+<font size="2" face="宋体">OUT1: JNB TI,OUT1 ;输出完否 </font> </p> 
+<p style="line-height: 150%; margin-top: 0; margin-bottom: 0">
+<font size="2" face="宋体">CLR TI ;完了，清TI标志，以备下次发送 </font> </p> 
+<p style="line-height: 150%; margin-top: 0; margin-bottom: 0">
+<font size="2" face="宋体">SETB P1.0 ;打开并行口输出 </font> </p> 
+<p style="line-height: 150%; margin-top: 0; margin-bottom: 0">
+<font size="2" face="宋体">ACALL DELAY ;延时一段时间 </font> </p> 
+<p style="line-height: 150%; margin-top: 0; margin-bottom: 0">
+<font size="2" face="宋体">RR A ;循环右移 </font> </p> 
+<p style="line-height: 150%; margin-top: 0; margin-bottom: 0">
+<font size="2" face="宋体">CLR P1.0 ;关闭并行输出 </font> </p> 
+<p style="line-height: 150%; margin-top: 0; margin-bottom: 0">
+<font size="2" face="宋体">JMP OUT0 ;循环 </font> </p> 
+<p style="line-height: 150%; margin-top: 0; margin-bottom: 0">
+<font size="2" face="宋体">说明：DELAY延时子程序可以用前面我们讲P1口流水灯时用的延时子程序，这里就不给出了。 </font> </p>
+<p style="line-height: 150%; margin-top: 0; margin-bottom: 0">
+<font size="2" face="宋体">二、异步通讯</font></p>
+<p align="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">
+<font size=2 face="宋体">org 
+0000H</font></p>
+<p align="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">
+<font size="2" face="宋体">&#9;AJMP&#9;START</font></p>
+<p align="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">
+<font size="2" face="宋体">&#9;ORG&#9;30H</font></p>
+<p align="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">
+<font size="2" face="宋体">START: </font></p>
+<p align="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">
+<font size="2" face="宋体"> mov SP,#5fh ;</font></p>
+<p align="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">
+<font size=2 face="宋体"> mov TMOD,#20h ;T1: </font>
+<font face="宋体" lang="ZH-CN" size=2>工作模式</font><font size=2 face="宋体">2</font></p>
+<p align="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">
+<font size="2" face="宋体"> mov PCON,#80h ;SMOD=1</font></p>
+<p align="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">
+<font size=2 face="宋体"> mov TH1,#0FDH ;</font><font face="宋体" lang="ZH-CN" size=2>初始化波特率（参见表）</font></p>
+<p align="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">
+<font size="2" face="宋体"> mov SCON,#50h ;Standard UART settings</font></p> 
+<p align="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">
+<font size=2 face="宋体"> MOV R0,#0AAH &#9;;</font><font face="宋体" lang="ZH-CN" size=2>准备送出的数</font></p>
+<p align="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0"> 
+<font size=2 face="宋体">SETB 
+REN ;</font><font face="宋体" lang="ZH-CN" size=2>允许接收</font></p>
+<p align="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">
+<font size=2 face="宋体"> SETB TR1 ;T1</font><font face="宋体" lang="ZH-CN" size=2>开始工作</font></p>
+<p align="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">
+<font size="2" face="宋体">WAIT:</font></p>
+<p align="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">
+<font size="2" face="宋体"> MOV A,R0 &#9;&#9;</font></p>
+<p align="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">
+<font size="2" face="宋体"> CPL A</font></p>
+<p align="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">
+<font size="2" face="宋体"> MOV R0,A</font></p>
+<p align="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">
+<font size="2" face="宋体"> MOV SBUF,A</font></p>
+<p align="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">
+<font size="2" face="宋体"> LCALL DELAY </font></p>
+<p align="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">
+<font size=2 face="宋体"> JBC TI,WAIT1 ;</font><font face="宋体" lang="ZH-CN" size=2>如果</font><font size=2 face="宋体">TI</font><font face="宋体" lang="ZH-CN" size=2>等于</font><font size=2 face="宋体">1</font><font face="宋体" lang="ZH-CN" size=2>，则清</font><font size=2 face="宋体">TI</font><font face="宋体" lang="ZH-CN" size=2>并转</font><font size=2 face="宋体">WAIT1</font></p>
+<p align="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">
+<font size="2" face="宋体"> AJMP WAIT</font></p>
+<p align="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">
+<font size=2 face="宋体">WAIT1: JBC RI,READ &#9;&#9;;</font><font face="宋体" lang="ZH-CN" size=2>如果</font><font size=2 face="宋体">RI</font><font face="宋体" lang="ZH-CN" size=2>等于</font><font size=2 face="宋体">1</font><font face="宋体" lang="ZH-CN" size=2>，则清</font><font size=2 face="宋体">RI</font><font face="宋体" lang="ZH-CN" size=2>并转</font><font size=2 face="宋体">READ</font></p>
+<p align="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">
+<font size="2" face="宋体"> AJMP WAIT1</font></p>
+<p align="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">
+<font size="2" face="宋体">READ:</font></p>
+<p align="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">
+<font size=2 face="宋体"> MOV A,SBUF &#9;&#9;;</font><font face="宋体" lang="ZH-CN" size=2>将取得的数送</font><font size=2 face="宋体">P1</font><font face="宋体" lang="ZH-CN" size=2>口</font></p>
+<p align="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">
+<font size="2" face="宋体"> MOV P1,A</font></p> 
+<p align="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">
+<font size="2" face="宋体"> LJMP WAIT</font></p>
+<p align="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">
+<font size=2 face="宋体">DELAY:&#9;&#9;&#9;&#9;;</font><font face="宋体" lang="ZH-CN" size=2>延时子程序</font></p>
+<p align="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">
+<font size="2" face="宋体"> MOV R7,#0ffH</font></p> 
+<p align="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">
+<font size="2" face="宋体"> DJNZ R7,$</font></p>
+<p align="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">
+<font size="2" face="宋体"> RET</font></p>
+<p align="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">
+<font size="2" face="宋体"> END</font></p>
+<p style="line-height: 150%; margin-top: 0; margin-bottom: 0">
+<font size="2" face="宋体">将程序编译通过，写入芯片，插入实验板，用通读电缆将实验板与主机的串口相连就可以实验了。上面的程序功能很简单，就是每隔一段时间向主机轮流送数55H和AAH，并把主机送去的数送到P1口。可以在PC端用串口精灵来做实验。串口精灵在我主页上有下载。运行串口精灵后，按主界面上的“设置参数”按钮进入“设置参数”对话框，按下面的参数进行设置。注意，我的机器上用的是串口2，如果你不是串口2，请自行更改串口的设置。</font></p>
+<p style="line-height: 150%; margin-top: 0; margin-bottom: 0">
+<font size="2" face="宋体"><img src="dpjjx245.gif" width="417" height="220"></font></p>
+<p style="line-height: 150%; margin-top: 0; margin-bottom: 0">
+<font size="2" face="宋体">设置完后，按确定返回主界面，注意右边有一个下拉列表，应当选中“按16进制”。然后按“开始发送”、“开始接收”就可以了。按此设置，实验板上应当有两只灯亮，6只灯灭。大家可以自行更改设置参数中的发送字符如55，00，FF等等，观察灯的亮灭，并分析原因，也可以在主界面上更改下拉列表中的“按16进制”为“按10进制”或“按ASCII字符”来观察现象，并仔细分析。这对于大家理解16进制、10进制、ASCII字符也是很有好处的。程序本身很简单，又有注释，这里就不详加说明了。</font></p>
+<p align="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">
+<font size="2" face="宋体">三、上述程序的中断版本</font></p>
+<p align="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">
+<font size="2" face="宋体">org 0000H</font></p> 
+<p align="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">
+<font size="2" face="宋体">&#9;AJMP&#9;START</font></p>
+<p align="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">
+<font size="2" face="宋体"> org 0023h</font></p>
+<p align="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">
+<font size="2" face="宋体"> AJMP SERIAL ;</font></p>
+<p align="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">
+<font size="2" face="宋体">&#9;ORG&#9;30H</font></p>
+<p align="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">
+<font size="2" face="宋体">START: </font></p>
+<p align="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">
+<font size="2" face="宋体"> mov SP,#5fh ;</font></p>
+<p align="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">
+<font size=2 face="宋体"> mov TMOD,#20h ;T1: </font>
+<font face="宋体" lang="ZH-CN" size=2>工作模式</font><font size=2 face="宋体">2</font></p>
+<p align="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">
+<font size="2" face="宋体"> mov PCON,#80h ;SMOD=1</font></p>
+<p align="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">
+<font size=2 face="宋体"> mov TH1,#0FDH ;</font><font face="宋体" lang="ZH-CN" size=2>初始化波特率（参见表）</font></p>
+<p align="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">
+<font size="2" face="宋体"> mov SCON,#50h ;Standard UART settings</font></p> 
+<p align="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">
+<font size=2 face="宋体"> MOV R0,#0AAH &#9;;</font><font face="宋体" lang="ZH-CN" size=2>准备送出的数</font></p>
+<p align="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0"> 
+<font size=2 face="宋体">SETB 
+REN ;</font><font face="宋体" lang="ZH-CN" size=2>允许接收</font></p>
+<p align="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">
+<font size=2 face="宋体"> SETB TR1 ;T1</font><font face="宋体" lang="ZH-CN" size=2>开始工作</font></p>
+<p align="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">
+<font size=2 face="宋体"> SETB EA ;</font><font face="宋体" lang="ZH-CN" size=2>开总中断</font></p>
+<p align="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">
+<font size=2 face="宋体"> SETB ES ;</font><font face="宋体" lang="ZH-CN" size=2>开串口中断</font></p>
+<p align="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">
+<font size="2" face="宋体"> SJMP $ </font></p> 
+<p align="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">
+<font size="2" face="宋体">SERIAL:</font></p>
+<p align="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">
+<font size="2" face="宋体"> MOV A,SBUF &#9;&#9;</font></p>
+<p align="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">
+<font size="2" face="宋体"> MOV P1,A</font></p>
+<p align="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">
+<font size="2" face="宋体"> CLR RI &#9;&#9;</font></p>
+<p align="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">
+<font size="2" face="宋体"> RETI</font></p>
+<p align="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">
+<font size="2" face="宋体"> END</font></p>
+<p style="line-height: 150%; margin-top: 0; margin-bottom: 0">
+<font size="2" face="宋体">本程序没有写入发送程序，大家可以自行添加。</font></p>
+<p style="line-height: 150%; margin-top: 0; margin-bottom: 0">
+<font size="2" face="宋体">&nbsp; </font> </p>
+<p style="line-height: 150%; margin-top: 0; margin-bottom: 0">
+<font size="2" face="宋体">　 </font> </p>
+
+<p style="line-height: 150%; margin-top: 0; margin-bottom: 0">　</p>
+
+          <hr width="550" SIZE="1" align="center">     
+
+<p align="center" style="line-height: 150%; margin-top: 0; margin-bottom: 0">
+<font size="2" face="宋体">伟纳电子 COPYRIGHT &reg; 2000 
+<a href="http://www.willar.com">http://www.willar.com</a><br>                                           
+&nbsp; e-mail:<a href="mailto:support@willar.com">support@willar.com</a> </font>      
+ 
+<p align="center" style="line-height: 150%; margin-top: 0; margin-bottom: 0">
+<font size="2" face="宋体">　 </font>
+<p style="line-height: 150%; margin-top: 0; margin-bottom: 0">
+<font size="2" face="宋体">　 </font> </p>
+<p style="line-height: 150%; margin-top: 0; margin-bottom: 0">
+<font size="2" face="宋体">　 </font> </p>
+</body>
+</html>

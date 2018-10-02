@@ -1,0 +1,349 @@
+__text_start:
+__start:
+    0046 EFCF      LDI	R28,0xFF
+    0047 E1D0      LDI	R29,0x10
+    0048 BFCD      OUT	0x3D,R28
+    0049 BFDE      OUT	0x3E,R29
+    004A 51C0      SUBI	R28,0x10
+    004B 40D0      SBCI	R29,0
+    004C EA0A      LDI	R16,0xAA
+    004D 8308      STD	Y+0,R16
+    004E 2400      CLR	R0
+    004F E0E0      LDI	R30,0
+    0050 E0F1      LDI	R31,1
+    0051 E011      LDI	R17,1
+    0052 30E4      CPI	R30,4
+    0053 07F1      CPC	R31,R17
+    0054 F011      BEQ	0x0057
+    0055 9201      ST	R0,Z+
+    0056 CFFB      RJMP	0x0052
+    0057 8300      STD	Z+0,R16
+    0058 E8EC      LDI	R30,0x8C
+    0059 E0F0      LDI	R31,0
+    005A E0A0      LDI	R26,0
+    005B E0B1      LDI	R27,1
+    005C E010      LDI	R17,0
+    005D 38EC      CPI	R30,0x8C
+    005E 07F1      CPC	R31,R17
+    005F F021      BEQ	0x0064
+    0060 95C8      LPM
+    0061 9631      ADIW	R30,1
+    0062 920D      ST	R0,X+
+    0063 CFF9      RJMP	0x005D
+    0064 940E0122  CALL	_main
+_exit:
+    0066 CFFF      RJMP	_exit
+_i2c_Write:
+  i                    --> R20
+  RomAddress           --> R18
+  Wdata                --> R16
+    0067 940E0142  CALL	push_gset1
+FILE: C:\DOCUME~1\solo\MYDOCU~1\1281\main.c
+(0001) //****************************************************************************** 
+(0002) //源文件 
+(0003) //****************************************************************************** 
+(0004) #include <iom128v.h> 
+(0005) #include <macros.h> 
+(0006) #include"TWI.H" 
+(0007) #define rd_device_add 0xA1 
+(0008) #define wr_device_add 0xA0  
+(0009)   
+(0010) unsigned char  data1,data2,data3,data4;
+(0011) 
+(0012) 
+(0013) unsigned char i2c_Write(unsigned char Wdata,unsigned char RomAddress)  
+(0014) { 
+(0015)      unsigned char i; 
+(0016)           Start();//I2C启动 
+    0069 EA84      LDI	R24,0xA4
+    006A 93800074  STS	0x74,R24
+(0017)           Wait(); 
+    006C 90200074  LDS	R2,0x74
+    006E FE27      SBRS	R2,7
+    006F CFFC      RJMP	0x006C
+(0018)           if(TestAck()!=START) return 1;//ACK 
+    0070 91800071  LDS	R24,0x71
+    0072 7F88      ANDI	R24,0xF8
+    0073 3088      CPI	R24,0x8
+    0074 F011      BEQ	0x0077
+    0075 E001      LDI	R16,1
+    0076 C03A      RJMP	0x00B1
+(0019) 		  
+(0020)           Write8Bit(wr_device_add);//写I2C从器件地址和写方式 
+    0077 EA80      LDI	R24,0xA0
+    0078 93800073  STS	0x73,R24
+    007A E884      LDI	R24,0x84
+    007B 93800074  STS	0x74,R24
+(0021)           Wait(); 
+    007D 90200074  LDS	R2,0x74
+    007F FE27      SBRS	R2,7
+    0080 CFFC      RJMP	0x007D
+(0022)           if(TestAck()!=MT_SLA_ACK) return 1;//ACK 
+    0081 91800071  LDS	R24,0x71
+    0083 7F88      ANDI	R24,0xF8
+    0084 3188      CPI	R24,0x18
+    0085 F011      BEQ	0x0088
+    0086 E001      LDI	R16,1
+    0087 C029      RJMP	0x00B1
+(0023) 		  
+(0024)           Write8Bit(RomAddress);//写24C02的ROM地址 
+    0088 93200073  STS	0x73,R18
+    008A E884      LDI	R24,0x84
+    008B 93800074  STS	0x74,R24
+(0025)           Wait(); 
+    008D 90200074  LDS	R2,0x74
+    008F FE27      SBRS	R2,7
+    0090 CFFC      RJMP	0x008D
+(0026)           if(TestAck()!=MT_DATA_ACK) return 1;//ACK 
+    0091 91800071  LDS	R24,0x71
+    0093 7F88      ANDI	R24,0xF8
+    0094 3288      CPI	R24,0x28
+    0095 F011      BEQ	0x0098
+    0096 E001      LDI	R16,1
+    0097 C019      RJMP	0x00B1
+(0027) 		  
+(0028)           Write8Bit(Wdata);//写数据到24C02的ROM 
+    0098 93000073  STS	0x73,R16
+    009A E884      LDI	R24,0x84
+    009B 93800074  STS	0x74,R24
+(0029)           Wait(); 
+    009D 90200074  LDS	R2,0x74
+    009F FE27      SBRS	R2,7
+    00A0 CFFC      RJMP	0x009D
+(0030)           if(TestAck()!=MT_DATA_ACK) return 1;//ACK
+    00A1 91800071  LDS	R24,0x71
+    00A3 7F88      ANDI	R24,0xF8
+    00A4 3288      CPI	R24,0x28
+    00A5 F011      BEQ	0x00A8
+    00A6 E001      LDI	R16,1
+    00A7 C009      RJMP	0x00B1
+(0031) 		           
+(0032)           Stop();//I2C停止 
+    00A8 E984      LDI	R24,0x94
+    00A9 93800074  STS	0x74,R24
+(0033)             for(i=0;i<250;i++); 
+    00AB 2744      CLR	R20
+    00AC C001      RJMP	0x00AE
+    00AD 9543      INC	R20
+    00AE 3F4A      CPI	R20,0xFA
+    00AF F3E8      BCS	0x00AD
+(0034)           return 0; 
+    00B0 2700      CLR	R16
+    00B1 940E0145  CALL	pop_gset1
+    00B3 9508      RET
+_i2c_Read:
+  temp                 --> R20
+  RomAddress           --> R16
+    00B4 940E0142  CALL	push_gset1
+(0035) } 
+(0036) /****************************************** 
+(0037)                I2C总线读一个字节 
+(0038)                            如果读失败也返回0 
+(0039) *******************************************/ 
+(0040) unsigned char i2c_Read(unsigned char RomAddress)  
+(0041)       { 
+(0042)            unsigned char temp; 
+(0043)            Start();//I2C启动 
+    00B6 EA84      LDI	R24,0xA4
+    00B7 93800074  STS	0x74,R24
+(0044)            Wait(); 
+    00B9 90200074  LDS	R2,0x74
+    00BB FE27      SBRS	R2,7
+    00BC CFFC      RJMP	0x00B9
+(0045)            if (TestAck()!=START) return 0;//ACK  
+    00BD 91800071  LDS	R24,0x71
+    00BF 7F88      ANDI	R24,0xF8
+    00C0 3088      CPI	R24,0x8
+    00C1 F011      BEQ	0x00C4
+    00C2 2700      CLR	R16
+    00C3 C054      RJMP	0x0118
+(0046) 		            
+(0047)            Write8Bit(wr_device_add);//写I2C从器件地址和写方式 
+    00C4 EA80      LDI	R24,0xA0
+    00C5 93800073  STS	0x73,R24
+    00C7 E884      LDI	R24,0x84
+    00C8 93800074  STS	0x74,R24
+(0048)            Wait();  
+    00CA 90200074  LDS	R2,0x74
+    00CC FE27      SBRS	R2,7
+    00CD CFFC      RJMP	0x00CA
+(0049)            if (TestAck()!=MT_SLA_ACK) return 0;//ACK //
+    00CE 91800071  LDS	R24,0x71
+    00D0 7F88      ANDI	R24,0xF8
+    00D1 3188      CPI	R24,0x18
+    00D2 F011      BEQ	0x00D5
+    00D3 2700      CLR	R16
+    00D4 C043      RJMP	0x0118
+(0050) 		   // 
+(0051)            Write8Bit(RomAddress);//写24C02的ROM地址 
+    00D5 93000073  STS	0x73,R16
+    00D7 E884      LDI	R24,0x84
+    00D8 93800074  STS	0x74,R24
+(0052)            Wait(); 
+    00DA 90200074  LDS	R2,0x74
+    00DC FE27      SBRS	R2,7
+    00DD CFFC      RJMP	0x00DA
+(0053)            if (TestAck()!=MT_DATA_ACK) return 0; //?
+    00DE 91800071  LDS	R24,0x71
+    00E0 7F88      ANDI	R24,0xF8
+    00E1 3288      CPI	R24,0x28
+    00E2 F011      BEQ	0x00E5
+    00E3 2700      CLR	R16
+    00E4 C033      RJMP	0x0118
+(0054) 		  //data1=TestAck();
+(0055)            Start();//I2C重新启动 
+    00E5 EA84      LDI	R24,0xA4
+    00E6 93800074  STS	0x74,R24
+(0056)            Wait(); 
+    00E8 90200074  LDS	R2,0x74
+    00EA FE27      SBRS	R2,7
+    00EB CFFC      RJMP	0x00E8
+(0057)            if (TestAck()!=RE_START)  return 0; 
+    00EC 91800071  LDS	R24,0x71
+    00EE 7F88      ANDI	R24,0xF8
+    00EF 3180      CPI	R24,0x10
+    00F0 F011      BEQ	0x00F3
+    00F1 2700      CLR	R16
+    00F2 C025      RJMP	0x0118
+(0058) 		   
+(0059)            Write8Bit(rd_device_add);//写I2C从器件地址和读方式 
+    00F3 EA81      LDI	R24,0xA1
+    00F4 93800073  STS	0x73,R24
+    00F6 E884      LDI	R24,0x84
+    00F7 93800074  STS	0x74,R24
+(0060)            Wait(); 
+    00F9 90200074  LDS	R2,0x74
+    00FB FE27      SBRS	R2,7
+    00FC CFFC      RJMP	0x00F9
+(0061)            if(TestAck()!=MR_SLA_ACK)  return 0;//ACK 
+    00FD 91800071  LDS	R24,0x71
+    00FF 7F88      ANDI	R24,0xF8
+    0100 3480      CPI	R24,0x40
+    0101 F011      BEQ	0x0104
+    0102 2700      CLR	R16
+    0103 C014      RJMP	0x0118
+(0062) 		    
+(0063)            Twi();//启动主I2C读方式 
+    0104 E884      LDI	R24,0x84
+    0105 93800074  STS	0x74,R24
+(0064)            Wait(); 
+    0107 90200074  LDS	R2,0x74
+    0109 FE27      SBRS	R2,7
+    010A CFFC      RJMP	0x0107
+(0065)            if(TestAck()!=MR_DATA_NOACK) return 0;//ACK         
+    010B 91800071  LDS	R24,0x71
+    010D 7F88      ANDI	R24,0xF8
+    010E 3588      CPI	R24,0x58
+    010F F011      BEQ	0x0112
+    0110 2700      CLR	R16
+    0111 C006      RJMP	0x0118
+(0066)            temp=TWDR;//读取I2C接收数据 
+    0112 91400073  LDS	R20,0x73
+(0067)        Stop();//I2C停止 
+    0114 E984      LDI	R24,0x94
+    0115 93800074  STS	0x74,R24
+(0068)            return temp; 
+    0117 2F04      MOV	R16,R20
+    0118 940E0145  CALL	pop_gset1
+    011A 9508      RET
+(0069)       } 
+(0070) 
+(0071) 
+(0072)      void i2cini(void) 
+(0073)          { 
+(0074)          TWBR=163; 
+_i2cini:
+    011B EA83      LDI	R24,0xA3
+    011C 93800070  STS	0x70,R24
+(0075)       TWSR=00; 
+    011E 2422      CLR	R2
+    011F 92200071  STS	0x71,R2
+(0076)          } 
+    0121 9508      RET
+(0077) 
+(0078) 
+(0079)           
+(0080) void main(void) 
+(0081) {     
+(0082)      unsigned char i=0Xff,b = 0x0,c = 0x22,j,k; 
+_main:
+  c                    --> R22
+  i                    --> R10
+  b                    --> R20
+  j                    --> R22
+  k                    --> R10
+    0122 EF8F      LDI	R24,0xFF
+    0123 2EA8      MOV	R10,R24
+    0124 2744      CLR	R20
+    0125 E262      LDI	R22,0x22
+(0083)          
+(0084)          DDRC=0xff; 
+    0126 BAA4      OUT	0x14,R10
+(0085) 		 DDRE=0xff;
+    0127 B8A2      OUT	0x02,R10
+(0086)          DDRD=0xff; 
+    0128 BAA1      OUT	0x11,R10
+(0087)          PORTD=0; 
+    0129 2422      CLR	R2
+    012A BA22      OUT	0x12,R2
+(0088)      i2cini(); 
+    012B DFEF      RCALL	_i2cini
+(0089)         // while(1)
+(0090) 		// {         
+(0091)         c = i2c_Write(i,0x03); 
+    012C E023      LDI	R18,3
+    012D 2D0A      MOV	R16,R10
+    012E DF38      RCALL	_i2c_Write
+(0092) 		for(j=0;j<100;j++)
+    012F 2766      CLR	R22
+    0130 C007      RJMP	0x0138
+(0093) 		for(k=0;k<100;k++);
+    0131 24AA      CLR	R10
+    0132 C001      RJMP	0x0134
+    0133 94A3      INC	R10
+    0134 2D8A      MOV	R24,R10
+    0135 3684      CPI	R24,0x64
+    0136 F3E0      BCS	0x0133
+    0137 9563      INC	R22
+    0138 3664      CPI	R22,0x64
+    0139 F3B8      BCS	0x0131
+(0094) 		 
+(0095) 		b = i2c_Read(0x03); 
+    013A E003      LDI	R16,3
+    013B DF78      RCALL	_i2c_Read
+    013C 2F40      MOV	R20,R16
+(0096) 		PORTE = data1;
+    013D 90200103  LDS	R2,_data1
+    013F B823      OUT	0x03,R2
+(0097) 		PORTC = b;
+    0140 BB05      OUT	0x15,R16
+(0098)        //  }   
+(0099) } 
+FILE: <library>
+    0141 9508      RET
+push_gset1:
+    0142 935A      ST	R21,-Y
+    0143 934A      ST	R20,-Y
+    0144 9508      RET
+pop_gset1:
+    0145 E0E1      LDI	R30,1
+pop:
+    0146 9149      LD	R20,Y+
+    0147 9159      LD	R21,Y+
+    0148 FDE0      SBRC	R30,0
+    0149 9508      RET
+    014A 9169      LD	R22,Y+
+    014B 9179      LD	R23,Y+
+    014C FDE1      SBRC	R30,1
+    014D 9508      RET
+    014E 90A9      LD	R10,Y+
+    014F 90B9      LD	R11,Y+
+    0150 FDE2      SBRC	R30,2
+    0151 9508      RET
+    0152 90C9      LD	R12,Y+
+    0153 90D9      LD	R13,Y+
+    0154 FDE3      SBRC	R30,3
+    0155 9508      RET
+    0156 90E9      LD	R14,Y+
+    0157 90F9      LD	R15,Y+
+    0158 9508      RET

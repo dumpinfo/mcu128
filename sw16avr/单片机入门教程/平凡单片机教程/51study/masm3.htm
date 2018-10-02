@@ -1,0 +1,1051 @@
+<html>
+<head>
+<title>汇编指令的格式（伪指令）</title>
+<meta http-equiv="Content-Type" content="text/html; charset=gb2312">
+</head>
+
+<body bgcolor="#CCCCCC">
+<b> 
+<p align="center" style="line-height: 150%; margin-top: 0; margin-bottom: 0">
+<font size="2" face="宋体" lang="ZH-CN">第四节</font><font size="2"><font face="宋体">
+</font><font face="宋体" lang="ZH-CN">伪</font><font face="宋体"> </font>
+<font face="宋体" lang="ZH-CN">指</font><font face="宋体"> </font></font>
+<font size="2" face="宋体" lang="ZH-CN">令</font></p> 
+</b>
+<p align="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">
+<font face="宋体" lang="ZH-CN" size=2>伪指令是对汇编起某种控制作用的特殊命令，其格式与通常的操作指令一样，并可加在汇编程序的任何地方，但它们并不产生机器指令。</font></p>
+<p align="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">
+<font face="宋体" lang="ZH-CN" size=2>许多伪指令要求带参数，这在定义伪指令时由“表达式”域指出，任何数值与表达式匀可以作为参数。</font></p>
+<p align="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">
+<font face="宋体" lang="ZH-CN" size=2>不同汇编程序允许的伪指令并不相同，以下所述的伪指令仅适用于ＭＡＳＭ５１系统，但一些基本的伪指令在大部份汇编程序中都能使用，当使用其它的汇编程序版本时，只要注意一下它们之间的区别就可以了。ＭＡＳＭ５１中可用的伪指令有：</font></p>
+<p align="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">
+<font face="宋体" size=2> ORG </font><font face="宋体" lang="ZH-CN" size=2>设置程序起始地址</font></p> 
+<p align="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">
+<font face="宋体" size=2> END </font><font face="宋体" lang="ZH-CN" size=2>标志源代码结束</font></p> 
+<p align="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">
+<font face="宋体" size=2> EQU </font><font face="宋体" lang="ZH-CN" size=2>定义常数</font></p> 
+<p align="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">
+<font face="宋体" size=2> SET </font><font face="宋体" lang="ZH-CN" size=2>定义整型数</font></p> 
+<p align="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">
+<font face="宋体" size=2> DATA </font><font face="宋体" lang="ZH-CN" size=2>给字节类型符号定值</font></p> 
+<p align="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">
+<font face="宋体" size=2> BYTE </font><font face="宋体" lang="ZH-CN" size=2>给字节类型符号定值</font></p> 
+<p align="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">
+<font face="宋体" size=2> WROD </font><font face="宋体" lang="ZH-CN" size=2>给字类型符号定值</font></p> 
+<p align="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">
+<font face="宋体" size=2> BIT </font><font face="宋体" lang="ZH-CN" size=2>给位地址取名</font></p> 
+<p align="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">
+<font face="宋体" size=2> ALTNAME </font><font face="宋体" lang="ZH-CN" size=2>用自定义名取代保留字</font></p> 
+<p align="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">
+<font face="宋体" size=2> DB </font><font face="宋体" lang="ZH-CN" size=2>给一块连续的存储区装载字节型数据</font></p> 
+<p align="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">
+<font face="宋体" size=2> DW </font><font face="宋体" lang="ZH-CN" size=2>给一块连续的存储区装载字型数据</font></p> 
+<p align="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">
+<font face="宋体" size=2> DS </font><font face="宋体" lang="ZH-CN" size=2>预留一个连续的存储区或装入指定字节。</font></p> 
+<p align="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">
+<font face="宋体" size=2> INCLUDE </font><font face="宋体" lang="ZH-CN" size=2>将一个源文件插入程序中</font></p> 
+<p align="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">
+<font face="宋体" size=2> TITLE </font><font face="宋体" lang="ZH-CN" size=2>列表文件中加入标题行</font></p> 
+<p align="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">
+<font face="宋体" size=2> NOLIST </font><font face="宋体" lang="ZH-CN" size=2>汇编时不产生列表文件</font></p> 
+<p align="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">
+<font face="宋体" size=2> NOCODE </font><font face="宋体" lang="ZH-CN" size=2>条件汇编时，条件为假的不产生清单</font></p> 
+<ol>
+  <b> 
+  <p align="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0"> 
+  <font size="2" face="宋体" lang="ZH-CN">一、</font><font size="2" face="宋体">ORG
+  </font><font face="Arial"> 
+  <p style="line-height: 150%; margin-top: 0; margin-bottom: 0"></p>
+  </font></b> 
+  <p align="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">
+  <font face="宋体" lang="ZH-CN" size=2>伪指令</font><font face="宋体" size=2>ORG</font><font face="宋体" lang="ZH-CN" size=2>用于为在它之后的程序设置地址值，它有一个参数，其格式为：</font></p>
+  <p align="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">
+  <font face="宋体" size=2> ORG </font><font face="宋体" lang="ZH-CN" size=2>表达式</font></p> 
+  <p align="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0"> 
+  <font face="宋体" lang="ZH-CN" size=2>表达式可以是一个具体的数值，也可以包含变量名，如果包含变量名，则必须保证，当第一次遇到这条伪指令时，其中的变量必须已有定义（已有具体的数值），否则，无定义的值将由</font><font face="宋体" size=2>0</font><font face="宋体" lang="ZH-CN" size=2>替换，这将会造成错误。在列表文件中，由</font><font face="宋体" size=2>ORG</font><font face="宋体" lang="ZH-CN" size=2>定义的指令地址会被打印出来。</font></p>
+  <p align="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">
+  <font face="宋体" size=2> ORG</font><font face="宋体" lang="ZH-CN" size=2>指令有什么用途呢？指令被翻译成机器码后，将被存入系统的ＲＯＭ中，一般情况下，机器码总是一个接一个地放在存储器中，但有一些代码，其位置有特殊要求，典型的是五个中断入口，它们必须被放在</font><font face="宋体" size=2>0003H,000BH,0013H,001BH</font><font face="宋体" lang="ZH-CN" size=2>和</font><font face="宋体" size=2>0023H</font><font face="宋体" lang="ZH-CN" size=2>的位置，否则就会出错，如果我们编程时不作特殊处理，让机器代码一个接一个地生成，不能保证这些代码正好处于这些规定的位置，执行就会出错，这时就要用到</font><font face="宋体" size=2>ORG</font><font face="宋体" lang="ZH-CN" size=2>伪指令了。看如下例子：</font></p>
+  <p align="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">
+  <font face="宋体" lang="ZH-CN" size=2>例：</font></p>
+  <i><font face="宋体" size=2> 
+  <p align="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">INT_0 EQU 1000H</p> 
+  <p align="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">TIME_0 EQU 1010H</p>
+  <p align="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">INT_1 EQU 1020H</p>
+  <p align="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">TIME_1 EQU 1030H</p>
+  <p align="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">SERIAL EQU 1040H</p>
+  </font> 
+  <p align="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">
+  <font face="宋体" size=2> AJMP START ;</font><font face="宋体" lang="ZH-CN" size=2>跳转到主程序起始点</font></p>
+  <p align="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">
+  <font face="宋体" size=2> LJMP INT_0 ;</font><font face="宋体" lang="ZH-CN" size=2>外中断</font><font face="宋体" size=2>0</font><font face="宋体" lang="ZH-CN" size=2>处理程序</font></p> 
+  <p align="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">
+  <font face="宋体" size=2> LJMP TIME_0 ;</font><font face="宋体" lang="ZH-CN" size=2>定时中断</font><font face="宋体" size=2>0</font><font face="宋体" lang="ZH-CN" size=2>处理程序</font></p> 
+  <p align="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">
+  <font face="宋体" size=2> LJMP INT_1 ;</font><font face="宋体" lang="ZH-CN" size=2>外中断</font><font face="宋体" size=2>1</font><font face="宋体" lang="ZH-CN" size=2>处理程序</font></p> 
+  <p align="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">
+  <font face="宋体" size=2> LJMP TIME_1 ;</font><font face="宋体" lang="ZH-CN" size=2>定时中断</font><font face="宋体" size=2>1</font><font face="宋体" lang="ZH-CN" size=2>处理程序</font></p> 
+  <p align="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">
+  <font face="宋体" size=2> LJMP SERIAL ;</font><font face="宋体" lang="ZH-CN" size=2>串行口中断程序</font></p> 
+  <font face="宋体" size=2> 
+  <p align="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">START:</p>
+  <p align="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0"> NOP</p>
+  <p align="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0"> END</p>
+  </font></i> 
+  <p align="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">
+  <font face="宋体" lang="ZH-CN" size=2>上面的程序经汇编后列表文件如下</font><font face="宋体" size=2>:</font></p>
+  <font face="Arial" size=3> 
+  <p align="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0"> </p>
+  </font> 
+  <i> 
+  <font face="宋体" size=2> 
+  <p align="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">The Cybernetic Micro Systems 8051 Family Assembler, Version 
+    3.03 Page 1</p>
+  <p align="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0"> 08-26-96</p>
+  </font> 
+  <font face="Arial" size=3> 
+  <p align="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0"></p>
+  </font> 
+  <p align="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">
+  <font size=2 face="宋体"> 
+  　 </font> 
+  </p>
+  <font face="宋体" size=2> 
+  <p align="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0"> 1000 = INT_0 EQU 1000H</p> 
+  <p align="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0"> 1010 = TIME_0 EQU 1010H</p>
+  <p align="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0"> 1020 = INT_1 EQU 1020H</p>
+  <p align="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0"> 1030 = TIME_1 EQU 1030H</p>
+  <p align="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0"> 1040 = SERIAL EQU 1040H</p>
+  </font> 
+  </i> 
+  <p align="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0"><i>
+  <font face="宋体" size=2> 0000 0111 AJMP START ;</font><font face="宋体" lang="ZH-CN" size=2>跳转到主程序起始点</font></i></p>
+  <i> 
+  <p align="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">
+  <font face="宋体" size=2> 0002 021000 LJMP INT_0 ;</font><font face="宋体" lang="ZH-CN" size=2>外中断</font><font face="宋体" size=2>0</font><font face="宋体" lang="ZH-CN" size=2>处理程序</font></p> 
+  <p align="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">
+  <font face="宋体" size=2> 0005 021010 LJMP TIME_0 ;</font><font face="宋体" lang="ZH-CN" size=2>定时中断</font><font face="宋体" size=2>0</font><font face="宋体" lang="ZH-CN" size=2>处理程序</font></p> 
+  <p align="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">
+  <font face="宋体" size=2> 0008 021020 LJMP INT_1 ;</font><font face="宋体" lang="ZH-CN" size=2>外中断</font><font face="宋体" size=2>1</font><font face="宋体" lang="ZH-CN" size=2>处理程序</font></p> 
+  <p align="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">
+  <font face="宋体" size=2> 000B 021030 LJMP TIME_1 ;</font><font face="宋体" lang="ZH-CN" size=2>定时中断</font><font face="宋体" size=2>1</font><font face="宋体" lang="ZH-CN" size=2>处理程序</font></p> 
+  <p align="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">
+  <font face="宋体" size=2> 000E 021040 LJMP SERIAL ;</font><font face="宋体" lang="ZH-CN" size=2>串行口中断程序</font></p> 
+  <font face="宋体" size=2> 
+  <p align="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0"> START:</p>
+  <p align="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0"> 0011 00 NOP</p>
+  <p align="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0"> 0000 END</p>
+  </font> 
+  <font face="Arial" size=3> 
+  <p align="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0"></p>
+  </font> 
+  <font face="宋体" size=2> 
+  <p align="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">The Cybernetic Micro Systems 8051 Family Assembler, Version 
+    3.03 Page 2</p>
+  <p align="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0"> 08-26-96</p>
+  <p align="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0"> ;%T Symbol Name Type Value</p>
+  <p align="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0"> INT_0 . . . . . . . . . . . . . I 1000</p>
+  <p align="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0"> INT_1 . . . . . . . . . . . . . I 1020</p>
+  <p align="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0"> SERIAL. . . . . . . . . . . . . I 1040</p>
+  <p align="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0"> START . . . . . . . . . . . . . L 0011</p>
+  <p align="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0"> TIME_0. . . . . . . . . . . . . I 1010</p>
+  <p align="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0"> TIME_1. . . . . . . . . . . . . I 1030</p>
+  <p align="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0"> ;%Z</p>
+  <p align="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0"> 00 Errors (0000)</p>
+  </font></i> 
+  <p align="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">
+  <font face="宋体" lang="ZH-CN" size=2>由列表文件，可以绘出代码在ＲＯＭ中的映象图如下：</font></p>
+  <table BORDER cellspacing=1 bordercolor="#000000" cellpadding=1 width=451>
+    <tr> 
+      <td width="9%" valign="TOP"> <font face="宋体" lang="ZH-CN" size=2> 
+        <p align="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">代码 
+        </font></td>
+      <td width="8%" valign="TOP"> <font face="宋体" size=2> 
+        <p align="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">01H 
+        </font></td>
+      <td width="9%" valign="TOP"> <font face="宋体" size=2> 
+        <p align="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">11H 
+        </font></td>
+      <td width="9%" valign="TOP"> <font face="宋体" size=2> 
+        <p align="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">02H 
+        </font></td>
+      <td width="8%" valign="TOP"> <font face="宋体" size=2> 
+        <p align="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">10H 
+        </font></td>
+      <td width="8%" valign="TOP"> <font face="宋体" size=2> 
+        <p align="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">00H 
+        </font></td>
+      <td width="8%" valign="TOP"> <font face="宋体" size=2> 
+        <p align="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">02H 
+        </font></td>
+      <td width="8%" valign="TOP"> <font face="宋体" size=2> 
+        <p align="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">10H 
+        </font></td>
+      <td width="8%" valign="TOP"> <font face="宋体" size=2> 
+        <p align="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">10H 
+        </font></td>
+      <td width="8%" valign="TOP"> <font face="宋体" size=2> 
+        <p align="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">02H 
+        </font></td>
+      <td width="8%" valign="TOP"> <font face="宋体" size=2> 
+        <p align="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">10H 
+        </font></td>
+      <td width="8%" valign="TOP"> <font face="宋体" size=2> 
+        <p align="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">20H 
+        </font></td>
+    </tr>
+    <tr> 
+      <td width="9%" valign="TOP"> <font face="宋体" lang="ZH-CN" size=2> 
+        <p align="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">地址 
+        </font></td>
+      <td width="8%" valign="TOP"> <font face="宋体" size=2> 
+        <p align="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">00H 
+        </font></td>
+      <td width="9%" valign="TOP"> <font face="宋体" size=2> 
+        <p align="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">01H 
+        </font></td>
+      <td width="9%" valign="TOP"> <font face="宋体" size=2> 
+        <p align="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">02H 
+        </font></td>
+      <td width="8%" valign="TOP"> <font face="宋体" size=2> 
+        <p align="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">03H 
+        </font></td>
+      <td width="8%" valign="TOP"> <font face="宋体" size=2> 
+        <p align="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">04H 
+        </font></td>
+      <td width="8%" valign="TOP"> <font face="宋体" size=2> 
+        <p align="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">05H 
+        </font></td>
+      <td width="8%" valign="TOP"> <font face="宋体" size=2> 
+        <p align="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">06H 
+        </font></td>
+      <td width="8%" valign="TOP"> <font face="宋体" size=2> 
+        <p align="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">07H 
+        </font></td>
+      <td width="8%" valign="TOP"> <font face="宋体" size=2> 
+        <p align="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">08H 
+        </font></td>
+      <td width="8%" valign="TOP"> <font face="宋体" size=2> 
+        <p align="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">09H 
+        </font></td>
+      <td width="8%" valign="TOP"> <font face="宋体" size=2> 
+        <p align="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">0AH 
+        </font></td>
+    </tr>
+    <tr> 
+      <td width="9%" valign="TOP"> <font face="宋体" lang="ZH-CN" size=2> 
+        <p align="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">代码 
+        </font></td>
+      <td width="8%" valign="TOP"> <font face="宋体" size=2> 
+        <p align="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">02H 
+        </font></td>
+      <td width="9%" valign="TOP"> <font face="宋体" size=2> 
+        <p align="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">10H 
+        </font></td>
+      <td width="9%" valign="TOP"> <font face="宋体" size=2> 
+        <p align="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">30H 
+        </font></td>
+      <td width="8%" valign="TOP"> <font face="宋体" size=2> 
+        <p align="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">02H 
+        </font></td>
+      <td width="8%" valign="TOP"> <font face="宋体" size=2> 
+        <p align="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">10H 
+        </font></td>
+      <td width="8%" valign="TOP"> <font face="宋体" size=2> 
+        <p align="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">40H 
+        </font></td>
+      <td width="8%" valign="TOP"> <font face="宋体" size=2> 
+        <p align="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">00H 
+        </font></td>
+      <td width="8%" valign="TOP">
+      <p style="line-height: 150%; margin-top: 0; margin-bottom: 0">　</td>
+      <td width="8%" valign="TOP">
+      <p style="line-height: 150%; margin-top: 0; margin-bottom: 0">　</td>
+      <td width="8%" valign="TOP">
+      <p style="line-height: 150%; margin-top: 0; margin-bottom: 0">　</td>
+      <td width="8%" valign="TOP">
+      <p style="line-height: 150%; margin-top: 0; margin-bottom: 0">　</td>
+    </tr>
+    <tr> 
+      <td width="9%" valign="TOP"> <font face="宋体" lang="ZH-CN" size=2> 
+        <p align="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">地址 
+        </font></td>
+      <td width="8%" valign="TOP"> <font face="宋体" size=2> 
+        <p align="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">0BH 
+        </font></td>
+      <td width="9%" valign="TOP"> <font face="宋体" size=2> 
+        <p align="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">0CH 
+        </font></td>
+      <td width="9%" valign="TOP"> <font face="宋体" size=2> 
+        <p align="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">0DH 
+        </font></td>
+      <td width="8%" valign="TOP"> <font face="宋体" size=2> 
+        <p align="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">0EH 
+        </font></td>
+      <td width="8%" valign="TOP"> <font face="宋体" size=2> 
+        <p align="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">0FH 
+        </font></td>
+      <td width="8%" valign="TOP"> <font face="宋体" size=2> 
+        <p align="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">10H 
+        </font></td>
+      <td width="8%" valign="TOP"> <font face="宋体" size=2> 
+        <p align="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">11H 
+        </font></td>
+      <td width="8%" valign="TOP"> <font face="宋体" size=2> 
+        <p align="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">12H 
+        </font></td>
+      <td width="8%" valign="TOP"> <font face="宋体" size=2> 
+        <p align="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">13H 
+        </font></td>
+      <td width="8%" valign="TOP"> <font face="宋体" size=2> 
+        <p align="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">14H 
+        </font></td>
+      <td width="8%" valign="TOP"> <font face="宋体" size=2> 
+        <p align="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">15 
+        </font></td>
+    </tr>
+  </table>
+  <p align="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">
+  <font face="宋体" lang="ZH-CN" size=2>由上面的映象图可知</font><font face="宋体" size=2>,</font><font face="宋体" lang="ZH-CN" size=2>在０３Ｈ处的代码为１０Ｈ，而不是我们要的０２Ｈ，所以外断程序ＩＮＴ＿０不能被正确执行，其它各中断程序的情况同样如此，如在０ＢＨ处，本来存放的应当是定时器０中断程序，但按上述的映象图，０ＢＨ处开始的３个代码是：０２Ｈ，１０Ｈ，３０Ｈ，这是定时器１的入口地址，所以，如果定时器０发生中断，所执行的其实是定时器１的中断程序，这当然不对。</font></p>
+  <p align="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">
+  <font face="宋体" lang="ZH-CN" size=2>例２：</font></p>
+  <font face="宋体" size=2> 
+  <p align="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0"> <i> INT_0 EQU 1000H</i></p> 
+  <i> 
+  <p align="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0"> TIME_0 EQU 1010H</p>
+  <p align="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0"> INT_1 EQU 1020H</p>
+  <p align="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0"> TIME_1 EQU 1030H</p>
+  <p align="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0"> SERIAL EQU 1040H</p>
+  </i></font> 
+  <p align="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0"><i>
+  <font face="宋体" size=2> AJMP START ;</font><font face="宋体" lang="ZH-CN" size=2>跳转到主程序起始点</font></i></p>
+  <i> <font face="宋体" size=2> 
+  <p align="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0"> ORG 0003H</p> 
+  </font> 
+  <p align="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">
+  <font face="宋体" size=2> LJMP INT_0 ;</font><font face="宋体" lang="ZH-CN" size=2>外中断</font><font face="宋体" size=2>0</font><font face="宋体" lang="ZH-CN" size=2>处理程序</font></p>
+  <font face="宋体" size=2> 
+  <p align="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0"> ORG 000BH</p> 
+  </font> 
+  <p align="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">
+  <font face="宋体" size=2> LJMP TIME_0 ;</font><font face="宋体" lang="ZH-CN" size=2>定时中断</font><font face="宋体" size=2>0</font><font face="宋体" lang="ZH-CN" size=2>处理程序</font></p>
+  <font face="宋体" size=2> 
+  <p align="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0"> ORG 0013H</p> 
+  </font> 
+  <p align="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">
+  <font face="宋体" size=2> LJMP INT_1 ;</font><font face="宋体" lang="ZH-CN" size=2>外中断</font><font face="宋体" size=2>1</font><font face="宋体" lang="ZH-CN" size=2>处理程序</font></p>
+  <font face="宋体" size=2> 
+  <p align="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0"> ORG 001BH</p> 
+  </font> 
+  <p align="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">
+  <font face="宋体" size=2> LJMP TIME_1 ;</font><font face="宋体" lang="ZH-CN" size=2>定时中断</font><font face="宋体" size=2>1</font><font face="宋体" lang="ZH-CN" size=2>处理程序</font></p>
+  <font face="宋体" size=2> 
+  <p align="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0"> ORG 0023H</p> 
+  </font> 
+  <p align="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">
+  <font face="宋体" size=2> LJMP SERIAL ;</font><font face="宋体" lang="ZH-CN" size=2>串行口中断程序</font></p>
+  <font face="宋体" size=2> 
+  <p align="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">START:</p>
+  <p align="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0"> NOP</p>
+  <p align="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0"> END</p>
+  </font></i> 
+  <p align="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0"> 
+  <font face="宋体" lang="ZH-CN" size=2>上面的程序经过汇编后列表文件如下：</font></p>
+  <i><font face="宋体" size=2> 
+  <p align="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">The Cybernetic Micro Systems 8051 Family Assembler, Version  
+    3.03 Page 1</p> 
+  <p align="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0"> 08-26-96</p>
+  <p align="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0"> 1000 = INT_0 EQU 1000H</p>
+  <p align="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0"> 1010 = TIME_0 EQU 1010H</p>
+  <p align="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0"> 1020 = INT_1 EQU 1020H</p>
+  <p align="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0"> 1030 = TIME_1 EQU 1030H</p>
+  <p align="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0"> 1040 = SERIAL EQU 1040H</p>
+  </font> 
+  <p align="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">
+  <font face="宋体" size=2> 0000 0126 AJMP START ;</font><font face="宋体" lang="ZH-CN" size=2>跳转到主程序起始点</font></p>
+  <font face="宋体" size=2> 
+  <p align="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0"> 0003 ORG 0003H</p> 
+  </font> 
+  <p align="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">
+  <font face="宋体" size=2> 0003 021000 LJMP INT_0 ;</font><font face="宋体" lang="ZH-CN" size=2>外中断</font><font face="宋体" size=2>0</font><font face="宋体" lang="ZH-CN" size=2>处理程序</font></p>
+  <font face="宋体" size=2> 
+  <p align="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0"> 000B ORG 000BH</p> 
+  </font> 
+  <p align="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">
+  <font face="宋体" size=2> 000B 021010 LJMP TIME_0 ;</font><font face="宋体" lang="ZH-CN" size=2>定时中断</font><font face="宋体" size=2>0</font><font face="宋体" lang="ZH-CN" size=2>处理程序</font></p>
+  <font face="宋体" size=2> 
+  <p align="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0"> 0013 ORG 0013H</p> 
+  </font> 
+  <p align="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">
+  <font face="宋体" size=2> 0013 021020 LJMP INT_1 ;</font><font face="宋体" lang="ZH-CN" size=2>外中断</font><font face="宋体" size=2>1</font><font face="宋体" lang="ZH-CN" size=2>处理程序</font></p>
+  <font face="宋体" size=2> 
+  <p align="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0"> 001B ORG 001BH</p> 
+  </font> 
+  <p align="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">
+  <font face="宋体" size=2> 001B 021030 LJMP TIME_1 ;</font><font face="宋体" lang="ZH-CN" size=2>定时中断</font><font face="宋体" size=2>1</font><font face="宋体" lang="ZH-CN" size=2>处理程序</font></p>
+  <font face="宋体" size=2> 
+  <p align="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0"> 0023 ORG 0023H</p> 
+  </font> 
+  <p align="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">
+  <font face="宋体" size=2> 0023 021040 LJMP SERIAL ;</font><font face="宋体" lang="ZH-CN" size=2>串行口中断程序</font></p>
+  <font face="宋体" size=2> 
+  <p align="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0"> START:</p>
+  <p align="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0"> 0026 00 NOP</p>
+  <p align="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0"> 0000 END</p>
+  <p align="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">The Cybernetic Micro Systems 8051 Family Assembler, Version 
+    3.03 Page 2</p>
+  <p align="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0"> 08-26-96</p>
+  <p align="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0"> ;%T Symbol Name Type Value</p>
+  <p align="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0"> INT_0 . . . . . . . . . . . . . I 1000</p>
+  <p align="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0"> INT_1 . . . . . . . . . . . . . I 1020</p>
+  <p align="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0"> SERIAL. . . . . . . . . . . . . I 1040</p>
+  <p align="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0"> START . . . . . . . . . . . . . L 0026</p>
+  <p align="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0"> TIME_0. . . . . . . . . . . . . I 1010</p>
+  <p align="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0"> TIME_1. . . . . . . . . . . . . I 1030</p>
+  <p align="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0"> ;%Z</p>
+  <p align="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0"> 00 Errors (0000)</p>
+  </font></i> 
+  <p align="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">
+  <font face="宋体" lang="ZH-CN" size=2>由列表文件，可以绘出代码在ＲＯＭ中的映象图如下：</font></p>
+  <table cellspacing=0 border=0 cellpadding=1 width=556>
+    <tr> 
+      <td width="8%" valign="TOP"> <font face="宋体" lang="ZH-CN" size=2> 
+        <p align="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">代码 
+        </font></td>
+      <td width="8%" valign="TOP"> <font face="宋体" size=2> 
+        <p align="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0"> 01H 
+        </font></td>
+      <td width="8%" valign="TOP"> <font face="宋体" size=2> 
+        <p align="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">11H 
+        </font></td>
+      <td width="8%" valign="TOP">
+      <p style="line-height: 150%; margin-top: 0; margin-bottom: 0">　</td>
+      <td width="8%" valign="TOP"> <font face="宋体" size=2> 
+        <p align="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">02H 
+        </font></td>
+      <td width="8%" valign="TOP"> <font face="宋体" size=2> 
+        <p align="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0"> 10H 
+        </font></td>
+      <td width="8%" valign="TOP"> <font face="宋体" size=2> 
+        <p align="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0"> 00H 
+        </font></td>
+      <td width="8%" valign="TOP">
+      <p style="line-height: 150%; margin-top: 0; margin-bottom: 0">　</td>
+      <td width="8%" valign="TOP">
+      <p style="line-height: 150%; margin-top: 0; margin-bottom: 0">　</td>
+      <td width="8%" valign="TOP">
+      <p style="line-height: 150%; margin-top: 0; margin-bottom: 0">　</td>
+      <td width="8%" valign="TOP">
+      <p style="line-height: 150%; margin-top: 0; margin-bottom: 0">　</td>
+      <td width="8%" valign="TOP">
+      <p style="line-height: 150%; margin-top: 0; margin-bottom: 0">　</td>
+    </tr>
+    <tr> 
+      <td width="8%" valign="TOP"> <font face="宋体" lang="ZH-CN" size=2> 
+        <p align="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">地址 
+        </font></td>
+      <td width="8%" valign="TOP"> <font face="宋体" size=2> 
+        <p align="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0"> 00H 
+        </font></td>
+      <td width="8%" valign="TOP"> <font face="宋体" size=2> 
+        <p align="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">01H 
+        </font></td>
+      <td width="8%" valign="TOP"> <font face="宋体" size=2> 
+        <p align="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">02H 
+        </font></td>
+      <td width="8%" valign="TOP"> <font face="宋体" size=2> 
+        <p align="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0"> 03H 
+        </font></td>
+      <td width="8%" valign="TOP"> <font face="宋体" size=2> 
+        <p align="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0"> 04H 
+        </font></td>
+      <td width="8%" valign="TOP"> <font face="宋体" size=2> 
+        <p align="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0"> 05H 
+        </font></td>
+      <td width="8%" valign="TOP"> <font face="宋体" size=2> 
+        <p align="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0"> 06H 
+        </font></td>
+      <td width="8%" valign="TOP"> <font face="宋体" size=2> 
+        <p align="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0"> 07H 
+        </font></td>
+      <td width="8%" valign="TOP"> <font face="宋体" size=2> 
+        <p align="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0"> 08H 
+        </font></td>
+      <td width="8%" valign="TOP"> <font face="宋体" size=2> 
+        <p align="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">09H 
+        </font></td>
+      <td width="8%" valign="TOP"> <font face="宋体" size=2> 
+        <p align="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">0AH 
+        </font></td>
+    </tr>
+    <tr> 
+      <td width="8%" valign="TOP"> <font face="宋体" lang="ZH-CN" size=2> 
+        <p align="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">代码 
+        </font></td>
+      <td width="8%" valign="TOP"> <font face="宋体" size=2> 
+        <p align="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0"> 02H 
+        </font></td>
+      <td width="8%" valign="TOP"> <font face="宋体" size=2> 
+        <p align="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">10H 
+        </font></td>
+      <td width="8%" valign="TOP"> <font face="宋体" size=2> 
+        <p align="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">10H 
+        </font></td>
+      <td width="8%" valign="TOP">
+      <p style="line-height: 150%; margin-top: 0; margin-bottom: 0">　</td>
+      <td width="8%" valign="TOP">
+      <p style="line-height: 150%; margin-top: 0; margin-bottom: 0">　</td>
+      <td width="8%" valign="TOP">
+      <p style="line-height: 150%; margin-top: 0; margin-bottom: 0">　</td>
+      <td width="8%" valign="TOP">
+      <p style="line-height: 150%; margin-top: 0; margin-bottom: 0">　</td>
+      <td width="8%" valign="TOP">
+      <p style="line-height: 150%; margin-top: 0; margin-bottom: 0">　</td>
+      <td width="8%" valign="TOP"> <font face="宋体" size=2> 
+        <p align="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0"> 02H 
+        </font></td>
+      <td width="8%" valign="TOP"> <font face="宋体" size=2> 
+        <p align="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0"> 01H 
+        </font></td>
+      <td width="8%" valign="TOP"> <font face="宋体" size=2> 
+        <p align="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">20H 
+        </font></td>
+    </tr>
+    <tr> 
+      <td width="8%" valign="TOP"> <font face="宋体" lang="ZH-CN" size=2> 
+        <p align="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">地址 
+        </font></td>
+      <td width="8%" valign="TOP"> <font face="宋体" size=2> 
+        <p align="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0"> 0BH 
+        </font></td>
+      <td width="8%" valign="TOP"> <font face="宋体" size=2> 
+        <p align="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">0CH 
+        </font></td>
+      <td width="8%" valign="TOP"> <font face="宋体" size=2> 
+        <p align="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">0DH 
+        </font></td>
+      <td width="8%" valign="TOP"> <font face="宋体" size=2> 
+        <p align="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0"> 0EH 
+        </font></td>
+      <td width="8%" valign="TOP"> <font face="宋体" size=2> 
+        <p align="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0"> 0FH 
+        </font></td>
+      <td width="8%" valign="TOP"> <font face="宋体" size=2> 
+        <p align="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0"> 10H 
+        </font></td>
+      <td width="8%" valign="TOP"> <font face="宋体" size=2> 
+        <p align="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0"> 11H 
+        </font></td>
+      <td width="8%" valign="TOP"> <font face="宋体" size=2> 
+        <p align="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0"> 12H 
+        </font></td>
+      <td width="8%" valign="TOP"> <font face="宋体" size=2> 
+        <p align="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0"> 13H 
+        </font></td>
+      <td width="8%" valign="TOP"> <font face="宋体" size=2> 
+        <p align="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">14H 
+        </font></td>
+      <td width="8%" valign="TOP"> <font face="宋体" size=2> 
+        <p align="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">15H 
+        </font></td>
+    </tr>
+    <tr> 
+      <td width="8%" valign="TOP"> <font face="宋体" lang="ZH-CN" size=2> 
+        <p align="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">代码 
+        </font></td>
+      <td width="8%" valign="TOP">
+      <p style="line-height: 150%; margin-top: 0; margin-bottom: 0">　</td>
+      <td width="8%" valign="TOP">
+      <p style="line-height: 150%; margin-top: 0; margin-bottom: 0">　</td>
+      <td width="8%" valign="TOP">
+      <p style="line-height: 150%; margin-top: 0; margin-bottom: 0">　</td>
+      <td width="8%" valign="TOP"> <font face="Arial" size=3> 
+        <p align="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0"> 
+        </font></td>
+      <td width="8%" valign="TOP">
+      <p style="line-height: 150%; margin-top: 0; margin-bottom: 0">　</td>
+      <td width="8%" valign="TOP"> <font face="宋体" size=2> 
+        <p align="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">02H 
+        </font></td>
+      <td width="8%" valign="TOP"> <font face="宋体" size=2> 
+        <p align="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">10H 
+        </font></td>
+      <td width="8%" valign="TOP"> <font face="宋体" size=2> 
+        <p align="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">30H 
+        </font></td>
+      <td width="8%" valign="TOP">
+      <p style="line-height: 150%; margin-top: 0; margin-bottom: 0">　</td>
+      <td width="8%" valign="TOP">
+      <p style="line-height: 150%; margin-top: 0; margin-bottom: 0">　</td>
+      <td width="8%" valign="TOP">
+      <p style="line-height: 150%; margin-top: 0; margin-bottom: 0">　</td>
+    </tr>
+    <tr> 
+      <td width="8%" valign="TOP"> <font face="宋体" lang="ZH-CN" size=2> 
+        <p align="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">地址 
+        </font></td>
+      <td width="8%" valign="TOP"> <font face="宋体" size=2> 
+        <p align="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0"> 16H 
+        </font></td>
+      <td width="8%" valign="TOP"> <font face="宋体" size=2> 
+        <p align="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">17H 
+        </font></td>
+      <td width="8%" valign="TOP"> <font face="宋体" size=2> 
+        <p align="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">18H 
+        </font></td>
+      <td width="8%" valign="TOP"> <font face="宋体" size=2> 
+        <p align="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0"> 19H 
+        </font></td>
+      <td width="8%" valign="TOP"> <font face="宋体" size=2> 
+        <p align="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0"> 1AH 
+        </font></td>
+      <td width="8%" valign="TOP"> <font face="宋体" size=2> 
+        <p align="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0"> 1BH 
+        </font></td>
+      <td width="8%" valign="TOP"> <font face="宋体" size=2> 
+        <p align="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0"> 1CH 
+        </font></td>
+      <td width="8%" valign="TOP"> <font face="宋体" size=2> 
+        <p align="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0"> 1DH 
+        </font></td>
+      <td width="8%" valign="TOP"> <font face="宋体" size=2> 
+        <p align="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">1EH 
+        </font></td>
+      <td width="8%" valign="TOP"> <font face="宋体" size=2> 
+        <p align="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">1FH 
+        </font></td>
+      <td width="8%" valign="TOP"> <font face="宋体" size=2> 
+        <p align="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">20H 
+        </font></td>
+    </tr>
+    <tr> 
+      <td width="8%" valign="TOP"> <font face="宋体" lang="ZH-CN" size=2> 
+        <p align="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">代码 
+        </font></td>
+      <td width="8%" valign="TOP">
+      <p style="line-height: 150%; margin-top: 0; margin-bottom: 0">　</td>
+      <td width="8%" valign="TOP">
+      <p style="line-height: 150%; margin-top: 0; margin-bottom: 0">　</td>
+      <td width="8%" valign="TOP"> <font face="宋体" size=2> 
+        <p align="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">02H 
+        </font></td>
+      <td width="8%" valign="TOP"> <font face="宋体" size=2> 
+        <p align="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0"> 10H 
+        </font></td>
+      <td width="8%" valign="TOP"> <font face="宋体" size=2> 
+        <p align="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0"> 40H 
+        </font></td>
+      <td width="8%" valign="TOP"> <font face="宋体" size=2> 
+        <p align="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">00H 
+        </font></td>
+      <td width="8%" valign="TOP">
+      <p style="line-height: 150%; margin-top: 0; margin-bottom: 0">　</td>
+      <td width="8%" valign="TOP">
+      <p style="line-height: 150%; margin-top: 0; margin-bottom: 0">　</td>
+      <td width="8%" valign="TOP">
+      <p style="line-height: 150%; margin-top: 0; margin-bottom: 0">　</td>
+      <td width="8%" valign="TOP">
+      <p style="line-height: 150%; margin-top: 0; margin-bottom: 0">　</td>
+      <td width="8%" valign="TOP">
+      <p style="line-height: 150%; margin-top: 0; margin-bottom: 0">　</td>
+    </tr>
+    <tr> 
+      <td width="8%" valign="TOP"> <font face="宋体" lang="ZH-CN" size=2> 
+        <p align="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">地址 
+        </font></td>
+      <td width="8%" valign="TOP"> <font face="宋体" size=2> 
+        <p align="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">21H 
+        </font></td>
+      <td width="8%" valign="TOP"> <font face="宋体" size=2> 
+        <p align="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">22H 
+        </font></td>
+      <td width="8%" valign="TOP"> <font face="宋体" size=2> 
+        <p align="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">23H 
+        </font></td>
+      <td width="8%" valign="TOP"> <font face="宋体" size=2> 
+        <p align="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">24H 
+        </font></td>
+      <td width="8%" valign="TOP"> <font face="宋体" size=2> 
+        <p align="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">25H 
+        </font></td>
+      <td width="8%" valign="TOP"> <font face="宋体" size=2> 
+        <p align="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">26H 
+        </font></td>
+      <td width="8%" valign="TOP"> <font face="宋体" size=2> 
+        <p align="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">27H 
+        </font></td>
+      <td width="8%" valign="TOP"> <font face="宋体" size=2> 
+        <p align="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">28H 
+        </font></td>
+      <td width="8%" valign="TOP"> <font face="宋体" size=2> 
+        <p align="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">29H 
+        </font></td>
+      <td width="8%" valign="TOP"> <font face="宋体" size=2> 
+        <p align="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">2AH 
+        </font></td>
+      <td width="8%" valign="TOP"> <font face="宋体" size=2> 
+        <p align="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">2BH 
+        </font></td>
+    </tr>
+  </table>
+  <p align="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">
+  <font face="宋体" lang="ZH-CN" size=2>由映象图可知，各中断程序的代码都在其规定地址处，一旦产生中断即可执行相应的程序。至于图中未填的部分（如</font><font face="宋体" size=2>02H)</font><font face="宋体" lang="ZH-CN" size=2>，根据各编程器不同而不同，一般为</font><font face="宋体" size=2>FFH</font><font face="宋体" lang="ZH-CN" size=2>或</font><font face="宋体" size=2>00H</font><font face="宋体" lang="ZH-CN" size=2>。</font><b><font face="宋体" lang="ZH-CN" size="2"> 
+    </font></b></p>
+  <b><font face="宋体" lang="ZH-CN"> 
+  <p style="line-height: 150%; margin-top: 0; margin-bottom: 0"></p>
+  </font> 
+  <p align="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">
+  <font size="2" face="宋体" lang="ZH-CN">二、</font><font size="2" face="宋体">END
+  </font><font face="Arial"> 
+  <p style="line-height: 150%; margin-top: 0; margin-bottom: 0"></p>
+  </font></b> 
+  <p align="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">
+  <font face="宋体" size=2> END</font><font face="宋体" lang="ZH-CN" size=2>语句标志源代码的结束，汇编程序遇到</font><font face="宋体" size=2>END</font><font face="宋体" lang="ZH-CN" size=2>语句即停止运行。若没有</font><font face="宋体" size=2>END</font><font face="宋体" lang="ZH-CN" size=2>语句，汇编将报错。</font><font face="宋体" size=2>END</font><font face="宋体" lang="ZH-CN" size=2>语句有一个参数，可以是数值</font><font face="宋体" size=2>0</font><font face="宋体" lang="ZH-CN" size=2>，也可以是表达式，其格式是：</font></p>
+  <p align="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">
+  <font face="宋体" lang="ZH-CN" size=2>标号</font><font face="宋体" size=2>:  
+    END </font><font face="宋体" lang="ZH-CN" size=2>表达式</font></p> 
+  <p align="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">
+  <font face="宋体" lang="ZH-CN" size=2>它的值就是程序的地址并且作为一个特殊的记录写入</font><font face="宋体" size=2>HEX</font><font face="宋体" lang="ZH-CN" size=2>文件。若这个表达式省略，</font><font face="宋体" size=2>HEX</font><font face="宋体" lang="ZH-CN" size=2>文件中其值就是</font><font face="宋体" size=2>0</font><font face="宋体" lang="ZH-CN" size=2>。</font></p>
+  <p style="line-height: 150%; margin-top: 0; margin-bottom: 0">
+  <b><font size="2" face="宋体" lang="ZH-CN">三、</font><font size="2" face="宋体">EQU
+  </font></p>
+  <font face="Arial"> 
+  <p style="line-height: 150%; margin-top: 0; margin-bottom: 0"></p>
+  </font></b> 
+  <p align="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">
+  <font face="宋体" size=2> EQU</font><font face="宋体" lang="ZH-CN" size=2>以及其它一些符号定义伪指令用来给程序中出现的一些符号赋值。对这些符号名的要求与其它符号相同，即长度不限，大小写字母可互换并且必须以字母开头。</font></p>
+  <p align="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">
+  <font face="宋体" lang="ZH-CN" size=2>由等值指令定义的符号是汇编符号表的一部分。等值伪指令有两种形式。一种用</font><font face="宋体" size=2>EQU</font><font face="宋体" lang="ZH-CN" size=2>，另一种用字符“</font><font face="宋体" size=2>=</font><font face="宋体" lang="ZH-CN" size=2>”即</font></p>
+  <p align="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">
+  <font face="宋体" lang="ZH-CN" size=2>符号名</font><font size=2 face="宋体">  
+    EQU 
+ </font><font face="宋体" lang="ZH-CN" size=2>表达式</font></p> 
+  <p align="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">
+  <font face="宋体" lang="ZH-CN" size=2>符号名</font><font size=2 face="宋体">  
+    = 
+ </font><font face="宋体" lang="ZH-CN" size=2>表达式</font></p> 
+  <p align="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">
+  <font face="宋体" lang="ZH-CN" size=2>两种形式的效果是一样的。符号名在左边，其对应的值在右边。值可以是变元，其它的符号名或表达式。只要在两遍扫描中求出表达式的值就行，否则引用该符号名时将报错。当表达式的值是字符串时，只取后两个字符。若串长为</font><font face="宋体" size=2>1</font><font face="宋体" lang="ZH-CN" size=2>，高位字节被置</font><font face="宋体" size=2>0</font><font face="宋体" lang="ZH-CN" size=2>，符号名的值被打印在程序清单中。由等值伪指令定义的符号名不允许重名。如果经定义的符号名被重定义，则汇编将报出错，并且这个符号名按新定义的处理，最好不要在程序中出现重名。</font></p>
+  <p align="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">
+  <font face="宋体" lang="ZH-CN" size=2>例：</font><i><font face="宋体" size=2>0469=  
+    ABC EQU 469H</font></i></p> 
+  <i><font face="宋体" size=2> 
+  <p align="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0"> 0464= XY EQU ABC-5</p>
+  <p align="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0"> 02F0= JK = 752</p>
+  <p align="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0"> 0754 XYJK = XY+JK</p>
+  </font></i> 
+  <p align="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">
+  <font face="宋体" lang="ZH-CN" size=2>在列表文件中最左边的数字不是这些伪指令所在的地址而是通过汇编后赋给符号名的值。第一条符号名</font><font face="宋体" size=2>ABC</font><font face="宋体" lang="ZH-CN" size=2>被起来</font><font face="宋体" size=2>469H</font><font face="宋体" lang="ZH-CN" size=2>，第二条</font><font face="宋体" size=2>XY</font><font face="宋体" lang="ZH-CN" size=2>被赋于</font><font face="宋体" size=2>ABC-5</font><font face="宋体" lang="ZH-CN" size=2>，因此</font><font face="宋体" size=2>XY</font><font face="宋体" lang="ZH-CN" size=2>的值为</font><font face="宋体" size=2>469H-5=464H</font><font face="宋体" lang="ZH-CN" size=2>，</font><font face="宋体" size=2>JK</font><font face="宋体" lang="ZH-CN" size=2>的值为</font><font face="宋体" size=2>752</font><font face="宋体" lang="ZH-CN" size=2>（即</font><font face="宋体" size=2>2F0H)</font><font face="宋体" lang="ZH-CN" size=2>，</font><font face="宋体" size=2>XYJK</font><font face="宋体" lang="ZH-CN" size=2>的值</font><font face="宋体" size=2>XY+JK=464H+2F0H=754H</font></p>
+  <p style="line-height: 150%; margin-top: 0; margin-bottom: 0">
+  <b><font size="2" face="宋体" lang="ZH-CN">四、</font><font size="2" face="宋体">SET
+  </font></p>
+  <font face="Arial"> 
+  <p style="line-height: 150%; margin-top: 0; margin-bottom: 0"></p>
+  </font></b> 
+  <p align="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">
+  <font face="宋体" size=2> SET</font><font face="宋体" lang="ZH-CN" size=2>伪指令有些类似于等值伪指令，它定义了一个整数类型的符号名，它的格式为</font></p>
+  <p align="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">
+  <font face="宋体" lang="ZH-CN" size=2>符号名</font><font size=2 face="宋体">  
+    SET 
+ </font><font face="宋体" lang="ZH-CN" size=2>表达式</font></p> 
+  <p align="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">
+  <font face="宋体" size=2> SET</font><font face="宋体" lang="ZH-CN" size=2>伪指令与等值伪指令的唯一区别在于</font><font face="宋体" size=2>SET</font><font face="宋体" lang="ZH-CN" size=2>伪指令所定义的符号名右以在程序中多次定义，而不报错。</font></p>
+  <p align="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">
+  <font face="宋体" lang="ZH-CN" size=2>例：</font><i><font face="宋体" size=2>002D=  
+    K57 SET 101101B</font></i></p> 
+  <i><font face="宋体" size=2> 
+  <p align="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0"> 8707= K57 SET 34567</p>
+  </font></i><b> 
+  <p align="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0"> 
+  <font size="2" face="宋体" lang="ZH-CN">五、</font><font size="2"><font face="宋体">DATA</font><font face="宋体" lang="ZH-CN">与</font></font><font size="2" face="宋体">BYTE
+  </font><font face="Arial"> 
+  <p style="line-height: 150%; margin-top: 0; margin-bottom: 0"></p>
+  </font></b> 
+  <p align="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">
+  <font face="宋体" size=2> DATA</font><font face="宋体" lang="ZH-CN" size=2>与</font><font face="宋体" size=2>BYTE</font><font face="宋体" lang="ZH-CN" size=2>都是用来定义字节类型的存储单元，赋予字节类型的存储单元一个符号名，以便在程序中通过符号名来访问这个存储单元，以帮助对程序的理解。</font></p>
+  <p align="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">
+  <font face="宋体" size=2> BYTE</font><font face="宋体" lang="ZH-CN" size=2>与</font><font face="宋体" size=2>DATE</font><font face="宋体" lang="ZH-CN" size=2>之间的区别类似于</font><font face="宋体" size=2>EQU</font><font face="宋体" lang="ZH-CN" size=2>和</font><font face="宋体" size=2>SET</font><font face="宋体" lang="ZH-CN" size=2>，</font><font face="宋体" size=2>BYTE</font><font face="宋体" lang="ZH-CN" size=2>伪指令不能定义重名。</font></p>
+  <b> 
+  <p align="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0"> 
+  <font size="2" face="宋体" lang="ZH-CN">六、</font><font size="2" face="宋体">WORD
+  </font><font face="Arial"> 
+  <p style="line-height: 150%; margin-top: 0; margin-bottom: 0"></p>
+  </font></b> 
+  <p align="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">
+  <font face="宋体" size=2> WORD</font><font face="宋体" lang="ZH-CN" size=2>伪指令类似于</font><font face="宋体" size=2>DATE</font><font face="宋体" lang="ZH-CN" size=2>伪指令，只是</font><font face="宋体" size=2>WORD</font><font face="宋体" lang="ZH-CN" size=2>伪指令定义了一个字类型的符号名，其格式为：</font></p>
+  <p align="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0"><i>
+  <font face="宋体" lang="ZH-CN" size=2>符号名</font><font size=2 face="宋体">  
+    WORD 
+ </font><font face="宋体" lang="ZH-CN" size=2>表达式</font></i></p> 
+  <i> <font face="宋体" size=2> 
+  <p align="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0"> 0027= VAL31 WORD 39</p> 
+  <p align="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0"> 0021= PAR7 WORD 21H</p>
+  </font></i> 
+  <p align="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">
+  <font face="宋体" lang="ZH-CN" size=2>一个字由２个字节组成。当然，因为８０５１汇编语言集没有字操作，所以程序执行时，只处理字节。ＷＲＯＤ伪指令仅仅允许用户定义一个认为是字的存储位置。</font></p>
+  <b> 
+  <p align="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0"> 
+  <font size="2" face="宋体" lang="ZH-CN">七、</font><font size="2" face="宋体">BIT
+  </font><font face="Arial"> 
+  <p style="line-height: 150%; margin-top: 0; margin-bottom: 0"></p>
+  </font></b> 
+  <p align="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">
+  <font face="宋体" size=2> BIT</font><font face="宋体" lang="ZH-CN" size=2>伪指令定义了一个字位类型的符号名，其格式为：</font></p>
+  <p align="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">
+  <font face="宋体" lang="ZH-CN" size=2>符号名</font><font size=2 face="宋体">  
+    BIT 
+ </font><font face="宋体" lang="ZH-CN" size=2>表达式</font></p> 
+  <p align="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">
+  <font face="宋体" lang="ZH-CN" size=2>这里表达式的值是一个位地址，这个伪指令有助于位的地址符号化。</font></p>
+  <p align="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">
+  <font face="宋体" lang="ZH-CN" size=2>例：</font></p>
+  <font face="宋体" size=2> 
+  <p align="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0"> <i> 002F= LOG3 BIT 47</i></p> 
+  <i> 
+  <p align="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0"> 0014= Y731 BIT 14H</p>
+  </i></font><b> 
+  <p align="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0"> 
+  <font size="2" face="宋体" lang="ZH-CN">八、</font><font size="2" face="宋体">ALTNAME
+  </font><font face="Arial"> 
+  <p style="line-height: 150%; margin-top: 0; margin-bottom: 0"></p>
+  </font></b> 
+  <p align="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">
+  <font face="宋体" lang="ZH-CN" size=2>替换名（</font><font face="宋体" size=2>ALTNAME</font><font face="宋体" lang="ZH-CN" size=2>）伪指令提供用户一种手段，以定义一个符号名来替换一个保留字，此后这个答名与被替换的保留字均可等效地用于程序中。任何保留类型的答名均可被替换。替换名伪指令格式为：</font></p>
+  <p align="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">
+  <font face="宋体" size=2> ALTNAME </font><font face="宋体" lang="ZH-CN" size=2>保留字，新名</font></p> 
+  <p align="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">
+  <font face="宋体" lang="ZH-CN" size=2>例：</font></p>
+  <font face="宋体" size=2> 
+  <p align="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0"> <i>0002= ALTNAME R2 COUNT</i></p> 
+  <i> 
+  <p align="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0"> 013A EA MOV A,R2</p>
+  <p align="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0"> 013B E502 MOV A,COUNT</p>
+  </i></font><font face="宋体" lang="ZH-CN" size=3> 
+  <p align="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0"></p>
+  </font>
+  <p style="line-height: 150%; margin-top: 0; margin-bottom: 0"><b><font face="宋体" lang="ZH-CN">
+  <font size="2">九、ＤＢ </font></p>
+  <p style="line-height: 150%; margin-top: 0; margin-bottom: 0"></p>
+  </font></b> 
+  <p align="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">
+  <font face="宋体" lang="ZH-CN" size=2>ＤＢ伪指令用于定义一个连续的存储区，给该存储区的存储单元赋值。该伪指令的参数即为存储单元的值，在表达式中对变元个数没有限制，只要此条伪指令能容纳在源程序的一行内，其格式为：</font></p>
+  <p align="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">
+  <font face="宋体" lang="ZH-CN" size=2>标号：</font><font size=2 face="宋体">  
+    DB 
+ </font><font face="宋体" lang="ZH-CN" size=2>表达式</font></p> 
+  <p align="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">
+  <font face="宋体" lang="ZH-CN" size=2>只要表达式不是字符串，每一表达式值都被赋给一个字节。计算表达式值时按１６位处理，但其结果只取低８位，若多个表达式出现在一个ＤＢ伪指令中，它们必须以逗号分开。</font></p>
+  <p align="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">
+  <font face="宋体" lang="ZH-CN" size=2>表达式中有字符串时，以单引号“</font><font face="宋体" size=2>'</font><font face="宋体" lang="ZH-CN" size=2>”作分隔符，每个字符占一个字节，字符串不加改变地被存在各字节中，并不将小写字母转换成大写字母。</font></p>
+  <p align="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">
+  <font face="宋体" lang="ZH-CN" size=2>例如：</font></p>
+  <font face="宋体" size=2> 
+  <p align="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0"> <i>DB 00H 01H 03H 46H</i></p> 
+  <i> 
+  <p align="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0"> DB 'This is a demo!'</p>
+  </i></font><b> 
+  <p align="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0"> 
+  <font size="2" face="宋体" lang="ZH-CN">十、</font><font size="2" face="宋体">DW
+  </font><font face="Arial"> 
+  <p style="line-height: 150%; margin-top: 0; margin-bottom: 0"></p>
+  </font></b> 
+  <p align="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">
+  <font face="宋体" size=2> DW</font><font face="宋体" lang="ZH-CN" size=2>为以字节为单元（十六位二进制）来给一个的存储区赋值，其格式为：</font></p>
+  <p align="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">
+  <font face="宋体" lang="ZH-CN" size=2>标号：</font><font size=2 face="宋体">  
+    DW 
+ </font><font face="宋体" lang="ZH-CN" size=2>表达式</font></p> 
+  <p align="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">
+  <font face="宋体" lang="ZH-CN" size=2>例如：</font></p>
+  <font face="宋体" size=2> 
+  <p align="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0"> <i>0000 3035 D46B DW 12341,54379,10110100101110B</i></p> 
+  <i> 
+  <p align="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0"> 0004 2D2E</p>
+  <p align="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0"> 0006 4344 4243 DW 'ABCD','BC','A'</p>
+  <p align="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0"> 000A 0041</p>
+  <p align="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0"> 000C 2868 02E8 DW 456*375h,83+295h,'YZ',72h-456</p>
+  <p align="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0"> 0010 595A FEAA</p>
+  </i></font><b> 
+  <p align="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0"> 
+  <font size="2" face="宋体" lang="ZH-CN">十一、</font><font size="2" face="宋体">DS
+  </font><font face="Arial"> 
+  <p style="line-height: 150%; margin-top: 0; margin-bottom: 0"></p>
+  </font></b> 
+  <p align="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">
+  <font face="宋体" size=2> DS</font><font face="宋体" lang="ZH-CN" size=2>为定义存储内容的伪指令，用它定义一个存储区，并用指定的参数填满该存储区。</font></p>
+  <p align="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">
+  <font face="宋体" size=2> DS</font><font face="宋体" lang="ZH-CN" size=2>伪指令包含两个变元，第一个变元定义了存储区的长度的字节数，在汇编时，汇编程序将跳过这些单元把其它指令汇编在这些字节之后，因此在使用ＤＳ伪指令时第一个变元不可活力第二个变元表示在这些单元中真入什么值，第二个变元可以活力活力时这些字节将不处理。下例中</font><font face="宋体" size=2>0173</font><font face="宋体" lang="ZH-CN" size=2>处有一条</font><font face="宋体" size=2>DS  
+    9</font><font face="宋体" lang="ZH-CN" size=2>，则空出</font><font face="宋体" size=2>9</font><font face="宋体" lang="ZH-CN" size=2>个字节，下一第指令被汇编到</font><font face="宋体" size=2>017C</font><font face="宋体" lang="ZH-CN" size=2>处；在</font><font face="宋体" size=2>017C</font><font face="宋体" lang="ZH-CN" size=2>处空出</font><font face="宋体" size=2>1BH</font><font face="宋体" lang="ZH-CN" size=2>个单元，在这些字节中被</font><font face="宋体" size=2>27H</font><font face="宋体" lang="ZH-CN" size=2>所填充。</font></p>
+  <p align="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">
+  <font face="宋体" size=2> DS</font><font face="宋体" lang="ZH-CN" size=2>指令的格式如下：</font></p>
+  <p align="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">
+  <font face="宋体" lang="ZH-CN" size=2>标号：</font><font size=2 face="宋体">  
+    DS 
+ </font><font face="宋体" lang="ZH-CN" size=2>表达式１，表达式２</font></p> 
+  <font face="宋体" lang="ZH-CN" size=2> 
+  <p align="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">表达式１定义了存储区的长度（以字节为单位）。这个变元不能省略。表达式２是可选择的，它的值低８位用以填入所定义的存储区。</p>
+  </font> 
+  <p align="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">
+  <font face="宋体" lang="ZH-CN" size=2>若省略则这部分存储单元不处理。</font></p>
+  <p align="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">
+  <font face="宋体" lang="ZH-CN" size=2>例：</font></p>
+  <i><font face="宋体" size=2> 
+  <p align="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0"> 0000 04 INC A</p> 
+  <p align="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0"> 0001 DS 9</p>
+  <p align="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0"> 000A 04 INC A</p>
+  <p align="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0"> 000B DS 1BH,27H</p>
+  <p align="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0"> 0026 04 INC A</p>
+  </font></i><b> 
+  <p align="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0"> 
+  <font size="2" face="宋体" lang="ZH-CN">十二、</font><font size="2" face="宋体">INCLUDE
+  </font><font face="Arial"> 
+  <p style="line-height: 150%; margin-top: 0; margin-bottom: 0"></p>
+  </font></b> 
+  <p align="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">
+  <font face="宋体" size=2> INCLUDE</font><font face="宋体" lang="ZH-CN" size=2>伪指令用于链接源文件，即将一个源文件插入到另一个源文件中。它有一个参数，指出将要插入的文件名，该文件名中可包括驱动器名和路径名。若文件没有扩展名，则默认为是ＡＳＭ。但待插入的文件必须是可以打开的。若文件打开操作失败，则产生致命错误，汇编将停止运行。反之，汇编程序将文件内容读入并按源代码处理。当遇到文件结速符时，汇编程序返回到</font><font face="宋体" size=2>INCLUDE</font><font face="宋体" lang="ZH-CN" size=2>伪指令处继续身下处理源程序。被插入的文件在程序清单中以“Ｉ”开头。</font></p>
+  <p align="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">
+  <font face="宋体" lang="ZH-CN" size=2>本宏汇编版本支持级嵌套，可在程序中用</font><font face="宋体" size=2>INCLUDE</font><font face="宋体" lang="ZH-CN" size=2>伪指令插入任意多个文件，但是，在一般情况下ＤＯＳ允许打开的文件数量是有限的，如果用户需要打开较多的文件，则必须在ＣＯＮＦＩＧ．ＳＹＳ文件中加入ＦＩＬＥＳ＝４</font><font face="宋体" size=2>0</font><font face="宋体" lang="ZH-CN" size=2>或更多的值，若超过８级嵌套或打开的文件太多，则产生致命错误，汇编中止运行。</font></p>
+  <p align="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">
+  <font face="宋体" size=2> INCLUDE</font><font face="宋体" lang="ZH-CN" size=2>伪指令提供了模块化程序设计手段，在汇编程序处理主程序时，模块被插入，尽管这不等价于链接和装配可重定位的目标模块，但它具有类似的功能，被插入的源文件中不应该包含ＥＮＤ伪指令，否则，汇编就会提前停止运行，ＥＮＤ伪指令只能出现在主程序中。此外，在主程序进行汇编前所有附加的源文件必须通过汇编，产生相应的ＨＥＸ及ＬＳＴ文件，由于附加的文件没有ＥＮＤ伪指令，因此，附加文件汇编时，汇编程序将显示：“没有结束语句”的错误，但并不影响与主程序的链接。</font></p>
+  <p align="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">
+  <font face="宋体" lang="ZH-CN" size=2>下面是一个使用</font><font face="宋体" size=2>INCLUDE</font><font face="宋体" lang="ZH-CN" size=2>伪指令的例子，其主程序的源文件ＭＡＩＮ．ＡＳＭ为：</font></p>
+  <i><font face="宋体" size=2> 
+  <p align="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0"> ;MAIN.ASM</p>
+  <p align="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0"> ORG 27H</p>
+  <p align="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">START:</p>
+  <p align="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0"> CLR A</p>
+  <p align="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0"> MOV R3,A</p>
+  <p align="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0"> INCLUDE MOD1</p>
+  <p align="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0"> INC R5</p>
+  <p align="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0"> INCLUDE MOD2.ASM</p>
+  <p align="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0"> DEC R3</p>
+  <p align="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0"> END START</p>
+  </font></i> 
+  <p align="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">
+  <font face="宋体" lang="ZH-CN" size=2>主程序为带有ＥＮＤ伪指令的完整的源文件。程序中有两</font><font face="宋体" size=2>INCLUDE</font><font face="宋体" lang="ZH-CN" size=2>伪指令，分别将两附加的文件ＭＯＤ１．ＡＳＭ及ＭＯＤ２．ＡＳＭ链接到主程序中。以下是这两个文件。</font></p>
+  <i><font face="宋体" size=2> 
+  <p align="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0"> ;MOD1.ASM</p>
+  <p align="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0"> MOV R2,#31H</p>
+  <p align="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0"> MOV R5,#18H</p>
+  </font><font face="Arial" size=3> 
+  <p align="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0"> </p>
+  </font><font face="宋体" size=2> 
+  <p align="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0"> ;MOD2.ASM</p>
+  <p align="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0"> MOV R6,#47H</p>
+  <p align="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0"> ANL A,#07H</p>
+  <p align="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0"> MOV R1,A</p>
+  </font></i><font face="宋体" lang="ZH-CN" size=2> 
+  <p align="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">注意ＭＯＤ１．ＡＳＭ及ＭＯＤ２．ＡＳＭ均没有ＥＮＤ指令。</p>
+  </font> 
+  <p align="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">
+  <font face="宋体" lang="ZH-CN" size=2>在进行汇编时必须先对ＭＯＤ１．ＡＳＭ和ＭＯＤ２．ＡＳＭ进行汇编，然后在汇编ＭＡＩＮ．ＡＳＭ，由于上两个文件没有ＥＮＤ伪指令，所以在汇编时会出现错误提示，不用管它，继续下面的工作，就可以得到正确的结果。</font></p>
+  <p align="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">
+  <font face="宋体" lang="ZH-CN" size=2>以下是形成的列表文件：</font></p>
+  <i><font face="宋体" size=2> 
+  <p align="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">The Cybernetic Micro Systems 8051 Family Assembler, Version  
+    3.03 Page 1</p> 
+  <p align="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0"> ;MOD2.ASM</p>
+  <p align="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0"> MOV R6,#47H</p>
+  <p align="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0"> ANL A,#07H</p>
+  <p align="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0"> MOV R1,A</p>
+  <p align="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0"> 08-27-96</p>
+  <p align="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0"> ;MAIN.ASM</p>
+  <p align="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0"> 0027 ORG 27H</p>
+  <p align="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0"> START:</p>
+  <p align="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0"> 0027 E4 CLR A</p>
+  <p align="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0"> 0028 FB MOV R3,A</p>
+  <p align="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">I INCLUDE MOD1</p>
+  <p align="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">I ;MOD1.ASM</p>
+  <p align="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">I0029 7A31 MOV R2,#31H</p>
+  <p align="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">I002B 7D18 MOV R5,#18H</p>
+  <p align="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">I</p>
+  <p align="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0"> 002D 0D INC R5</p>
+  <p align="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">I INCLUDE MOD2.ASM</p>
+  <p align="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">I ;MOD2.ASM</p>
+  <p align="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">I002E 7E47 MOV R6,#47H</p>
+  <p align="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">I0030 5407 ANL A,#07H</p>
+  <p align="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">I0032 F9 MOV R1,A</p>
+  <p align="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0"> 0033 1B DEC R3</p>
+  <p align="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0"> 0027 END START</p>
+  <p align="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">The Cybernetic Micro Systems 8051 Family Assembler, Version 
+    3.03 Page 2</p>
+  <p align="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0"> 08-27-96</p>
+  <p align="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0"> ;%T Symbol Name Type Value</p>
+  <p align="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0"> START . . . . . . . . . . . . . L 0027</p>
+  <p align="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0"> ;%Z</p>
+  <p align="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0"> 00 Errors (0000)</p>
+  </font></i>
+  <p style="line-height: 150%; margin-top: 0; margin-bottom: 0"><b><font face="宋体" lang="ZH-CN"> <a name="_Toc416236569">
+  <font size="2">十三、ＴＩＴＬ</font></a><font size="2"> </font></p>
+  <p style="line-height: 150%; margin-top: 0; margin-bottom: 0"></p>
+  </font></b> 
+  <p align="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">
+  <font face="宋体" lang="ZH-CN" size=2>ＴＩＴＬＥ伪指令用于在列表文件页头建立一个标题，其格式为：</font></p>
+  <p align="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">
+  <font face="宋体" lang="ZH-CN" size=2>＄ＴＩＴＬＥ</font><font size=2 face="宋体"> 
+    </font><font face="宋体" lang="ZH-CN" size=2>标题行</font></p> 
+  <p align="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">
+  <font face="宋体" lang="ZH-CN" size=2>这里标量行就是将出现在页头的标量与通常的字符串定义不同。这里标量行不加引号。汇编从＄ＴＩＴＬＥ之后的第一个可打印字符开始，到回车符之间的字符串作为标量标量的最大长度是６</font><font face="宋体" size=2>0</font><font face="宋体" lang="ZH-CN" size=2>个字符，基标量行省略，则标题行为空行。若ＴＩＴＬＥ伪指令在一页，它说明的标量行包含在本页，否则，标题将出现在下页页头。</font></p>
+  <p style="line-height: 150%; margin-top: 0; margin-bottom: 0">
+  <b><font face="宋体" lang="ZH-CN"> <a name="_Toc416236570"><font size="2">十四、ＰＡＧＥ</font></a><font size="2">
+  </font></p>
+  <p style="line-height: 150%; margin-top: 0; margin-bottom: 0"></p>
+  </font></b> 
+  <p align="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">
+  <font face="宋体" lang="ZH-CN" size=2>ＰＡＧＥ伪指令用于形成新的一中定义一面的行数。其格式为：</font></p>
+  <p align="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">
+  <font face="宋体" lang="ZH-CN" size=2>＄ＰＡＧＥ</font><font size=2 face="宋体"> 
+    </font><font face="宋体" lang="ZH-CN" size=2>表达式</font></p> 
+  <p align="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">
+  <font face="宋体" lang="ZH-CN" size=2>若表达</font><font size=2 face="宋体"> 
+    </font><font face="宋体" lang="ZH-CN" size=2>式缺省则开始新的一页，若有表达式，则每页行数重新定义。汇编开始时页长为６６行。一页中除出页外，剩余５５行用于打印源程序，这一格式适用于标准打印纸。</font></p> 
+  <p align="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">
+  <font face="宋体" lang="ZH-CN" size=2>如果变元值小于６６，页内可打印的源代码行将相应减少。页长最小值为１２。若小于１２时，每页内除页上只打印一行源程序。</font></p>
+  <p align="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">
+  <font face="宋体" lang="ZH-CN" size=2>页长变元是１６位字节，因而每页最长可定义到６５５３５行，这时分页打印变为连续打印，在屏幕显示程序清单或在卷筒纸上打印程序清单时，常常使用连续打印，如果在启动汇编时用</font><font face="宋体" size=2>/N</font><font face="宋体" lang="ZH-CN" size=2>选项，页长就是６５５３５。</font></p>
+  <p style="line-height: 150%; margin-top: 0; margin-bottom: 0">
+  <b><font face="宋体" lang="ZH-CN"> <a name="_Toc416236571"><font size="2">十五、ＬＩＳＴ与ＮＯＬＩＳＴ</font></a><font size="2">
+  </font></p>
+  <p style="line-height: 150%; margin-top: 0; margin-bottom: 0"></p>
+  </font></b> 
+  <p align="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">
+  <font face="宋体" lang="ZH-CN" size=2>它们的格式为：</font></p>
+  <p align="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">
+  <font face="宋体" lang="ZH-CN" size=2>＄ＬＩＳＴ</font></p>
+  <p align="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">
+  <font face="宋体" lang="ZH-CN" size=2>＄ＮＯＬＩＳＴ</font></p>
+  <p align="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">
+  <font face="宋体" lang="ZH-CN" size=2>ＬＩＳＴ伪指令使汇编时主生程序清单，但即使不用该指令，汇编也会自动产生清单。但如果使用了ＮＯＬＩＳＴ伪指令后需要继续主生清单则必须使用ＬＩＳＴ伪指令。</font></p>
+  <p align="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">
+  <font face="宋体" lang="ZH-CN" size=2>ＮＯＬＩＳＴ伪指令使汇编时不产生清单，所有包含此伪指令及在这条伪指令之后的语句都不进入列表文件。当不需要任何列表文件，并且不需要显示程序清单时，可以在启动汇编时不加．Ｌ附加项，且在源代码的第一行加上ＮＯＬＩＳＴ指令。</font></p>
+  <p align="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">
+  <font face="宋体" lang="ZH-CN" size=2>使用ＮＯＬＩＳＴ伪指令与附加项</font><font face="宋体" size=2>/L</font><font face="宋体" lang="ZH-CN" size=2>不同之处是ＮＯＬＩＳＴ伪指令可加在源程序中，与ＬＩＳＴ伪指令配合使用，使源程序中某些部分不产生清单。而不加附加项</font><font face="宋体" size=2>/L</font><font face="宋体" lang="ZH-CN" size=2>则不产生任何程序清单。不过，不管有无＄ＮＯＬＩＳＴ伪指令，程序在汇编时检查到的错误都将在屏幕上显示出错的源代码行及错误信息</font></p>
+  <p align="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0"><b>
+  <font face="宋体" lang="ZH-CN" size="2"><a name="_Toc416236572">十六、ＮＯＣＯＤＥ</a> 
+    </font></b></p>
+  <b><font face="宋体" lang="ZH-CN"> 
+  <p style="line-height: 150%; margin-top: 0; margin-bottom: 0"></p>
+  </font></b> 
+</ol>
+<p align="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">
+<font face="宋体" lang="ZH-CN" size=2>其格式为</font><font size=2 face="宋体"> 
+  </font><font face="宋体" lang="ZH-CN" size=2>＄ＮＯＣＯＤＥ</font></p> 
+<p align="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">
+<font face="宋体" lang="ZH-CN" size=2>ＮＯＣＯＤＥ伪指令使得在汇编时，条件汇编程序结构中那些真值为假的条件不产生清单。有关条件汇编结构在下面介绍。如果没有这条伪指令，汇编将主生所有条件下的清单，不论其真值是否为真。但是假的条件，不产生目标码。而ＮＯＣＯＤＥ伪指令使汇编清单中只列出那些由汇编程序用到的部分，因此，当使用ＮＯＣＯＤＥ伪指令时，程序清单与源程序并非逐行对应。</font></p>
+<b><font face="黑体" lang="ZH-CN" size=5> 
+<p align="center"><a href="dpjjx.htm"><img src="back1.gif" border="0" width="43" height="55"></a>
+</font></b> 
+  <p align="center">　</p>
+
+<p>　</p>
+
+          <hr width="550" SIZE="1" align="center">     
+
+<p align="center" style="line-height: 150%; margin-top: 0; margin-bottom: 0"><font size="2">伟纳电子 COPYRIGHT &reg; 2000  
+<a href="http://www.willar.com">http://www.willar.com</a><br>                                           
+&nbsp; E-mail:&nbsp; <a href="mailto:support@willar.com">support@willar.com</a></font>      
+ 
+<p align="center" style="line-height: 150%; margin-top: 0; margin-bottom: 0">　     
+
+<p align="center" style="line-height: 150%; margin-top: 0; margin-bottom: 0">　 
+</body>
+</html>

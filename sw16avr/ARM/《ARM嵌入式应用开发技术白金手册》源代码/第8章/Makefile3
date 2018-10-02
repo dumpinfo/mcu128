@@ -1,0 +1,12 @@
+OBJS = main.o io.o                                # 生成的目标文件依赖main.o和io.o
+CC = gcc
+CFLAGS = -Wall -O -g
+
+executable: $(OBJS)                                         #引用宏名
+     $(CC) $^ -o $@
+
+main.o : main.c
+     $(CC) $(CFLAGS) -c $< -o $@                           #使用内部定义变量
+
+io.o : io.c
+$(CC) $(CFLAGS) -c  $< -o $@

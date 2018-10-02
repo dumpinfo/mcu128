@@ -1,0 +1,139 @@
+<html>
+<body>
+<pre>
+<h1>礦ision2 Build Log</h1>
+<h2>Project:</h2>
+D:\产品光盘\ME300\ME300B实验例程\C51\IR.uv2
+Project File Date:  02/05/2006
+
+<h2>Output:</h2>
+Build target 'Target 1'
+compiling IR.c...
+*** WARNING C318 IN LINE 13 OF IR.c: can't open file ';reg51.h'
+*** WARNING C318 IN LINE 14 OF IR.c: can't open file ';intrins.h'
+IR.C(21): error C202: 'P3': undefined identifier
+IR.C(22): error C202: 'P3': undefined identifier
+IR.C(23): error C202: 'P1': undefined identifier
+IR.C(24): error C202: 'P2': undefined identifier
+IR.C(25): error C202: 'P2': undefined identifier
+IR.C(32): error C202: 'IE': undefined identifier
+IR.C(33): error C202: 'TCON': undefined identifier
+IR.C(36): error C202: 'IRIN': undefined identifier
+IR.C(37): error C202: 'BEEP': undefined identifier
+IR.C(38): error C202: 'RELAY': undefined identifier
+IR.C(49): error C202: 'EA': undefined identifier
+IR.C(51): error C141: syntax error near ';'
+IR.C(51): error C141: syntax error near ')'
+IR.C(53): error C202: 'IRIN': undefined identifier
+IR.C(53): error C171: 'break': missing enclosing loop
+IR.C(54): error C202: 'EA': undefined identifier
+IR.C(57): error C202: 'IRIN': undefined identifier
+IR.C(58): error C202: 'IRIN': undefined identifier
+IR.C(61): error C141: syntax error near ';'
+IR.C(61): error C141: syntax error near ')'
+IR.C(63): error C141: syntax error near ';'
+IR.C(63): error C141: syntax error near ')'
+IR.C(65): error C202: 'IRIN': undefined identifier
+IR.C(67): error C202: 'IRIN': undefined identifier
+IR.C(69): error C202: 'IRIN': undefined identifier
+IR.C(73): error C202: 'EA': undefined identifier
+IR.C(81): error C202: 'EA': undefined identifier
+IR.C(86): error C202: 'EA': undefined identifier
+IR.C(92): error C202: 'P0': undefined identifier
+IR.C(93): error C202: 'GEWEI': undefined identifier
+IR.C(94): error C202: 'SHIWEI': undefined identifier
+IR.C(96): error C202: 'P0': undefined identifier
+IR.C(97): error C202: 'SHIWEI': undefined identifier
+IR.C(98): error C202: 'GEWEI': undefined identifier
+IR.C(105): error C141: syntax error near ';'
+IR.C(105): error C141: syntax error near ')'
+IR.C(108): error C202: 'BEEP': undefined identifier
+IR.C(110): error C202: 'BEEP': undefined identifier
+IR.C(118): error C141: syntax error near ';'
+IR.C(118): error C141: syntax error near ')'
+IR.C(128): error C141: syntax error near ';'
+IR.C(128): error C141: syntax error near ')'
+Target not created
+Build target 'Target 1'
+compiling IR.c...
+*** WARNING C318 IN LINE 13 OF IR.c: can't open file ';reg51.h'
+*** WARNING C318 IN LINE 14 OF IR.c: can't open file ';intrins.h'
+IR.C(21): error C202: 'P3': undefined identifier
+IR.C(22): error C202: 'P3': undefined identifier
+IR.C(23): error C202: 'P1': undefined identifier
+IR.C(24): error C202: 'P2': undefined identifier
+IR.C(25): error C202: 'P2': undefined identifier
+IR.C(32): error C202: 'IE': undefined identifier
+IR.C(33): error C202: 'TCON': undefined identifier
+IR.C(36): error C202: 'IRIN': undefined identifier
+IR.C(37): error C202: 'BEEP': undefined identifier
+IR.C(38): error C202: 'RELAY': undefined identifier
+IR.C(49): error C202: 'EA': undefined identifier
+IR.C(51): error C141: syntax error near ';'
+IR.C(51): error C141: syntax error near ')'
+IR.C(53): error C202: 'IRIN': undefined identifier
+IR.C(53): error C171: 'break': missing enclosing loop
+IR.C(54): error C202: 'EA': undefined identifier
+IR.C(57): error C202: 'IRIN': undefined identifier
+IR.C(58): error C202: 'IRIN': undefined identifier
+IR.C(61): error C141: syntax error near ';'
+IR.C(61): error C141: syntax error near ')'
+IR.C(63): error C141: syntax error near ';'
+IR.C(63): error C141: syntax error near ')'
+IR.C(65): error C202: 'IRIN': undefined identifier
+IR.C(67): error C202: 'IRIN': undefined identifier
+IR.C(69): error C202: 'IRIN': undefined identifier
+IR.C(73): error C202: 'EA': undefined identifier
+IR.C(81): error C202: 'EA': undefined identifier
+IR.C(86): error C202: 'EA': undefined identifier
+IR.C(92): error C202: 'P0': undefined identifier
+IR.C(93): error C202: 'GEWEI': undefined identifier
+IR.C(94): error C202: 'SHIWEI': undefined identifier
+IR.C(96): error C202: 'P0': undefined identifier
+IR.C(97): error C202: 'SHIWEI': undefined identifier
+IR.C(98): error C202: 'GEWEI': undefined identifier
+IR.C(105): error C141: syntax error near ';'
+IR.C(105): error C141: syntax error near ')'
+IR.C(108): error C202: 'BEEP': undefined identifier
+IR.C(110): error C202: 'BEEP': undefined identifier
+IR.C(118): error C141: syntax error near ';'
+IR.C(118): error C141: syntax error near ')'
+IR.C(128): error C141: syntax error near ';'
+IR.C(128): error C141: syntax error near ')'
+Target not created
+Build target 'Target 1'
+compiling IR.c...
+*** WARNING C318 IN LINE 1 OF IR.c: can't open file ';reg52.h'
+*** WARNING C318 IN LINE 2 OF IR.c: can't open file ';intrins.h'
+IR.C(41): error C202: 'P3': undefined identifier
+IR.C(53): error C202: 'TMOD': undefined identifier
+IR.C(54): error C202: 'EA': undefined identifier
+IR.C(55): error C202: 'ET0': undefined identifier
+IR.C(56): error C202: 'TH0': undefined identifier
+IR.C(57): error C202: 'TL0': undefined identifier
+IR.C(60): error C202: 'TR0': undefined identifier
+IR.C(71): error C141: syntax error near ';'
+IR.C(71): error C141: syntax error near ')'
+IR.C(89): error C202: 'TR0': undefined identifier
+IR.C(90): error C202: 'TH0': undefined identifier
+IR.C(91): error C202: 'TL0': undefined identifier
+IR.C(92): error C202: 'P0': undefined identifier
+IR.C(95): error C202: 'P2': undefined identifier
+Target not created
+Build target 'Target 1'
+compiling IR.c...
+IR.C(71): error C141: syntax error near ';'
+IR.C(71): error C141: syntax error near ')'
+Target not created
+Build target 'Target 1'
+compiling IR.c...
+linking...
+Program Size: data=52.1 xdata=0 code=817
+creating hex file from "IR"...
+"IR" - 0 Error(s), 0 Warning(s).
+Build target 'Target 1'
+compiling IR.c...
+linking...
+Program Size: data=52.1 xdata=0 code=817
+creating hex file from "IR"...
+"IR" - 0 Error(s), 0 Warning(s).

@@ -1,0 +1,170 @@
+A51 MACRO ASSEMBLER  WL005                                                                03/29/2005 15:43:00 PAGE     1
+
+
+MACRO ASSEMBLER A51 V7.10
+OBJECT MODULE PLACED IN wl005.OBJ
+ASSEMBLER INVOKED BY: C:\Keil\C51\BIN\A51.EXE wl005.asm SET(SMALL) DEBUG EP
+
+LOC  OBJ            LINE     SOURCE
+
+                       1     ;********************************************************************************
+                       2     ;*  标题:  伟纳电子ME300B单片机开发系统演示程序 - 按键扫描程序                  *
+                       3     ;*  文件:  wl005.asm                                                            *
+                       4     ;*  日期:  2004-1-5                                                             *
+                       5     ;*  版本:  1.0                                                                  *
+                       6     ;*  作者:  伟纳电子 - Freeman                                                   *
+                       7     ;*  邮箱:  freeman@willar.com                                                   *
+                       8     ;*  网站： http://www.willar.com                                                *
+                       9     ;********************************************************************************
+                      10     ;*  描述:                                                                       *
+                      11     ;*         按键扫描程序                                                         *
+                      12     ;*         按下K1,单灯右移                                                      *
+                      13     ;*         按下K2,单灯左移                                                      *
+                      14     ;*                                                                              *
+                      15     ;*                                                                              *
+                      16     ;********************************************************************************
+                      17     ;* 【版权】 Copyright(C)伟纳电子 www.willar.com  All Rights Reserved            *
+                      18     ;* 【声明】 此程序仅用于学习与参考，引用请注明版权和作者信息！                  *
+                      19     ;********************************************************************************
+                      20     
+                      21     CODE_SEG        SEGMENT CODE
+                      22     DATA_SEG        SEGMENT DATA
+                      23     STACK_SEG       SEGMENT IDATA
+                      24     
+----                  25             RSEG    DATA_SEG
+0000                  26     KEY_S:  DS      1
+0001                  27     KEY_V:  DS      1
+                      28     
+----                  29             RSEG    STACK_SEG
+0000                  30     STACK:  DS      20
+                      31     
+                      32     
+  0094                33     K1      BIT     P1.4            ; 
+  0095                34     K2      BIT     P1.5            ; 
+                      35     
+                      36     
+----                  37             CSEG    AT      0000H
+0000 020000   F       38             JMP     MAIN
+                      39     
+                      40     ;===============================================================================        
+----                  41             RSEG    CODE_SEG
+0000                  42     MAIN:
+0000 758100   F       43             MOV     SP,#(STACK-1)           ; 设置栈指针
+0003 7580FE           44             MOV     P0,#0FEH                ; 初始点亮LED P00
+0006 750003   F       45             MOV     KEY_V,#03H              ; 初始键值
+                      46     
+0009                  47     KEY_CHKSW:                              ; 循环检测按键是否按下                             
+                                  
+0009 1100     F       48             ACALL   SCAN_KEY                ; 输入按键状态
+000B F500     F       49             MOV     KEY_S,A
+000D 6500     F       50             XRL     A,KEY_V                 ; 检查按键值是否改变
+000F 60F8             51             JZ      KEY_CHKSW               ; 若无键被按,则跳回KEY_CHKSW
+                      52             
+0011 7F0A             53             MOV     R7,#10                  ; 延时10ms
+0013 1100     F       54             ACALL   DELAYMS                 ; 延时去抖
+0015 1100     F       55             ACALL   SCAN_KEY                ; 再次检查按键值
+0017 F500     F       56             MOV     KEY_S,A
+0019 6500     F       57             XRL     A,KEY_V
+A51 MACRO ASSEMBLER  WL005                                                                03/29/2005 15:43:00 PAGE     2
+
+001B 60EC             58             JZ      KEY_CHKSW
+                      59             
+001D 850000   F       60             MOV     KEY_V,KEY_S             ; 保存按键状态
+0020 1100     F       61             ACALL   PROC_KEY                ;
+0022 80E5             62             SJMP    KEY_CHKSW
+                      63     ;===============================================================================
+0024                  64     SCAN_KEY:                               
+                      65     ; 扫描按键
+                      66     ; 传入参数:无
+                      67     ; 返回值:A --- 按键状态
+                      68     
+0024 E4               69             CLR     A
+0025 A294             70             MOV     C,K1
+0027 92E0             71             MOV     ACC.0,C
+0029 A295             72             MOV     C,K2
+002B 92E1             73             MOV     ACC.1,C
+002D 22               74             RET
+                      75     
+                      76     ;===============================================================================        
+002E                  77     PROC_KEY:
+                      78     ; 按键处理子程序
+                      79     ; 传入参数: KEY_V --- 按键值
+                      80     ; 返回值: 无
+                      81     
+002E E500     F       82             MOV     A,KEY_V
+0030 30E004           83             JNB     ACC.0,PROC_K1
+0033 30E107           84             JNB     ACC.1,PROC_K2
+0036 22               85             RET
+                      86             
+0037                  87     PROC_K1:                                ; 按键K1处理程序
+0037 E580             88             MOV     A,P0                    ; 右移
+0039 03               89             RR      A
+003A F580             90             MOV     P0,A
+003C 22               91             RET
+                      92             
+003D                  93     PROC_K2:                                ; 按键K2处理程序
+003D E580             94             MOV     A,P0                    ; 左移
+003F 23               95             RL      A
+0040 F580             96             MOV     P0,A     
+0042 22               97             RET
+                      98     
+                      99     ;===============================================================================        
+                     100     
+0043                 101     DELAYMS:
+                     102     ; 延时子程序
+                     103     ; 传入参数：R7 --- 延时值(MS) 
+                     104     ; 返回值：无
+                     105     
+0043 EF              106             MOV     A,R7
+0044 6009            107             JZ      END_DLYMS       
+0046                 108     DLY_LP1:
+0046 7EB9            109             MOV     R6,#185
+0048                 110     DLY_LP2:
+0048 00              111             NOP
+0049 00              112             NOP
+004A 00              113             NOP
+004B DEFB            114             DJNZ    R6,DLY_LP2
+004D DFF7            115             DJNZ    R7,DLY_LP1
+                     116     
+004F                 117     END_DLYMS:
+004F 22              118             RET 
+                     119             
+                     120     ; END OF DELAYMS
+                     121             
+                     122             END
+A51 MACRO ASSEMBLER  WL005                                                                03/29/2005 15:43:00 PAGE     3
+
+SYMBOL TABLE LISTING
+------ ----- -------
+
+
+N A M E             T Y P E  V A L U E   ATTRIBUTES
+
+ACC. . . . . . . .  D ADDR   00E0H   A   
+CODE_SEG . . . . .  C SEG    0050H       REL=UNIT
+DATA_SEG . . . . .  D SEG    0002H       REL=UNIT
+DELAYMS. . . . . .  C ADDR   0043H   R   SEG=CODE_SEG
+DLY_LP1. . . . . .  C ADDR   0046H   R   SEG=CODE_SEG
+DLY_LP2. . . . . .  C ADDR   0048H   R   SEG=CODE_SEG
+END_DLYMS. . . . .  C ADDR   004FH   R   SEG=CODE_SEG
+K1 . . . . . . . .  B ADDR   0090H.4 A   
+K2 . . . . . . . .  B ADDR   0090H.5 A   
+KEY_CHKSW. . . . .  C ADDR   0009H   R   SEG=CODE_SEG
+KEY_S. . . . . . .  D ADDR   0000H   R   SEG=DATA_SEG
+KEY_V. . . . . . .  D ADDR   0001H   R   SEG=DATA_SEG
+MAIN . . . . . . .  C ADDR   0000H   R   SEG=CODE_SEG
+P0 . . . . . . . .  D ADDR   0080H   A   
+P1 . . . . . . . .  D ADDR   0090H   A   
+PROC_K1. . . . . .  C ADDR   0037H   R   SEG=CODE_SEG
+PROC_K2. . . . . .  C ADDR   003DH   R   SEG=CODE_SEG
+PROC_KEY . . . . .  C ADDR   002EH   R   SEG=CODE_SEG
+SCAN_KEY . . . . .  C ADDR   0024H   R   SEG=CODE_SEG
+SP . . . . . . . .  D ADDR   0081H   A   
+STACK. . . . . . .  I ADDR   0000H   R   SEG=STACK_SEG
+STACK_SEG. . . . .  I SEG    0014H       REL=UNIT
+
+
+REGISTER BANK(S) USED: 0 
+
+
+ASSEMBLY COMPLETE.  0 WARNING(S), 0 ERROR(S)

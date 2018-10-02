@@ -1,0 +1,177 @@
+XL
+H 3 areas C global symbols
+M key_bee.c
+S push_gset2 Ref0000
+S push_gset5 Ref0000
+S pop_gset2 Ref0000
+S empy16s Ref0000
+S pop_gset5 Ref0000
+S lsl16 Ref0000
+A text size 126 flags 0
+dbfile F:\工程文件\avr\例程\mega128\key_bee\key_bee.c
+dbfunc e port_init 0 fV
+dbline FFFFFFFF 0
+dbline 15 0
+dbline 16 0
+dbline 17 4
+dbline 18 8
+dbline 19 A
+dbline 1A C
+dbline 1B E
+dbline 1C 10
+dbline 1D 12
+dbline 1E 14
+dbline 1F 16
+dbline 20 18
+dbline 21 1C
+dbline 22 20
+dbline 23 26
+dbline FFFFFFFE 2A
+dbline 24 2A
+dbline 0 2A
+dbfunc e init_devices 2C fV
+dbline FFFFFFFF 2C
+dbline 28 2C
+dbline 2A 2C
+dbline 2B 2E
+dbline 2C 32
+dbline 2D 36
+dbline 2F 38
+dbline 30 3C
+dbline 31 40
+dbline 32 42
+dbline 33 44
+dbline 34 46
+dbline 35 4A
+dbline FFFFFFFE 4C
+dbline 37 4C
+dbline 0 4C
+dbfunc e main 4E fV
+dbsym r kk 14 c
+dbline FFFFFFFF 4E
+dbline 3B 4E
+dbline 3D 4E
+dbline 3F 52
+dbline 3F 52
+dbline 40 5A
+dbline 41 60
+dbline 42 62
+dbline 3E 62
+dbline FFFFFFFE 64
+dbline 45 64
+dbline 0 64
+dbfunc e delay 66 fV
+dbsym r j 14 I
+dbsym r i 16 I
+dbsym r ms 10 I
+dbline FFFFFFFF 6A
+dbline 47 6A
+dbline 48 6A
+dbline 49 70
+dbline 49 74
+dbline 49 74
+dbline 49 78
+dbline 48 80
+dbline 48 84
+dbline FFFFFFFE 8A
+dbline 4A 8A
+dbline 0 8E
+dbfunc e key 90 fc
+dbsym l key_out 1 i
+dbsym r ky 14 i
+dbsym l key_data 0 i
+dbsym r key_in1 16 i
+dbsym r key_in3 A i
+dbsym r key_in2 C i
+dbsym r key_in E i
+dbsym r i 14 i
+dbsym l number C c
+dbline FFFFFFFF 9A
+dbline 4E 9A
+dbline 4F 9A
+dbline 4F A2
+dbline 4F A6
+dbline 50 A8
+dbline 52 AC
+dbline 53 AE
+dbline 53 AE
+dbline 54 BE
+dbline 55 C6
+dbline 56 CC
+dbline 57 D6
+dbline 58 DC
+dbline 59 E6
+dbline 5A EC
+dbline 5B F4
+dbline 5D 10A
+dbline 52 10A
+dbline 52 10E
+dbline 5F 118
+dbline FFFFFFFE 11C
+dbline 0 124
+S _main Def004E
+S _port_init Def0000
+S _init_devices Def002C
+S _delay Def0066
+S _key Def0090
+A data size 9 flags 20
+dbfile F:\工程文件\avr\例程\mega128\key_bee\key_bee.c
+dbsym e chabiao 0 A[9:9]c
+S _chabiao Def0000
+A idata size 9 flags 0
+T 00 00 00 01
+R 00 00 02 00
+T 02 00 02 00
+R 00 00 02 00
+T 04 00 03 00
+R 00 00 02 00
+T 06 00 00 00
+R 00 00 02 00
+T 08 00 04
+R 00 00 02 00
+T 00 00 8F EF 8B BB 22 24 2A BA 88 BB 27 BA 25 BA
+R 00 00 00 00
+T 0E 00 84 BB 22 BA 81 BB 83 B9 22 B8 80 93 62 00
+R 00 00 00 00
+T 1C 00 20 92 61 00 8F E1 80 93 65 00 20 92 64 00
+R 00 00 00 00
+T 2A 00 08 95
+R 00 00 00 00
+T 2C 00 F8 94 22 24 2C BE 20 92 6D 00 E4 DF 22 24
+R 00 00 00 00
+T 3A 00 25 BE 20 92 6A 00 2A BE 29 BE 27 BE 20 92
+R 00 00 00 00
+T 48 00 7D 00 78 94 08 95
+R 00 00 00 00
+T 4E 00 EE DF 08 C0 02 E0 1D D0 00 23 19 F0 02 E0
+R 00 00 00 00
+T 5C 00 19 D0 40 2F 45 BB F7 CF 08 95
+R 00 00 00 00
+T 66 00 0E 94 00 00 44 27 55 27 0A C0 66 27 77 27
+R 00 00 00 00 12 04 00 00
+T 74 00 6F 5F 7F 4F 64 36 E0 E0 7E 07 D4 F3 4F 5F
+R 00 00 00 00
+T 82 00 5F 4F 40 17 51 07 9C F3 0E 94 00 00 08 95
+R 00 00 00 00 12 0C 02 00
+T 90 00 1A 93 0A 93 0E 94 00 00 22 97 00 24 11 24
+R 00 00 00 00 12 08 01 00
+T 9E 00 19 82 08 82 41 E0 50 E0 44 27 8F EF 81 BB
+R 00 00 00 00
+T AC 00 30 C0 9A 01 2C 5F 3F 4F 01 E0 10 E0 0E 94
+R 00 00 00 00
+T BA 00 00 00 02 BB 60 B3 77 27 6F 70 70 70 01 E0
+R 00 00 00 00 12 02 05 00
+T C8 00 10 E0 CD DF 80 B3 99 27 8F 70 90 70 6C 01
+R 00 00 00 00
+T D6 00 01 E0 10 E0 C5 DF 80 B3 99 27 8F 70 90 70
+R 00 00 00 00
+T E4 00 5C 01 76 01 E8 22 F9 22 EE 20 11 F4 FF 20
+R 00 00 00 00
+T F2 00 59 F0 04 E0 10 E0 9A 01 0E 94 00 00 98 01
+R 00 00 00 00 12 0C 03 00
+T 00 01 87 01 0E 94 00 00 19 83 08 83 4F 5F 5F 4F
+R 00 00 00 00 12 06 05 00
+T 0E 01 2C 84 33 24 42 15 53 05 58 F2 08 81 19 81
+R 00 00 00 00
+T 1C 01 22 96 0E 94 00 00 22 96 08 95
+R 00 00 00 00 12 06 04 00

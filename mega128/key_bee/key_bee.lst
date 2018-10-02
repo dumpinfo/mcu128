@@ -1,0 +1,356 @@
+__text_start:
+__start:
+    004B EFCF      LDI	R28,0xFF
+    004C E1D0      LDI	R29,0x10
+    004D BFCD      OUT	0x3D,R28
+    004E BFDE      OUT	0x3E,R29
+    004F 51C0      SUBI	R28,0x10
+    0050 40D0      SBCI	R29,0
+    0051 EA0A      LDI	R16,0xAA
+    0052 8308      STD	Y+0,R16
+    0053 2400      CLR	R0
+    0054 E0E9      LDI	R30,0x9
+    0055 E0F1      LDI	R31,1
+    0056 E011      LDI	R17,1
+    0057 30E9      CPI	R30,0x9
+    0058 07F1      CPC	R31,R17
+    0059 F011      BEQ	0x005C
+    005A 9201      ST	R0,Z+
+    005B CFFB      RJMP	0x0057
+    005C 8300      STD	Z+0,R16
+    005D E8EC      LDI	R30,0x8C
+    005E E0F0      LDI	R31,0
+    005F E0A0      LDI	R26,0
+    0060 E0B1      LDI	R27,1
+    0061 E010      LDI	R17,0
+    0062 39E5      CPI	R30,0x95
+    0063 07F1      CPC	R31,R17
+    0064 F021      BEQ	0x0069
+    0065 95C8      LPM
+    0066 9631      ADIW	R30,1
+    0067 920D      ST	R0,X+
+    0068 CFF9      RJMP	0x0062
+    0069 940E0093  CALL	_main
+_exit:
+    006B CFFF      RJMP	_exit
+FILE: F:\工程文件\avr\例程\mega128\key_bee\key_bee.c
+(0001) //ICC-AVR application builder : 2008-1-14 9:09:01
+(0002) // Target : M128
+(0003) // Crystal: 2.0000Mhz
+(0004) //该程序采用了键盘扫描的方法
+(0005) //PD口作为键盘控制端
+(0006) //PC0作为蜂鸣器输出端
+(0007) 
+(0008) 
+(0009) #include <iom128v.h>
+(0010) #include <macros.h>
+(0011) 
+(0012) #define port_key  PORTD
+(0013) #define ddr_key   DDRD
+(0014) #define pin_key   PIND
+(0015) #define port_bee  PORTC
+(0016) void delay(int ms);
+(0017) unsigned char key(unsigned char number);
+(0018)  unsigned char chabiao[]={0,1,2,0,3,0,0,0,4};
+(0019) 
+(0020) void port_init(void)
+(0021) {
+(0022)  PORTA = 0xFF;
+_port_init:
+    006C EF8F      LDI	R24,0xFF
+    006D BB8B      OUT	0x1B,R24
+(0023)  DDRA  = 0x00;
+    006E 2422      CLR	R2
+    006F BA2A      OUT	0x1A,R2
+(0024)  PORTB = 0xFF;
+    0070 BB88      OUT	0x18,R24
+(0025)  DDRB  = 0x00;
+    0071 BA27      OUT	0x17,R2
+(0026)  PORTC = 0x0; 
+    0072 BA25      OUT	0x15,R2
+(0027)  DDRC  = 0xFF;
+    0073 BB84      OUT	0x14,R24
+(0028)  PORTD = 0x0;
+    0074 BA22      OUT	0x12,R2
+(0029)  DDRD  = 0xFF;
+    0075 BB81      OUT	0x11,R24
+(0030)  PORTE = 0xFF;
+    0076 B983      OUT	0x03,R24
+(0031)  DDRE  = 0x00;
+    0077 B822      OUT	0x02,R2
+(0032)  PORTF = 0xFF;
+    0078 93800062  STS	0x62,R24
+(0033)  DDRF  = 0x00;
+    007A 92200061  STS	0x61,R2
+(0034)  PORTG = 0x1F;
+    007C E18F      LDI	R24,0x1F
+    007D 93800065  STS	0x65,R24
+(0035)  DDRG  = 0x00;
+    007F 92200064  STS	0x64,R2
+(0036) }
+    0081 9508      RET
+(0037) 
+(0038) //call this routine to initialise all peripherals
+(0039) void init_devices(void)
+(0040) {
+(0041)  //stop errant interrupts until set up
+(0042)  CLI(); //disable all interrupts
+_init_devices:
+    0082 94F8      BCLR	7
+(0043)  XDIV  = 0x00; //xtal divider
+    0083 2422      CLR	R2
+    0084 BE2C      OUT	0x3C,R2
+(0044)  XMCRA = 0x00; //external memory
+    0085 9220006D  STS	0x6D,R2
+(0045)  port_init();
+    0087 DFE4      RCALL	_port_init
+(0046) 
+(0047)  MCUCR = 0x00;
+    0088 2422      CLR	R2
+    0089 BE25      OUT	0x35,R2
+(0048)  EICRA = 0x00; //extended ext ints
+    008A 9220006A  STS	0x6A,R2
+(0049)  EICRB = 0x00; //extended ext ints
+    008C BE2A      OUT	0x3A,R2
+(0050)  EIMSK = 0x00;
+    008D BE29      OUT	0x39,R2
+(0051)  TIMSK = 0x00; //timer interrupt sources
+    008E BE27      OUT	0x37,R2
+(0052)  ETIMSK = 0x00; //extended timer interrupt sources
+    008F 9220007D  STS	0x7D,R2
+(0053)  SEI(); //re-enable interrupts
+    0091 9478      BSET	7
+(0054)  //all peripherals are now initialised
+(0055) }
+    0092 9508      RET
+(0056) 
+(0057) //
+(0058) void main(void)
+(0059) { 
+(0060)   unsigned char kk;
+(0061)  init_devices();
+_main:
+  kk                   --> R20
+    0093 DFEE      RCALL	_init_devices
+    0094 C008      RJMP	0x009D
+(0062)  while(1)
+(0063)   {if(key(2)!=0)
+    0095 E002      LDI	R16,2
+    0096 D01D      RCALL	_key
+    0097 2300      TST	R16
+    0098 F019      BEQ	0x009C
+(0064)    kk=key(2);
+    0099 E002      LDI	R16,2
+    009A D019      RCALL	_key
+    009B 2F40      MOV	R20,R16
+(0065)   PORTC = kk;
+    009C BB45      OUT	0x15,R20
+    009D CFF7      RJMP	0x0095
+(0066)   }
+(0067)    
+(0068)    
+(0069)  }
+    009E 9508      RET
+_delay:
+  j                    --> R20
+  i                    --> R22
+  ms                   --> R16
+    009F 940E012C  CALL	push_gset2
+(0070) void delay(int ms)
+(0071) {int i,j;
+(0072)   for(j=0;j<ms;j++)
+    00A1 2744      CLR	R20
+    00A2 2755      CLR	R21
+    00A3 C00A      RJMP	0x00AE
+(0073)   for(i=0;i<100;i++);
+    00A4 2766      CLR	R22
+    00A5 2777      CLR	R23
+    00A6 5F6F      SUBI	R22,0xFF
+    00A7 4F7F      SBCI	R23,0xFF
+    00A8 3664      CPI	R22,0x64
+    00A9 E0E0      LDI	R30,0
+    00AA 077E      CPC	R23,R30
+    00AB F3D4      BLT	0x00A6
+    00AC 5F4F      SUBI	R20,0xFF
+    00AD 4F5F      SBCI	R21,0xFF
+    00AE 1740      CP	R20,R16
+    00AF 0751      CPC	R21,R17
+    00B0 F39C      BLT	0x00A4
+(0074) }
+    00B1 940E010F  CALL	pop_gset2
+    00B3 9508      RET
+_key:
+  key_out              --> Y+1
+  ky                   --> R20
+  key_data             --> Y+0
+  key_in1              --> R22
+  key_in3              --> R10
+  key_in2              --> R12
+  key_in               --> R14
+  i                    --> R20
+  number               --> Y+12
+    00B4 931A      ST	R17,-Y
+    00B5 930A      ST	R16,-Y
+    00B6 940E0138  CALL	push_gset5
+    00B8 9722      SBIW	R28,2
+(0075) 
+(0076) //number表示键盘列数，比如共有2列,number=2
+(0077) unsigned char key(unsigned char number)
+(0078) { 
+(0079)   unsigned key_data=0,ky=1,key_out,i = 0,key_in1,key_in2,key_in3,key_in;
+    00B9 2400      CLR	R0
+    00BA 2411      CLR	R1
+    00BB 8219      STD	Y+1,R1
+    00BC 8208      STD	Y+0,R0
+    00BD E041      LDI	R20,1
+    00BE E050      LDI	R21,0
+    00BF 2744      CLR	R20
+(0080)   ddr_key = 0Xff;//低4位输入，高4位输出
+    00C0 EF8F      LDI	R24,0xFF
+    00C1 BB81      OUT	0x11,R24
+(0081)   
+(0082)   for(i = 0;i<number; i++)
+    00C2 C030      RJMP	0x00F3
+(0083)    {port_key = 1<<(i+4);
+    00C3 019A      MOVW	R18,R20
+    00C4 5F2C      SUBI	R18,0xFC
+    00C5 4F3F      SBCI	R19,0xFF
+    00C6 E001      LDI	R16,1
+    00C7 E010      LDI	R17,0
+    00C8 940E013C  CALL	lsl16
+    00CA BB02      OUT	0x12,R16
+(0084)     key_in1 = pin_key&0xf;
+    00CB B360      IN	R22,0x10
+    00CC 2777      CLR	R23
+    00CD 706F      ANDI	R22,0xF
+    00CE 7070      ANDI	R23,0
+(0085) 	delay(1);
+    00CF E001      LDI	R16,1
+    00D0 E010      LDI	R17,0
+    00D1 DFCD      RCALL	_delay
+(0086) 	key_in2 = pin_key&0xf;
+    00D2 B380      IN	R24,0x10
+    00D3 2799      CLR	R25
+    00D4 708F      ANDI	R24,0xF
+    00D5 7090      ANDI	R25,0
+    00D6 016C      MOVW	R12,R24
+(0087) 	delay(1);
+    00D7 E001      LDI	R16,1
+    00D8 E010      LDI	R17,0
+    00D9 DFC5      RCALL	_delay
+(0088) 	key_in3 = pin_key&0xf;
+    00DA B380      IN	R24,0x10
+    00DB 2799      CLR	R25
+    00DC 708F      ANDI	R24,0xF
+    00DD 7090      ANDI	R25,0
+    00DE 015C      MOVW	R10,R24
+(0089) 	key_in = key_in2&key_in3;
+    00DF 0176      MOVW	R14,R12
+    00E0 22E8      AND	R14,R24
+    00E1 22F9      AND	R15,R25
+(0090) 	if(key_in != 0)
+    00E2 20EE      TST	R14
+    00E3 F411      BNE	0x00E6
+    00E4 20FF      TST	R15
+    00E5 F059      BEQ	0x00F1
+(0091) 	 key_data = key_in<<(i*4);
+    00E6 E004      LDI	R16,4
+    00E7 E010      LDI	R17,0
+    00E8 019A      MOVW	R18,R20
+    00E9 940E00FF  CALL	empy16s
+    00EB 0198      MOVW	R18,R16
+    00EC 0187      MOVW	R16,R14
+    00ED 940E013C  CALL	lsl16
+    00EF 8319      STD	Y+1,R17
+    00F0 8308      STD	Y+0,R16
+    00F1 5F4F      SUBI	R20,0xFF
+    00F2 4F5F      SBCI	R21,0xFF
+    00F3 842C      LDD	R2,Y+12
+    00F4 2433      CLR	R3
+    00F5 1542      CP	R20,R2
+    00F6 0553      CPC	R21,R3
+    00F7 F258      BCS	0x00C3
+(0092) 	
+(0093)    }
+(0094)    //key_data = pin_key;
+(0095)     return key_data;
+FILE: <library>
+    00F8 8108      LDD	R16,Y+0
+    00F9 8119      LDD	R17,Y+1
+    00FA 9622      ADIW	R28,2
+    00FB 940E0112  CALL	pop_gset5
+    00FD 9622      ADIW	R28,2
+    00FE 9508      RET
+empy16s:
+    00FF 920A      ST	R0,-Y
+    0100 921A      ST	R1,-Y
+    0101 938A      ST	R24,-Y
+    0102 939A      ST	R25,-Y
+    0103 9F02      MUL	R16,R18
+    0104 01C0      MOVW	R24,R0
+    0105 9F12      MUL	R17,R18
+    0106 0D90      ADD	R25,R0
+    0107 9F03      MUL	R16,R19
+    0108 0D90      ADD	R25,R0
+    0109 018C      MOVW	R16,R24
+    010A 9199      LD	R25,Y+
+    010B 9189      LD	R24,Y+
+    010C 9019      LD	R1,Y+
+    010D 9009      LD	R0,Y+
+    010E 9508      RET
+pop_gset2:
+    010F E0E2      LDI	R30,2
+    0110 940C0119  JMP	pop
+pop_gset5:
+    0112 27EE      CLR	R30
+    0113 940C0119  JMP	pop
+push_gset1:
+    0115 935A      ST	R21,-Y
+    0116 934A      ST	R20,-Y
+    0117 9508      RET
+pop_gset1:
+    0118 E0E1      LDI	R30,1
+pop:
+    0119 9149      LD	R20,Y+
+    011A 9159      LD	R21,Y+
+    011B FDE0      SBRC	R30,0
+    011C 9508      RET
+    011D 9169      LD	R22,Y+
+    011E 9179      LD	R23,Y+
+    011F FDE1      SBRC	R30,1
+    0120 9508      RET
+    0121 90A9      LD	R10,Y+
+    0122 90B9      LD	R11,Y+
+    0123 FDE2      SBRC	R30,2
+    0124 9508      RET
+    0125 90C9      LD	R12,Y+
+    0126 90D9      LD	R13,Y+
+    0127 FDE3      SBRC	R30,3
+    0128 9508      RET
+    0129 90E9      LD	R14,Y+
+    012A 90F9      LD	R15,Y+
+    012B 9508      RET
+push_gset2:
+    012C 937A      ST	R23,-Y
+    012D 936A      ST	R22,-Y
+    012E 940C0115  JMP	push_gset1
+push_gset3:
+    0130 92BA      ST	R11,-Y
+    0131 92AA      ST	R10,-Y
+    0132 940C012C  JMP	push_gset2
+push_gset4:
+    0134 92DA      ST	R13,-Y
+    0135 92CA      ST	R12,-Y
+    0136 940C0130  JMP	push_gset3
+push_gset5:
+    0138 92FA      ST	R15,-Y
+    0139 92EA      ST	R14,-Y
+    013A 940C0134  JMP	push_gset4
+lsl16:
+    013C 2322      TST	R18
+    013D F021      BEQ	0x0142
+    013E 0F00      LSL	R16
+    013F 1F11      ROL	R17
+    0140 952A      DEC	R18
+    0141 CFFA      RJMP	lsl16
+    0142 9508      RET

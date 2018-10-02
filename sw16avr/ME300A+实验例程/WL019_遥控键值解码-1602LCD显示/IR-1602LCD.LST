@@ -1,0 +1,398 @@
+A51 MACRO ASSEMBLER  IR_1602LCD                                                           03/29/2005 16:11:52 PAGE     1
+
+
+MACRO ASSEMBLER A51 V7.10
+OBJECT MODULE PLACED IN IR-1602LCD.OBJ
+ASSEMBLER INVOKED BY: C:\Keil\C51\BIN\A51.EXE IR-1602LCD.asm SET(SMALL) DEBUG EP
+
+LOC  OBJ            LINE     SOURCE
+
+                       1     ;********************************************************************************
+                       2     ;*  标题:  伟纳电子ME300B单片机开发系统演示程序 - 遥控键值解码-1602LCD显示      *
+                       3     ;*  文件:  IR-LCD.asm                                                           *
+                       4     ;*  日期:  2005-3-20                                                            *
+                       5     ;*  版本:  1.0                                                                  *
+                       6     ;*  作者:  gguoqing                                                             *
+                       7     ;*  邮箱:  gguoqing@willar.com                                                  *
+                       8     ;*  网站： http://www.willar.com                                                *
+                       9     ;********************************************************************************
+                      10     ;*  描述:                                                                       *
+                      11     ;*          ME300B 键值读取器                                                   *
+                      12     ;*          1602LCD显示, P0口为LCD的数据口                                      *
+                      13     ;*                                                                              *
+                      14     ;*          K17键按下，继电器吸合。K19键按下，继电器关闭。                      *
+                      15     ;*                                                                              *
+                      16     ;********************************************************************************
+                      17     ;* 【版权】 Copyright(C)伟纳电子 www.willar.com  All Rights Reserved            *
+                      18     ;* 【声明】 此程序仅用于学习与参考，引用请注明版权和作者信息！                  *
+                      19     ;********************************************************************************
+                      20     
+                      21     ;-----------------------------------------------
+  0020                22            IRCOM  EQU  20H       ;20H-23H IR使用
+  0026                23             X     EQU  26H       ;LCD 地址变量
+                      24     
+  00B2                25            IRIN   EQU  P3.2
+  00B7                26            BEEP   EQU  P3.7
+  0093                27            RELAY  EQU  P1.3
+                      28            
+  00A0                29             RS    EQU  P2.0
+  00A1                30             RW    EQU  P2.1
+  00A2                31             EN    EQU  P2.2
+                      32     ;------------------------------------------------
+0000                  33              ORG 0000H
+0000 8000             34              JMP  MAIN
+                      35     ;------------------------------------------------
+0002                  36     MAIN:
+0002 758140           37               MOV   SP,#40H
+0005 7400             38               MOV   A,#00H
+0007 7820             39               MOV   R0,#20H
+0009 F6               40     LOOP0:    MOV   @R0,A          ;20H-26H清零
+000A 08               41               INC   R0
+000B B827FB           42               CJNE  R0,#27H,LOOP0
+000E D2B2             43               SETB  IRIN
+0010 1126             44               CALL  SET_LCD
+0012 1188             45               CALL  MENU1
+0014                  46     LOOP1:
+0014 11EF             47               CALL  IR_IN
+0016 3135             48               CALL  IR_SHOW
+0018 E522             49               MOV  A,22H
+001A B44002           50               CJNE  A,#40H,LOOP2    ;K17键按下
+001D C293             51               CLR   RELAY           ;继电器吸合
+001F B40402           52     LOOP2:    CJNE  A,#04H,LOOP3    ;K19键按下
+0022 D293             53               SETB  RELAY           ;继电器关闭
+0024 80EE             54     LOOP3:    JMP   LOOP1
+                      55               
+                      56     ;-----------------------------------------------------
+                      57     ;  LCD 初始化设置
+                      58     ;-----------------------------------------------------
+A51 MACRO ASSEMBLER  IR_1602LCD                                                           03/29/2005 16:11:52 PAGE     2
+
+0026                  59     SET_LCD:
+0026 C2A2             60               CLR  EN
+0028 113B             61               CALL  INIT_LCD     ;初始化 LCD
+002A 319E             62               CALL  DELAY1
+002C 9000A1           63               MOV  DPTR,#INFO1   ;指针指到显示信息1
+002F 7401             64               MOV  A,#1          ;显示在第一行
+0031 115A             65               CALL  LCD_SHOW
+0033 9000B2           66               MOV  DPTR,#INFO2   ;指针指到显示信息2
+0036 7402             67               MOV  A,#2          ;显示在第二行
+0038 115A             68               CALL  LCD_SHOW
+003A 22               69               RET
+                      70     ;-----------------------------------------------------
+003B                  71     INIT_LCD:                 ;8位I/O控制 LCD 接口初始化
+003B 7438             72               MOV  A,#38H     ;双列显示，字形5*7点阵
+003D 11C3             73               CALL  WCOM
+003F 319E             74               CALL  DELAY1
+0041 7438             75               MOV  A,#38H     ;双列显示，字形5*7点阵
+0043 11C3             76               CALL  WCOM
+0045 319E             77               CALL  DELAY1
+0047 7438             78               MOV  A,#38H     ;双列显示，字形5*7点阵
+0049 11C3             79               CALL  WCOM
+004B 319E             80               CALL  DELAY1
+004D 740C             81               MOV  A,#0CH     ;开显示，关光标，
+004F 11C3             82               CALL  WCOM
+0051 319E             83               CALL  DELAY1
+0053 7401             84               MOV  A,#01H     ;清除 LCD 显示屏
+0055 11C3             85               CALL  WCOM
+0057 319E             86               CALL  DELAY1
+0059 22               87               RET
+                      88     ;----------------------------------------------------
+005A                  89     LCD_SHOW:       ;在LCD的第一行或第二行显示信息字符
+                      90     
+005A B4010C           91               CJNE  A,#1,LINE2  ;判断是否为第一行
+005D 7480             92       LINE1:  MOV  A,#80H       ;设置 LCD 的第一行地址
+005F 11C3             93               CALL  WCOM        ;写入命令
+0061 117F             94               CALL  CLR_LINE    ;清除该行字符数据
+0063 7480             95               MOV  A,#80H       ;设置 LCD 的第一行地址
+0065 11C3             96               CALL  WCOM        ;写入命令
+0067 800A             97               JMP  FILL
+                      98     
+0069 74C0             99       LINE2:  MOV  A,#0C0H      ;设置 LCD 的第二行地址
+006B 11C3            100               CALL  WCOM        ;写入命令
+006D 117F            101               CALL  CLR_LINE    ;清除该行字符数据
+006F 74C0            102               MOV  A,#0C0H      ;设置 LCD 的第二行地址
+0071 11C3            103               CALL  WCOM
+0073 E4              104       FILL:   CLR  A            ;填入字符
+0074 93              105               MOVC  A,@A+DPTR   ;由消息区取出字符
+0075 B40001          106               CJNE  A,#0,LC1    ;判断是否为结束码
+0078 22              107               RET
+0079 11D0            108       LC1:    CALL  WDATA       ;写入数据
+007B A3              109               INC  DPTR         ;指针加1
+007C 80F5            110               JMP  FILL         ;继续填入字符
+007E 22              111               RET
+                     112     ;---------------------------------------------------
+007F                 113     CLR_LINE:                  ;清除该行 LCD 的字符
+007F 7818            114               MOV  R0,#24
+0081 7420            115        CL1:   MOV  A,#' '
+0083 11D0            116               CALL  WDATA
+0085 D8FA            117               DJNZ  R0,CL1
+0087 22              118               RET
+                     119     ;----------------------------------------------------
+0088                 120     MENU1:                      ;LCD 显示工作菜单信息
+0088 900090          121              MOV   DPTR,#MENU2
+008B 7401            122              MOV   A,#1         ;在第一行显示信息
+008D 115A            123              CALL  LCD_SHOW
+008F 22              124              RET
+A51 MACRO ASSEMBLER  IR_1602LCD                                                           03/29/2005 16:11:52 PAGE     3
+
+0090 2052454D        125     MENU2:  DB  " REMOTE CONTROL ",0
+0094 4F544520                
+0098 434F4E54                
+009C 524F4C20                
+00A0 00                      
+                     126     ;-----------------------------------------------------
+00A1 20202020        127     INFO1:  DB  "                ",0  ;LCD 第一行显示信息
+00A5 20202020                
+00A9 20202020                
+00AD 20202020                
+00B1 00                      
+00B2 20204952        128     INFO2:  DB  "  IR-CODE: --H  ",0  ;LCD 第二行显示信息
+00B6 2D434F44                
+00BA 453A202D                
+00BE 2D482020                
+00C2 00                      
+                     129     ;-----------------------------------------------------
+                     130     
+                     131     ;-----------------------------------------------------
+                     132     ; 写指令、数据使能子程序
+                     133     ;-----------------------------------------------------
+00C3                 134     WCOM:
+00C3 F580            135               MOV  P0,A        ;写指令使能
+00C5 C2A0            136               CLR RS           ;RS=L,RW=L,D0-D7=指令码，E=高脉冲
+00C7 C2A1            137               CLR RW
+00C9 D2A2            138               SETB EN
+00CB 11DD            139               CALL  DELAY0
+00CD C2A2            140               CLR EN
+00CF 22              141               RET
+                     142                       
+00D0                 143     WDATA:
+00D0 F580            144               MOV   P0,A      ;写数据使能
+00D2 D2A0            145               SETB  RS        ;RS=H,RW=L,D0-D7=数据，E=高脉冲
+00D4 C2A1            146               CLR   RW
+00D6 D2A2            147               SETB  EN
+00D8 11DD            148               CALL  DELAY0
+00DA C2A2            149               CLR   EN
+00DC 22              150               RET
+                     151     
+00DD 7FFA            152     DELAY0:   MOV  R7,#250      ;延时500微秒
+00DF DFFE            153               DJNZ  R7,$
+00E1 22              154               RET
+                     155     ;---------------------------------------------------
+                     156     ;在 LCD 第二行显示字符
+                     157     ;A=ASC DATA, B=LINE X POS
+                     158     ;---------------------------------------------------
+00E2                 159     LCDP2:                    ;在LCD的第二行显示字符
+00E2 C0E0            160              PUSH  ACC        ;
+00E4 E5F0            161              MOV  A,B         ;设置显示地址
+00E6 24C0            162              ADD  A,#0C0H     ;设置LCD的第二行地址
+00E8 11C3            163              CALL  WCOM       ;写入命令
+00EA D0E0            164              POP  ACC         ;由堆栈取出A
+00EC 11D0            165              CALL  WDATA      ;写入数据
+00EE 22              166              RET
+                     167     ;---------------------------------------------------
+                     168     ; IR 译码子程序
+                     169     ;---------------------------------------------------
+00EF                 170     IR_IN:              
+00EF 7820            171               MOV   R0,#IRCOM
+00F1 30B202          172      I1:      JNB  IRIN,I2       ;等待 IR 信号出现
+00F4 80FB            173               JMP  I1
+00F6 7C14            174      I2:      MOV  R4,#20
+00F8 3191            175      I20:     CALL  DEL
+00FA DCFC            176               DJNZ  R4,I20
+00FC 20B2F2          177               JB  IRIN,I1        ;确认IR信号出现
+00FF 20B204          178      I21:     JB  IRIN,I3        ;等 IR 变为高电平
+A51 MACRO ASSEMBLER  IR_1602LCD                                                           03/29/2005 16:11:52 PAGE     4
+
+0102 3191            179               CALL  DEL
+0104 80F9            180               JMP  I21
+0106 7B00            181      I3:      MOV  R3,#0         ;8位数清为0
+0108 30B204          182      LL:      JNB  IRIN,I4       ;等 IR 变为低电平
+010B 3191            183               CALL  DEL
+010D 80F9            184               JMP  LL
+010F 20B204          185      I4:      JB  IRIN,I5        ;等 IR 变为高电平
+0112 3191            186               CALL  DEL
+0114 80F9            187               JMP  I4
+0116 7A00            188      I5:      MOV  R2,#0         ;0.14ms 计数
+0118 3191            189      L1:      CALL  DEL
+011A 20B213          190               JB  IRIN, N1       ;等 IR 变为高电平
+                     191                                  ;IR=0，检查R2中的计数值 
+011D 7408            192               MOV  A,#8
+011F C3              193               CLR  C
+0120 9A              194               SUBB  A,R2         ;判断高低位
+                     195                                  ;IF C=0  BIT=0
+0121 E6              196               MOV  A,@R0
+0122 13              197               RRC  A
+0123 F6              198               MOV  @R0,A         ;处理完一位
+0124 0B              199               INC  R3
+0125 BB08E0          200               CJNE  R3,#8,LL     ;需处理完8位  
+0128 7B00            201               MOV  R3,#0
+012A 08              202               INC  R0
+012B B824DA          203               CJNE  R0,#24H,LL   ;收集到4字节了
+012E 8004            204               JMP  OK
+0130 0A              205      N1:      INC  R2
+0131 BA1EE4          206               CJNE  R2,#30,L1    ;0.14ms 计数过长则时间到自动离开
+0134 22              207      OK:      RET
+                     208     ;--------------------------------------------------------------------
+0135                 209     IR_SHOW:
+0135 E522            210               MOV A,22H
+0137 F4              211               CPL A                ;将22H取反后和23H比较
+0138 B52304          212               CJNE A,23H,IR_SHOW1  ;如果不等表示接收数据发生错误,放弃。
+013B 3140            213               CALL   CONV
+013D 3173            214               CALL  BEEP_BL        ;蜂鸣器鸣响表示解码成功
+013F 22              215     IR_SHOW1: RET
+                     216     ;--------------------------------------------------------------------
+                     217     ;转换为 ASCII 码并显示
+                     218     ;--------------------------------------------------------------------
+0140                 219     CONV:
+0140 75260B          220               MOV   X,#11        ;设置显示起始位置
+0143 E522            221               MOV   A,22H
+0145 54F0            222               ANL   A,#0F0H      ;取出高四位二进制数
+0147 C4              223               SWAP  A            ;高四位与低四位互换
+0148 C0E0            224               PUSH  ACC          ;压入堆栈
+014A C3              225               CLR   C            ;C=0
+014B 940A            226               SUBB  A,#0AH       ;减10
+014D D0E0            227               POP   ACC          ;弹出堆栈
+014F 4002            228               JC    ASCII0       ;该数小于10，转ASCII0
+0151 2407            229               ADD   A,#07H       ;大于10的数加上37H
+0153 2430            230     ASCII0:   ADD   A,#30H       ;小于10的数加上30H
+0155 8526F0          231               MOV   B,X
+0158 11E2            232               CALL  LCDP2
+                     233     
+015A E522            234               MOV   A,22H
+015C 540F            235               ANL   A,#0FH        ;取出低四位二进制数
+015E C0E0            236               PUSH  ACC
+0160 C3              237               CLR   C
+0161 940A            238               SUBB  A,#0AH        ;减10
+0163 D0E0            239               POP   ACC
+0165 4002            240               JC    ASCII1        ;该数小于10，转ASCII0
+0167 2407            241               ADD   A,#07H        ;大于10的数加上37H
+0169 2430            242     ASCII1:   ADD   A,#30H        ;小于10的数加上30H
+016B 0526            243               INC   X
+016D 8526F0          244               MOV   B,X
+A51 MACRO ASSEMBLER  IR_1602LCD                                                           03/29/2005 16:11:52 PAGE     5
+
+0170 11E2            245               CALL  LCDP2
+0172 22              246               RET
+                     247     ;--------------------------------------------------------
+                     248     ;蜂鸣器响一声子程序
+                     249     ;--------------------------------------------------------
+0173                 250     BEEP_BL:
+0173 7E64            251              MOV  R6,#100
+0175 3180            252       BL1:   CALL  DEX1
+0177 B2B7            253              CPL  BEEP
+0179 DEFA            254              DJNZ  R6,BL1
+017B 7D19            255              MOV  R5,#25
+017D 3186            256              CALL  DELAY
+017F 22              257              RET
+0180 7FB4            258      DEX1:   MOV  R7,#180
+0182 00              259      DEX2:   NOP
+0183 DFFD            260              DJNZ  R7,DEX2
+0185 22              261              RET
+0186                 262      DELAY:                    ;延时R5×10MS
+0186 7E32            263              MOV  R6,#50
+0188 7F64            264       D1:    MOV  R7,#100
+018A DFFE            265              DJNZ  R7,$
+018C DEFA            266              DJNZ  R6,D1
+018E DDF6            267              DJNZ  R5,DELAY
+0190 22              268              RET
+                     269     ;------------------------------------------------
+                     270     ; DELAY  R5*0.14MS
+0191                 271     DEL:
+0191 7D01            272               MOV  R5,#1       ;IR解码使用
+0193 7E02            273     DEL0:     MOV  R6,#2
+0195 7F20            274     DEL1:     MOV  R7,#32
+0197 DFFE            275     DEL2:     DJNZ  R7,DEL2
+0199 DEFA            276               DJNZ  R6,DEL1
+019B DDF6            277               DJNZ  R5,DEL0
+019D 22              278               RET
+                     279     
+019E                 280     DELAY1:                    ;延时5MS
+019E 7E19            281              MOV  R6,#25
+01A0 7F64            282       DL2:   MOV  R7,#100
+01A2 DFFE            283              DJNZ  R7,$
+01A4 DEFA            284              DJNZ  R6,DL2
+01A6 22              285              RET
+                     286     ;-------------------------------------------------
+                     287             END
+A51 MACRO ASSEMBLER  IR_1602LCD                                                           03/29/2005 16:11:52 PAGE     6
+
+SYMBOL TABLE LISTING
+------ ----- -------
+
+
+N A M E             T Y P E  V A L U E   ATTRIBUTES
+
+ACC. . . . . . . .  D ADDR   00E0H   A   
+ASCII0 . . . . . .  C ADDR   0153H   A   
+ASCII1 . . . . . .  C ADDR   0169H   A   
+B. . . . . . . . .  D ADDR   00F0H   A   
+BEEP . . . . . . .  B ADDR   00B0H.7 A   
+BEEP_BL. . . . . .  C ADDR   0173H   A   
+BL1. . . . . . . .  C ADDR   0175H   A   
+CL1. . . . . . . .  C ADDR   0081H   A   
+CLR_LINE . . . . .  C ADDR   007FH   A   
+CONV . . . . . . .  C ADDR   0140H   A   
+D1 . . . . . . . .  C ADDR   0188H   A   
+DEL. . . . . . . .  C ADDR   0191H   A   
+DEL0 . . . . . . .  C ADDR   0193H   A   
+DEL1 . . . . . . .  C ADDR   0195H   A   
+DEL2 . . . . . . .  C ADDR   0197H   A   
+DELAY. . . . . . .  C ADDR   0186H   A   
+DELAY0 . . . . . .  C ADDR   00DDH   A   
+DELAY1 . . . . . .  C ADDR   019EH   A   
+DEX1 . . . . . . .  C ADDR   0180H   A   
+DEX2 . . . . . . .  C ADDR   0182H   A   
+DL2. . . . . . . .  C ADDR   01A0H   A   
+EN . . . . . . . .  B ADDR   00A0H.2 A   
+FILL . . . . . . .  C ADDR   0073H   A   
+I1 . . . . . . . .  C ADDR   00F1H   A   
+I2 . . . . . . . .  C ADDR   00F6H   A   
+I20. . . . . . . .  C ADDR   00F8H   A   
+I21. . . . . . . .  C ADDR   00FFH   A   
+I3 . . . . . . . .  C ADDR   0106H   A   
+I4 . . . . . . . .  C ADDR   010FH   A   
+I5 . . . . . . . .  C ADDR   0116H   A   
+INFO1. . . . . . .  C ADDR   00A1H   A   
+INFO2. . . . . . .  C ADDR   00B2H   A   
+INIT_LCD . . . . .  C ADDR   003BH   A   
+IRCOM. . . . . . .  N NUMB   0020H   A   
+IRIN . . . . . . .  B ADDR   00B0H.2 A   
+IR_IN. . . . . . .  C ADDR   00EFH   A   
+IR_SHOW. . . . . .  C ADDR   0135H   A   
+IR_SHOW1 . . . . .  C ADDR   013FH   A   
+L1 . . . . . . . .  C ADDR   0118H   A   
+LC1. . . . . . . .  C ADDR   0079H   A   
+LCDP2. . . . . . .  C ADDR   00E2H   A   
+LCD_SHOW . . . . .  C ADDR   005AH   A   
+LINE1. . . . . . .  C ADDR   005DH   A   
+LINE2. . . . . . .  C ADDR   0069H   A   
+LL . . . . . . . .  C ADDR   0108H   A   
+LOOP0. . . . . . .  C ADDR   0009H   A   
+LOOP1. . . . . . .  C ADDR   0014H   A   
+LOOP2. . . . . . .  C ADDR   001FH   A   
+LOOP3. . . . . . .  C ADDR   0024H   A   
+MAIN . . . . . . .  C ADDR   0002H   A   
+MENU1. . . . . . .  C ADDR   0088H   A   
+MENU2. . . . . . .  C ADDR   0090H   A   
+N1 . . . . . . . .  C ADDR   0130H   A   
+OK . . . . . . . .  C ADDR   0134H   A   
+P0 . . . . . . . .  D ADDR   0080H   A   
+P1 . . . . . . . .  D ADDR   0090H   A   
+P2 . . . . . . . .  D ADDR   00A0H   A   
+P3 . . . . . . . .  D ADDR   00B0H   A   
+RELAY. . . . . . .  B ADDR   0090H.3 A   
+RS . . . . . . . .  B ADDR   00A0H.0 A   
+A51 MACRO ASSEMBLER  IR_1602LCD                                                           03/29/2005 16:11:52 PAGE     7
+
+RW . . . . . . . .  B ADDR   00A0H.1 A   
+SET_LCD. . . . . .  C ADDR   0026H   A   
+SP . . . . . . . .  D ADDR   0081H   A   
+WCOM . . . . . . .  C ADDR   00C3H   A   
+WDATA. . . . . . .  C ADDR   00D0H   A   
+X. . . . . . . . .  N NUMB   0026H   A   
+
+
+REGISTER BANK(S) USED: 0 
+
+
+ASSEMBLY COMPLETE.  0 WARNING(S), 0 ERROR(S)

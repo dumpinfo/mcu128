@@ -1,0 +1,89 @@
+<html>
+<body>
+<pre>
+<h1>礦ision2 Build Log</h1>
+<h2>Project:</h2>
+D:\产品光盘\ME300\ME300B实验例程\WL029_1602LCD滚动显示程序\C51\wl029.uv2
+Project File Date:  02/05/2006
+
+<h2>Output:</h2>
+Build target 'Target 1'
+compiling 1602LCD_GD.C...
+linking...
+Program Size: data=9.1 xdata=0 code=388
+creating hex file from "wl029"...
+"wl029" - 0 Error(s), 0 Warning(s).
+Build target 'Target 1'
+compiling 1602LCD_GD.C...
+1602LCD_GD.C(1): error C141: syntax error near ';'
+1602LCD_GD.C(2): error C141: syntax error near ';'
+1602LCD_GD.C(3): error C141: syntax error near ';'
+1602LCD_GD.C(3): error C100: unprintable character 0xB5 skipped
+1602LCD_GD.C(3): error C100: unprintable character 0xA5 skipped
+1602LCD_GD.C(3): error C100: unprintable character 0xC6 skipped
+1602LCD_GD.C(3): error C100: unprintable character 0xAC skipped
+1602LCD_GD.C(3): error C100: unprintable character 0xBB skipped
+1602LCD_GD.C(3): error C100: unprintable character 0xFA skipped
+1602LCD_GD.C(3): error C100: unprintable character 0xBF skipped
+1602LCD_GD.C(3): error C100: unprintable character 0xAA skipped
+1602LCD_GD.C(3): error C100: unprintable character 0xB7 skipped
+1602LCD_GD.C(3): error C100: unprintable character 0xA2 skipped
+1602LCD_GD.C(3): error C100: unprintable character 0xCF skipped
+1602LCD_GD.C(3): error C100: unprintable character 0xB5 skipped
+1602LCD_GD.C(3): error C100: unprintable character 0xCD skipped
+1602LCD_GD.C(3): error C100: unprintable character 0xB3 skipped
+1602LCD_GD.C(3): error C100: unprintable character 0xD1 skipped
+1602LCD_GD.C(3): error C100: unprintable character 0xDD skipped
+1602LCD_GD.C(3): error C100: unprintable character 0xCA skipped
+1602LCD_GD.C(3): error C100: unprintable character 0xBE skipped
+1602LCD_GD.C(3): error C100: unprintable character 0xB3 skipped
+1602LCD_GD.C(3): error C100: unprintable character 0xCC skipped
+1602LCD_GD.C(3): error C100: unprintable character 0xD0 skipped
+1602LCD_GD.C(3): error C100: unprintable character 0xF2 skipped
+1602LCD_GD.C(3): error C129: missing ';' before '-'
+1602LCD_GD.C(24): error C309: bad or missing filename
+*** WARNING C318 IN LINE 24 OF 1602LCD_GD.C: can't open file ''
+1602LCD_GD.C(25): error C309: bad or missing filename
+*** WARNING C318 IN LINE 25 OF 1602LCD_GD.C: can't open file ''
+Target not created
+Build target 'Target 1'
+compiling 1602LCD_GD.C...
+1602LCD_GD.C(1): error C141: syntax error near ';'
+1602LCD_GD.C(2): error C141: syntax error near ';'
+1602LCD_GD.C(3): error C141: syntax error near ';'
+1602LCD_GD.C(3): error C100: unprintable character 0xB5 skipped
+1602LCD_GD.C(3): error C100: unprintable character 0xA5 skipped
+1602LCD_GD.C(3): error C100: unprintable character 0xC6 skipped
+1602LCD_GD.C(3): error C100: unprintable character 0xAC skipped
+1602LCD_GD.C(3): error C100: unprintable character 0xBB skipped
+1602LCD_GD.C(3): error C100: unprintable character 0xFA skipped
+1602LCD_GD.C(3): error C100: unprintable character 0xBF skipped
+1602LCD_GD.C(3): error C100: unprintable character 0xAA skipped
+1602LCD_GD.C(3): error C100: unprintable character 0xB7 skipped
+1602LCD_GD.C(3): error C100: unprintable character 0xA2 skipped
+1602LCD_GD.C(3): error C100: unprintable character 0xCF skipped
+1602LCD_GD.C(3): error C100: unprintable character 0xB5 skipped
+1602LCD_GD.C(3): error C100: unprintable character 0xCD skipped
+1602LCD_GD.C(3): error C100: unprintable character 0xB3 skipped
+1602LCD_GD.C(3): error C100: unprintable character 0xD1 skipped
+1602LCD_GD.C(3): error C100: unprintable character 0xDD skipped
+1602LCD_GD.C(3): error C100: unprintable character 0xCA skipped
+1602LCD_GD.C(3): error C100: unprintable character 0xBE skipped
+1602LCD_GD.C(3): error C100: unprintable character 0xB3 skipped
+1602LCD_GD.C(3): error C100: unprintable character 0xCC skipped
+1602LCD_GD.C(3): error C100: unprintable character 0xD0 skipped
+1602LCD_GD.C(3): error C100: unprintable character 0xF2 skipped
+1602LCD_GD.C(3): error C129: missing ';' before '-'
+Target not created
+Build target 'Target 1'
+compiling 1602LCD_GD.C...
+1602LCD_GD.C(28): error C202: 'P2': undefined identifier
+1602LCD_GD.C(29): error C202: 'P2': undefined identifier
+1602LCD_GD.C(30): error C202: 'P2': undefined identifier
+Target not created
+Build target 'Target 1'
+compiling 1602LCD_GD.C...
+linking...
+Program Size: data=9.1 xdata=0 code=388
+creating hex file from "wl029"...
+"wl029" - 0 Error(s), 0 Warning(s).

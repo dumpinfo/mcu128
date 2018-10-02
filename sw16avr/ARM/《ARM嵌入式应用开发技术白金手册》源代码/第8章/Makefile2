@@ -1,0 +1,12 @@
+OBJS = main.o io.o                            # 生成的目标文件依赖main.o和io.o
+CC = gcc
+CFLAGS = -Wall -O –g                         #以上三个为宏定义
+
+executable: $(OBJS)                           #引用宏名
+     $(CC) $(OBJS) -o executable
+
+main.o : main.c
+     $(CC) $(CFLAGS) -c main.c -o main.o
+
+io.o : io.c
+$(CC) $(CFLAGS) -c io.c -o io.o

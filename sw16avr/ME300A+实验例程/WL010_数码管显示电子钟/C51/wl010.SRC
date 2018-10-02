@@ -1,0 +1,772 @@
+; .\wl010.SRC generated from: wl010.C
+; COMPILER INVOKED BY:
+;        D:\Keil\C51\BIN\C51.EXE wl010.C BROWSE ORDER DEBUG OBJECTEXTEND SRC(.\wl010.SRC)
+
+$NOMOD51
+
+NAME	WL010
+
+P0	DATA	080H
+P1	DATA	090H
+P2	DATA	0A0H
+P3	DATA	0B0H
+PSW	DATA	0D0H
+ACC	DATA	0E0H
+B	DATA	0F0H
+SP	DATA	081H
+DPL	DATA	082H
+DPH	DATA	083H
+PCON	DATA	087H
+TCON	DATA	088H
+TMOD	DATA	089H
+TL0	DATA	08AH
+TL1	DATA	08BH
+TH0	DATA	08CH
+TH1	DATA	08DH
+IE	DATA	0A8H
+IP	DATA	0B8H
+SCON	DATA	098H
+SBUF	DATA	099H
+CY	BIT	0D0H.7
+AC	BIT	0D0H.6
+F0	BIT	0D0H.5
+RS1	BIT	0D0H.4
+RS0	BIT	0D0H.3
+OV	BIT	0D0H.2
+P	BIT	0D0H.0
+TF1	BIT	088H.7
+TR1	BIT	088H.6
+TF0	BIT	088H.5
+TR0	BIT	088H.4
+IE1	BIT	088H.3
+IT1	BIT	088H.2
+IE0	BIT	088H.1
+IT0	BIT	088H.0
+EA	BIT	0A8H.7
+ES	BIT	0A8H.4
+ET1	BIT	0A8H.3
+EX1	BIT	0A8H.2
+ET0	BIT	0A8H.1
+EX0	BIT	0A8H.0
+PS	BIT	0B8H.4
+PT1	BIT	0B8H.3
+PX1	BIT	0B8H.2
+PT0	BIT	0B8H.1
+PX0	BIT	0B8H.0
+RD	BIT	0B0H.7
+WR	BIT	0B0H.6
+T1	BIT	0B0H.5
+T0	BIT	0B0H.4
+INT1	BIT	0B0H.3
+INT0	BIT	0B0H.2
+TXD	BIT	0B0H.1
+RXD	BIT	0B0H.0
+SM0	BIT	098H.7
+SM1	BIT	098H.6
+SM2	BIT	098H.5
+REN	BIT	098H.4
+TB8	BIT	098H.3
+RB8	BIT	098H.2
+TI	BIT	098H.1
+RI	BIT	098H.0
+AN1	BIT	0B0H.2
+AN2	BIT	0B0H.3
+?PR?main?WL010       SEGMENT CODE 
+?PR?scan_key?WL010   SEGMENT CODE 
+?PR?proc_key?WL010   SEGMENT CODE 
+?PR?timer0?WL010     SEGMENT CODE 
+?PR?inc_sec?WL010    SEGMENT CODE 
+?PR?inc_min?WL010    SEGMENT CODE 
+?PR?inc_hour?WL010   SEGMENT CODE 
+?PR?timer1?WL010     SEGMENT CODE 
+?PR?_delayms?WL010   SEGMENT CODE 
+?CO?WL010            SEGMENT CODE 
+?DT?WL010            SEGMENT DATA 
+	EXTRN	CODE (?C_STARTUP)
+	PUBLIC	sec100
+	PUBLIC	sec
+	PUBLIC	min
+	PUBLIC	hour
+	PUBLIC	dis_index
+	PUBLIC	dis_buf
+	PUBLIC	key_v
+	PUBLIC	key_s
+	PUBLIC	dis_digit
+	PUBLIC	dis_code
+	PUBLIC	_delayms
+	PUBLIC	timer1
+	PUBLIC	inc_hour
+	PUBLIC	inc_min
+	PUBLIC	inc_sec
+	PUBLIC	timer0
+	PUBLIC	proc_key
+	PUBLIC	scan_key
+	PUBLIC	main
+
+	RSEG  ?DT?WL010
+      dis_digit:   DS   1
+          key_s:   DS   1
+          key_v:   DS   1
+        dis_buf:   DS   8
+      dis_index:   DS   1
+           hour:   DS   1
+            min:   DS   1
+            sec:   DS   1
+         sec100:   DS   1
+
+	RSEG  ?CO?WL010
+dis_code:
+	DB	0C0H
+	DB	0F9H
+	DB	0A4H
+	DB	0B0H
+	DB	099H
+	DB	092H
+	DB	082H
+	DB	0F8H
+	DB	080H
+	DB	090H
+	DB	0FFH
+
+; /*******************************************************************************
+; *                                                                              *
+; *    File       :      .c                                                      *
+; *    Date       : 2004-1-5                                                     *
+; *    Version    : 1.0                                                          *
+; *                                                                              *
+; *    Author     : Freeman          freeman@willar.com                          *
+; *    Company    : Willar           www.willar.com                              *
+; *                                                                              *
+; ********************************************************************************
+; *    Descriptoon:                                                              *
+; *                 简易电子时钟                                                 *
+; *                 AN1---时调整                                                 *
+; *                 AN2---分调整                                                 *
+; *                                                                              *
+; *                                                                              *
+; *******************************************************************************/
+; #include <reg51.h>
+; #include <intrins.h>
+; 
+; unsigned char data dis_digit;
+; unsigned char key_s, key_v;
+; 
+; unsigned char code dis_code[11]={0xc0,0xf9,0xa4,0xb0,	// 0, 1, 2, 3
+; 				0x99,0x92,0x82,0xf8,0x80,0x90, 0xff};// 4, 5, 6, 7, 8, 9, off 
+; unsigned char data dis_buf[8];
+; unsigned char data dis_index;
+; unsigned char hour,min,sec;
+; unsigned char sec100; 
+; 
+; sbit	AN1 = P3^2;
+; sbit	AN2 = P3^3;
+; 
+; bit scan_key();
+; void proc_key();
+; void inc_sec();
+; void inc_min();
+; void inc_hour();
+; void display();
+; void delayms(unsigned char ms);
+; 
+; void main(void)
+
+	RSEG  ?PR?main?WL010
+main:
+	USING	0
+			; SOURCE LINE # 42
+; {
+			; SOURCE LINE # 43
+; 	P0 = 0xff;
+			; SOURCE LINE # 44
+	MOV  	P0,#0FFH
+; 	P2 = 0xff;
+			; SOURCE LINE # 45
+	MOV  	P2,#0FFH
+; 	TMOD = 0x11;		// 定时器0, 1工作模式1, 16位定时方式
+			; SOURCE LINE # 46
+	MOV  	TMOD,#011H
+; 	TH0 = 0xdc;
+			; SOURCE LINE # 47
+	MOV  	TH0,#0DCH
+; 	TL0 = 0;
+			; SOURCE LINE # 48
+	CLR  	A
+	MOV  	TL0,A
+; 
+; 	TH1 = 0xFC;
+			; SOURCE LINE # 50
+	MOV  	TH1,#0FCH
+; 	TL1 = 0x17;
+			; SOURCE LINE # 51
+	MOV  	TL1,#017H
+; 	
+; 	hour = 12;
+			; SOURCE LINE # 53
+	MOV  	hour,#0CH
+; 	min = 00;
+			; SOURCE LINE # 54
+	MOV  	min,A
+; 	sec = 00;
+			; SOURCE LINE # 55
+	MOV  	sec,A
+; 
+; 	sec100 = 0;
+			; SOURCE LINE # 57
+	MOV  	sec100,A
+; 	
+; 	dis_buf[0] = dis_code[hour / 10];		// 时十位
+			; SOURCE LINE # 59
+	MOV  	A,hour
+	MOV  	B,#0AH
+	DIV  	AB
+	MOV  	DPTR,#dis_code
+	MOVC 	A,@A+DPTR
+	MOV  	dis_buf,A
+; 	dis_buf[1] = dis_code[hour % 10];		// 时个位
+			; SOURCE LINE # 60
+	MOV  	A,hour
+	MOV  	B,#0AH
+	DIV  	AB
+	MOV  	A,B
+	MOVC 	A,@A+DPTR
+	MOV  	dis_buf+01H,A
+; 	dis_buf[2] = dis_code[min / 10];		// 分十位
+			; SOURCE LINE # 61
+	MOV  	A,min
+	MOV  	B,#0AH
+	DIV  	AB
+	MOVC 	A,@A+DPTR
+	MOV  	dis_buf+02H,A
+; 	dis_buf[3] = dis_code[min % 10];		// 分个位
+			; SOURCE LINE # 62
+	MOV  	A,min
+	MOV  	B,#0AH
+	DIV  	AB
+	MOV  	A,B
+	MOVC 	A,@A+DPTR
+	MOV  	dis_buf+03H,A
+; 	dis_buf[4] = dis_code[sec / 10];		// 秒十位
+			; SOURCE LINE # 63
+	MOV  	A,sec
+	MOV  	B,#0AH
+	DIV  	AB
+	MOVC 	A,@A+DPTR
+	MOV  	dis_buf+04H,A
+; 	dis_buf[5] = dis_code[sec % 10];		// 秒个位
+			; SOURCE LINE # 64
+	MOV  	A,sec
+	MOV  	B,#0AH
+	DIV  	AB
+	MOV  	A,B
+	MOVC 	A,@A+DPTR
+	MOV  	dis_buf+05H,A
+; 	dis_buf[6] = 0xff;
+			; SOURCE LINE # 65
+	MOV  	dis_buf+06H,#0FFH
+; 	dis_buf[7] = 0xff;
+			; SOURCE LINE # 66
+	MOV  	dis_buf+07H,#0FFH
+; 			
+; 	dis_digit = 0xfe;
+			; SOURCE LINE # 68
+	MOV  	dis_digit,#0FEH
+; 	dis_index = 0;
+			; SOURCE LINE # 69
+	CLR  	A
+	MOV  	dis_index,A
+; 	
+; 	TCON = 0x01;
+			; SOURCE LINE # 71
+	MOV  	TCON,#01H
+; 	IE = 0x8a;				// 使能timer0,1 中断
+			; SOURCE LINE # 72
+	MOV  	IE,#08AH
+; 	
+; 	TR0 = 1;
+			; SOURCE LINE # 74
+	SETB 	TR0
+; 	TR1 = 1;
+			; SOURCE LINE # 75
+	SETB 	TR1
+; 
+; 	key_v = 0x03;
+			; SOURCE LINE # 77
+	MOV  	key_v,#03H
+?C0001:
+; 
+; 	while(1)
+			; SOURCE LINE # 79
+; 	{
+			; SOURCE LINE # 80
+; 		if(scan_key())
+			; SOURCE LINE # 81
+	LCALL	scan_key
+	JNC  	?C0001
+; 		{
+			; SOURCE LINE # 82
+; 			delayms(10);
+			; SOURCE LINE # 83
+	MOV  	R7,#0AH
+	LCALL	_delayms
+; 			if(scan_key())
+			; SOURCE LINE # 84
+	LCALL	scan_key
+	JNC  	?C0001
+; 			{
+			; SOURCE LINE # 85
+; 				key_v = key_s;
+			; SOURCE LINE # 86
+	MOV  	key_v,key_s
+; 				proc_key();
+			; SOURCE LINE # 87
+	LCALL	proc_key
+; 			}
+			; SOURCE LINE # 88
+; 		}
+			; SOURCE LINE # 89
+; 		
+; 	}
+			; SOURCE LINE # 91
+	SJMP 	?C0001
+; END OF main
+
+; }
+; 
+; bit scan_key()
+
+	RSEG  ?PR?scan_key?WL010
+scan_key:
+			; SOURCE LINE # 94
+; {
+			; SOURCE LINE # 95
+; 	key_s = 0x00;
+			; SOURCE LINE # 96
+	CLR  	A
+	MOV  	key_s,A
+; 	key_s |= AN2;
+			; SOURCE LINE # 97
+	MOV  	C,AN2
+	RLC  	A
+	ORL  	key_s,A
+; 	key_s <<= 1;
+			; SOURCE LINE # 98
+	MOV  	A,key_s
+	ADD  	A,ACC
+	MOV  	key_s,A
+; 	key_s |= AN1;
+			; SOURCE LINE # 99
+	MOV  	C,AN1
+	CLR  	A
+	RLC  	A
+	ORL  	key_s,A
+; 	return(key_s ^ key_v);	
+			; SOURCE LINE # 100
+	MOV  	A,key_s
+	XRL  	A,key_v
+	ADD  	A,#0FFH
+; }
+			; SOURCE LINE # 101
+?C0006:
+	RET  	
+; END OF scan_key
+
+; 
+; void proc_key()
+
+	RSEG  ?PR?proc_key?WL010
+proc_key:
+	USING	0
+			; SOURCE LINE # 103
+; {
+			; SOURCE LINE # 104
+; 	EA = 0;
+			; SOURCE LINE # 105
+	CLR  	EA
+; 	if((key_v & 0x01) == 0)		// AN1
+			; SOURCE LINE # 106
+	MOV  	A,key_v
+	JB   	ACC.0,?C0007
+; 	{
+			; SOURCE LINE # 107
+; 		inc_min();
+			; SOURCE LINE # 108
+	LCALL	inc_min
+; 	}
+			; SOURCE LINE # 109
+	SJMP 	?C0008
+?C0007:
+; 	else if((key_v & 0x02) == 0)	// AN2
+			; SOURCE LINE # 110
+	MOV  	A,key_v
+	JB   	ACC.1,?C0008
+; 	{
+			; SOURCE LINE # 111
+; 		inc_hour();
+			; SOURCE LINE # 112
+	LCALL	inc_hour
+; 	}
+			; SOURCE LINE # 113
+?C0008:
+; 	EA = 1;
+			; SOURCE LINE # 114
+	SETB 	EA
+; }
+			; SOURCE LINE # 115
+	RET  	
+; END OF proc_key
+
+CSEG	AT	0000BH
+	LJMP	timer0
+
+; 
+; void timer0() interrupt 1
+
+	RSEG  ?PR?timer0?WL010
+	USING	0
+timer0:
+	PUSH 	ACC
+	PUSH 	B
+	PUSH 	DPH
+	PUSH 	DPL
+	PUSH 	PSW
+	MOV  	PSW,#00H
+	PUSH 	AR0
+	PUSH 	AR1
+	PUSH 	AR2
+	PUSH 	AR3
+	PUSH 	AR4
+	PUSH 	AR5
+	PUSH 	AR6
+	PUSH 	AR7
+	USING	0
+			; SOURCE LINE # 117
+; {
+; 	TH0 = 0xee;
+			; SOURCE LINE # 119
+	MOV  	TH0,#0EEH
+; 	
+; 	sec100++;
+			; SOURCE LINE # 121
+	INC  	sec100
+; 	
+; 	if(sec100 >= 200)
+			; SOURCE LINE # 123
+	MOV  	A,sec100
+	CLR  	C
+	SUBB 	A,#0C8H
+	JC   	?C0012
+; 	{
+			; SOURCE LINE # 124
+; 		sec100 = 0;
+			; SOURCE LINE # 125
+	MOV  	sec100,#00H
+; 		inc_sec();
+			; SOURCE LINE # 126
+	LCALL	inc_sec
+; 	}
+			; SOURCE LINE # 127
+; }
+			; SOURCE LINE # 128
+?C0012:
+	POP  	AR7
+	POP  	AR6
+	POP  	AR5
+	POP  	AR4
+	POP  	AR3
+	POP  	AR2
+	POP  	AR1
+	POP  	AR0
+	POP  	PSW
+	POP  	DPL
+	POP  	DPH
+	POP  	B
+	POP  	ACC
+	RETI 	
+; END OF timer0
+
+; 
+; void inc_sec()
+
+	RSEG  ?PR?inc_sec?WL010
+inc_sec:
+	USING	0
+			; SOURCE LINE # 130
+; {
+			; SOURCE LINE # 131
+; 	sec++;
+			; SOURCE LINE # 132
+	INC  	sec
+; 	if(sec > 59)
+			; SOURCE LINE # 133
+	MOV  	A,sec
+	SETB 	C
+	SUBB 	A,#03BH
+	JC   	?C0013
+; 	{
+			; SOURCE LINE # 134
+; 		sec = 0;
+			; SOURCE LINE # 135
+	CLR  	A
+	MOV  	sec,A
+; 		inc_min();
+			; SOURCE LINE # 136
+	LCALL	inc_min
+; 	}
+			; SOURCE LINE # 137
+?C0013:
+; 	dis_buf[4] = dis_code[sec / 10];		// 秒十位
+			; SOURCE LINE # 138
+	MOV  	A,sec
+	MOV  	B,#0AH
+	DIV  	AB
+	MOV  	DPTR,#dis_code
+	MOVC 	A,@A+DPTR
+	MOV  	dis_buf+04H,A
+; 	dis_buf[5] = dis_code[sec % 10];		// 秒个位	
+			; SOURCE LINE # 139
+	MOV  	A,sec
+	MOV  	B,#0AH
+	DIV  	AB
+	MOV  	A,B
+	MOVC 	A,@A+DPTR
+	MOV  	dis_buf+05H,A
+; }
+			; SOURCE LINE # 140
+	RET  	
+; END OF inc_sec
+
+; 
+; void inc_min()
+
+	RSEG  ?PR?inc_min?WL010
+inc_min:
+	USING	0
+			; SOURCE LINE # 142
+; {
+			; SOURCE LINE # 143
+; 	min++;
+			; SOURCE LINE # 144
+	INC  	min
+; 	if(min > 59)
+			; SOURCE LINE # 145
+	MOV  	A,min
+	SETB 	C
+	SUBB 	A,#03BH
+	JC   	?C0015
+; 	{
+			; SOURCE LINE # 146
+; 		min = 0;
+			; SOURCE LINE # 147
+	CLR  	A
+	MOV  	min,A
+; 		inc_hour();
+			; SOURCE LINE # 148
+	LCALL	inc_hour
+; 	}
+			; SOURCE LINE # 149
+?C0015:
+; 	dis_buf[2] = dis_code[min / 10];		// 分十位
+			; SOURCE LINE # 150
+	MOV  	A,min
+	MOV  	B,#0AH
+	DIV  	AB
+	MOV  	DPTR,#dis_code
+	MOVC 	A,@A+DPTR
+	MOV  	dis_buf+02H,A
+; 	dis_buf[3] = dis_code[min % 10];		// 分个位
+			; SOURCE LINE # 151
+	MOV  	A,min
+	MOV  	B,#0AH
+	DIV  	AB
+	MOV  	A,B
+	MOVC 	A,@A+DPTR
+	MOV  	dis_buf+03H,A
+; }
+			; SOURCE LINE # 152
+	RET  	
+; END OF inc_min
+
+; 
+; void inc_hour()
+
+	RSEG  ?PR?inc_hour?WL010
+inc_hour:
+			; SOURCE LINE # 154
+; {
+			; SOURCE LINE # 155
+; 	hour++;
+			; SOURCE LINE # 156
+	INC  	hour
+; 	if(hour > 23)
+			; SOURCE LINE # 157
+	MOV  	A,hour
+	SETB 	C
+	SUBB 	A,#017H
+	JC   	?C0017
+; 	{
+			; SOURCE LINE # 158
+; 		hour = 0;
+			; SOURCE LINE # 159
+	CLR  	A
+	MOV  	hour,A
+; 	}
+			; SOURCE LINE # 160
+?C0017:
+; 	if(hour > 10)
+			; SOURCE LINE # 161
+	MOV  	A,hour
+	SETB 	C
+	SUBB 	A,#0AH
+	JC   	?C0018
+; 		dis_buf[0] = dis_code[hour / 10];		// 时十位
+			; SOURCE LINE # 162
+	MOV  	A,hour
+	MOV  	B,#0AH
+	DIV  	AB
+	MOV  	DPTR,#dis_code
+	MOVC 	A,@A+DPTR
+	MOV  	dis_buf,A
+	SJMP 	?C0019
+?C0018:
+; 	else
+; 		dis_buf[0] = 0xff;
+			; SOURCE LINE # 164
+	MOV  	dis_buf,#0FFH
+?C0019:
+; 	dis_buf[1] = dis_code[hour % 10];		// 时个位
+			; SOURCE LINE # 165
+	MOV  	A,hour
+	MOV  	B,#0AH
+	DIV  	AB
+	MOV  	A,B
+	MOV  	DPTR,#dis_code
+	MOVC 	A,@A+DPTR
+	MOV  	dis_buf+01H,A
+; 
+; }
+			; SOURCE LINE # 167
+	RET  	
+; END OF inc_hour
+
+CSEG	AT	0001BH
+	LJMP	timer1
+
+; 
+; void timer1() interrupt 3
+
+	RSEG  ?PR?timer1?WL010
+	USING	0
+timer1:
+	PUSH 	ACC
+	PUSH 	PSW
+	MOV  	PSW,#00H
+	PUSH 	AR0
+	PUSH 	AR7
+	USING	0
+			; SOURCE LINE # 169
+; {
+; 	TH1 = 0xFC;
+			; SOURCE LINE # 171
+	MOV  	TH1,#0FCH
+; 	TL1 = 0x17;
+			; SOURCE LINE # 172
+	MOV  	TL1,#017H
+; 	
+; 	P2 = 0xff;							// turn off all LED
+			; SOURCE LINE # 174
+	MOV  	P2,#0FFH
+; 	P0 = dis_buf[dis_index];	// 
+			; SOURCE LINE # 175
+	MOV  	A,#LOW (dis_buf)
+	ADD  	A,dis_index
+	MOV  	R0,A
+	MOV  	A,@R0
+	MOV  	P0,A
+; 	P2 = dis_digit;	
+			; SOURCE LINE # 176
+	MOV  	P2,dis_digit
+; 
+; 	dis_digit = _crol_(dis_digit,1);	// 点亮下一个数码管
+			; SOURCE LINE # 178
+	MOV  	R7,dis_digit
+	MOV  	R0,#01H
+	MOV  	A,R7
+	INC  	R0
+	SJMP 	?C0030
+?C0029:
+	RL   	A
+?C0030:
+	DJNZ 	R0,?C0029
+	MOV  	dis_digit,A
+; 	dis_index++;
+			; SOURCE LINE # 179
+	INC  	dis_index
+; 
+; 	if(dis_index > 7)					// 8个数码管全部扫描完一遍之后，再回到第一个开始下一次扫描
+			; SOURCE LINE # 181
+	MOV  	A,dis_index
+	SETB 	C
+	SUBB 	A,#07H
+	JC   	?C0022
+; 	{
+			; SOURCE LINE # 182
+; 		dis_index = 0;
+			; SOURCE LINE # 183
+	MOV  	dis_index,#00H
+; 		dis_digit = 0xfe;
+			; SOURCE LINE # 184
+	MOV  	dis_digit,#0FEH
+; 	}
+			; SOURCE LINE # 185
+; } 
+			; SOURCE LINE # 186
+?C0022:
+	POP  	AR7
+	POP  	AR0
+	POP  	PSW
+	POP  	ACC
+	RETI 	
+; END OF timer1
+
+; 
+; void delayms(unsigned char ms)
+
+	RSEG  ?PR?_delayms?WL010
+_delayms:
+	USING	0
+			; SOURCE LINE # 188
+;---- Variable 'i?841' assigned to Register 'R6' ----
+;---- Variable 'ms?840' assigned to Register 'R7' ----
+; {
+			; SOURCE LINE # 189
+?C0023:
+; 	unsigned char i;
+; 	while(ms--)
+			; SOURCE LINE # 191
+	MOV  	R5,AR7
+	DEC  	R7
+	MOV  	A,R5
+	JZ   	?C0028
+; 	{
+			; SOURCE LINE # 192
+; 		for(i = 0; i < 250; i++);
+			; SOURCE LINE # 193
+	CLR  	A
+	MOV  	R6,A
+?C0025:
+	MOV  	A,R6
+	CLR  	C
+	SUBB 	A,#0FAH
+	JNC  	?C0023
+	INC  	R6
+	SJMP 	?C0025
+; 	}
+			; SOURCE LINE # 194
+; }
+			; SOURCE LINE # 195
+?C0028:
+	RET  	
+; END OF _delayms
+
+	END

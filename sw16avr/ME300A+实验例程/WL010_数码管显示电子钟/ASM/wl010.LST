@@ -1,0 +1,525 @@
+A51 MACRO ASSEMBLER  WL010                                                                02/06/2006 08:49:30 PAGE     1
+
+
+MACRO ASSEMBLER A51 V7.10
+OBJECT MODULE PLACED IN wl010.OBJ
+ASSEMBLER INVOKED BY: D:\Program Files\Keil\C51\BIN\A51.EXE wl010.asm SET(SMALL) DEBUG EP
+
+LOC  OBJ            LINE     SOURCE
+
+                       1     ;********************************************************************************
+                       2     ;*  ±êÌâ:  Î°ÄÉµç×ÓME300Bµ¥Æ¬»ú¿ª·¢ÏµÍ³ÑÝÊ¾³ÌÐò - ÊÂë¹ÜÏÔÊ¾¼òÒ×µç×ÓÊ±ÖÓ        *
+                       3     ;*  ÎÄ¼þ:  wl010.asm                                                            *
+                       4     ;*  ÈÕÆÚ:  2004-1-5                                                             *
+                       5     ;*  °æ±¾:  1.0                                                                  *
+                       6     ;*  ×÷Õß:  Î°ÄÉµç×Ó - Freeman                                                   *
+                       7     ;*  ÓÊÏä:  freeman@willar.com                                                   *
+                       8     ;*  ÍøÕ¾£º http://www.willar.com                                                *
+                       9     ;********************************************************************************
+                      10     ;*  ÃèÊö:                                                                       *
+                      11     ;*         ¼òÒ×µç×ÓÊ±ÖÓ,ÊÂë¹ÜÏÔÊ¾                                              *
+                      12     ;*         K1---Ê±µ÷Õû                                                          *
+                      13     ;*         K2---·Öµ÷Õû                                                          *
+                      14     ;*                                                                              *
+                      15     ;*                                                                              *
+                      16     ;********************************************************************************
+                      17     ;* ¡¾°æÈ¨¡¿ Copyright(C)Î°ÄÉµç×Ó www.willar.com  All Rights Reserved            *
+                      18     ;* ¡¾ÉùÃ÷¡¿ ´Ë³ÌÐò½öÓÃÓÚÑ§Ï°Óë²Î¿¼£¬ÒÓÃÇë×¢Ã÷°æÈ¨ºÍ×÷ÕßÐÅÏ¢£¡                  *
+                      19     ;********************************************************************************
+                      20     
+                      21     CODE_SEG        SEGMENT CODE 
+                      22     DATA_SEG        SEGMENT DATA 
+                      23     STACK_SEG       SEGMENT IDATA
+                      24     
+                      25     
+  0094                26     K1      BIT     P1.4
+  0095                27     K2      BIT     P1.5
+                      28     
+----                  29             RSEG  DATA_SEG
+0000                  30     KEY_S:          DS      1
+0001                  31     KEY_V:          DS      1
+0002                  32     DIS_DIGIT:      DS      1
+0003                  33     SEC:            DS      1
+0004                  34     DIS_INDEX:      DS      1
+0005                  35     HOUR:           DS      1
+0006                  36     MIN:            DS      1
+0007                  37     SEC100:         DS      1
+0008                  38     DIS_BUF:        DS      8
+                      39             
+  0008                40     BUF_HOUR_H      EQU     DIS_BUF         ; Ð¡Ê±Ê®Î»
+  0009                41     BUF_HOUR_L      EQU     DIS_BUF+1       ; Ð¡Ê±¸öÎ»
+  000B                42     BUF_MIN_H       EQU     DIS_BUF+3       ; ·ÖÊ®Î»
+  000C                43     BUF_MIN_L       EQU     DIS_BUF+4       ; ·Ö¸öÎ»
+  000E                44     BUF_SEC_H       EQU     DIS_BUF+6       ; ÃëÊ®Î»
+  000F                45     BUF_SEC_L       EQU     DIS_BUF+7       ; Ãë¸öÎ»
+                      46     
+----                  47             RSEG    STACK_SEG
+0000                  48     STACK:  DS      20      
+                      49             
+                      50     
+                      51     ;===============================================================================
+                      52     
+----                  53     CSEG    AT      0000H
+0000 020000   F       54             JMP     MAIN
+                      55             
+----                  56     CSEG    AT      0000BH
+000B 020000   F       57             LJMP    TIMER0  
+                      58     
+A51 MACRO ASSEMBLER  WL010                                                                02/06/2006 08:49:30 PAGE     2
+
+----                  59     CSEG    AT      0001BH
+001B 020000   F       60             LJMP    TIMER1
+                      61     
+                      62     ;===============================================================================
+                      63     
+                      64     
+----                  65             RSEG  CODE_SEG
+0000                  66     MAIN:
+                      67             USING   0
+                      68             
+0000 758100   F       69             MOV     SP, #(STACK-1)          ;
+                      70             
+                      71             
+0003 7580FF           72             MOV     P0,#0FFH
+0006 75A0FF           73             MOV     P2,#0FFH
+0009 758911           74             MOV     TMOD,#011H              ; ¶¨Ê±Æ÷0, 1¹¤×÷Ä£Ê½1, 16Î»¶¨Ê±·½Ê½
+000C 758CFC           75             MOV     TH0,#0FCH
+000F 758A17           76             MOV     TL0,#017H
+0012 758DDC           77             MOV     TH1,#0DCH
+0015 E4               78             CLR     A
+0016 F58B             79             MOV     TL1,A
+                      80             
+0018 75000C   F       81             MOV     HOUR,#12                ; 
+001B E4               82             CLR     A                       ; 
+001C F500     F       83             MOV     MIN,A
+001E F500     F       84             MOV     SEC,A
+0020 F500     F       85             MOV     SEC100,A
+                      86             
+0022 E500     F       87             MOV     A,HOUR
+0024 75F00A           88             MOV     B,#10
+0027 84               89             DIV     AB
+0028 900000   F       90             MOV     DPTR,#DIS_CODE
+002B 93               91             MOVC    A,@A+DPTR
+002C F500     F       92             MOV     BUF_HOUR_H,A            ; Ê±Ê®Î»
+002E E500     F       93             MOV     A,HOUR
+0030 75F00A           94             MOV     B,#10
+0033 84               95             DIV     AB
+0034 E5F0             96             MOV     A,B
+0036 93               97             MOVC    A,@A+DPTR
+0037 F500     F       98             MOV     BUF_HOUR_L,A            ; Ê±¸öÎ»
+0039 E500     F       99             MOV     A,MIN
+003B 75F00A          100             MOV     B,#10
+003E 84              101             DIV     AB
+003F 93              102             MOVC    A,@A+DPTR
+0040 F500     F      103             MOV     BUF_MIN_H,A             ; ·ÖÊ®Î»
+0042 E500     F      104             MOV     A,MIN
+0044 75F00A          105             MOV     B,#10
+0047 84              106             DIV     AB
+0048 E5F0            107             MOV     A,B
+004A 93              108             MOVC    A,@A+DPTR
+004B F500     F      109             MOV     BUF_MIN_L,A             ; ·Ö¸öÎ»
+004D E500     F      110             MOV     A,SEC
+004F 75F00A          111             MOV     B,#10
+0052 84              112             DIV     AB
+0053 93              113             MOVC    A,@A+DPTR
+0054 F500     F      114             MOV     BUF_SEC_H,A             ; ÃëÊ®Î»
+0056 E500     F      115             MOV     A,SEC
+0058 75F00A          116             MOV     B,#10
+005B 84              117             DIV     AB
+005C E5F0            118             MOV     A,B
+005E 93              119             MOVC    A,@A+DPTR
+005F F500     F      120             MOV     BUF_SEC_L,A             ; Ãë¸öÎ»
+                     121             
+0061 7500BF   F      122             MOV     BUF_HOUR_H+02H,#0BFH
+0064 7500BF   F      123             MOV     BUF_HOUR_H+05H,#0BFH
+                     124             
+A51 MACRO ASSEMBLER  WL010                                                                02/06/2006 08:49:30 PAGE     3
+
+0067 7500FE   F      125             MOV     DIS_DIGIT,#0FEH
+006A E4              126             CLR     A
+006B F500     F      127             MOV     DIS_INDEX,A
+                     128             
+006D 75A88A          129             MOV     IE,#08AH                ; Ê¹ÄÜtimer0,1 ÖÐ¶Ï
+                     130             
+0070 D28C            131             SETB    TR0
+0072 D28E            132             SETB    TR1
+                     133             
+0074 750003   F      134             MOV     KEY_V,#03H
+                     135             
+0077                 136     MAIN_LP:
+0077 120000   F      137             LCALL   SCAN_KEY                ; ¼üÉ¨Ãè
+007A 60FB            138             JZ      MAIN_LP                 ; ÎÞ¼ü·µ»Ø
+                     139             
+007C 7F0A            140             MOV     R7,#10                  ; ÑÓÊ±10ms
+007E 120000   F      141             LCALL   DELAYMS                 ; ÑÓÊ±È¥¶¶¶¯
+0081 120000   F      142             LCALL   SCAN_KEY                ; ÔÙ´ÎÉ¨Ãè
+0084 60F1            143             JZ      MAIN_LP                 ; ÎÞ¼ü·µ»Ø
+                     144             
+0086 850000   F      145             MOV     KEY_V,KEY_S             ; ±£´æ¼üÖµ
+0089 120000   F      146             LCALL   PROC_KEY                ; ¼ü´¦Àí
+008C 80E9            147             SJMP    MAIN_LP                 ; µ÷»ØÖ÷Ñ­»·
+                     148     
+                     149     
+                     150     ;===============================================================================
+008E                 151     SCAN_KEY:
+                     152     ; É¨¼üÉ¨Ãè×Ó³ÌÐò
+                     153     ; ±£´æ°´¼ü×´Ì¬µ½key_s
+                     154     ; ·µ»Ø: A --- °´¼üÊÇ·ñ°´ÏÂ(BOOL)
+                     155     
+008E E4              156             CLR     A
+                     157             
+008F A294            158             MOV     C,K1                    ; ¶Á°´¼üK1
+0091 92E0            159             MOV     ACC.0,C
+0093 A295            160             MOV     C,K2                    ; ¶Á°´¼üK2
+0095 92E1            161             MOV     ACC.1,C
+                     162             
+0097 F500     F      163             MOV     KEY_S,A                 ;  ±£´æ°´¼ü×´Ì¬µ½key_s
+0099 6500     F      164             XRL     A,KEY_V
+009B 22              165             RET     
+                     166     
+                     167     ;===============================================================================
+009C                 168     PROC_KEY:
+                     169     ; ¼ü´¦Àí×Ó³ÌÐò
+                     170     ; ´«Èë²ÎÊ: KEY_V --- °´¼üÖµ
+                     171     ; ·µ»ØÖµ: ÎÞ
+                     172     
+009C C2AF            173             CLR     EA
+                     174             
+009E E500     F      175             MOV     A,KEY_V
+00A0 30E005          176             JNB     ACC.0,PROC_K1
+00A3 30E107          177             JNB     ACC.1,PROC_K2
+00A6 8028            178             SJMP    END_PROC_KEY
+                     179             
+00A8                 180     PROC_K1:                                ; °´¼ük1´¦Àí
+00A8 120000   F      181             LCALL   INC_HOUR                ; Ð¡Ê±¼Ó1
+00AB 8023            182             SJMP    END_PROC_KEY
+                     183     
+00AD                 184     PROC_K2:                                ; °´¼üK2´¦Àí
+00AD 0500     F      185             INC     MIN                     ; ·ÖÖÓ¼Ó1
+                     186             
+00AF E500     F      187             MOV     A,MIN                   ; 
+00B1 D3              188             SETB    C
+00B2 943B            189             SUBB    A,#59   
+00B4 4003            190             JC      K2_UPDATE_MIN           ; Èç¹û·ÖÖÓµÈÓÚ60,Ôò·ÖÇå0,Ð¡Ê±¼Ó1
+A51 MACRO ASSEMBLER  WL010                                                                02/06/2006 08:49:30 PAGE     4
+
+                     191             
+00B6 E4              192             CLR     A                       ; 
+00B7 F500     F      193             MOV     MIN,A
+                     194     
+00B9                 195     K2_UPDATE_MIN:                          ; ¸üÐÂ·ÖÏÔÊ¾»º³åÇø
+00B9 E500     F      196             MOV     A,MIN
+00BB 75F00A          197             MOV     B,#10
+00BE 84              198             DIV     AB                      ; A = MIN / 10  
+00BF 900000   F      199             MOV     DPTR,#DIS_CODE
+00C2 93              200             MOVC    A,@A+DPTR
+00C3 F500     F      201             MOV     BUF_MIN_H,A             ; ¸üÐÂ·ÖÊ®Î»
+                     202             
+00C5 E500     F      203             MOV     A,MIN
+00C7 75F00A          204             MOV     B,#10
+00CA 84              205             DIV     AB
+00CB E5F0            206             MOV     A,B                     ; A = MIN % 10
+00CD 93              207             MOVC    A,@A+DPTR
+00CE F500     F      208             MOV     BUF_MIN_L,A             ; ¸üÐÂ·Ö¸öÎ»    
+                     209             
+00D0                 210     END_PROC_KEY:
+00D0 D2AF            211             SETB    EA
+00D2 22              212             RET     
+                     213     
+                     214     ;===============================================================================
+                     215     
+                     216             USING   0
+00D3                 217     TIMER0:
+                     218     ; ¶¨Ê±Æ÷0ÖÐ¶Ï·þ³ÌÐò, ÓÃÓÚÊÂë¹ÜµÄ¶¯Ì¬É¨Ãè
+                     219     ; DIS_INDEX --- ÏÔÊ¾Ë÷Ò, ÓÃÓÚ±êÊ¶µ±Ç°ÏÔÊ¾µÄÊÂë¹ÜºÍ»º³åÇøµÄÆ«ÒÆÁ¿
+                     220     ; DIS_DIGIT --- Î»Ñ¡Í¨Öµ, ´«ËÍµ½P2¿ÚÓÃÓÚÑ¡Í¨µ±Ç°ÊÂë¹ÜµÄÊÖµ, ÈçµÈÓÚ0xfeÊ±,
+                     221     ;               Ñ¡Í¨P2.0¿ÚÊÂë¹Ü
+                     222     ; DIS_BUF   --- ÏÔÓÚ»º³åÇø»ùµØÖ·                
+                     223     
+00D3 C0E0            224             PUSH    ACC
+00D5 C0D0            225             PUSH    PSW
+00D7 C000            226             PUSH    AR0
+                     227             
+00D9 758CFC          228             MOV     TH0,#0FCH
+00DC 758A17          229             MOV     TL0,#017H
+                     230             
+00DF 75A0FF          231             MOV     P2,#0FFH                ; ÏÈ¹Ø±ÕËùÓÐÊÂë¹Ü
+                     232             
+00E2 7400     F      233             MOV     A,#DIS_BUF              ; »ñµÃÏÔÊ¾»º³åÇø»ùµØÖ·
+00E4 2500     F      234             ADD     A,DIS_INDEX             ; »ñµÃÆ«ÒÆÁ¿
+00E6 F8              235             MOV     R0,A                    ; R0 = »ùµØÖ· + Æ«ÒÆÁ¿
+00E7 E6              236             MOV     A,@R0                   ; »ñµÃÏÔÊ¾´úÂë
+00E8 F580            237             MOV     P0,A                    ; ÏÔÊ¾´úÂë´«ËÍµ½P0¿Ú
+                     238             
+00EA 8500A0   F      239             MOV     P2,DIS_DIGIT
+                     240     
+00ED E500     F      241             MOV     A,DIS_DIGIT             ; Î»Ñ¡Í¨Öµ×óÒÆ, ÏÂ´ÎÖÐ¶ÏÊ±Ñ¡Í¨ÏÂÒ»Î»ÊÂë¹Ü
+00EF 23              242             RL      A
+00F0 F500     F      243             MOV     DIS_DIGIT,A
+                     244             
+00F2 0500     F      245             INC     DIS_INDEX               ; DIS_INDEX¼Ó1, ÏÂ´ÎÖÐ¶ÏÊ±ÏÔÊ¾ÏÂÒ»Î»
+00F4 530007   F      246             ANL     DIS_INDEX,#0x07         ; µ±DIS_INDEXµÈÓÚ8(0000 1000)Ê±, Çå0
+                     247     
+00F7 D000            248             POP     AR0
+00F9 D0D0            249             POP     PSW
+00FB D0E0            250             POP     ACC
+                     251             
+00FD 32              252             RETI    
+                     253     
+                     254     ;===============================================================================
+                     255             USING   0
+00FE                 256     TIMER1:
+A51 MACRO ASSEMBLER  WL010                                                                02/06/2006 08:49:30 PAGE     5
+
+                     257     ; ¶¨Ê±Æ÷1ÖÐ¶Ï·þÎñ³ÌÐò, ²úÉúÊ±»ùÐÅºÅ10ms
+                     258     ; 
+                     259     ;
+00FE C0D0            260             PUSH    PSW
+0100 C0E0            261             PUSH    ACC
+0102 C0F0            262             PUSH    B
+0104 C083            263             PUSH    DPH
+0106 C082            264             PUSH    DPL
+                     265             
+0108 758DDC          266             MOV     TH1,#0DCH
+                     267             
+010B 0500     F      268             INC     SEC100
+                     269             
+010D E500     F      270             MOV     A,SEC100
+010F C3              271             CLR     C
+0110 9464            272             SUBB    A,#100                  ; ÊÇ·ñÖÐ¶Ï100´Î(´ïµ½1s)
+0112 4006            273             JC      END_TIMER1              ; < 1S
+                     274             
+0114 750000   F      275             MOV     SEC100,#00H             ; ´ïµ½1s 
+0117 120000   F      276             LCALL   INC_SEC                 ; Ãë¼Ó1 
+                     277             
+011A                 278     END_TIMER1:
+011A D082            279             POP     DPL
+011C D083            280             POP     DPH
+011E D0F0            281             POP     B
+0120 D0E0            282             POP     ACC
+0122 D0D0            283             POP     PSW
+                     284             
+0124 32              285             RETI                            ; 
+                     286     
+                     287     ;===============================================================================
+0125                 288     INC_SEC:
+0125 0500     F      289             INC     SEC
+                     290             
+0127 E500     F      291             MOV     A,SEC
+0129 D3              292             SETB    C
+012A 943B            293             SUBB    A,#59                   ; 
+012C 4006            294             JC      UPDATE_SEC
+                     295             
+012E E4              296             CLR     A
+012F F500     F      297             MOV     SEC,A
+0131 120000   F      298             LCALL   INC_MIN
+                     299             
+0134                 300     UPDATE_SEC:
+0134 E500     F      301             MOV     A,SEC
+0136 75F00A          302             MOV     B,#10
+0139 84              303             DIV     AB                      ; A = SEC / 10
+013A 900000   F      304             MOV     DPTR,#DIS_CODE
+013D 93              305             MOVC    A,@A+DPTR               ; 
+013E F500     F      306             MOV     BUF_SEC_H,A             ; 
+                     307             
+0140 E500     F      308             MOV     A,SEC
+0142 75F00A          309             MOV     B,#10
+0145 84              310             DIV     AB
+0146 E5F0            311             MOV     A,B                     ; A = SEC % 10
+0148 93              312             MOVC    A,@A+DPTR
+0149 F500     F      313             MOV     BUF_SEC_L,A
+014B 22              314             RET     
+                     315     
+                     316     ;===============================================================================
+                     317     
+014C                 318     INC_MIN:
+014C 0500     F      319             INC     MIN                     ; ·ÖÖÓ¼Ó1
+                     320             
+014E E500     F      321             MOV     A,MIN                   ; 
+0150 D3              322             SETB    C
+A51 MACRO ASSEMBLER  WL010                                                                02/06/2006 08:49:30 PAGE     6
+
+0151 943B            323             SUBB    A,#59   
+0153 4006            324             JC      UPDATE_MIN              ; Èç¹û·ÖÖÓµÈÓÚ60,Ôò·ÖÇå0,Ð¡Ê±¼Ó1
+                     325             
+0155 E4              326             CLR     A                       ; 
+0156 F500     F      327             MOV     MIN,A
+0158 120000   F      328             LCALL   INC_HOUR                ; Ð¡Ê±¼Ó1
+                     329             
+015B                 330     UPDATE_MIN:                             ; ¸üÐÂ·ÖÏÔÊ¾»º³åÇø
+015B E500     F      331             MOV     A,MIN
+015D 75F00A          332             MOV     B,#10
+0160 84              333             DIV     AB                      ; A = MIN / 10  
+0161 900000   F      334             MOV     DPTR,#DIS_CODE
+0164 93              335             MOVC    A,@A+DPTR
+0165 F500     F      336             MOV     BUF_MIN_H,A             ; ¸üÐÂ·ÖÊ®Î»
+                     337             
+0167 E500     F      338             MOV     A,MIN
+0169 75F00A          339             MOV     B,#10
+016C 84              340             DIV     AB
+016D E5F0            341             MOV     A,B                     ; A = MIN % 10
+016F 93              342             MOVC    A,@A+DPTR
+0170 F500     F      343             MOV     BUF_MIN_L,A             ; ¸üÐÂ·Ö¸öÎ»
+                     344             
+0172 22              345             RET     
+                     346     
+                     347     ;===============================================================================
+                     348     
+0173                 349     INC_HOUR:
+0173 0500     F      350             INC     HOUR                    ; Ð¡Ê±¼Ó1 
+0175 E500     F      351             MOV     A,HOUR
+0177 D3              352             SETB    C
+0178 9418            353             SUBB    A,#24
+017A 4003            354             JC      UPDATE_HOUR             ; Èç¹ûÐ¡Ê±µÈÓÚ24,ÔòÐ¡Ê±Çå0
+                     355             
+017C E4              356             CLR     A
+017D F500     F      357             MOV     HOUR,A                  ; Ð¡Ê±Çå0 
+                     358             
+017F                 359     UPDATE_HOUR:
+017F E500     F      360             MOV     A,HOUR
+0181 D3              361             SETB    C
+0182 9409            362             SUBB    A,#9
+0184 400E            363             JC      UPDATE_HOUR1            ; Èç¹ûÐ¡Ê±Ð¡ÓÚ10,ÔòÊ®Î»0²»ÏÔÊ¾
+                     364             
+0186 E500     F      365             MOV     A,HOUR
+0188 75F00A          366             MOV     B,#10
+018B 84              367             DIV     AB
+018C 900000   F      368             MOV     DPTR,#DIS_CODE
+018F 93              369             MOVC    A,@A+DPTR               ; 
+0190 F500     F      370             MOV     BUF_HOUR_H,A
+0192 8003            371             SJMP    UPDATE_HOUR2
+                     372             
+0194                 373     UPDATE_HOUR1:
+0194 7500FF   F      374             MOV     BUF_HOUR_H,#0FFH
+                     375             
+0197                 376     UPDATE_HOUR2:
+0197 E500     F      377             MOV     A,HOUR
+0199 75F00A          378             MOV     B,#10
+019C 84              379             DIV     AB
+019D E5F0            380             MOV     A,B
+019F 900000   F      381             MOV     DPTR,#DIS_CODE
+01A2 93              382             MOVC    A,@A+DPTR
+01A3 F500     F      383             MOV     BUF_HOUR_L,A
+01A5 22              384             RET     
+                     385     
+                     386     ;===============================================================================
+                     387     
+01A6                 388     DELAYMS:
+A51 MACRO ASSEMBLER  WL010                                                                02/06/2006 08:49:30 PAGE     7
+
+                     389     ; ÑÓÊ±×Ó³ÌÐò
+                     390     ; ´«Èë²ÎÊ£ºR7 --- ÑÓÊ±Öµ(MS) 
+                     391     ; ·µ»ØÖµ£ºÎÞ
+                     392     
+01A6 EF              393             MOV     A,R7
+01A7 6009            394             JZ      END_DLYMS       
+01A9                 395     DLY_LP1:
+01A9 7EB9            396             MOV     R6,#185
+01AB                 397     DLY_LP2:
+01AB 00              398             NOP
+01AC 00              399             NOP
+01AD 00              400             NOP
+01AE DEFB            401             DJNZ    R6,DLY_LP2
+01B0 DFF7            402             DJNZ    R7,DLY_LP1
+                     403     
+01B2                 404     END_DLYMS:
+01B2 22              405             RET 
+                     406             
+                     407     ; END OF DELAYMS        
+                     408     
+                     409     ;===============================================================================
+                     410     
+01B3                 411     DIS_CODE:
+01B3 C0              412             DB      0C0H
+01B4 F9              413             DB      0F9H
+01B5 A4              414             DB      0A4H
+01B6 B0              415             DB      0B0H
+01B7 99              416             DB      099H
+01B8 92              417             DB      092H
+01B9 82              418             DB      082H
+01BA F8              419             DB      0F8H
+01BB 80              420             DB      080H
+01BC 90              421             DB      090H
+01BD FF              422             DB      0FFH
+                     423     
+                     424             END
+A51 MACRO ASSEMBLER  WL010                                                                02/06/2006 08:49:30 PAGE     8
+
+SYMBOL TABLE LISTING
+------ ----- -------
+
+
+N A M E             T Y P E  V A L U E   ATTRIBUTES
+
+ACC. . . . . . . .  D ADDR   00E0H   A   
+AR0. . . . . . . .  D ADDR   0000H   A   
+B. . . . . . . . .  D ADDR   00F0H   A   
+BUF_HOUR_H . . . .  D ADDR   0008H   R   SEG=DATA_SEG
+BUF_HOUR_L . . . .  D ADDR   0009H   R   SEG=DATA_SEG
+BUF_MIN_H. . . . .  D ADDR   000BH   R   SEG=DATA_SEG
+BUF_MIN_L. . . . .  D ADDR   000CH   R   SEG=DATA_SEG
+BUF_SEC_H. . . . .  D ADDR   000EH   R   SEG=DATA_SEG
+BUF_SEC_L. . . . .  D ADDR   000FH   R   SEG=DATA_SEG
+CODE_SEG . . . . .  C SEG    01BEH       REL=UNIT
+DATA_SEG . . . . .  D SEG    0010H       REL=UNIT
+DELAYMS. . . . . .  C ADDR   01A6H   R   SEG=CODE_SEG
+DIS_BUF. . . . . .  D ADDR   0008H   R   SEG=DATA_SEG
+DIS_CODE . . . . .  C ADDR   01B3H   R   SEG=CODE_SEG
+DIS_DIGIT. . . . .  D ADDR   0002H   R   SEG=DATA_SEG
+DIS_INDEX. . . . .  D ADDR   0004H   R   SEG=DATA_SEG
+DLY_LP1. . . . . .  C ADDR   01A9H   R   SEG=CODE_SEG
+DLY_LP2. . . . . .  C ADDR   01ABH   R   SEG=CODE_SEG
+DPH. . . . . . . .  D ADDR   0083H   A   
+DPL. . . . . . . .  D ADDR   0082H   A   
+EA . . . . . . . .  B ADDR   00A8H.7 A   
+END_DLYMS. . . . .  C ADDR   01B2H   R   SEG=CODE_SEG
+END_PROC_KEY . . .  C ADDR   00D0H   R   SEG=CODE_SEG
+END_TIMER1 . . . .  C ADDR   011AH   R   SEG=CODE_SEG
+HOUR . . . . . . .  D ADDR   0005H   R   SEG=DATA_SEG
+IE . . . . . . . .  D ADDR   00A8H   A   
+INC_HOUR . . . . .  C ADDR   0173H   R   SEG=CODE_SEG
+INC_MIN. . . . . .  C ADDR   014CH   R   SEG=CODE_SEG
+INC_SEC. . . . . .  C ADDR   0125H   R   SEG=CODE_SEG
+K1 . . . . . . . .  B ADDR   0090H.4 A   
+K2 . . . . . . . .  B ADDR   0090H.5 A   
+K2_UPDATE_MIN. . .  C ADDR   00B9H   R   SEG=CODE_SEG
+KEY_S. . . . . . .  D ADDR   0000H   R   SEG=DATA_SEG
+KEY_V. . . . . . .  D ADDR   0001H   R   SEG=DATA_SEG
+MAIN . . . . . . .  C ADDR   0000H   R   SEG=CODE_SEG
+MAIN_LP. . . . . .  C ADDR   0077H   R   SEG=CODE_SEG
+MIN. . . . . . . .  D ADDR   0006H   R   SEG=DATA_SEG
+P0 . . . . . . . .  D ADDR   0080H   A   
+P1 . . . . . . . .  D ADDR   0090H   A   
+P2 . . . . . . . .  D ADDR   00A0H   A   
+PROC_K1. . . . . .  C ADDR   00A8H   R   SEG=CODE_SEG
+PROC_K2. . . . . .  C ADDR   00ADH   R   SEG=CODE_SEG
+PROC_KEY . . . . .  C ADDR   009CH   R   SEG=CODE_SEG
+PSW. . . . . . . .  D ADDR   00D0H   A   
+SCAN_KEY . . . . .  C ADDR   008EH   R   SEG=CODE_SEG
+SEC. . . . . . . .  D ADDR   0003H   R   SEG=DATA_SEG
+SEC100 . . . . . .  D ADDR   0007H   R   SEG=DATA_SEG
+SP . . . . . . . .  D ADDR   0081H   A   
+STACK. . . . . . .  I ADDR   0000H   R   SEG=STACK_SEG
+STACK_SEG. . . . .  I SEG    0014H       REL=UNIT
+TH0. . . . . . . .  D ADDR   008CH   A   
+TH1. . . . . . . .  D ADDR   008DH   A   
+TIMER0 . . . . . .  C ADDR   00D3H   R   SEG=CODE_SEG
+TIMER1 . . . . . .  C ADDR   00FEH   R   SEG=CODE_SEG
+TL0. . . . . . . .  D ADDR   008AH   A   
+TL1. . . . . . . .  D ADDR   008BH   A   
+TMOD . . . . . . .  D ADDR   0089H   A   
+TR0. . . . . . . .  B ADDR   0088H.4 A   
+TR1. . . . . . . .  B ADDR   0088H.6 A   
+UPDATE_HOUR. . . .  C ADDR   017FH   R   SEG=CODE_SEG
+A51 MACRO ASSEMBLER  WL010                                                                02/06/2006 08:49:30 PAGE     9
+
+UPDATE_HOUR1 . . .  C ADDR   0194H   R   SEG=CODE_SEG
+UPDATE_HOUR2 . . .  C ADDR   0197H   R   SEG=CODE_SEG
+UPDATE_MIN . . . .  C ADDR   015BH   R   SEG=CODE_SEG
+UPDATE_SEC . . . .  C ADDR   0134H   R   SEG=CODE_SEG
+
+
+REGISTER BANK(S) USED: 0 
+
+
+ASSEMBLY COMPLETE.  0 WARNING(S), 0 ERROR(S)

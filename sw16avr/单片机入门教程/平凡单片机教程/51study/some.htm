@@ -1,0 +1,90 @@
+<HTML>
+<HEAD>
+<META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=gb_2312-80">
+<META NAME="Generator" CONTENT="Microsoft FrontPage 5.0">
+<TITLE>初学单片机几个不易掌握的概念</TITLE>
+</HEAD>
+<BODY background="../back.jpg">
+<B><FONT FACE="宋体" LANG="ZH-CN" SIZE=6> 
+<P ALIGN="CENTER" style="line-height: 150%; margin-top: 0; margin-bottom: 0">
+<font size="2">初学单片机几个不易掌握的概念</font></P>
+</FONT>
+<P ALIGN="CENTER" style="line-height: 150%; margin-top: 0; margin-bottom: 0">　</P>
+<FONT FACE="黑体" LANG="ZH-CN" SIZE=5>
+<P ALIGN="CENTER" style="line-height: 150%; margin-top: 0; margin-bottom: 0"></P>
+</font></B><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>
+<P style="line-height: 150%; margin-top: 0; margin-bottom: 0"> 　　随着电子技术的迅速发展，计算机已深入地渗透到我们的生活中，许多电子爱好者开始学习单片机知识，但单片机的内容比较抽象，相对电子爱好者已熟悉的模拟电路、数字电路，单片机中有一些新的概念，这些概念非常基本以至于一般作者不屑去谈，教材自然也不会很深入地讲解这些概念，但这些内容又是学习中必须要理解的，下面就结合本人的学习、教学经验，对这些最基本概念作一说明，希望对自学者有所帮助。</P>
+</FONT>
+<P style="line-height: 150%; margin-top: 0; margin-bottom: 0">
+<FONT FACE="宋体" LANG="ZH-CN" SIZE=2>　　一、总线：我们知道，一个电路总是由元器件通过电线连接而成的，在模拟电路中，连线并不成为一个问题，因为各器件间一般是串行关系，各器件之间的连线并不很多，但计算机电路却不一样，它是以微处理器为核心，各器件都要与微处理器相连，各器件之间的工作必须相互协调，所以就需要的连线就很多了，如果仍如同模拟电路一样，在各微处理器和各器件间单独连线，则线的数量将多得惊人，所以在微处理机中引入了总线的概念，各个器件共同享用连线，所有器件的</font><FONT FACE="Arial" SIZE=2>8</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>根数据线全部接到</FONT><FONT FACE="Arial" SIZE=2>8</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>根公用的线上，即相当于各个器件并联起来，但仅这样还不行，如果有两个器件同时送出数据，一个为</FONT><FONT FACE="Arial" SIZE=2>0</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>，一个为</FONT><FONT FACE="Arial" SIZE=2>1</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>，那么，接收方接收到的究竟是什么呢？这种情况是不允许的，所以要通过控制线进行控制，使器件分时工作，任何时候只能有一个器件发送数据（可以有多个器件同时接收）。器件的数据线也就被称为数据总线，器件所有的控制线被称为控制总线。在单片机内部或者外部存储器及其它器件中有存储单元，这些存储单元要被分配地址，才能使用，分配地址当然也是以电信号的形式给出的，由于存储单元比较多，所以，用于地址分配的线也较多，这些线被称为地址总线。</font></P>
+<P style="line-height: 150%; margin-top: 0; margin-bottom: 0"> 
+<FONT FACE="宋体" LANG="ZH-CN" SIZE=2>　　二、数据、地址、指令：之所以将这三者放在一起，是因为这三者的本质都是一样的──数字，或者说都是一串‘</font><FONT FACE="Arial" SIZE=2>0</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>’和‘</FONT><FONT FACE="Arial" SIZE=2>1</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>’组成的序列。换言之，地址、指令也都是数据。指令：由单片机芯片的设计者规定的一种数字，它与我们常用的指令助记符有着严格的一一对应关系，不可以由单片机的开发者更改。地址：是寻找单片机内部、外部的存储单元、输入输出口的依据，内部单元的地址值已由芯片设计者规定好，不可更改，外部的单元可以由单片机开发者自行决定，但有一些地址单元是一定要有的（详见程序的执行过程）。数据：这是由微处理机处理的对象，在各种不同的应用电路中各不相同，一般而言，被处理的数据可能有这么几种情况：</font></P>
+<DIR><P style="line-height: 150%; margin-top: 0; margin-bottom: 0">
+  <FONT FACE="Arial" SIZE=2>1</font><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>·地址（如</FONT><FONT FACE="Arial" SIZE=2>MOV&#9;DPTR</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>，</FONT><FONT FACE="Arial" SIZE=2>#1000H</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>），即地址</FONT><FONT FACE="Arial" SIZE=2>1000H</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>送入</FONT><FONT FACE="Arial" SIZE=2>DPTR</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>。</font></P>
+<P style="line-height: 150%; margin-top: 0; margin-bottom: 0">
+<FONT FACE="Arial" SIZE=2>2</font><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>·方式字或控制字（如</FONT><FONT FACE="Arial" SIZE=2>MOV&#9;TMOD</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>，</FONT><FONT FACE="Arial" SIZE=2>#3</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>），</FONT><FONT FACE="Arial" SIZE=2>3</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>即是控制字。</font></P>
+<P style="line-height: 150%; margin-top: 0; margin-bottom: 0">
+<FONT FACE="Arial" SIZE=2>3</font><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>·常数（如</FONT><FONT FACE="Arial" SIZE=2>MOV&#9;TH0</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>，</FONT><FONT FACE="Arial" SIZE=2>#10H</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>）</FONT><FONT FACE="Arial" SIZE=2>10H</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>即定时常数。</font></P></DIR>
+
+<P style="line-height: 150%; margin-top: 0; margin-bottom: 0">
+<FONT FACE="Arial" SIZE=2>4</font><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>·实际输出值（如</FONT><FONT FACE="Arial" SIZE=2>P1</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>口接彩灯，要灯全亮，则执行指令：</FONT><FONT FACE="Arial" SIZE=2>MOV P1</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>，</FONT><FONT FACE="Arial" SIZE=2>#0FFH</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>，要灯全暗，则执行指令：</FONT><FONT FACE="Arial" SIZE=2>MOV     P1</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>，</FONT><FONT FACE="Arial" SIZE=2>#00H</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>）这里</FONT><FONT FACE="Arial" SIZE=2>0FFH</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>和</FONT><FONT FACE="Arial" SIZE=2>00H</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>都是实际输出值。又如用于</FONT><FONT FACE="Arial" SIZE=2>LED</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>的字形码，也是实际输出的值。</font></P>
+<FONT FACE="宋体" LANG="ZH-CN" SIZE=2>
+<P style="line-height: 150%; margin-top: 0; margin-bottom: 0">理解了地址、指令的本质，就不难理解程序运行过程中为什么会跑飞，会把数据当成指令来执行了。</P>
+</FONT>
+<P style="line-height: 150%; margin-top: 0; margin-bottom: 0">
+<FONT FACE="宋体" LANG="ZH-CN" SIZE=2>　　三、P0口、P2口和</font><FONT FACE="Arial" SIZE=2>P3</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>的第二功能用法</FONT><FONT FACE="Arial" SIZE=2> 
+  </FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>初学时往往对P0口、P2口和</FONT><FONT FACE="Arial" SIZE=2>P3</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>口的第二功能用法迷惑不解，认为第二功能和原功能之间要有一个切换的过程，或者说要有一条指令，事实上，各端口的第二功能完全是自动的，不需要用指令来转换。如</FONT><FONT FACE="Arial" SIZE=2>P3.6</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>、</FONT><FONT FACE="Arial" SIZE=2>P3.7</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>分别是</FONT><FONT FACE="Arial" SIZE=2>WR</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>、</FONT><FONT FACE="Arial" SIZE=2>RD</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>信号，当微片理机外接</FONT><FONT FACE="Arial" SIZE=2>RAM</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>或有外部</FONT><FONT FACE="Arial" SIZE=2>I/O</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>口时，它们被用作第二功能，不能作为通用</FONT><FONT FACE="Arial" SIZE=2>I/O</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>口使用，只要一微处理机一执行到</FONT><FONT FACE="Arial" SIZE=2>MOVX</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>指令，就会有相应的信号从</FONT><FONT FACE="Arial" SIZE=2>P3.6</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>或</FONT><FONT FACE="Arial" SIZE=2>P3.7</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>送出，不需要事先用指令说明。事实上‘不能作为通用</FONT><FONT FACE="Arial" SIZE=2>I/O</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>口使用’也并不是‘不能’而是（使用者）‘不会’将其作为通用</FONT><FONT FACE="Arial" SIZE=2>I/O</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>口使用。你完全可以在指令中按排一条</FONT><FONT FACE="Arial" SIZE=2>SETB 
+  P3.7</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>的指令，并且当单片机执行到这条指令时，也会使</FONT><FONT FACE="Arial" SIZE=2>P3.7</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>变为高电平，但使用者不会这么去做，因为这通常这会导致系统的崩溃（即死机）。</font></P>
+<P style="line-height: 150%; margin-top: 0; margin-bottom: 0"> 
+<FONT FACE="宋体" LANG="ZH-CN" SIZE=2>　　四、程序的执行过程</font><FONT FACE="Arial" SIZE=2> 
+  </FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>单片机在通电复位后</FONT><FONT FACE="Arial" SIZE=2>8051</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>内的程序计数器（</FONT><FONT FACE="Arial" SIZE=2>PC</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>）中的值为‘</FONT><FONT FACE="Arial" SIZE=2>0000</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>’，所以程序总是从‘</FONT><FONT FACE="Arial" SIZE=2>0000</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>’单元开始执行，也就是说：在系统的</FONT><FONT FACE="Arial" SIZE=2>ROM</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>中一定要存在‘</FONT><FONT FACE="Arial" SIZE=2>0000</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>’这个单元，并且在‘</FONT><FONT FACE="Arial" SIZE=2>0000</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>’单元中存放的一定是一条指令。</font></P>
+<P style="line-height: 150%; margin-top: 0; margin-bottom: 0"> 
+<FONT FACE="宋体" LANG="ZH-CN" SIZE=2>　　五、堆栈</font><FONT FACE="Arial" SIZE=2> 
+  </FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>堆栈是一个区域，是用来存放数据的，这个区域本身没有任何特殊之处，就是内部</FONT><FONT FACE="Arial" SIZE=2>RAM</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>的一部份，特殊的是它存放和取用数据的方式，即所谓的‘先进后出，后进先出’，并且堆栈有特殊的数据传输指令，即‘</FONT><FONT FACE="Arial" SIZE=2>PUSH</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>’和‘</FONT><FONT FACE="Arial" SIZE=2>POP</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>’，有一个特殊的专为其服务的单元，即堆栈指针</FONT><FONT FACE="Arial" SIZE=2>SP</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>，每当执一次</FONT><FONT FACE="Arial" SIZE=2>PUSH</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>指令时，</FONT><FONT FACE="Arial" SIZE=2>SP</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>就（在原来值的基础上）自动加</FONT><FONT FACE="Arial" SIZE=2>1</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>，每当执行一次</FONT><FONT FACE="Arial" SIZE=2>POP</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>指令，</FONT><FONT FACE="Arial" SIZE=2>SP</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>就（在原来值的基础上）自动减</FONT><FONT FACE="Arial" SIZE=2>1</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>。由于</FONT><FONT FACE="Arial" SIZE=2>SP</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>中的值可以用指令加以改变，所以只要在程序开始阶段更改了</FONT><FONT FACE="Arial" SIZE=2>SP</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>的值，就可以把堆栈设置在规定的内存单元中，如在程序开始时，用一条</FONT><FONT FACE="Arial" SIZE=2>MOV &#9;SP</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>，</FONT><FONT FACE="Arial" SIZE=2>#5FH</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>指令，就时把堆栈设置在从内存单元</FONT><FONT FACE="Arial" SIZE=2>60H</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>开始的单元中。一般程序的开头总有这么一条设置堆栈指针的指令，因为开机时，</FONT><FONT FACE="Arial" SIZE=2>SP</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>的初始值为</FONT><FONT FACE="Arial" SIZE=2>07H</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>，这样就使堆栈从</FONT><FONT FACE="Arial" SIZE=2>08H</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>单元开始往后，而</FONT><FONT FACE="Arial" SIZE=2>08H</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>到</FONT><FONT FACE="Arial" SIZE=2>1FH</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>这个区域正是</FONT><FONT FACE="Arial" SIZE=2>8031</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>的第二、三、四工作寄存器区，经常要被使用，这会造成数据的浑乱。不同作者编写程序时，初始化堆栈指令也不完全相同，这是作者的习惯问题。当设置好堆栈区后，并不意味着该区域成为一种专用内存，它还是可以象普通内存区域一样使用，只是一般情况下编程者不会把它当成普通内存用了。</font></P>
+<P style="line-height: 150%; margin-top: 0; margin-bottom: 0"> 
+<FONT FACE="宋体" LANG="ZH-CN" SIZE=2>　　六、单片机的开发过程</font><FONT FACE="Arial" SIZE=2> 
+  </FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>这里所说的开发过程并不是一般书中所说的从任务分析开始，我们假设已设计并制作好硬件，下面就是编写软件的工作。在编写软件之前，首先要确定一些常数、地址，事实上这些常数、地址在设计阶段已被直接或间接地确定下来了。如当某器件的连线设计好后，其地址也就被确定了，当器件的功能被确定下来后，其控制字也就被确定了。然后用文本编缉器（如</FONT><FONT FACE="Arial" SIZE=2>EDIT</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>、</FONT><FONT FACE="Arial" SIZE=2>CCED</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>等）编写软件，编写好后，用编译器对源程序文件编译，查错，直到没有语法错误，除了极简单的程序外，一般应用仿真机对软件进行调试，直到程序运行正确为止。运行正确后，就可以写片（将程序固化在</FONT><FONT FACE="Arial" SIZE=2>EPROM</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>中）。在源程序被编译后，生成了扩展名为</FONT><FONT FACE="Arial" SIZE=2>HEX</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>的目标文件，一般编程器能够识别这种格式的文件，只要将此文件调入即可写片。在此，为使大家对整个过程有个认识，举一例说明：</font></P>
+<FONT FACE="Arial" SIZE=2>
+<P style="line-height: 150%; margin-top: 0; margin-bottom: 0">ORG&#9;0000H</P>
+<P style="line-height: 150%; margin-top: 0; margin-bottom: 0">&#9;LJMP&#9;START</P>
+<P style="line-height: 150%; margin-top: 0; margin-bottom: 0">&#9;ORG&#9;040H</P>
+</FONT><P style="line-height: 150%; margin-top: 0; margin-bottom: 0">
+<FONT FACE="Arial" SIZE=2>START</font><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>：</font></P>
+<P style="line-height: 150%; margin-top: 0; margin-bottom: 0">
+<FONT FACE="Arial" SIZE=2>MOV&#9;SP</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>，</FONT><FONT FACE="Arial" SIZE=2>#5FH ;</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>设堆栈</font></P>
+<P style="line-height: 150%; margin-top: 0; margin-bottom: 0">
+<FONT FACE="Arial" SIZE=2>LOOP</font><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>：</font></P>
+<P style="line-height: 150%; margin-top: 0; margin-bottom: 0">
+<FONT FACE="Arial" SIZE=2>NOP</font></P>
+<P style="line-height: 150%; margin-top: 0; margin-bottom: 0">
+<FONT FACE="Arial" SIZE=2>&#9;LJMP&#9;LOOP&#9;</font>
+<FONT FACE="宋体" LANG="ZH-CN" SIZE=2>；循环</font></P>
+<P style="line-height: 150%; margin-top: 0; margin-bottom: 0">
+<FONT FACE="Arial" SIZE=2>END&#9;&#9;&#9;&#9;</font>
+<FONT FACE="宋体" LANG="ZH-CN" SIZE=2>；结束</font></P>
+<P ALIGN="CENTER" style="line-height: 150%; margin-top: 0; margin-bottom: 0">
+<FONT FACE="宋体" LANG="ZH-CN" SIZE=2>表</font><FONT FACE="Arial" SIZE=2>1</font></P>
+<FONT FACE="Arial" SIZE=2>
+<P style="line-height: 150%; margin-top: 0; margin-bottom: 0">:03000000020040BB</P>
+<P style="line-height: 150%; margin-top: 0; margin-bottom: 0">:0700400075815F000200431F</P>
+</FONT>
+<P ALIGN="CENTER" style="line-height: 150%; margin-top: 0; margin-bottom: 0">
+<FONT FACE="宋体" LANG="ZH-CN" SIZE=2>表</font><FONT FACE="Arial" SIZE=2>2</font></P>
+<FONT FACE="Arial" SIZE=2>
+<P style="line-height: 150%; margin-top: 0; margin-bottom: 0">02 00 40 FF FF FF FF FF FF FF FF FF FF FF FF FF FF FF FF FF FF FF FF FF FF FF FF FF FF FF FF FF FF FF FF FF FF FF FF FF FF FF FF FF FF FF FF FF FF FF FF FF FF FF FF FF FF FF FF FF FF FF FF FF 75 81 5F 00 02 00 43</P>
+</FONT><P style="line-height: 150%; margin-top: 0; margin-bottom: 0">
+<FONT FACE="宋体" LANG="ZH-CN" SIZE=2>&#9;&#9;&#9;&#9;表</font><FONT FACE="Arial" SIZE=2>3</font></P>
+<P style="line-height: 150%; margin-top: 0; margin-bottom: 0">
+<FONT FACE="宋体" LANG="ZH-CN" SIZE=2>表</font><FONT FACE="Arial" SIZE=2>1</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>为源程序，表</FONT><FONT FACE="Arial" SIZE=2>2</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>是汇编后得到的</FONT><FONT FACE="Arial" SIZE=2>HEX</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>文件，表</FONT><FONT FACE="Arial" SIZE=2>3</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>是由</FONT><FONT FACE="Arial" SIZE=2>HEX</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>文件转换成的目标文件，也就是最终写入</FONT><FONT FACE="Arial" SIZE=2>EPROM</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>的文件，它由编程器转换得到，也可以由</FONT><FONT FACE="Arial" SIZE=2>HEXBIN</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>一类的程序转换得到。学过手工汇编者应当不难找出表</FONT><FONT FACE="Arial" SIZE=2>3</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>与表</FONT><FONT FACE="Arial" SIZE=2>1</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>的一一对应关系，值得注意的是从</FONT><FONT FACE="Arial" SIZE=2>02 00 40</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>后开始的一长串‘FF’，直到</FONT><FONT FACE="Arial" SIZE=2>75 81</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>，这是由于伪指令：</FONT><FONT FACE="Arial" SIZE=2>ORG&#9;#9; 040H</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>造成的结果。</font></P>
+<P style="line-height: 150%; margin-top: 0; margin-bottom: 0"> 
+<FONT FACE="宋体" LANG="ZH-CN" SIZE=2>　　七、仿真、仿真机</font><FONT FACE="Arial" SIZE=2> 
+  </FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>仿真是单片机开发过程中非常重要的一个环节，除了一些极简单的任务，一般产品开发过程中都要进行仿真，仿真的主要目的是进行软件调试，当然借助仿真机，也能进行一些硬件排错。一块单片机应用电路板包括单片机部份及为达到使用目的而设计的应用电路，仿真就是利用仿真机来代替应用电路板（称目标机）的单片机部份，对应用电路部份进行测试、调试。仿真有</FONT><FONT FACE="Arial" SIZE=2>CPU</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>仿真和</FONT><FONT FACE="Arial" SIZE=2>ROM</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>仿真两种，所谓</FONT><FONT FACE="Arial" SIZE=2>CPU</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>仿真是指用仿真机代替目标机的</FONT><FONT FACE="Arial" SIZE=2>CPU</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>，由仿真机向目标机的应用电路部份提供各种信号、数据，进行调试的方法。这种仿真可以通过单步运行、连续运行等多种方法来运行程序，并能观察到单片机内部的变化，便于改正程序中的错误。所谓</FONT><FONT FACE="Arial" SIZE=2>ROM</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>仿真，就是用仿真机代替目标机的</FONT><FONT FACE="Arial" SIZE=2>ROM</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>，目标机的</FONT><FONT FACE="Arial" SIZE=2>CPU</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>工作时，从仿真机中读取程序，并执行。这种仿真其实就是将仿真机当成一片</FONT><FONT FACE="Arial" SIZE=2>EPROM</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>，只是省去了擦片、写片的麻烦，并没有多少调试手段可言。通常这是二种不同类型的仿真机，也就是说，一台仿真机不能既做</FONT><FONT FACE="Arial" SIZE=2>CPU</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>仿真，又做</FONT><FONT FACE="Arial" SIZE=2>ROM</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>仿真。可能的情况下，当然以</FONT><FONT FACE="Arial" SIZE=2>CPU</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>仿真好。</font></P>
+<FONT FACE="宋体" LANG="ZH-CN" SIZE=2> 
+<P style="line-height: 150%; margin-top: 0; margin-bottom: 0">以上系个人对单片机的理解，如有不对之处，请诸位大虾多多指点。<a href="http://czlyzhj.abc.yesite.com">发表您的高见</a>。</P>
+</FONT> 
+<p style="line-height: 150%; margin-top: 0; margin-bottom: 0"><font size="2">本文欢迎转载，请注明出自</font><a href="http://teach51.yeah.net"><font size="2">平凡的单片机</font></a></p>
+<p style="line-height: 150%; margin-top: 0; margin-bottom: 0">　</p><FONT FACE="宋体" LANG="ZH-CN" SIZE=3>
+<P style="line-height: 150%; margin-top: 0; margin-bottom: 0">　</P>
+</FONT>
+</BODY>
+</HTML>

@@ -1,0 +1,81 @@
+BL51 BANKED LINKER/LOCATER V5.03                                                        02/12/2004  12:13:20  PAGE 1
+
+
+BL51 BANKED LINKER/LOCATER V5.03, INVOKED BY:
+D:\KEIL\C51\BIN\BL51.EXE wl014.obj TO wl014 CODE (0X0000-0X0FFF)
+
+
+MEMORY MODEL: SMALL
+
+
+INPUT MODULES INCLUDED:
+  wl014.obj (WL014)
+  D:\KEIL\C51\LIB\C51S.LIB (?C_STARTUP)
+
+
+LINK MAP OF MODULE:  wl014 (WL014)
+
+
+            TYPE    BASE      LENGTH    RELOCATION   SEGMENT NAME
+            -----------------------------------------------------
+
+            * * * * * * *   D A T A   M E M O R Y   * * * * * * *
+            REG     0000H     0008H     ABSOLUTE     "REG BANK 0"
+            IDATA   0008H     0001H     UNIT         ?STACK
+
+            * * * * * * *   C O D E   M E M O R Y   * * * * * * *
+            CODE    0000H     0003H     ABSOLUTE     
+            CODE    0003H     000CH     UNIT         ?C_C51STARTUP
+            CODE    000FH     0008H     UNIT         ?PR?MAIN?WL014
+            CODE    0017H     0007H     UNIT         ?PR?CLR_WDT?WL014
+
+
+
+OVERLAY MAP OF MODULE:   wl014 (WL014)
+
+
+SEGMENT
+  +--> CALLED SEGMENT
+---------------------
+?C_C51STARTUP
+  +--> ?PR?MAIN?WL014
+
+?PR?MAIN?WL014
+  +--> ?PR?CLR_WDT?WL014
+
+
+
+SYMBOL TABLE OF MODULE:  wl014 (WL014)
+
+  VALUE           TYPE          NAME
+  ----------------------------------
+
+  -------         MODULE        WL014
+  C:0000H         SYMBOL        _ICE_DUMMY_
+  C:000FH         PUBLIC        main
+  D:008EH         PUBLIC        AUXR
+  D:00A6H         PUBLIC        WDTRST
+  C:0017H         PUBLIC        clr_wdt
+  -------         PROC          MAIN
+  C:000FH         LINE#         29
+  C:000FH         LINE#         30
+BL51 BANKED LINKER/LOCATER V5.03                                                      02/12/2004  12:13:20  PAGE 2
+
+
+  C:000FH         LINE#         31
+  C:0012H         LINE#         32
+  C:0012H         LINE#         33
+  C:0012H         LINE#         34
+  C:0015H         LINE#         39
+  -------         ENDPROC       MAIN
+  -------         PROC          CLR_WDT
+  C:0017H         LINE#         42
+  C:0017H         LINE#         43
+  C:0017H         LINE#         44
+  C:001AH         LINE#         45
+  C:001DH         LINE#         46
+  -------         ENDPROC       CLR_WDT
+  -------         ENDMOD        WL014
+
+Program Size: data=9.0 xdata=0 code=30
+LINK/LOCATE RUN COMPLETE.  0 WARNING(S),  0 ERROR(S)

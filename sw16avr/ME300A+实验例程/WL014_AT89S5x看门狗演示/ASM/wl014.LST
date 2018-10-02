@@ -1,0 +1,75 @@
+A51 MACRO ASSEMBLER  WL014                                                                02/12/2004 12:12:34 PAGE     1
+
+
+MACRO ASSEMBLER A51 V7.08a
+OBJECT MODULE PLACED IN wl014.OBJ
+ASSEMBLER INVOKED BY: d:\Keil\C51\BIN\A51.EXE wl014.asm SET(SMALL) DEBUG EP
+
+LOC  OBJ            LINE     SOURCE
+
+                       1     ;********************************************************************************
+                       2     ;*                                                                              *
+                       3     ;*    File       : wl014.asm                                                    *
+                       4     ;*    Date       : 2004-1-5                                                     *
+                       5     ;*    Version    : 1.0                                                          *
+                       6     ;*                                                                              *
+                       7     ;*    Author     : Freeman          freeman@willar.com                          *
+                       8     ;*    Company    : Willar           www.willar.com                              *
+                       9     ;*                                                                              *
+                      10     ;********************************************************************************
+                      11     ;*    Descriptoon:                                                              *
+                      12     ;*                 AT89S51/52片内看门狗使用范例                                 *
+                      13     ;*                                                                              *
+                      14     ;*                                                                              *
+                      15     ;*                                                                              *
+                      16     ;*                                                                              *
+                      17     ;*                                                                              *
+                      18     ;********************************************************************************
+                      19     
+  008E                20     AUXR    EQU     0x8E;           ; 定义AT89S51扩展寄存器
+  00A6                21     WDTRST  EQU     0xA6;
+                      22     
+0000                  23             ORG     0000H
+0000 020030           24             LJMP    MAIN
+                      25                     
+                      26                     
+0030                  27             ORG     0030H   
+0030                  28     MAIN:
+0030 758EFF           29             MOV     AUXR,#0FFH      ; 初始化看门狗相关寄存器
+                      30             
+0033                  31     MAIN_LP:
+0033 120039           32             LCALL   CLR_WDT         ; 8191个机器周期内必须至少调用此程序一次
+                      33                                     ; 否则看门狗会溢出      
+                      34             
+                      35     ;       其它子程序              
+                      36     ;       SJMP    $
+                      37     
+0036 020033           38             LJMP    MAIN_LP 
+                      39     
+                      40     
+                      41     ;===============================================================================
+0039                  42     CLR_WDT:
+0039 75A61E           43             MOV     WDTRST,#01EH    ; 清除看门狗指令
+003C 75A6E1           44             MOV     WDTRST,#0E1H
+003F 22               45             RET
+                      46             
+*** WARNING #A41 IN 46 (wl014.asm, LINE 46): MISSING 'END' STATEMENT
+A51 MACRO ASSEMBLER  WL014                                                                02/12/2004 12:12:34 PAGE     2
+
+SYMBOL TABLE LISTING
+------ ----- -------
+
+
+N A M E             T Y P E  V A L U E   ATTRIBUTES
+
+AUXR . . . . . . .  N NUMB   008EH   A   
+CLR_WDT. . . . . .  C ADDR   0039H   A   
+MAIN . . . . . . .  C ADDR   0030H   A   
+MAIN_LP. . . . . .  C ADDR   0033H   A   
+WDTRST . . . . . .  N NUMB   00A6H   A   
+
+
+REGISTER BANK(S) USED: 0 
+
+
+ASSEMBLY COMPLETE.  1 WARNING(S), 0 ERROR(S)

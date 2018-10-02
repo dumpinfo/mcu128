@@ -1,0 +1,60 @@
+<html>
+<head>
+<title>单片机教学第二课</title>
+<meta http-equiv="Content-Type" content="text/html; charset=gb2312">
+<style type="text/css">
+td {font-family: "宋体"; font-size: 9pt; font-weight: normal}
+a:link {color: #000099;font-size: 9pt; text-decoration: none}
+a:visited {color: #65038e; font-size: 9pt; text-decoration: none}
+a:hover {color: red; text-decoration: none}
+</style>
+</head>
+
+<body bgcolor="#FFFFFF" background="../back.jpg">
+<p style="line-height: 150%; margin-top: 0; margin-bottom: 0"><font size="2">单片机教学（2）</font></p>
+<p style="line-height: 150%; margin-top: 0; margin-bottom: 0"> <font size="2">单片机的内部、外部结构(一)</font></p>
+<h4 style="line-height: 150%; margin-top: 0; margin-bottom: 0"> <font size="2">一、单片机的外部结构 
+</font> </h4>
+<p style="line-height: 150%; margin-top: 0; margin-bottom: 0"><font size="2">拿到一块芯片，想要使用它，首先必须要知道怎样连线，我们用的一块称之为89C51的芯片，下面我们就看一下如何给它连线。 1、 电源：这当然是必不可少的了。单片机使用的是5V电源，其中正极接40引脚，负极（地）接20引脚。  
+  2、 振蒎电路：单片机是一种时序电路，必须提供脉冲信号才能正常工作，在单片机内部已集成了振荡器，使用晶体振荡器，接18、19脚。只要买来晶振，电容，连上就可以了，按图1接上即可。  
+  3、 复位引脚：按图1中画法连好，至于复位是何含义及为何需要复要复位，在单片机功能中介绍。 4、 EA引脚：EA引脚接到正电源端。 至此，一个单片机就接好，通上电，单片机就开始工作了。 
+</font>  
+</p>
+<p style="line-height: 150%; margin-top: 0; margin-bottom: 0"><font size="2"><img src="21.gif" width="532" height="607"> 图1</font></p> 
+<h4 style="line-height: 150%; margin-top: 0; margin-bottom: 0"><font size="2">二、 任务分析</font></h4> 
+<p style="line-height: 150%; margin-top: 0; margin-bottom: 0"> <font size="2">我们的第一个任务是要用单片机点亮一只发光二极管LED，显然，这个LED必须要和单片机的某个引脚相连，否则单片机就没法控制它了，那么和哪个引脚相连呢？单片机上除了刚才用掉的5个引脚，还有35个，我们将这个LED和1脚相连。（见图1，其中R1是限流电阻）</font></p>
+<p style="line-height: 150%; margin-top: 0; margin-bottom: 0"> <font size="2">按照这个图的接法，当1脚是高电平时，LED不亮，只有1脚是低电平时，LED才发亮。因此要1脚我们要能够控制，也就是说，我们要能够让1引脚按要求变为高或低电平。即然我们要控制1脚，就得给它起个名字，总不能就叫它一脚吧？叫它什么名字呢？设计51芯片的INTEL公司已经起好了，就叫它P1.0，这是规定，不可以由我们来更改。 
+</font> 
+</p>
+<p style="line-height: 150%; margin-top: 0; margin-bottom: 0"><font size="2">名字有了，我们又怎样让它变'高'或变'低'呢？叫人做事，说一声就可以，这叫发布命令，要计算机做事，也得要向计算机发命令，计算机能听得懂的命令称之为计算机的指令。让一个引脚输出高电平的指令是SETB，让一个引脚输出低电平的指令是CLR。因此，我们要P1.0输出高电平，只要写SETB  
+  P1.0，要P1.0输出低电平，只要写 CLR P1.0就可以了。</font></p> 
+<p style="line-height: 150%; margin-top: 0; margin-bottom: 0"> <font size="2">现在我们已经有办法让计算机去将P10输出高或低电平了，但是我们怎样才能计算机执行这条指令呢？总不能也对计算机也说一声了事吧。要解决这个问题，还得有几步要走。第一，计算机看不懂SETB  
+  CLR之类的指令，我们得把指令翻译成计算机能懂的方式，再让计算机去读。计算机能懂什么呢？它只懂一样东西——数字。因此我们得把SETB P1.0变为（D2H,90H  
+  ），把CLR P1.0变为 （C2H,90H ），至于为什么是这两个数字，这也是由51芯片的设计者--INTEL规定的，我们不去研究。第二步，在得到这两个数字后，怎样让这两个数字进入单片机的内部呢？这要借助于一个硬件工具"编程器"。</font></p> 
+<p style="line-height: 150%; margin-top: 0; margin-bottom: 0"><font size="2">我们将编程器与电脑连好，运行编程器的软件，然后在编缉区内写入（D2H,90H）见图2，写入……好，拿下片子，把片子插入做好的电路板，接通电源……什么?灯不亮？这就对了，因为我们写进去的指令就是让<img src="22.gif" width="604" height="82">图2</font></p>
+<p style="line-height: 150%; margin-top: 0; margin-bottom: 0"><font size="2">P10输出高电平，灯当然不亮，要是亮就错了。现在我们再拨下这块芯片，重新放回到编程器上，将编缉区的内容改为（C2H,90H），也就是CLR P1.0，写片，拿下片子，把片子插进电路板，接电，好，灯亮了。因为我们写入的（）就是让P10输出低电平的指令。这样我们看到，硬件电路的连线没有做任何改变，只要改变写入单片机中的内容，就可以改变电路的输出效果。 
+</font>  
+</p>
+<h4 style="line-height: 150%; margin-top: 0; margin-bottom: 0"><font size="2">三、单片机内部结构分析 
+</font> </h4>
+<p style="line-height: 150%; margin-top: 0; margin-bottom: 0"><font size="2">我们来思考一个问题，当我们在编程器中把一条指令写进单片要内部，然后取下单片机，单片机就可以执行这条指令，那么这条指令一定保存在单片机的某个地方，并且这个地方在单片机掉电后依然可以保持这条指令不会丢失，这是个什么地方呢？这个地方就是单片机内部的只读存储器即ROM（READ  
+  ONLY MEMORY）。为什么称它为只读存储器呢？刚才我们不是明明把两个数字写进去了吗？原来在89C51中的ROM是一种电可擦除的ROM，称为FLASH  
+  ROM，刚才我们是用的编程器，在特殊的条件下由外部设备对ROM进行写的操作，在单片机正常工作条件下，只能从那面读，不能把数据写进去，所以我们还是把它称为ROM。 
+</font> 
+</p>
+<p style="line-height: 150%; margin-top: 0; margin-bottom: 0"><font size="2">&nbsp;
+</font> </p>
+
+<p>　</p>
+
+          <hr width="550" SIZE="1" align="center">     
+
+<p align="center" style="line-height: 150%; margin-top: 0; margin-bottom: 0"><font size="2">伟纳电子 COPYRIGHT &reg; 2000  
+<a href="http://www.willar.com">http://www.willar.com</a><br>                                           
+&nbsp; E-mail:<a href="mailto:support@willar.com">support@willar.com</a></font>      
+ 
+<p align="center" style="line-height: 150%; margin-top: 0; margin-bottom: 0">　     
+
+<p align="center" style="line-height: 150%; margin-top: 0; margin-bottom: 0">　
+</body>
+</html>

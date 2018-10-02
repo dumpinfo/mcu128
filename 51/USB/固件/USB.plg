@@ -1,0 +1,30 @@
+<html>
+<body>
+<pre>
+<h1>礦ision2 Build Log</h1>
+<h2>Project:</h2>
+E:\avr资料\例程\51\USB\固件\USB.uv2
+Project File Date:  01/27/2008
+
+<h2>Output:</h2>
+Build target 'Target 1'
+compiling Chap_9.c...
+compiling D12ci.c...
+compiling Epphal.c...
+compiling Isr.c...
+compiling main.c...
+compiling Protodma.c...
+linking...
+*** WARNING L16: UNCALLED SEGMENT, IGNORED FOR OVERLAY PROCESS
+    SEGMENT: ?PR?D12_READCHIPID?D12CI
+*** WARNING L15: MULTIPLE CALL TO SEGMENT
+    SEGMENT: ?PR?_D12_WRITEENDPOINT?D12CI
+    CALLER1: ?PR?USB_ISR?ISR
+    CALLER2: ?C_C51STARTUP
+*** WARNING L15: MULTIPLE CALL TO SEGMENT
+    SEGMENT: ?PR?_D12_SETENDPOINTSTATUS?D12CI
+    CALLER1: ?PR?USB_ISR?ISR
+    CALLER2: ?C_C51STARTUP
+Program Size: data=159.0 xdata=0 code=2860
+creating hex file from "USB"...
+"USB" - 0 Error(s), 3 Warning(s).

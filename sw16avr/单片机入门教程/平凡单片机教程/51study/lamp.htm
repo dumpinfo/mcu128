@@ -1,0 +1,36 @@
+<html>
+<head>
+<title>做真的流水灯啦</title>
+<meta http-equiv="Content-Type" content="text/html; charset=gb2312">
+</head>
+
+<body bgcolor="#FFFFFF" background="../back.jpg">
+<h3 align="center" style="line-height: 150%; margin-top: 0; margin-bottom: 0">
+<font size="2">流 水 灯</font></h3>
+<div align="left"> 
+  <p style="line-height: 150%; margin-top: 0; margin-bottom: 0"><font size="2">　　学习了一段时间，有了一定经验的朋友，肯定会觉得不过瘾，老是纸上谈兵，点个LED有什么用？能不能来点实际点的。好的，我们就安排一点实际一点的，这次是点亮真的电灯了，不过要注意安全，莫要发生触电事故，另外这次要用到双向可控硅了，强电没接触过的朋友，先预习吧，正好我要花点时间准备一下了。</font></p>
+  <p style="line-height: 150%; margin-top: 0; margin-bottom: 0"><font size="2">　　上传啦，是一块<a href="LAMP.zip">线路板图</a>，单面板，红线代表跳线。没有原理图，简单地说一下吧。A17是一个8芯的插针，可以用它与单片机的P1口相连，记得我上传的板子吗？在P1口接LED前也有一个8芯插座的位置，装上去，用一根8芯扁平电缆相连就行了，记住，两块板子要用一只电源，也就是要共地。板上用的器件，如果用外接5V电源，那么D1、D2、D3、D4及C1、C2、C3、C4、C5、C6及T9（7805）、A18（散热器）均不需要装，如果用外接交流电，则将它们装上去，A26是一插座，可以用来向单片机板供电。 
+  </font> 
+  </p>
+  <p style="line-height: 150%; margin-top: 0; margin-bottom: 0"><font size="2"><img src="lamp.gif" width="628" height="306"></font></p>
+</div>
+<p style="line-height: 150%; margin-top: 0; margin-bottom: 0"><font size="2">　　IC1到IC8上使用交流光耦，型号为MOC3020，注意，MOC3020是6脚封装，由于没有找到6脚的插座，所以全是用的8脚的插座，插时最上两只不用，即靠插座底安装，R9——R16是限流电阻，470殴，1/4W，金属膜。R1——R8是限流电阻，330殴，1/2W，金属膜。T1——T8是晶闸管（可控硅），型号是BTA06-800C，用ST的比较好，6安培，800V电压，加上合适的散热片后，带500W以内的负载应没问题。A1-A8是相应的散热片的位置，我用的散热片比较小，因为只带灯，又是间隙亮，所以问题不大。P1——P5是接线端子。根据各人条件去买吧——也用不着菲尼克斯的，哈哈。</font></p>
+<p style="line-height: 150%; margin-top: 0; margin-bottom: 0"> <font size="2">　　好了，一切装好，OK了，通电吧，当心，再次提醒大家，小心触电哦。电源一端接P2，另一端接到P3——P5，负载则一端接P3——P5中的一个（它们都是连着的），另一端则接P1的八个输出端子之一。</font></p>
+<p style="line-height: 150%; margin-top: 0; margin-bottom: 0"><font size="2">　　至于软件，就自已编了，原来让LED怎么亮的，现在改成了让电灯亮，如此而已。</font></p>
+<p style="line-height: 150%; margin-top: 0; margin-bottom: 0"><font size="2">　　有了这么一个东东，其实也可以让它和PC机接起来，让PC机来做流水灯或做更多的事情，顺便上传一个<a href="../down/lamp.zip">文件</a>给大家玩玩，我用C++  
+  BUILD编的，只有玩的价值，没什么用途。就是用它来控制计算机的打印接口，输出高或低电平而已。大家可以去电脑商场买一根并口电缆（不是打印电缆，是两端都可以和计算机相连的那种），载去一头，把它的八根数据线接到A17的八个输入端，然后将地线相连，就可以演示了，放心，板子是光耦隔离的，不会对计算机造成伤害。　　</font></p>
+<p style="line-height: 150%; margin-top: 0; margin-bottom: 0"><font size="2">&nbsp;
+</font> </p>
+
+<p style="line-height: 150%; margin-top: 0; margin-bottom: 0">　</p>
+
+          <hr width="550" SIZE="1" align="center">     
+
+<p align="center" style="line-height: 150%; margin-top: 0; margin-bottom: 0"><font size="2">伟纳电子 COPYRIGHT &reg; 2000  
+<a href="http://www.willar.com">http://www.willar.com</a><br>                                           
+&nbsp; E-mail:<a href="mailto:support@willar.com">support@willar.com</a> </font>      
+ 
+<p>　 </p>
+<p>　 </p>
+</body>
+</html>

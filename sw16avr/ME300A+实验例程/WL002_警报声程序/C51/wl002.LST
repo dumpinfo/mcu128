@@ -1,0 +1,85 @@
+C51 COMPILER V7.20   WL002                                                                 03/29/2005 15:40:19 PAGE 1   
+
+
+C51 COMPILER V7.20, COMPILATION OF MODULE WL002
+OBJECT MODULE PLACED IN wl002.OBJ
+COMPILER INVOKED BY: C:\Keil\C51\BIN\C51.EXE wl002.C BROWSE DEBUG OBJECTEXTEND
+
+line level    source
+
+   1          /*******************************************************************************
+   2          *  标题:  伟纳电子ME300B单片机开发系统演示程序 -  报警声程序                   *
+   3          *  文件:  wl002.C                                                              *
+   4          *  日期:  2004-1-5                                                             *
+   5          *  版本:  1.0                                                                  *
+   6          *  作者:  伟纳电子 - Freeman                                                   *
+   7          *  邮箱:  freeman@willar.com                                                   *
+   8          *  网站： http://www.willar.com                                                *
+   9          ********************************************************************************
+  10          *  描述:                                                                       *
+  11          *         单片机模拟报警声                                                     *
+  12          *                                                                              *
+  13          *                                                                              *
+  14          *                                                                              *
+  15          ********************************************************************************
+  16          * 【版权】 Copyright(C)伟纳电子 www.willar.com  All Rights Reserved            *
+  17          * 【声明】 此程序仅用于学习与参考，引用请注明版权和作者信息！                  *
+  18          *******************************************************************************/
+  19                             
+  20          #include <reg51.h>
+  21          #include <intrins.h>
+  22          
+  23          sbit    SPK = P3^7;
+  24          
+  25          unsigned char frq; 
+  26          
+  27          void delayms(unsigned char ms);
+  28          
+  29          main()
+  30          {
+  31   1              TMOD = 0x01;
+  32   1              frq = 0x00;
+  33   1              TH0 = 0x00;
+  34   1              TL0 = 0xff;     
+  35   1              TR0 = 1;
+  36   1              IE = 0x82;
+  37   1              
+  38   1              while(1)
+  39   1              {
+  40   2                      frq++;
+  41   2                      delayms(1);
+  42   2              }
+  43   1      }
+  44          
+  45          void timer0() interrupt 1 using 1
+  46          {
+  47   1              TH0 = 0xfe;
+  48   1              TL0 = frq;
+  49   1              SPK = ~SPK;     
+  50   1      }
+  51          
+  52          void delayms(unsigned char ms)  
+  53          // 延时子程序
+  54          {                                               
+  55   1              unsigned char i;
+C51 COMPILER V7.20   WL002                                                                 03/29/2005 15:40:19 PAGE 2   
+
+  56   1              while(ms--)
+  57   1              {
+  58   2                      for(i = 0; i < 120; i++);
+  59   2              }
+  60   1      }
+
+
+MODULE INFORMATION:   STATIC OVERLAYABLE
+   CODE SIZE        =     52    ----
+   CONSTANT SIZE    =   ----    ----
+   XDATA SIZE       =   ----    ----
+   PDATA SIZE       =   ----    ----
+   DATA SIZE        =      1    ----
+   IDATA SIZE       =   ----    ----
+   BIT SIZE         =   ----    ----
+END OF MODULE INFORMATION.
+
+
+C51 COMPILATION COMPLETE.  0 WARNING(S),  0 ERROR(S)

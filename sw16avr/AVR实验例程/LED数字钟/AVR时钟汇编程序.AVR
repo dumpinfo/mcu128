@@ -1,0 +1,271 @@
+;LCD显示程序,8M
+;有1K字节的SRAM
+.include "m16def.inc"
+.equ rs=0
+.equ rw=1
+.equ en=2	;PB口
+;时钟寄存器于SRAM中(共有512个字节SRAM)
+.equ second=0x0000		;秒
+.equ 	min=0x0001		;分
+.equ   hour=0x0002		;时
+.equ buffer=0x0003		;显示缓冲区存放 "00:00:00"
+
+.equ hh=0x0003
+.equ hl=0x0004
+.equ mh=0x0006
+.equ ml=0x0007
+.equ sh=0x0009
+.equ sl=0x000a
+
+.org $000
+	rjmp reset
+.org $020
+reset:
+	ldi r16,high(ramend)
+	ldi r17,low(ramend)
+	out spl,r16
+	out sph,r17
+main:
+	call LcdIni
+	call DisText
+	
+	ldi r16,36
+	sts second,r16
+	ldi r16,25
+	sts min,r16
+	ldi r16,10
+	sts hour,r16
+
+lp:
+	call TimeCount
+	call ShowTime
+	rjmp lp
+;---------------------------------------
+TimeCount:
+;秒钟自加一
+	ldi r20,60
+	lds r16,second
+	inc r16
+	cpse r16,r20
+	rjmp tc_nt1		;不等于
+	rjmp tc_nt2		;min自加1，second等于0
+tc_nt1:
+	sts second,r16
+	call delay
+	rjmp tc_end
+tc_nt2:
+	clr r16
+	sts second,r16
+	lds r16,min
+	inc r16
+	cpse r16,r20
+	rjmp tc_nt3
+	rjmp tc_nt4
+tc_nt3:
+	sts min,r16
+	rjmp tc_end
+tc_nt4:
+	clr r16
+	sts min,r16
+	lds r16,hour
+	inc r16
+	cpse r16,r20
+	rjmp tc_nt5
+	rjmp tc_nt6
+tc_nt5:
+	sts hour,r16
+	rjmp tc_end
+tc_nt6:
+	clr r16
+	sts hour,r16
+tc_end:
+	ret
+;---------------------------------------
+ShowTime:
+;将second,min,hour转化为
+	;second转化成BCD码存放在
+	ldi xl,low(second)
+	ldi xh,high(second)
+	ldi yl,low(sh)
+	ldi yh,high(sh)
+	call HexBcd
+	
+	ldi xl,low(min)
+	ldi xh,high(min)
+	ldi yl,low(mh)
+	ldi yh,high(mh)
+	call HexBcd
+	
+	ldi xl,low(hour)
+	ldi xh,high(hour)
+	ldi yl,low(hh)
+	ldi yh,high(hh)
+	call HexBcd
+	
+	ldi r16,':'
+	sts 0x0005,r16
+	sts 0x0008,r16
+	
+	ldi r16,0x85
+	call WrOp
+	
+	ldi r19,8
+	ldi xh,high(hh)
+	ldi xl,low(hh)
+st_lp:
+	ld r16,x+
+	call WrDat
+	dec r19
+	brne st_lp
+	ret
+;---------------------------------------
+HexBcd:
+;将X所指的SRAM数据转化成可显示的BCD码存放在Y中
+	ld r16,x
+	ldi r17,10
+	call Div8u		;R16保存十位，R15个位
+	ldi r17,0x30
+	add r16,r17
+	add r15,r17
+	st Y+,r16
+	st Y,r15
+	ret
+;--------------------------------------
+Div8u:
+;八位除法程序,R16/R17,R16保存结果，R15保存结果
+	sub r15,r15		;清除余位和进位
+	ldi r18,9		;初始化循环计数器
+d8u_1:
+	rol r16
+	dec r18
+	brne d8u_2
+	ret
+d8u_2:
+	rol r15
+	sub r15,r17
+	brcc d8u_3
+	add r15,r17
+	clc
+	rjmp d8u_1
+d8u_3:
+	sec
+	rjmp d8u_1
+;--------------------------------------
+LcdIni:
+;LCD初始化程序
+	ser r16
+	out ddra,r16	
+	out ddrb,r16	;PA与PB都设置来输出
+	out porta,r16
+	out portb,r16
+	
+	ldi r16,0x38
+	call WrOp
+	
+	ldi r16,0x06
+	call WrOp
+	
+	ldi r16,0x0c
+	call WrOp
+	
+	ldi r16,0x01
+	call WrOp
+	
+	ret
+;--------------------------------------
+DisText:
+;将Z地址的信息在位置R17显示出来
+	ldi r16,0x80
+	call WrOp
+	
+	ldi zh,high(DisCode*2)
+	ldi zl,low(DisCode*2)	;算出首地址
+dt_lp:
+	lpm						;数据存放在R0中
+	ldi r17,'*'
+	cpse r0,r17
+	rjmp dt_nt				;相等时就向下移动一位
+	ret
+dt_nt:
+	mov r16,r0
+	call WrDat
+	adiw zl,0x01			;地址加一
+	rjmp dt_lp
+	
+	ret
+;--------------------------------------
+WrOp:
+	call ChkBusy
+	cbi portb,rs
+	cbi portb,rw
+	cbi portb,en
+	out porta,r16
+	sbi portb,en
+	ldi r16,200
+wo_lp:
+	dec r16
+	brne wo_lp
+	cbi portb,en
+	ret
+;----------------------------------------
+WrDat:
+	call ChkBusy
+	sbi portb,rs
+	cbi portb,rw
+	cbi portb,en
+	out porta,r16
+	sbi portb,en
+	ldi r16,200
+wd_lp:
+	dec r16
+	brne wd_lp
+	cbi portb,en
+	ret
+;-----------------------------------------
+ChkBusy:
+	cbi ddra,7
+	cbi portb,rs
+	sbi portb,rw
+	sbi portb,en
+cb_lp:
+	sbic pina,7
+	rjmp cb_lp
+	cbi portb,en
+	sbi ddra,7
+	ret
+;*****************EEPROM操作*********************************
+;操作写入地址，写入数据，使能
+WrErom:
+;R18R17地址,R16数据
+	sbic eecr,eewe
+	rjmp WrErom
+	out eearh,r18
+	out eearl,r17		;存放地址
+	out eedr,r16		;存放数据
+	sbi eecr,eemwe
+	sbi eecr,eewe
+	ret
+;-------------------------------------------
+RdErom:
+;R18R17地址,返回数据存放在R16
+	sbic eecr,eewe
+	rjmp RdErom
+	out eearh,r18
+	out eearl,r17
+	sbi eecr,eere
+	in r16,eedr
+	ret
+;--------------------------------------------
+delay:
+	ser r16
+dl1:
+	ser r17
+dl2:
+	dec r17
+	brne dl2
+	dec r16
+	brne dl1
+	ret
+;-------------------------------------------
+DisCode:
+.db "time* "

@@ -1,0 +1,3 @@
+"wl006.obj" 
+TO "wl006" 
+CODE( 0X0000-0X0FFF )

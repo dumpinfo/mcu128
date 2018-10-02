@@ -1,0 +1,601 @@
+<HTML>
+<HEAD>
+<META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=gb_2312-80">
+<META NAME="Generator" CONTENT="Microsoft FrontPage 5.0">
+<TITLE>单片机第十五课</TITLE>
+<META NAME="Template" CONTENT="C:\PROGRAM FILES\MICROSOFT OFFICE\OFFICE\html.dot">
+</HEAD>
+<BODY LINK="#0000ff" VLINK="#800080" background="../back.jpg">
+<FONT FACE="宋体" LANG="ZH-CN">
+<P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">
+<font size="2">单片机第十七课</font></P>
+<P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">
+<font size="2">位及位操作指令</font></P>
+</FONT>
+<P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">
+<font size="2" FACE="宋体" LANG="ZH-CN">通过前面那些流水灯的例子，我们已经习惯了“位”一位就是一盏灯的亮和灭，而我们学的指令却全都是用“字节”来介绍的：字节的移动、加法、减法、逻辑运算、移位等等。用字节来处理一些数学问题，比如说：控制冰箱的温度、电视的音量等等很直观，可以直接用数值来表在。可是如果用它来控制一些开关的打开和合上，灯的亮和灭，就有些不直接了，记得我们上次课上的流水灯的例子吗？我们知道送往</font><font size="2"><FONT FACE="System" LANG="ZH-CN">P1</FONT><FONT FACE="宋体" LANG="ZH-CN">口的数值后并不能马上知道哪个灯亮和来灭，而是要化成二进制才知道。工业中有很多场合需要处理这类开关输出，继电器吸合，用字节来处理就显示有些麻烦，所以在</FONT><FONT FACE="System" LANG="ZH-CN">8031</FONT></font><font size="2" FACE="宋体" LANG="ZH-CN">单片机中特意引入一个位处理机制。</font></P><OL>
+<FONT FACE="宋体" LANG="ZH-CN">
+
+<P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0"><LI>
+<p style="line-height: 150%; margin-top: 0; margin-bottom: 0"><font size="2">位寻址区</LI></font></p>
+<p style="line-height: 150%; margin-top: 0; margin-bottom: 0"></P>
+</font>
+<P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">
+<font size="2" FACE="宋体" LANG="ZH-CN">在</font><font size="2"><FONT FACE="System" LANG="ZH-CN">8031</FONT><FONT FACE="宋体" LANG="ZH-CN">中，有一部份</FONT><FONT FACE="System" LANG="ZH-CN">RAM</FONT><FONT FACE="宋体" LANG="ZH-CN">和一部份</FONT><FONT FACE="System" LANG="ZH-CN">SFR</FONT><FONT FACE="宋体" LANG="ZH-CN">是具有位寻址功能的，也就是说这些</FONT><FONT FACE="System" LANG="ZH-CN">RAM</FONT></font><font size="2" FACE="宋体" LANG="ZH-CN">的每一个位都有自已的地址，可以直接用这个地址来对此进行操作。</font></P>
+<TABLE BORDER CELLSPACING=1 CELLPADDING=7 WIDTH=512 height="580">
+<TR><TD WIDTH="11%" VALIGN="TOP" height="44">
+<FONT FACE="System" LANG="ZH-CN" size="2"><CODE>
+<P style="line-height: 150%; margin-top: 0; margin-bottom: 0">字节地址</code></FONT></TD>
+<TD WIDTH="89%" VALIGN="TOP" COLSPAN=8 height="44">
+<FONT FACE="System" LANG="ZH-CN" size="2"><CODE>
+<P style="line-height: 150%; margin-top: 0; margin-bottom: 0">位地址</code></FONT></TD>
+</TR>
+<TR><TD WIDTH="11%" VALIGN="TOP" height="25">
+<CODE><P style="line-height: 150%; margin-top: 0; margin-bottom: 0">
+<font size="2">2FH</font></CODE></TD>
+<TD WIDTH="11%" VALIGN="TOP" height="25">
+<CODE><P style="line-height: 150%; margin-top: 0; margin-bottom: 0">
+<font size="2">7FH</font></CODE></TD>
+<TD WIDTH="11%" VALIGN="TOP" height="25">
+<p style="line-height: 150%; margin-top: 0; margin-bottom: 0">　</TD>
+<TD WIDTH="11%" VALIGN="TOP" height="25">
+<p style="line-height: 150%; margin-top: 0; margin-bottom: 0">　</TD>
+<TD WIDTH="11%" VALIGN="TOP" height="25">
+<p style="line-height: 150%; margin-top: 0; margin-bottom: 0">　</TD>
+<TD WIDTH="11%" VALIGN="TOP" height="25">
+<p style="line-height: 150%; margin-top: 0; margin-bottom: 0">　</TD>
+<TD WIDTH="11%" VALIGN="TOP" height="25">
+<p style="line-height: 150%; margin-top: 0; margin-bottom: 0">　</TD>
+<TD WIDTH="11%" VALIGN="TOP" height="25">
+<p style="line-height: 150%; margin-top: 0; margin-bottom: 0">　</TD>
+<TD WIDTH="11%" VALIGN="TOP" height="25">
+<CODE><P style="line-height: 150%; margin-top: 0; margin-bottom: 0">
+<font size="2">78H</font></CODE></TD>
+</TR>
+<TR><TD WIDTH="11%" VALIGN="TOP" height="25">
+<CODE><P style="line-height: 150%; margin-top: 0; margin-bottom: 0">
+<font size="2">2EH</font></CODE></TD>
+<TD WIDTH="11%" VALIGN="TOP" height="25">
+<CODE><P style="line-height: 150%; margin-top: 0; margin-bottom: 0">
+<font size="2">77H</font></CODE></TD>
+<TD WIDTH="11%" VALIGN="TOP" height="25">
+<p style="line-height: 150%; margin-top: 0; margin-bottom: 0">　</TD>
+<TD WIDTH="11%" VALIGN="TOP" height="25">
+<p style="line-height: 150%; margin-top: 0; margin-bottom: 0">　</TD>
+<TD WIDTH="11%" VALIGN="TOP" height="25">
+<p style="line-height: 150%; margin-top: 0; margin-bottom: 0">　</TD>
+<TD WIDTH="11%" VALIGN="TOP" height="25">
+<p style="line-height: 150%; margin-top: 0; margin-bottom: 0">　</TD>
+<TD WIDTH="11%" VALIGN="TOP" height="25">
+<p style="line-height: 150%; margin-top: 0; margin-bottom: 0">　</TD>
+<TD WIDTH="11%" VALIGN="TOP" height="25">
+<p style="line-height: 150%; margin-top: 0; margin-bottom: 0">　</TD>
+<TD WIDTH="11%" VALIGN="TOP" height="25">
+<CODE><P style="line-height: 150%; margin-top: 0; margin-bottom: 0">
+<font size="2">70</font></CODE></TD>
+</TR>
+<TR><TD WIDTH="11%" VALIGN="TOP" height="25">
+<CODE><P style="line-height: 150%; margin-top: 0; margin-bottom: 0">
+<font size="2">2DH</font></CODE></TD>
+<TD WIDTH="11%" VALIGN="TOP" height="25">
+<CODE><P style="line-height: 150%; margin-top: 0; margin-bottom: 0">
+<font size="2">6FH</font></CODE></TD>
+<TD WIDTH="11%" VALIGN="TOP" height="25">
+<p style="line-height: 150%; margin-top: 0; margin-bottom: 0">　</TD>
+<TD WIDTH="11%" VALIGN="TOP" height="25">
+<p style="line-height: 150%; margin-top: 0; margin-bottom: 0">　</TD>
+<TD WIDTH="11%" VALIGN="TOP" height="25">
+<p style="line-height: 150%; margin-top: 0; margin-bottom: 0">　</TD>
+<TD WIDTH="11%" VALIGN="TOP" height="25">
+<p style="line-height: 150%; margin-top: 0; margin-bottom: 0">　</TD>
+<TD WIDTH="11%" VALIGN="TOP" height="25">
+<p style="line-height: 150%; margin-top: 0; margin-bottom: 0">　</TD>
+<TD WIDTH="11%" VALIGN="TOP" height="25">
+<p style="line-height: 150%; margin-top: 0; margin-bottom: 0">　</TD>
+<TD WIDTH="11%" VALIGN="TOP" height="25">
+<CODE><P style="line-height: 150%; margin-top: 0; margin-bottom: 0">
+<font size="2">68H</font></CODE></TD>
+</TR>
+<TR><TD WIDTH="11%" VALIGN="TOP" height="25">
+<CODE><P style="line-height: 150%; margin-top: 0; margin-bottom: 0">
+<font size="2">2CH</font></CODE></TD>
+<TD WIDTH="11%" VALIGN="TOP" height="25">
+<CODE><P style="line-height: 150%; margin-top: 0; margin-bottom: 0">
+<font size="2">67H</font></CODE></TD>
+<TD WIDTH="11%" VALIGN="TOP" height="25">
+<p style="line-height: 150%; margin-top: 0; margin-bottom: 0">　</TD>
+<TD WIDTH="11%" VALIGN="TOP" height="25">
+<p style="line-height: 150%; margin-top: 0; margin-bottom: 0">　</TD>
+<TD WIDTH="11%" VALIGN="TOP" height="25">
+<p style="line-height: 150%; margin-top: 0; margin-bottom: 0">　</TD>
+<TD WIDTH="11%" VALIGN="TOP" height="25">
+<p style="line-height: 150%; margin-top: 0; margin-bottom: 0">　</TD>
+<TD WIDTH="11%" VALIGN="TOP" height="25">
+<p style="line-height: 150%; margin-top: 0; margin-bottom: 0">　</TD>
+<TD WIDTH="11%" VALIGN="TOP" height="25">
+<p style="line-height: 150%; margin-top: 0; margin-bottom: 0">　</TD>
+<TD WIDTH="11%" VALIGN="TOP" height="25">
+<CODE><P style="line-height: 150%; margin-top: 0; margin-bottom: 0">
+<font size="2">60H</font></CODE></TD>
+</TR>
+<TR><TD WIDTH="11%" VALIGN="TOP" height="25">
+<CODE><P style="line-height: 150%; margin-top: 0; margin-bottom: 0">
+<font size="2">2BH</font></CODE></TD>
+<TD WIDTH="11%" VALIGN="TOP" height="25">
+<CODE><P style="line-height: 150%; margin-top: 0; margin-bottom: 0">
+<font size="2">5FH</font></CODE></TD>
+<TD WIDTH="11%" VALIGN="TOP" height="25">
+<p style="line-height: 150%; margin-top: 0; margin-bottom: 0">　</TD>
+<TD WIDTH="11%" VALIGN="TOP" height="25">
+<p style="line-height: 150%; margin-top: 0; margin-bottom: 0">　</TD>
+<TD WIDTH="11%" VALIGN="TOP" height="25">
+<p style="line-height: 150%; margin-top: 0; margin-bottom: 0">　</TD>
+<TD WIDTH="11%" VALIGN="TOP" height="25">
+<p style="line-height: 150%; margin-top: 0; margin-bottom: 0">　</TD>
+<TD WIDTH="11%" VALIGN="TOP" height="25">
+<p style="line-height: 150%; margin-top: 0; margin-bottom: 0">　</TD>
+<TD WIDTH="11%" VALIGN="TOP" height="25">
+<p style="line-height: 150%; margin-top: 0; margin-bottom: 0">　</TD>
+<TD WIDTH="11%" VALIGN="TOP" height="25">
+<CODE><P style="line-height: 150%; margin-top: 0; margin-bottom: 0">
+<font size="2">58H</font></CODE></TD>
+</TR>
+<TR><TD WIDTH="11%" VALIGN="TOP" height="25">
+<CODE><P style="line-height: 150%; margin-top: 0; margin-bottom: 0">
+<font size="2">2AH</font></CODE></TD>
+<TD WIDTH="11%" VALIGN="TOP" height="25">
+<CODE><P style="line-height: 150%; margin-top: 0; margin-bottom: 0">
+<font size="2">57H</font></CODE></TD>
+<TD WIDTH="11%" VALIGN="TOP" height="25">
+<p style="line-height: 150%; margin-top: 0; margin-bottom: 0">　</TD>
+<TD WIDTH="11%" VALIGN="TOP" height="25">
+<p style="line-height: 150%; margin-top: 0; margin-bottom: 0">　</TD>
+<TD WIDTH="11%" VALIGN="TOP" height="25">
+<p style="line-height: 150%; margin-top: 0; margin-bottom: 0">　</TD>
+<TD WIDTH="11%" VALIGN="TOP" height="25">
+<p style="line-height: 150%; margin-top: 0; margin-bottom: 0">　</TD>
+<TD WIDTH="11%" VALIGN="TOP" height="25">
+<p style="line-height: 150%; margin-top: 0; margin-bottom: 0">　</TD>
+<TD WIDTH="11%" VALIGN="TOP" height="25">
+<p style="line-height: 150%; margin-top: 0; margin-bottom: 0">　</TD>
+<TD WIDTH="11%" VALIGN="TOP" height="25">
+<CODE><P style="line-height: 150%; margin-top: 0; margin-bottom: 0">
+<font size="2">50H</font></CODE></TD>
+</TR>
+<TR><TD WIDTH="11%" VALIGN="TOP" height="25">
+<CODE><P style="line-height: 150%; margin-top: 0; margin-bottom: 0">
+<font size="2">29H</font></CODE></TD>
+<TD WIDTH="11%" VALIGN="TOP" height="25">
+<CODE><P style="line-height: 150%; margin-top: 0; margin-bottom: 0">
+<font size="2">4FH</font></CODE></TD>
+<TD WIDTH="11%" VALIGN="TOP" height="25">
+<p style="line-height: 150%; margin-top: 0; margin-bottom: 0">　</TD>
+<TD WIDTH="11%" VALIGN="TOP" height="25">
+<p style="line-height: 150%; margin-top: 0; margin-bottom: 0">　</TD>
+<TD WIDTH="11%" VALIGN="TOP" height="25">
+<p style="line-height: 150%; margin-top: 0; margin-bottom: 0">　</TD>
+<TD WIDTH="11%" VALIGN="TOP" height="25">
+<p style="line-height: 150%; margin-top: 0; margin-bottom: 0">　</TD>
+<TD WIDTH="11%" VALIGN="TOP" height="25">
+<p style="line-height: 150%; margin-top: 0; margin-bottom: 0">　</TD>
+<TD WIDTH="11%" VALIGN="TOP" height="25">
+<p style="line-height: 150%; margin-top: 0; margin-bottom: 0">　</TD>
+<TD WIDTH="11%" VALIGN="TOP" height="25">
+<CODE><P style="line-height: 150%; margin-top: 0; margin-bottom: 0">
+<font size="2">48H</font></CODE></TD>
+</TR>
+<TR><TD WIDTH="11%" VALIGN="TOP" height="25">
+<CODE><P style="line-height: 150%; margin-top: 0; margin-bottom: 0">
+<font size="2">28H</font></CODE></TD>
+<TD WIDTH="11%" VALIGN="TOP" height="25">
+<CODE><P style="line-height: 150%; margin-top: 0; margin-bottom: 0">
+<font size="2">47H</font></CODE></TD>
+<TD WIDTH="11%" VALIGN="TOP" height="25">
+<p style="line-height: 150%; margin-top: 0; margin-bottom: 0">　</TD>
+<TD WIDTH="11%" VALIGN="TOP" height="25">
+<p style="line-height: 150%; margin-top: 0; margin-bottom: 0">　</TD>
+<TD WIDTH="11%" VALIGN="TOP" height="25">
+<p style="line-height: 150%; margin-top: 0; margin-bottom: 0">　</TD>
+<TD WIDTH="11%" VALIGN="TOP" height="25">
+<p style="line-height: 150%; margin-top: 0; margin-bottom: 0">　</TD>
+<TD WIDTH="11%" VALIGN="TOP" height="25">
+<p style="line-height: 150%; margin-top: 0; margin-bottom: 0">　</TD>
+<TD WIDTH="11%" VALIGN="TOP" height="25">
+<p style="line-height: 150%; margin-top: 0; margin-bottom: 0">　</TD>
+<TD WIDTH="11%" VALIGN="TOP" height="25">
+<CODE><P style="line-height: 150%; margin-top: 0; margin-bottom: 0">
+<font size="2">40H</font></CODE></TD>
+</TR>
+<TR><TD WIDTH="11%" VALIGN="TOP" height="25">
+<CODE><P style="line-height: 150%; margin-top: 0; margin-bottom: 0">
+<font size="2">27H</font></CODE></TD>
+<TD WIDTH="11%" VALIGN="TOP" height="25">
+<CODE><P style="line-height: 150%; margin-top: 0; margin-bottom: 0">
+<font size="2">3FH</font></CODE></TD>
+<TD WIDTH="11%" VALIGN="TOP" height="25">
+<p style="line-height: 150%; margin-top: 0; margin-bottom: 0">　</TD>
+<TD WIDTH="11%" VALIGN="TOP" height="25">
+<p style="line-height: 150%; margin-top: 0; margin-bottom: 0">　</TD>
+<TD WIDTH="11%" VALIGN="TOP" height="25">
+<p style="line-height: 150%; margin-top: 0; margin-bottom: 0">　</TD>
+<TD WIDTH="11%" VALIGN="TOP" height="25">
+<p style="line-height: 150%; margin-top: 0; margin-bottom: 0">　</TD>
+<TD WIDTH="11%" VALIGN="TOP" height="25">
+<p style="line-height: 150%; margin-top: 0; margin-bottom: 0">　</TD>
+<TD WIDTH="11%" VALIGN="TOP" height="25">
+<p style="line-height: 150%; margin-top: 0; margin-bottom: 0">　</TD>
+<TD WIDTH="11%" VALIGN="TOP" height="25">
+<CODE><P style="line-height: 150%; margin-top: 0; margin-bottom: 0">
+<font size="2">38H</font></CODE></TD>
+</TR>
+<TR><TD WIDTH="11%" VALIGN="TOP" height="25">
+<CODE><P style="line-height: 150%; margin-top: 0; margin-bottom: 0">
+<font size="2">26H</font></CODE></TD>
+<TD WIDTH="11%" VALIGN="TOP" height="25">
+<CODE><P style="line-height: 150%; margin-top: 0; margin-bottom: 0">
+<font size="2">37H</font></CODE></TD>
+<TD WIDTH="11%" VALIGN="TOP" height="25">
+<p style="line-height: 150%; margin-top: 0; margin-bottom: 0">　</TD>
+<TD WIDTH="11%" VALIGN="TOP" height="25">
+<p style="line-height: 150%; margin-top: 0; margin-bottom: 0">　</TD>
+<TD WIDTH="11%" VALIGN="TOP" height="25">
+<p style="line-height: 150%; margin-top: 0; margin-bottom: 0">　</TD>
+<TD WIDTH="11%" VALIGN="TOP" height="25">
+<p style="line-height: 150%; margin-top: 0; margin-bottom: 0">　</TD>
+<TD WIDTH="11%" VALIGN="TOP" height="25">
+<p style="line-height: 150%; margin-top: 0; margin-bottom: 0">　</TD>
+<TD WIDTH="11%" VALIGN="TOP" height="25">
+<p style="line-height: 150%; margin-top: 0; margin-bottom: 0">　</TD>
+<TD WIDTH="11%" VALIGN="TOP" height="25">
+<CODE><P style="line-height: 150%; margin-top: 0; margin-bottom: 0">
+<font size="2">30H</font></CODE></TD>
+</TR>
+<TR><TD WIDTH="11%" VALIGN="TOP" height="25">
+<CODE><P style="line-height: 150%; margin-top: 0; margin-bottom: 0">
+<font size="2">25H</font></CODE></TD>
+<TD WIDTH="11%" VALIGN="TOP" height="25">
+<CODE><P style="line-height: 150%; margin-top: 0; margin-bottom: 0">
+<font size="2">2FH</font></CODE></TD>
+<TD WIDTH="11%" VALIGN="TOP" height="25">
+<p style="line-height: 150%; margin-top: 0; margin-bottom: 0">　</TD>
+<TD WIDTH="11%" VALIGN="TOP" height="25">
+<p style="line-height: 150%; margin-top: 0; margin-bottom: 0">　</TD>
+<TD WIDTH="11%" VALIGN="TOP" height="25">
+<p style="line-height: 150%; margin-top: 0; margin-bottom: 0">　</TD>
+<TD WIDTH="11%" VALIGN="TOP" height="25">
+<p style="line-height: 150%; margin-top: 0; margin-bottom: 0">　</TD>
+<TD WIDTH="11%" VALIGN="TOP" height="25">
+<p style="line-height: 150%; margin-top: 0; margin-bottom: 0">　</TD>
+<TD WIDTH="11%" VALIGN="TOP" height="25">
+<p style="line-height: 150%; margin-top: 0; margin-bottom: 0">　</TD>
+<TD WIDTH="11%" VALIGN="TOP" height="25">
+<CODE><P style="line-height: 150%; margin-top: 0; margin-bottom: 0">
+<font size="2">28H</font></CODE></TD>
+</TR>
+<TR><TD WIDTH="11%" VALIGN="TOP" height="25">
+<CODE><P style="line-height: 150%; margin-top: 0; margin-bottom: 0">
+<font size="2">24H</font></CODE></TD>
+<TD WIDTH="11%" VALIGN="TOP" height="25">
+<CODE><P style="line-height: 150%; margin-top: 0; margin-bottom: 0">
+<font size="2">27H</font></CODE></TD>
+<TD WIDTH="11%" VALIGN="TOP" height="25">
+<p style="line-height: 150%; margin-top: 0; margin-bottom: 0">　</TD>
+<TD WIDTH="11%" VALIGN="TOP" height="25">
+<p style="line-height: 150%; margin-top: 0; margin-bottom: 0">　</TD>
+<TD WIDTH="11%" VALIGN="TOP" height="25">
+<p style="line-height: 150%; margin-top: 0; margin-bottom: 0">　</TD>
+<TD WIDTH="11%" VALIGN="TOP" height="25">
+<p style="line-height: 150%; margin-top: 0; margin-bottom: 0">　</TD>
+<TD WIDTH="11%" VALIGN="TOP" height="25">
+<p style="line-height: 150%; margin-top: 0; margin-bottom: 0">　</TD>
+<TD WIDTH="11%" VALIGN="TOP" height="25">
+<p style="line-height: 150%; margin-top: 0; margin-bottom: 0">　</TD>
+<TD WIDTH="11%" VALIGN="TOP" height="25">
+<CODE><P style="line-height: 150%; margin-top: 0; margin-bottom: 0">
+<font size="2">20H</font></CODE></TD>
+</TR>
+<TR><TD WIDTH="11%" VALIGN="TOP" height="25">
+<CODE><P style="line-height: 150%; margin-top: 0; margin-bottom: 0">
+<font size="2">23H</font></CODE></TD>
+<TD WIDTH="11%" VALIGN="TOP" height="25">
+<CODE><P style="line-height: 150%; margin-top: 0; margin-bottom: 0">
+<font size="2">1FH</font></CODE></TD>
+<TD WIDTH="11%" VALIGN="TOP" height="25">
+<p style="line-height: 150%; margin-top: 0; margin-bottom: 0">　</TD>
+<TD WIDTH="11%" VALIGN="TOP" height="25">
+<p style="line-height: 150%; margin-top: 0; margin-bottom: 0">　</TD>
+<TD WIDTH="11%" VALIGN="TOP" height="25">
+<p style="line-height: 150%; margin-top: 0; margin-bottom: 0">　</TD>
+<TD WIDTH="11%" VALIGN="TOP" height="25">
+<p style="line-height: 150%; margin-top: 0; margin-bottom: 0">　</TD>
+<TD WIDTH="11%" VALIGN="TOP" height="25">
+<p style="line-height: 150%; margin-top: 0; margin-bottom: 0">　</TD>
+<TD WIDTH="11%" VALIGN="TOP" height="25">
+<p style="line-height: 150%; margin-top: 0; margin-bottom: 0">　</TD>
+<TD WIDTH="11%" VALIGN="TOP" height="25">
+<CODE><P style="line-height: 150%; margin-top: 0; margin-bottom: 0">
+<font size="2">18H</font></CODE></TD>
+</TR>
+<TR><TD WIDTH="11%" VALIGN="TOP" height="25">
+<CODE><P style="line-height: 150%; margin-top: 0; margin-bottom: 0">
+<font size="2">22H</font></CODE></TD>
+<TD WIDTH="11%" VALIGN="TOP" height="25">
+<CODE><P style="line-height: 150%; margin-top: 0; margin-bottom: 0">
+<font size="2">17H</font></CODE></TD>
+<TD WIDTH="11%" VALIGN="TOP" height="25">
+<p style="line-height: 150%; margin-top: 0; margin-bottom: 0">　</TD>
+<TD WIDTH="11%" VALIGN="TOP" height="25">
+<p style="line-height: 150%; margin-top: 0; margin-bottom: 0">　</TD>
+<TD WIDTH="11%" VALIGN="TOP" height="25">
+<p style="line-height: 150%; margin-top: 0; margin-bottom: 0">　</TD>
+<TD WIDTH="11%" VALIGN="TOP" height="25">
+<p style="line-height: 150%; margin-top: 0; margin-bottom: 0">　</TD>
+<TD WIDTH="11%" VALIGN="TOP" height="25">
+<p style="line-height: 150%; margin-top: 0; margin-bottom: 0">　</TD>
+<TD WIDTH="11%" VALIGN="TOP" height="25">
+<p style="line-height: 150%; margin-top: 0; margin-bottom: 0">　</TD>
+<TD WIDTH="11%" VALIGN="TOP" height="25">
+<CODE><P style="line-height: 150%; margin-top: 0; margin-bottom: 0">
+<font size="2">10H</font></CODE></TD>
+</TR>
+<TR><TD WIDTH="11%" VALIGN="TOP" height="25">
+<CODE><P style="line-height: 150%; margin-top: 0; margin-bottom: 0">
+<font size="2">21H</font></CODE></TD>
+<TD WIDTH="11%" VALIGN="TOP" height="25">
+<CODE><P style="line-height: 150%; margin-top: 0; margin-bottom: 0">
+<font size="2">0FH</font></CODE></TD>
+<TD WIDTH="11%" VALIGN="TOP" height="25">
+<p style="line-height: 150%; margin-top: 0; margin-bottom: 0">　</TD>
+<TD WIDTH="11%" VALIGN="TOP" height="25">
+<p style="line-height: 150%; margin-top: 0; margin-bottom: 0">　</TD>
+<TD WIDTH="11%" VALIGN="TOP" height="25">
+<p style="line-height: 150%; margin-top: 0; margin-bottom: 0">　</TD>
+<TD WIDTH="11%" VALIGN="TOP" height="25">
+<p style="line-height: 150%; margin-top: 0; margin-bottom: 0">　</TD>
+<TD WIDTH="11%" VALIGN="TOP" height="25">
+<p style="line-height: 150%; margin-top: 0; margin-bottom: 0">　</TD>
+<TD WIDTH="11%" VALIGN="TOP" height="25">
+<p style="line-height: 150%; margin-top: 0; margin-bottom: 0">　</TD>
+<TD WIDTH="11%" VALIGN="TOP" height="25">
+<CODE><P style="line-height: 150%; margin-top: 0; margin-bottom: 0">
+<font size="2">08H</font></CODE></TD>
+</TR>
+<TR><TD WIDTH="11%" VALIGN="TOP" height="1">
+<CODE><P style="line-height: 150%; margin-top: 0; margin-bottom: 0">
+<font size="2">20H</font></CODE></TD>
+<TD WIDTH="11%" VALIGN="TOP" height="1">
+<CODE><P style="line-height: 150%; margin-top: 0; margin-bottom: 0">
+<font size="2">07H</font></CODE></TD>
+<TD WIDTH="11%" VALIGN="TOP" height="1">
+<CODE><P style="line-height: 150%; margin-top: 0; margin-bottom: 0">
+<font size="2">06H</font></CODE></TD>
+<TD WIDTH="11%" VALIGN="TOP" height="1">
+<CODE><P style="line-height: 150%; margin-top: 0; margin-bottom: 0">
+<font size="2">05H</font></CODE></TD>
+<TD WIDTH="11%" VALIGN="TOP" height="1">
+<CODE><P style="line-height: 150%; margin-top: 0; margin-bottom: 0">
+<font size="2">04H</font></CODE></TD>
+<TD WIDTH="11%" VALIGN="TOP" height="1">
+<CODE><P style="line-height: 150%; margin-top: 0; margin-bottom: 0">
+<font size="2">03H</font></CODE></TD>
+<TD WIDTH="11%" VALIGN="TOP" height="1">
+<CODE><P style="line-height: 150%; margin-top: 0; margin-bottom: 0">
+<font size="2">02H</font></CODE></TD>
+<TD WIDTH="11%" VALIGN="TOP" height="1">
+<CODE><P style="line-height: 150%; margin-top: 0; margin-bottom: 0">
+<font size="2">01H</font></CODE></TD>
+<TD WIDTH="11%" VALIGN="TOP" height="1">
+<CODE><P style="line-height: 150%; margin-top: 0; margin-bottom: 0">
+<font size="2">00H</font></CODE></TD>
+</TR>
+</TABLE>
+
+<FONT FACE="宋体" LANG="ZH-CN" size="2">
+<P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">图1</P>
+</FONT>
+<P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">
+<font size="2" FACE="宋体" LANG="ZH-CN">内部</font><font size="2"><FONT FACE="System" LANG="ZH-CN">RAM</FONT><FONT FACE="宋体" LANG="ZH-CN">的</FONT><FONT FACE="System" LANG="ZH-CN">20H-2FH</FONT><FONT FACE="宋体" LANG="ZH-CN">这</FONT><FONT FACE="System" LANG="ZH-CN">16</FONT><FONT FACE="宋体" LANG="ZH-CN">个字节，就是</FONT><FONT FACE="System" LANG="ZH-CN">8031</FONT><FONT FACE="宋体" LANG="ZH-CN">的位寻址区。看图</FONT><FONT FACE="System" LANG="ZH-CN">1</FONT><FONT FACE="宋体" LANG="ZH-CN">。可见这里面的每一个</FONT><FONT FACE="System" LANG="ZH-CN">RAM</FONT></font><font size="2" FACE="宋体" LANG="ZH-CN">中的每个位我们都可能直接用位地址来找到它们，而不必用字节地址，然后再用逻辑指令的方式。</font></P><FONT FACE="宋体" LANG="ZH-CN">
+<P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0"><LI>
+<p style="line-height: 150%; margin-top: 0; margin-bottom: 0"><font size="2">可以位寻址的特殊功能寄存器</LI></font></p>
+<p style="line-height: 150%; margin-top: 0; margin-bottom: 0"></P>
+</FONT>
+<P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">
+<font size="2" FACE="System" LANG="ZH-CN">8031</font><font size="2"><FONT FACE="宋体" LANG="ZH-CN">中有一些</FONT><FONT FACE="System" LANG="ZH-CN">SFR</FONT><FONT FACE="宋体" LANG="ZH-CN">是可以进行位寻址的，这些</FONT><FONT FACE="System" LANG="ZH-CN">SFR</FONT><FONT FACE="宋体" LANG="ZH-CN">的特点是其字节地址均可被</FONT><FONT FACE="System" LANG="ZH-CN">8</FONT><FONT FACE="宋体" LANG="ZH-CN">整除，如</FONT><FONT FACE="System" LANG="ZH-CN">A</FONT><FONT FACE="宋体" LANG="ZH-CN">累加器，</FONT><FONT FACE="System" LANG="ZH-CN">B</FONT><FONT FACE="宋体" LANG="ZH-CN">寄存器、</FONT><FONT FACE="System" LANG="ZH-CN">PSW</FONT><FONT FACE="宋体" LANG="ZH-CN">、</FONT><FONT FACE="System" LANG="ZH-CN">IP</FONT><FONT FACE="宋体" LANG="ZH-CN">（中断优先级控制寄存器）、</FONT><FONT FACE="System" LANG="ZH-CN">IE</FONT><FONT FACE="宋体" LANG="ZH-CN">（中断允许控制寄存器）、</FONT><FONT FACE="System" LANG="ZH-CN">SCON</FONT><FONT FACE="宋体" LANG="ZH-CN">（串行口控制寄存器）、</FONT><FONT FACE="System" LANG="ZH-CN">TCON</FONT><FONT FACE="宋体" LANG="ZH-CN">（定时器</FONT><FONT FACE="System" LANG="ZH-CN">/</FONT><FONT FACE="宋体" LANG="ZH-CN">计数器控制寄存器）、</FONT><FONT FACE="System" LANG="ZH-CN">P0-P3</FONT><FONT FACE="宋体" LANG="ZH-CN">（</FONT><FONT FACE="System" LANG="ZH-CN">I/O</FONT><FONT FACE="宋体" LANG="ZH-CN">端口锁存器）。以上的一些</FONT><FONT FACE="System" LANG="ZH-CN">SFR</FONT></font><font size="2" FACE="宋体" LANG="ZH-CN">我们还不熟，等我们讲解相关内容时再作详细解释。</font></P><FONT FACE="宋体" LANG="ZH-CN">
+<P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0"><LI>
+<p style="line-height: 150%; margin-top: 0; margin-bottom: 0"><font size="2">位操作指令</LI></font></p>
+<p style="line-height: 150%; margin-top: 0; margin-bottom: 0"></P></font></OL><DIR>
+<P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">
+<font size="2" FACE="System" LANG="ZH-CN">MCS-51</font><font size="2"><FONT FACE="宋体" LANG="ZH-CN">单片机的硬件结构中，有一个位处理器（又称布尔处理器），它有一套位变量处理的指令集。在进行位处理时，</FONT><FONT FACE="System" LANG="ZH-CN">CY</FONT><FONT FACE="宋体" LANG="ZH-CN">（就是我们前面讲的进位位）称“<B>位累加器”。</B>有自已的位</FONT><FONT FACE="System" LANG="ZH-CN">RAM</FONT><FONT FACE="宋体" LANG="ZH-CN">，也就是我们刚讲的内部</FONT><FONT FACE="System" LANG="ZH-CN">RAM</FONT><FONT FACE="宋体" LANG="ZH-CN">的</FONT><FONT FACE="System" LANG="ZH-CN">20H-2FH</FONT><FONT FACE="宋体" LANG="ZH-CN">这</FONT><FONT FACE="System" LANG="ZH-CN">16</FONT><FONT FACE="宋体" LANG="ZH-CN">个字节单元即</FONT><FONT FACE="System" LANG="ZH-CN">128</FONT><FONT FACE="宋体" LANG="ZH-CN">个位单元，还有自已的位</FONT><FONT FACE="System" LANG="ZH-CN">I/O</FONT><FONT FACE="宋体" LANG="ZH-CN">空间（即</FONT><FONT FACE="System" LANG="ZH-CN">P0.0…..P0.7,P1.0…….P1.7,P2.0……..P2.7,P3.0……..P3.7</FONT><FONT FACE="宋体" LANG="ZH-CN">）。当然在物理实体上它们与原来的以字节寻址用的</FONT><FONT FACE="System" LANG="ZH-CN">RAM</FONT><FONT FACE="宋体" LANG="ZH-CN">，及端口是完全相同的，或者说这些</FONT><FONT FACE="System" LANG="ZH-CN">RAM</FONT></font><font size="2" FACE="宋体" LANG="ZH-CN">及端口都可以有两种用法。</font></P></DIR><OL>
+
+<FONT FACE="宋体" LANG="ZH-CN">
+
+<P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0"><LI>
+<p style="line-height: 150%; margin-top: 0; margin-bottom: 0"><font size="2">位传送指令</LI></font></p>
+<p style="line-height: 150%; margin-top: 0; margin-bottom: 0"></P>
+</font>
+<P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">
+<font size="2" FACE="System" LANG="ZH-CN">MOV&#9;C</font><FONT FACE="宋体" LANG="ZH-CN" size="2">，</FONT><font size="2" FACE="System" LANG="ZH-CN">BIT</font></P>
+<P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">
+<font size="2" FACE="System" LANG="ZH-CN">MOV&#9;BIT</font><FONT FACE="宋体" LANG="ZH-CN" size="2">，</FONT><font size="2" FACE="System" LANG="ZH-CN">C</font></P>
+<P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">
+<font size="2" FACE="宋体" LANG="ZH-CN">这组指令的功能是实现位累加器（</font><FONT FACE="System" LANG="ZH-CN" size="2">CY</FONT><font size="2" FACE="宋体" LANG="ZH-CN">）和其它位地址之间的数据传递。</font></P>
+<P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">
+<font size="2" FACE="宋体" LANG="ZH-CN">例：</font><font size="2"><FONT FACE="System" LANG="ZH-CN">MOV&#9;P1.0,CY</FONT><FONT FACE="宋体" LANG="ZH-CN">&#9;&#9;</FONT><FONT FACE="System" LANG="ZH-CN">;</FONT><FONT FACE="宋体" LANG="ZH-CN">将</FONT><FONT FACE="System" LANG="ZH-CN">CY</FONT><FONT FACE="宋体" LANG="ZH-CN">中的状态送到</FONT><FONT FACE="System" LANG="ZH-CN">P1.0</FONT><FONT FACE="宋体" LANG="ZH-CN">引脚上去（如果是做算术运算，我们就可以通过观察知道现在</FONT><FONT FACE="System" LANG="ZH-CN">CY</FONT></font><font size="2" FACE="宋体" LANG="ZH-CN">是多少啦）。</font></P>
+<P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">
+<font size="2" FACE="System" LANG="ZH-CN">MOV&#9;P1.0,CY</font><font size="2"><FONT FACE="宋体" LANG="ZH-CN">&#9;&#9;</FONT><FONT FACE="System" LANG="ZH-CN">;</FONT><FONT FACE="宋体" LANG="ZH-CN">将</FONT><FONT FACE="System" LANG="ZH-CN">P1.0</FONT><FONT FACE="宋体" LANG="ZH-CN">的状态送给</FONT><FONT FACE="System" LANG="ZH-CN">CY</FONT></font><font size="2" FACE="宋体" LANG="ZH-CN">。</font></P><FONT FACE="宋体" LANG="ZH-CN">
+<P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0"><LI>
+<p style="line-height: 150%; margin-top: 0; margin-bottom: 0"><font size="2">位修正指令</LI></font></p>
+<p style="line-height: 150%; margin-top: 0; margin-bottom: 0"></P></font></OL><OL>
+
+<FONT FACE="宋体" LANG="ZH-CN">
+
+<P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0"></font><LI>
+<p style="line-height: 150%; margin-top: 0; margin-bottom: 0">
+<font size="2" FACE="宋体" LANG="ZH-CN">位清</font><font size="2"><FONT FACE="System" LANG="ZH-CN">0</FONT><FONT FACE="宋体" LANG="ZH-CN">指令</font></LI></font><FONT FACE="宋体" LANG="ZH-CN"></p>
+<p style="line-height: 150%; margin-top: 0; margin-bottom: 0"></P>
+</FONT>
+<P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">
+<font size="2" FACE="System" LANG="ZH-CN">CLR&#9;&#9;C</font><font size="2"><FONT FACE="宋体" LANG="ZH-CN">&#9;</FONT><FONT FACE="System" LANG="ZH-CN">;</FONT><FONT FACE="宋体" LANG="ZH-CN">使</FONT></font><font size="2" FACE="System" LANG="ZH-CN">CY=0</font></P>
+<P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">
+<font size="2" FACE="System" LANG="ZH-CN">CLR&#9;&#9;bit ;</font><font size="2"><FONT FACE="宋体" LANG="ZH-CN">使指令的位地址等于</FONT><FONT FACE="System" LANG="ZH-CN">0</FONT><FONT FACE="宋体" LANG="ZH-CN">。例：</FONT><FONT FACE="System" LANG="ZH-CN">CLR P1.0 ;</FONT><FONT FACE="宋体" LANG="ZH-CN">即使</FONT><FONT FACE="System" LANG="ZH-CN">P1.0</FONT><FONT FACE="宋体" LANG="ZH-CN">变为</FONT></font><font size="2" FACE="System" LANG="ZH-CN">0</font></P>
+<FONT FACE="宋体" LANG="ZH-CN">
+<P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0"></FONT><LI>
+<p style="line-height: 150%; margin-top: 0; margin-bottom: 0">
+<font size="2" FACE="宋体" LANG="ZH-CN">位置</font><font size="2"><FONT FACE="System" LANG="ZH-CN">1</FONT><FONT FACE="宋体" LANG="ZH-CN">指令&#9;</font></LI>
+</font><FONT FACE="宋体" LANG="ZH-CN"></p>
+<p style="line-height: 150%; margin-top: 0; margin-bottom: 0"></P>
+</FONT>
+<P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">
+<font size="2" FACE="System" LANG="ZH-CN">SETB&#9;C ;</font><FONT FACE="宋体" LANG="ZH-CN" size="2">使</FONT><font size="2" FACE="System" LANG="ZH-CN">CY=1</font></P>
+<P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">
+<font size="2" FACE="System" LANG="ZH-CN">SETB&#9;bit ;</font><font size="2"><FONT FACE="宋体" LANG="ZH-CN">使指定的位地址等于</FONT><FONT FACE="System" LANG="ZH-CN">1</FONT><FONT FACE="宋体" LANG="ZH-CN">。例：</FONT><FONT FACE="System" LANG="ZH-CN">SETB P1.0 ;</FONT><FONT FACE="宋体" LANG="ZH-CN">使</FONT><FONT FACE="System" LANG="ZH-CN">P.0</FONT><FONT FACE="宋体" LANG="ZH-CN">变为</FONT></font><font size="2" FACE="System" LANG="ZH-CN">1</font></P>
+<FONT FACE="宋体" LANG="ZH-CN">
+<P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0"><LI>
+<p style="line-height: 150%; margin-top: 0; margin-bottom: 0"><font size="2">位取反指令</LI></font></p>
+<p style="line-height: 150%; margin-top: 0; margin-bottom: 0"></P></font></OL><DIR>
+<P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">
+<font size="2" FACE="System" LANG="ZH-CN">CPL&#9;&#9;C ;</font><font size="2"><FONT FACE="宋体" LANG="ZH-CN">使</FONT><FONT FACE="System" LANG="ZH-CN">CY</FONT><FONT FACE="宋体" LANG="ZH-CN">等于原来的相反的值，由</FONT><FONT FACE="System" LANG="ZH-CN">1</FONT><FONT FACE="宋体" LANG="ZH-CN">变为</FONT><FONT FACE="System" LANG="ZH-CN">0</FONT><FONT FACE="宋体" LANG="ZH-CN">，由</FONT><FONT FACE="System" LANG="ZH-CN">0</FONT><FONT FACE="宋体" LANG="ZH-CN">变为</FONT><FONT FACE="System" LANG="ZH-CN">1</FONT></font><font size="2" FACE="宋体" LANG="ZH-CN">。</font></P>
+<P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">
+<font size="2" FACE="System" LANG="ZH-CN">CPL&#9;&#9;bit ;</font><font size="2"><FONT FACE="宋体" LANG="ZH-CN">使指定的位的值等于原来相反的值，由</FONT><FONT FACE="System" LANG="ZH-CN">0</FONT><FONT FACE="宋体" LANG="ZH-CN">变为</FONT><FONT FACE="System" LANG="ZH-CN">1</FONT><FONT FACE="宋体" LANG="ZH-CN">，由</FONT><FONT FACE="System" LANG="ZH-CN">1</FONT><FONT FACE="宋体" LANG="ZH-CN">变为</FONT><FONT FACE="System" LANG="ZH-CN">0</FONT></font><font size="2" FACE="宋体" LANG="ZH-CN">。</font></P>
+<P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">
+<font size="2" FACE="宋体" LANG="ZH-CN">例：</font><font size="2" FACE="System" LANG="ZH-CN">CPL&#9;&#9;P1.0</font></P>
+<FONT FACE="宋体" LANG="ZH-CN" size="2">
+<P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">以我们做过的实验为例，如果原来灯是亮的，则执行本指令后灯灭，反之原来灯是灭的，执行本指令后灯亮。</P></font></DIR><FONT FACE="宋体" LANG="ZH-CN">
+
+<OL>
+
+<P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0"><LI>
+<p style="line-height: 150%; margin-top: 0; margin-bottom: 0"><font size="2">位逻辑运算指令</LI></font></p>
+<p style="line-height: 150%; margin-top: 0; margin-bottom: 0"></P></OL>
+
+</FONT><OL><FONT FACE="宋体" LANG="ZH-CN">
+
+<P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0"><LI>
+  <p style="line-height: 150%; margin-top: 0; margin-bottom: 0"><font size="2">位与指令</LI></font></p>
+  <p style="line-height: 150%; margin-top: 0; margin-bottom: 0"></P>
+</font>
+  <P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">
+  <font size="2" FACE="System" LANG="ZH-CN">ANL&#9;C,bit ;CY</font><FONT FACE="宋体" LANG="ZH-CN" size="2">与指定的位地址的值相与，结果送回</FONT><font size="2" FACE="System" LANG="ZH-CN">CY</font></P>
+  <P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">
+<font size="2" FACE="System" LANG="ZH-CN">ANL&#9;C,/bit ;</font><font size="2"><FONT FACE="宋体" LANG="ZH-CN">先将指定的位地址中的值取出后取反，再和</FONT><FONT FACE="System" LANG="ZH-CN">CY</FONT><FONT FACE="宋体" LANG="ZH-CN">相与，结果送回</FONT><FONT FACE="System" LANG="ZH-CN">CY</FONT></font><font size="2" FACE="宋体" LANG="ZH-CN">，但注意，指定的位地址中的值本身并不发生变化。</font></P>
+  <P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">
+<font size="2" FACE="宋体" LANG="ZH-CN">例：</font><font size="2" FACE="System" LANG="ZH-CN">ANL&#9;C,/P1.0</font></P>
+<P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">
+<font size="2" FACE="宋体" LANG="ZH-CN">设执行本指令前，</font><font size="2"><FONT FACE="System" LANG="ZH-CN">CY=1</FONT><FONT FACE="宋体" LANG="ZH-CN">，</FONT><FONT FACE="System" LANG="ZH-CN">P1.0</FONT><FONT FACE="宋体" LANG="ZH-CN">等于</FONT><FONT FACE="System" LANG="ZH-CN">1</FONT><FONT FACE="宋体" LANG="ZH-CN">（灯灭），则执行完本指令后</FONT><FONT FACE="System" LANG="ZH-CN">CY=0</FONT><FONT FACE="宋体" LANG="ZH-CN">，而</FONT><FONT FACE="System" LANG="ZH-CN">P1.0</FONT><FONT FACE="宋体" LANG="ZH-CN">也是等于</FONT><FONT FACE="System" LANG="ZH-CN">1</FONT></font><font size="2" FACE="宋体" LANG="ZH-CN">。</font></P>
+  <FONT FACE="宋体" LANG="ZH-CN" size="2">
+<P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">可用下列程序验证：</P>
+</FONT>
+  <P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">
+  <FONT FACE="System" LANG="ZH-CN" size="2">ORG&#9;0000H</font></P><FONT FACE="System" LANG="ZH-CN">
+<P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">&#9;
+<font size="2">AJMP&#9;START</font></P>
+<P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">&#9;
+<font size="2">ORG&#9;30H</font></P>
+</FONT>
+  <P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">
+  <font size="2" FACE="System" LANG="ZH-CN">START</font><font size="2"><FONT FACE="宋体" LANG="ZH-CN">：&#9;</FONT><FONT FACE="System" LANG="ZH-CN">MOV&#9;SP</FONT><FONT FACE="宋体" LANG="ZH-CN">，</FONT></font><font size="2" FACE="System" LANG="ZH-CN">#5FH</font></P>
+  <P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">
+<font size="2" FACE="System" LANG="ZH-CN">MOV&#9;P1</font><FONT FACE="宋体" LANG="ZH-CN" size="2">，</FONT><font size="2" FACE="System" LANG="ZH-CN">#0FFH</font></P>
+  <FONT FACE="System" LANG="ZH-CN" size="2">
+<P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">&#9;&#9;SETB&#9;C</P>
+</FONT>
+  <P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">
+  <font size="2" FACE="System" LANG="ZH-CN">ANL&#9;C</font><FONT FACE="宋体" LANG="ZH-CN" size="2">，</FONT><font size="2" FACE="System" LANG="ZH-CN">/P1.0</font></P>
+<P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">
+<font size="2" FACE="System" LANG="ZH-CN">MOV&#9;P1.1,C&#9;;</font><font size="2"><FONT FACE="宋体" LANG="ZH-CN">将做完的结果送</FONT><FONT FACE="System" LANG="ZH-CN">P1.1,</FONT><FONT FACE="宋体" LANG="ZH-CN">结果应当是</FONT><FONT FACE="System" LANG="ZH-CN">P1.1</FONT><FONT FACE="宋体" LANG="ZH-CN">上的灯亮，而</FONT><FONT FACE="System" LANG="ZH-CN">P1.0</FONT></font><font size="2" FACE="宋体" LANG="ZH-CN">上的灯还是不亮。</font></P><FONT FACE="宋体" LANG="ZH-CN">
+<P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0"><LI>
+  <p style="line-height: 150%; margin-top: 0; margin-bottom: 0"><font size="2">位或指令</LI></font></p>
+  <p style="line-height: 150%; margin-top: 0; margin-bottom: 0"></P></font></OL><DIR>
+<FONT FACE="System" LANG="ZH-CN">
+<P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">
+<font size="2">ORL&#9;&#9;C,bit</font></P>
+<P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">
+<font size="2">ORL&#9;&#9;C,/bit</font></P></font></DIR>
+
+<FONT FACE="宋体" LANG="ZH-CN">
+<P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">
+<font size="2">这个的功能大家自行分析吧，然后对照上面的例程，编一个验证程序，看看你相得对吗？</font></P>
+<OL>
+
+<P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0"><LI>
+<p style="line-height: 150%; margin-top: 0; margin-bottom: 0"><font size="2">位条件转移指令</LI></font></p>
+<p style="line-height: 150%; margin-top: 0; margin-bottom: 0"></P></OL>
+
+</FONT><OL><FONT FACE="宋体" LANG="ZH-CN">
+
+<P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0"></font><LI>
+  <p style="line-height: 150%; margin-top: 0; margin-bottom: 0">
+  <font size="2" FACE="宋体" LANG="ZH-CN">判</font><font size="2"><FONT FACE="System" LANG="ZH-CN">CY</FONT><FONT FACE="宋体" LANG="ZH-CN">转移指令</font></LI></font><FONT FACE="宋体" LANG="ZH-CN"></p>
+  <p style="line-height: 150%; margin-top: 0; margin-bottom: 0"></P>
+</FONT><FONT FACE="System" LANG="ZH-CN">
+  <P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">
+  <font size="2">JC&#9;&#9;rel</font></P>
+<P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">
+<font size="2">JNC&#9;&#9;rel</font></P>
+</FONT>
+  <P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">
+  <font size="2" FACE="宋体" LANG="ZH-CN">第一条指令的功能是如果</font><font size="2"><FONT FACE="System" LANG="ZH-CN">CY</FONT><FONT FACE="宋体" LANG="ZH-CN">等于</FONT><FONT FACE="System" LANG="ZH-CN">1</FONT><FONT FACE="宋体" LANG="ZH-CN">就转移，如果不等于</FONT><FONT FACE="System" LANG="ZH-CN">1</FONT><FONT FACE="宋体" LANG="ZH-CN">就顺序执行。那么转移到什么地方去呢？我们可以这样理解：</FONT><FONT FACE="System" LANG="ZH-CN">JC&#9;&#9;</FONT><FONT FACE="宋体" LANG="ZH-CN">标号，如果等于</FONT><FONT FACE="System" LANG="ZH-CN">1</FONT></font><font size="2" FACE="宋体" LANG="ZH-CN">就转到标号处执行。这条指令我们在上节课中已讲到，不再重复。</font></P>
+  <P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">
+<font size="2" FACE="宋体" LANG="ZH-CN">第二条指令则和第一条指令相反，即如果</font><font size="2"><FONT FACE="System" LANG="ZH-CN">CY=0</FONT><FONT FACE="宋体" LANG="ZH-CN">就转移，不等于</FONT><FONT FACE="System" LANG="ZH-CN">0</FONT><FONT FACE="宋体" LANG="ZH-CN">就顺序执行，当然，我们也同样理解：&#9;</FONT><FONT FACE="System" LANG="ZH-CN">JNC&#9;&#9;</FONT>
+</font><font size="2" FACE="宋体" LANG="ZH-CN">标号</font></P><FONT FACE="宋体" LANG="ZH-CN">
+<P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0"><LI>
+  <p style="line-height: 150%; margin-top: 0; margin-bottom: 0"><font size="2">判位变量转移指令</LI></font></p>
+  <p style="line-height: 150%; margin-top: 0; margin-bottom: 0"></P></font></OL><DIR>
+<P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">
+<FONT FACE="System" LANG="ZH-CN" size="2">JB&#9;&#9;bit,rel</font></P>
+<FONT FACE="System" LANG="ZH-CN" size="2">
+<P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">JNB&#9;&#9;bit,rel</P>
+</FONT>
+<P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">
+<font size="2" FACE="宋体" LANG="ZH-CN">第一条指令是如果指定的</font><font size="2"><FONT FACE="System" LANG="ZH-CN">bit</FONT><FONT FACE="宋体" LANG="ZH-CN">位中的值是</FONT><FONT FACE="System" LANG="ZH-CN">1</FONT><FONT FACE="宋体" LANG="ZH-CN">，则转移，否则顺序执行。同样，我们可以这样理解这条指令：</FONT><FONT FACE="System" LANG="ZH-CN">JB&#9;&#9;bit,</FONT></font><font size="2" FACE="宋体" LANG="ZH-CN">标号</font></P><FONT FACE="宋体" LANG="ZH-CN">
+<P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">
+<font size="2">第二条指令请大家先自行分析</font></P>
+<P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">
+<font size="2">下面我们举个例子说明：</font></P>
+</FONT><FONT FACE="System" LANG="ZH-CN">
+<P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">
+<font size="2">ORG&#9;0000H</font></P>
+<P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">
+<font size="2">LJMP&#9;START</font></P>
+<P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">
+<font size="2">ORG&#9;30H</font></P></font></DIR>
+<P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">
+
+<font size="2" FACE="System" LANG="ZH-CN">START</font><font size="2"><FONT FACE="宋体" LANG="ZH-CN">：</FONT><FONT FACE="System" LANG="ZH-CN">MOV&#9;SP</FONT><FONT FACE="宋体" LANG="ZH-CN">，</FONT></font><font size="2" FACE="System" LANG="ZH-CN">#5FH</font></P>
+<P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">
+<font size="2" FACE="System" LANG="ZH-CN">MOV&#9;P1</font><FONT FACE="宋体" LANG="ZH-CN" size="2">，</FONT><font size="2" FACE="System" LANG="ZH-CN">#0FFH</font></P>
+<P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">
+<font size="2" FACE="System" LANG="ZH-CN">MOV&#9;P3</font><FONT FACE="宋体" LANG="ZH-CN" size="2">，</FONT><font size="2" FACE="System" LANG="ZH-CN">#0FFH</font></P>
+<P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">
+<font size="2" FACE="System" LANG="ZH-CN">L1:</font><font size="2"><FONT FACE="宋体" LANG="ZH-CN">&#9;&#9;</FONT><FONT FACE="System" LANG="ZH-CN">JNB&#9;&#9;P3.2,L2</FONT><FONT FACE="宋体" LANG="ZH-CN">&#9;</FONT><FONT FACE="System" LANG="ZH-CN">;P3.2</FONT><FONT FACE="宋体" LANG="ZH-CN">上接有一只按键，它按下时，</FONT></font><font size="2" FACE="System" LANG="ZH-CN">P3.2=0</font></P>
+<P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">
+<font size="2" FACE="System" LANG="ZH-CN">JNB&#9;&#9;P3.3,L3 ;P3.3</font><FONT FACE="宋体" LANG="ZH-CN" size="2">上接有一只按键，它按下时，</FONT><font size="2" FACE="System" LANG="ZH-CN">P3.3=0</font></P><FONT FACE="System" LANG="ZH-CN">
+<P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">&#9;&#9;
+<font size="2">LJM&#9;P&#9;L1</font></P>
+<P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">
+<font size="2">L2:&#9;&#9;MOV&#9;P1,#00H</font></P>
+<P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">&#9;&#9;
+<font size="2">LJMP&#9;L1</font></P>
+<P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">
+<font size="2">L3:&#9;&#9;MOV&#9;P1,#0FFH</font></P>
+<P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">&#9;&#9;
+<font size="2">LJMP&#9;L1</font></P><DIR>
+
+<P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">
+<font size="2">END</font></P></DIR>
+
+</FONT>
+<P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">
+<font size="2" FACE="宋体" LANG="ZH-CN">把上面的例子写入片子，看看有什么现象</font><font size="2" FACE="System" LANG="ZH-CN">………</font></P><FONT FACE="System" LANG="ZH-CN">
+<P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">
+<font size="2">.</font></P>
+<P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">
+<font size="2">.</font></P>
+</FONT>
+<P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">
+<font size="2" FACE="宋体" LANG="ZH-CN">按下接在</font><font size="2"><FONT FACE="System" LANG="ZH-CN">P3.2</FONT><FONT FACE="宋体" LANG="ZH-CN">上的按键，</FONT><FONT FACE="System" LANG="ZH-CN">P1</FONT><FONT FACE="宋体" LANG="ZH-CN">口的灯全亮了，松开或再按，灯并不熄灭，然后按下接在</FONT><FONT FACE="System" LANG="ZH-CN">P3.3</FONT></font><font size="2" FACE="宋体" LANG="ZH-CN">上的按键，灯就全灭了。这像什么？这不就是工业现场经常用到的“启动”、“停止”的功能吗？</font></P>
+<P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">
+<font size="2" FACE="宋体" LANG="ZH-CN">怎么做到的呢？一开始，将</font><font size="2"><FONT FACE="System" LANG="ZH-CN">0FFH</FONT><FONT FACE="宋体" LANG="ZH-CN">送入</FONT><FONT FACE="System" LANG="ZH-CN">P3</FONT><FONT FACE="宋体" LANG="ZH-CN">口，这样，</FONT><FONT FACE="System" LANG="ZH-CN">P3</FONT><FONT FACE="宋体" LANG="ZH-CN">的所有引线都处于高电平，然后执行</FONT><FONT FACE="System" LANG="ZH-CN">L1</FONT><FONT FACE="宋体" LANG="ZH-CN">，如果</FONT><FONT FACE="System" LANG="ZH-CN">P3.2</FONT><FONT FACE="宋体" LANG="ZH-CN">是高电平（键没有按下），则顺序执行</FONT><FONT FACE="System" LANG="ZH-CN">JNB&#9;P3.3,L3</FONT><FONT FACE="宋体" LANG="ZH-CN">语句，同样，如果</FONT><FONT FACE="System" LANG="ZH-CN">P3.3</FONT><FONT FACE="宋体" LANG="ZH-CN">是高电平（键没有按下），则顺序执行</FONT><FONT FACE="System" LANG="ZH-CN">LJMP&#9;&#9;L1</FONT><FONT FACE="宋体" LANG="ZH-CN">语句。这样就不停地检测</FONT><FONT FACE="System" LANG="ZH-CN">P3.2</FONT><FONT FACE="宋体" LANG="ZH-CN">、</FONT><FONT FACE="System" LANG="ZH-CN">P3.3</FONT><FONT FACE="宋体" LANG="ZH-CN">，如果有一次</FONT><FONT FACE="System" LANG="ZH-CN">P3.2</FONT><FONT FACE="宋体" LANG="ZH-CN">上的按键按下去了，则转移到</FONT><FONT FACE="System" LANG="ZH-CN">L2</FONT><FONT FACE="宋体" LANG="ZH-CN">，执行</FONT><FONT FACE="System" LANG="ZH-CN">MOV&#9;&#9;P1</FONT><FONT FACE="宋体" LANG="ZH-CN">，</FONT><FONT FACE="System" LANG="ZH-CN">#00H</FONT><FONT FACE="宋体" LANG="ZH-CN">，使灯全亮，然后又转去</FONT><FONT FACE="System" LANG="ZH-CN">L1</FONT><FONT FACE="宋体" LANG="ZH-CN">，再次循环，直到检测到</FONT><FONT FACE="System" LANG="ZH-CN">P3.3</FONT><FONT FACE="宋体" LANG="ZH-CN">为</FONT><FONT FACE="System" LANG="ZH-CN">0</FONT><FONT FACE="宋体" LANG="ZH-CN">，则转</FONT><FONT FACE="System" LANG="ZH-CN">L3</FONT><FONT FACE="宋体" LANG="ZH-CN">，执行</FONT><FONT FACE="System" LANG="ZH-CN">MOV&#9;&#9;P1</FONT><FONT FACE="宋体" LANG="ZH-CN">，</FONT><FONT FACE="System" LANG="ZH-CN">#0FFH</FONT><FONT FACE="宋体" LANG="ZH-CN">，例灯全灭，再转去</FONT><FONT FACE="System" LANG="ZH-CN">L1</FONT></font><font size="2" FACE="宋体" LANG="ZH-CN">，如此循环不已。</font></P>
+<P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">
+<font size="2" FACE="宋体" LANG="ZH-CN">大家能否稍加改动，将本程序用</font><FONT FACE="System" LANG="ZH-CN" size="2">JB</FONT><font size="2" FACE="宋体" LANG="ZH-CN">指令改写？</font></P></BODY>
+</HTML>

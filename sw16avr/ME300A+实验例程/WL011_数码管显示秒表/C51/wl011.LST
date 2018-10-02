@@ -1,0 +1,224 @@
+C51 COMPILER V7.20   WL011                                                                 03/29/2005 15:58:35 PAGE 1   
+
+
+C51 COMPILER V7.20, COMPILATION OF MODULE WL011
+OBJECT MODULE PLACED IN wl011.OBJ
+COMPILER INVOKED BY: C:\Keil\C51\BIN\C51.EXE wl011.C BROWSE DEBUG OBJECTEXTEND
+
+line level    source
+
+   1          /*******************************************************************************
+   2          *  标题:  伟纳电子ME300B单片机开发系统演示程序 - 数码管显示秒表                *
+   3          *  文件:  wl011.C                                                              *
+   4          *  日期:  2004-1-5                                                             *
+   5          *  版本:  1.0                                                                  *
+   6          *  作者:  伟纳电子 - Freeman                                                   *
+   7          *  邮箱:  freeman@willar.com                                                   *
+   8          *  网站： http://www.willar.com                                                *
+   9          ********************************************************************************
+  10          *  描述:                                                                       *
+  11          *                 数码管显示秒表, 分辨率0.01s                                  *
+  12          *                 K1---控制按钮                                                *
+  13          *                       第一次按下时, 启动开始计时                             *
+  14          *                       第二次按下时, 停止                                     *
+  15          *                       第三次按下时, 归零                                     *
+  16          *                                                                              *
+  17          *    秒单位,寄存器与数码管对应关系:                                            *
+  18          *                                                                              *
+  19          * --- 秒单位 ---------- 数码管端口 ---- 缓冲区 --------- 计时BCD码值寄存器     *
+  20          *     十万位               P20        dis_buf[7]          sec_bcd[7]           *
+  21          *     万位                 P21        dis_buf[6]          sec_bcd[6]           *
+  22          *     千位                 P22        dis_buf[5]          sec_bcd[5]           *
+  23          *     百位                 P23        dis_buf[4]          sec_bcd[4]           *
+  24          *     十位                 P24        dis_buf[3]          sec_bcd[3]           *
+  25          *     个位(1.s)            P25        dis_buf[2]          sec_bcd[2]           *
+  26          *     十分位(0.1s)         P26        dis_buf[1]          sec_bcd[1]           *
+  27          *     百分位(0.01s)        P27        dis_buf[0]          sec_bcd[0]           *
+  28          *                                                                              *
+  29          ********************************************************************************
+  30          * 【版权】 Copyright(C)伟纳电子 www.willar.com  All Rights Reserved            *
+  31          * 【声明】 此程序仅用于学习与参考，引用请注明版权和作者信息！                  *
+  32          *******************************************************************************/
+  33          
+  34          #include <reg51.h>
+  35          #include <intrins.h>
+  36          
+  37          unsigned char data dis_digit;
+  38          unsigned char key_s, key_v;
+  39          
+  40          unsigned char code dis_code[11]={0xc0,0xf9,0xa4,0xb0,   // 0, 1, 2, 3
+  41                                          0x99,0x92,0x82,0xf8,0x80,0x90, 0xff};// 4, 5, 6, 7, 8, 9, off 
+  42          unsigned char dis_buf[8];               // 显示缓冲区
+  43          unsigned char sec_bcd[8];               // 秒计数值, BCD码
+  44          unsigned char dis_index;                // 
+  45          unsigned char key_times;                // K1 按下次数                          //
+  46          
+  47          void clr_time();        
+  48          void update_disbuf();
+  49          bit     scan_key();
+  50          void proc_key();
+  51          void delayms(unsigned char ms);
+  52          
+  53          sbit    K1 = P1^4;
+  54          
+  55          
+C51 COMPILER V7.20   WL011                                                                 03/29/2005 15:58:35 PAGE 2   
+
+  56          void main(void)
+  57          {
+  58   1              P0 = 0xff;
+  59   1              P2 = 0xff;
+  60   1              TMOD = 0x11;            // 定时器0, 1工作模式1, 16位定时方式
+  61   1              TH1 = 0xdc;
+  62   1              TL1 = 0;
+  63   1      
+  64   1              TH0 = 0xFC;
+  65   1              TL0 = 0x17;
+  66   1              
+  67   1              clr_time();                     // 
+  68   1                                                 
+  69   1              dis_digit = 0x7f;               // 初始显示P20口数码管
+  70   1              dis_index = 0;                  // 
+  71   1              
+  72   1              key_times = 0;
+  73   1              key_v = 0x01;
+  74   1              
+  75   1              IE = 0x8a;                              // 使能timer0, timer1中断
+  76   1              
+  77   1              TR0 = 1;
+  78   1              TR1 = 0;
+  79   1              while(1)
+  80   1              {
+  81   2                      if(scan_key())
+  82   2                      {
+  83   3                              delayms(10);
+  84   3                              if(scan_key())
+  85   3                              {
+  86   4                                      key_v = key_s;
+  87   4                                      proc_key();
+  88   4                              }
+  89   3                      }
+  90   2                      
+  91   2              }
+  92   1      }
+  93          
+  94          void clr_time()
+  95          {
+  96   1              sec_bcd[0] = 0x0;
+  97   1              sec_bcd[1] = 0x0;
+  98   1              sec_bcd[2] = 0x0;
+  99   1              sec_bcd[3] = 0x0;
+ 100   1              sec_bcd[4] = 0x0;
+ 101   1              sec_bcd[5] = 0x0;
+ 102   1              sec_bcd[6] = 0x0;
+ 103   1              sec_bcd[7] = 0x0;   
+ 104   1              
+ 105   1              update_disbuf();
+ 106   1              
+ 107   1      }
+ 108          
+ 109          bit scan_key()
+ 110          {
+ 111   1              key_s = 0x00;
+ 112   1              key_s |= K1;
+ 113   1              return(key_s ^ key_v);  
+ 114   1      }
+ 115          
+ 116          void proc_key()
+ 117          {
+C51 COMPILER V7.20   WL011                                                                 03/29/2005 15:58:35 PAGE 3   
+
+ 118   1              if((key_v & 0x01) == 0)
+ 119   1              {
+ 120   2                      key_times++;
+ 121   2                      if(key_times == 1)
+ 122   2                      {
+ 123   3                              TR1 = 1;
+ 124   3                      }
+ 125   2                      else if(key_times == 2)
+ 126   2                      {       
+ 127   3                              TR1 = 0;
+ 128   3                      }
+ 129   2                      else
+ 130   2                      {
+ 131   3                              clr_time();
+ 132   3                              key_times = 0;
+ 133   3                      }
+ 134   2                      
+ 135   2              }
+ 136   1      }
+ 137          
+ 138          void timer0() interrupt 1
+ 139          // 定时器0中断服务程序, 用于数码管的动态扫描
+ 140          // dis_index --- 显示索引, 用于标识当前显示的数码管和缓冲区的偏移量
+ 141          // dis_digit --- 位选通值, 传送到P2口用于选通当前数码管的数值, 如等于0xfe时,
+ 142          //                              选通P2.0口数码管
+ 143          // dis_buf   --- 显于缓冲区基地址       
+ 144          {
+ 145   1              TH0 = 0xFC;
+ 146   1              TL0 = 0x17;
+ 147   1              
+ 148   1              P2 = 0xff;                                                      // 先关闭所有数码管
+ 149   1              P0 = dis_buf[dis_index];                        // 显示代码传送到P0口
+ 150   1              P2 = dis_digit;                                         // 
+ 151   1      
+ 152   1              dis_digit = _cror_(dis_digit,1);        // 位选通值右移(P20<-P27), 下次中断时选通下一位数码管
+ 153   1              dis_index++;                                            // 
+ 154   1                                              
+ 155   1              dis_index &= 0x07;                      // 8个数码管全部扫描完一遍之后，再回到第一个开始下一次扫描
+ 156   1      }
+ 157          
+ 158          void timer1() interrupt 3
+ 159          //
+ 160          {       
+ 161   1              unsigned char i;
+ 162   1              TH1 |= 0xdc;
+ 163   1              for(i = 0; i < 8; i++)
+ 164   1              {
+ 165   2                      sec_bcd[i]++;                   // 低位加1
+ 166   2                      if(sec_bcd[i] < 10)             // 如果低位满10则向高位进1
+ 167   2                              break;                  // 低位未满10
+ 168   2                      sec_bcd[i] = 0;                 // 低位满10清0
+ 169   2              }
+ 170   1              update_disbuf();                        // 更新显示缓冲区
+ 171   1      }
+ 172          
+ 173          void update_disbuf()
+ 174          // 更新显示缓冲区
+ 175          {
+ 176   1              dis_buf[0] = dis_code[sec_bcd[0]];
+ 177   1              dis_buf[1] = dis_code[sec_bcd[1]];
+ 178   1              dis_buf[2] = dis_code[sec_bcd[2]] & 0x7f;       // 加上小数点
+ 179   1              dis_buf[3] = dis_code[sec_bcd[3]];
+C51 COMPILER V7.20   WL011                                                                 03/29/2005 15:58:35 PAGE 4   
+
+ 180   1              dis_buf[4] = dis_code[sec_bcd[4]];
+ 181   1              dis_buf[5] = dis_code[sec_bcd[5]];
+ 182   1              dis_buf[6] = dis_code[sec_bcd[6]];
+ 183   1              dis_buf[7] = dis_code[sec_bcd[7]];
+ 184   1      }
+ 185          
+ 186          void delayms(unsigned char ms)  
+ 187          // 延时子程序
+ 188          {                                               
+ 189   1              unsigned char i;
+ 190   1              while(ms--)
+ 191   1              {
+ 192   2                      for(i = 0; i < 120; i++);
+ 193   2              }
+ 194   1      }
+ 195          
+
+
+MODULE INFORMATION:   STATIC OVERLAYABLE
+   CODE SIZE        =    337    ----
+   CONSTANT SIZE    =     11    ----
+   XDATA SIZE       =   ----    ----
+   PDATA SIZE       =   ----    ----
+   DATA SIZE        =     21    ----
+   IDATA SIZE       =   ----    ----
+   BIT SIZE         =   ----    ----
+END OF MODULE INFORMATION.
+
+
+C51 COMPILATION COMPLETE.  0 WARNING(S),  0 ERROR(S)

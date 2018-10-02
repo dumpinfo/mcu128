@@ -1,0 +1,33 @@
+<html>
+<body>
+<pre>
+<h1>礦ision2 Build Log</h1>
+<h2>Project:</h2>
+D:\产品光盘\ME300\ME300B实验例程\WL030_1602LCD移动显示程序\C51\WL030.uv2
+Project File Date:  02/05/2006
+
+<h2>Output:</h2>
+Build target 'Target 1'
+compiling 1602LCD_YD.c...
+1602LCD_YD.C(236): error C141: syntax error near '/'
+1602LCD_YD.C(236): error C100: unprintable character 0xCF skipped
+1602LCD_YD.C(236): error C100: unprintable character 0xF2 skipped
+1602LCD_YD.C(236): error C100: unprintable character 0xD7 skipped
+1602LCD_YD.C(236): error C100: unprintable character 0xF3 skipped
+1602LCD_YD.C(236): error C100: unprintable character 0xD2 skipped
+1602LCD_YD.C(236): error C100: unprintable character 0xC6 skipped
+1602LCD_YD.C(236): error C100: unprintable character 0xB6 skipped
+1602LCD_YD.C(236): error C100: unprintable character 0xAF skipped
+1602LCD_YD.C(236): error C100: unprintable character 0xB8 skipped
+1602LCD_YD.C(236): error C100: unprintable character 0xF1 skipped
+1602LCD_YD.C(237): error C141: syntax error near '{'
+Target not created
+Build target 'Target 1'
+compiling 1602LCD_YD.c...
+linking...
+Program Size: data=9.1 xdata=0 code=365
+creating hex file from "WL030"...
+"WL030" - 0 Error(s), 0 Warning(s).
+</pre>
+</body>
+</html>

@@ -1,0 +1,71 @@
+C51 COMPILER V7.20   WL001                                                                 03/29/2005 15:39:16 PAGE 1   
+
+
+C51 COMPILER V7.20, COMPILATION OF MODULE WL001
+OBJECT MODULE PLACED IN wl001.OBJ
+COMPILER INVOKED BY: C:\Keil\C51\BIN\C51.EXE wl001.c BROWSE DEBUG OBJECTEXTEND
+
+line level    source
+
+   1          /*******************************************************************************
+   2          *  标题:  伟纳电子ME300B单片机开发系统演示程序 -  LED流水灯                    *
+   3          *  文件:  wl001.C                                                              *
+   4          *  日期:  2004-1-5                                                             *
+   5          *  版本:  1.0                                                                  *
+   6          *  作者:  伟纳电子 - Freeman                                                   *
+   7          *  邮箱:  freeman@willar.com                                                   *
+   8          *  网站： http://www.willar.com                                                *
+   9          ********************************************************************************
+  10          *  描述:                                                                       *
+  11          *         LED流水灯                                                            *
+  12          *                                                                              *
+  13          *                                                                              *
+  14          *                                                                              *
+  15          ********************************************************************************
+  16          * 【版权】 Copyright(C)伟纳电子 www.willar.com  All Rights Reserved            *
+  17          * 【声明】 此程序仅用于学习与参考，引用请注明版权和作者信息！                  *
+  18          *******************************************************************************/
+  19          
+  20          #include<reg51.h>
+  21          #include <intrins.h>
+  22          
+  23          
+  24          void delayms(unsigned char ms)  
+  25          // 延时子程序
+  26          {                                               
+  27   1              unsigned char i;
+  28   1              while(ms--)
+  29   1              {
+  30   2                      for(i = 0; i < 120; i++);
+  31   2              }
+  32   1      }
+  33          
+  34          main()
+  35          {
+  36   1              unsigned char LED;
+  37   1              LED = 0xfe;
+  38   1              P0 = LED;
+  39   1              
+  40   1              while(1)
+  41   1              {
+  42   2                      delayms(250);                   
+  43   2                      LED = _crol_(LED,1);            //循环右移1位，点亮下一个LED
+  44   2                      P0 = LED;
+  45   2              }
+  46   1      }
+
+
+MODULE INFORMATION:   STATIC OVERLAYABLE
+   CODE SIZE        =     43    ----
+   CONSTANT SIZE    =   ----    ----
+   XDATA SIZE       =   ----    ----
+   PDATA SIZE       =   ----    ----
+   DATA SIZE        =   ----    ----
+   IDATA SIZE       =   ----    ----
+C51 COMPILER V7.20   WL001                                                                 03/29/2005 15:39:16 PAGE 2   
+
+   BIT SIZE         =   ----    ----
+END OF MODULE INFORMATION.
+
+
+C51 COMPILATION COMPLETE.  0 WARNING(S),  0 ERROR(S)

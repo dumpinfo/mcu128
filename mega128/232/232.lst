@@ -1,0 +1,332 @@
+__text_start:
+__start:
+    0051 EFCF      LDI	R28,0xFF
+    0052 E1D0      LDI	R29,0x10
+    0053 BFCD      OUT	0x3D,R28
+    0054 BFDE      OUT	0x3E,R29
+    0055 51C0      SUBI	R28,0x10
+    0056 40D0      SBCI	R29,0
+    0057 EA0A      LDI	R16,0xAA
+    0058 8308      STD	Y+0,R16
+    0059 2400      CLR	R0
+    005A E0E0      LDI	R30,0
+    005B E0F1      LDI	R31,1
+    005C E011      LDI	R17,1
+    005D 30E0      CPI	R30,0
+    005E 07F1      CPC	R31,R17
+    005F F011      BEQ	0x0062
+    0060 9201      ST	R0,Z+
+    0061 CFFB      RJMP	0x005D
+    0062 8300      STD	Z+0,R16
+    0063 EAE1      LDI	R30,0xA1
+    0064 E0F0      LDI	R31,0
+    0065 E0A0      LDI	R26,0
+    0066 E0B1      LDI	R27,1
+    0067 E010      LDI	R17,0
+    0068 3AE1      CPI	R30,0xA1
+    0069 07F1      CPC	R31,R17
+    006A F021      BEQ	0x006F
+    006B 95C8      LPM
+    006C 9631      ADIW	R30,1
+    006D 920D      ST	R0,X+
+    006E CFF9      RJMP	0x0068
+    006F 940E00AE  CALL	_main
+_exit:
+    0071 CFFF      RJMP	_exit
+_USART0_Init:
+  tmp                  --> R10
+  baud                 --> R10
+    0072 940E0149  CALL	push_gset3
+    0074 0158      MOVW	R10,R16
+FILE: F:\工程文件\avr\例程\mega128\232\test.c
+(0001) #include <iom128v.h>
+(0002) #include <macros.h>
+(0003) 
+(0004) #define F_CPU 2000000
+(0005) const unsigned char buffer[]="http://www.avrvi.com";
+(0006) 
+(0007) void USART0_Init( unsigned int baud )
+(0008) {
+(0009) unsigned int tmp;
+(0010) /* 设置波特率*/
+(0011) tmp= F_CPU/baud/16-1;
+    0075 0115      MOVW	R2,R10
+    0076 2444      CLR	R4
+    0077 2455      CLR	R5
+    0078 E840      LDI	R20,0x80
+    0079 E854      LDI	R21,0x84
+    007A E16E      LDI	R22,0x1E
+    007B E070      LDI	R23,0
+    007C 925A      ST	R5,-Y
+    007D 924A      ST	R4,-Y
+    007E 923A      ST	R3,-Y
+    007F 922A      ST	R2,-Y
+    0080 018A      MOVW	R16,R20
+    0081 019B      MOVW	R18,R22
+    0082 940E00C0  CALL	div32s
+    0084 E140      LDI	R20,0x10
+    0085 E050      LDI	R21,0
+    0086 E060      LDI	R22,0
+    0087 E070      LDI	R23,0
+    0088 937A      ST	R23,-Y
+    0089 936A      ST	R22,-Y
+    008A 935A      ST	R21,-Y
+    008B 934A      ST	R20,-Y
+    008C 940E00C0  CALL	div32s
+    008E 0118      MOVW	R2,R16
+    008F 0129      MOVW	R4,R18
+    0090 E041      LDI	R20,1
+    0091 E050      LDI	R21,0
+    0092 E060      LDI	R22,0
+    0093 E070      LDI	R23,0
+    0094 1A24      SUB	R2,R20
+    0095 0A35      SBC	R3,R21
+    0096 0A46      SBC	R4,R22
+    0097 0A57      SBC	R5,R23
+    0098 0151      MOVW	R10,R2
+(0012) UBRR0H = (unsigned char)(tmp>>8);
+    0099 2C23      MOV	R2,R3
+    009A 2433      CLR	R3
+    009B 92200090  STS	0x90,R2
+(0013) UBRR0L = (unsigned char)tmp;
+    009D B8A9      OUT	0x09,R10
+(0014) /* 接收器与发送器使能*/
+(0015) UCSR0B = (1<<RXEN0)|(1<<TXEN0);
+    009E E188      LDI	R24,0x18
+    009F B98A      OUT	0x0A,R24
+(0016) /* 设置帧格式: 8 个数据位, 1个停止位*/
+(0017) UCSR0C = (1<<UCSZ00)|(1<<UCSZ01);
+    00A0 E086      LDI	R24,6
+    00A1 93800095  STS	0x95,R24
+(0018) }
+    00A3 940E012B  CALL	pop_gset3
+    00A5 9508      RET
+(0019) 
+(0020) // 数据发送【发送5 到8 位数据位的帧】
+(0021) void USART0_Transmit( unsigned char data )
+(0022) {
+(0023) /* 等待发送缓冲器为空 */
+(0024) while ( !( UCSR0A & (1<<UDRE0)) )
+_USART0_Transmit:
+  data                 --> R16
+    00A6 9B5D      SBIS	0x0B,5
+    00A7 CFFE      RJMP	_USART0_Transmit
+(0025) ;
+(0026) /* 将数据放入缓冲器，发送数据 */
+(0027) UDR0 = data;
+    00A8 B90C      OUT	0x0C,R16
+(0028) } 
+    00A9 9508      RET
+(0029) 
+(0030) 
+(0031) // 数据接收【以5 到8 个数据位的方式接收数 据帧】
+(0032) unsigned char USART0_Receive( void )
+(0033) {
+(0034) /* 等待接收数据*/
+(0035) while ( !(UCSR0A & (1<<RXC0)) )
+_USART0_Receive:
+    00AA 9B5F      SBIS	0x0B,7
+    00AB CFFE      RJMP	_USART0_Receive
+(0036) ;
+(0037) /* 从缓冲器中获取并返回数据*/
+(0038) return UDR0;
+    00AC B10C      IN	R16,0x0C
+    00AD 9508      RET
+(0039) } 
+(0040) 
+(0041) 
+(0042) 
+(0043) 
+(0044) void main(void)
+(0045) {
+(0046) unsigned char n=0,tmp=0;
+_main:
+  n                    --> R20
+  tmp                  --> R20
+    00AE 2744      CLR	R20
+(0047) 
+(0048) USART0_Init(9600); //波特率9600 初始化串口
+    00AF E800      LDI	R16,0x80
+    00B0 E215      LDI	R17,0x25
+    00B1 DFC0      RCALL	_USART0_Init
+    00B2 C005      RJMP	0x00B8
+(0049) // uart0_init();
+(0050) 
+(0051) while(1)
+(0052) {
+(0053) if(UCSR0A&(1<<RXC0)) //如果接收缓存区有数据
+    00B3 9B5F      SBIS	0x0B,7
+    00B4 C003      RJMP	0x00B8
+(0054) {
+(0055) tmp=USART0_Receive(); //接收数据
+    00B5 DFF4      RCALL	_USART0_Receive
+    00B6 2F40      MOV	R20,R16
+(0056) USART0_Transmit(tmp); //发送数据
+    00B7 DFEE      RCALL	_USART0_Transmit
+    00B8 CFFA      RJMP	0x00B3
+(0057) 
+(0058) }
+(0059) }
+(0060) }
+FILE: <library>
+    00B9 9508      RET
+div32u:
+    00BA 94E8      BCLR	6
+    00BB C001      RJMP	0x00BD
+mod32u:
+    00BC 9468      BSET	6
+    00BD D02F      RCALL	long_div_prolog
+    00BE 24CC      CLR	R12
+    00BF C008      RJMP	0x00C8
+div32s:
+    00C0 94E8      BCLR	6
+    00C1 C001      RJMP	0x00C3
+mod32s:
+    00C2 9468      BSET	6
+    00C3 D029      RCALL	long_div_prolog
+    00C4 FD37      SBRC	R19,7
+    00C5 D053      RCALL	neg_R16_R19
+    00C6 FDB7      SBRC	R27,7
+    00C7 D05A      RCALL	neg_R24_R27
+    00C8 2477      CLR	R7
+    00C9 2488      CLR	R8
+    00CA 2499      CLR	R9
+    00CB 24AA      CLR	R10
+    00CC 24BB      CLR	R11
+    00CD D041      RCALL	tst_R16_R19
+    00CE F0C1      BEQ	0x00E7
+    00CF D044      RCALL	tst_R24_R27
+    00D0 F0B1      BEQ	0x00E7
+    00D1 E2E8      LDI	R30,0x28
+    00D2 0F00      LSL	R16
+    00D3 1F11      ROL	R17
+    00D4 1F22      ROL	R18
+    00D5 1F33      ROL	R19
+    00D6 1C77      ROL	R7
+    00D7 1C88      ROL	R8
+    00D8 1C99      ROL	R9
+    00D9 1CAA      ROL	R10
+    00DA 1CBB      ROL	R11
+    00DB 1688      CP	R8,R24
+    00DC 0699      CPC	R9,R25
+    00DD 06AA      CPC	R10,R26
+    00DE 06BB      CPC	R11,R27
+    00DF F028      BCS	0x00E5
+    00E0 1A88      SUB	R8,R24
+    00E1 0A99      SBC	R9,R25
+    00E2 0AAA      SBC	R10,R26
+    00E3 0ABB      SBC	R11,R27
+    00E4 9503      INC	R16
+    00E5 95EA      DEC	R30
+    00E6 F759      BNE	0x00D2
+    00E7 F426      BRTC	0x00EC
+    00E8 2D08      MOV	R16,R8
+    00E9 2D19      MOV	R17,R9
+    00EA 2D2A      MOV	R18,R10
+    00EB 2D3B      MOV	R19,R11
+    00EC C013      RJMP	long_div_epilog
+long_div_prolog:
+    00ED 927A      ST	R7,-Y
+    00EE 928A      ST	R8,-Y
+    00EF 929A      ST	R9,-Y
+    00F0 92AA      ST	R10,-Y
+    00F1 92BA      ST	R11,-Y
+    00F2 92CA      ST	R12,-Y
+    00F3 93EA      ST	R30,-Y
+    00F4 938A      ST	R24,-Y
+    00F5 939A      ST	R25,-Y
+    00F6 93AA      ST	R26,-Y
+    00F7 93BA      ST	R27,-Y
+    00F8 858B      LDD	R24,Y+11
+    00F9 859C      LDD	R25,Y+12
+    00FA 85AD      LDD	R26,Y+13
+    00FB 85BE      LDD	R27,Y+14
+    00FC 2EC3      MOV	R12,R19
+    00FD F00E      BRTS	0x00FF
+    00FE 26CB      EOR	R12,R27
+    00FF 9508      RET
+long_div_epilog:
+    0100 FCC7      SBRC	R12,7
+    0101 D017      RCALL	neg_R16_R19
+    0102 91B9      LD	R27,Y+
+    0103 91A9      LD	R26,Y+
+    0104 9199      LD	R25,Y+
+    0105 9189      LD	R24,Y+
+    0106 91E9      LD	R30,Y+
+    0107 90C9      LD	R12,Y+
+    0108 90B9      LD	R11,Y+
+    0109 90A9      LD	R10,Y+
+    010A 9099      LD	R9,Y+
+    010B 9089      LD	R8,Y+
+    010C 9079      LD	R7,Y+
+    010D 9624      ADIW	R28,4
+    010E 9508      RET
+tst_R16_R19:
+    010F 2FE0      MOV	R30,R16
+    0110 2BE1      OR	R30,R17
+    0111 2BE2      OR	R30,R18
+    0112 2BE3      OR	R30,R19
+    0113 9508      RET
+tst_R24_R27:
+    0114 2FE8      MOV	R30,R24
+    0115 2BE9      OR	R30,R25
+    0116 2BEA      OR	R30,R26
+    0117 2BEB      OR	R30,R27
+    0118 9508      RET
+neg_R16_R19:
+    0119 9500      COM	R16
+    011A 9510      COM	R17
+    011B 9520      COM	R18
+    011C 9530      COM	R19
+    011D 5F0F      SUBI	R16,0xFF
+    011E 4F1F      SBCI	R17,0xFF
+    011F 4F2F      SBCI	R18,0xFF
+    0120 4F3F      SBCI	R19,0xFF
+    0121 9508      RET
+neg_R24_R27:
+    0122 9580      COM	R24
+    0123 9590      COM	R25
+    0124 95A0      COM	R26
+    0125 95B0      COM	R27
+    0126 5F8F      SUBI	R24,0xFF
+    0127 4F9F      SBCI	R25,0xFF
+    0128 4FAF      SBCI	R26,0xFF
+    0129 4FBF      SBCI	R27,0xFF
+    012A 9508      RET
+pop_gset3:
+    012B E0E4      LDI	R30,4
+    012C 940C0132  JMP	pop
+push_gset1:
+    012E 935A      ST	R21,-Y
+    012F 934A      ST	R20,-Y
+    0130 9508      RET
+pop_gset1:
+    0131 E0E1      LDI	R30,1
+pop:
+    0132 9149      LD	R20,Y+
+    0133 9159      LD	R21,Y+
+    0134 FDE0      SBRC	R30,0
+    0135 9508      RET
+    0136 9169      LD	R22,Y+
+    0137 9179      LD	R23,Y+
+    0138 FDE1      SBRC	R30,1
+    0139 9508      RET
+    013A 90A9      LD	R10,Y+
+    013B 90B9      LD	R11,Y+
+    013C FDE2      SBRC	R30,2
+    013D 9508      RET
+    013E 90C9      LD	R12,Y+
+    013F 90D9      LD	R13,Y+
+    0140 FDE3      SBRC	R30,3
+    0141 9508      RET
+    0142 90E9      LD	R14,Y+
+    0143 90F9      LD	R15,Y+
+    0144 9508      RET
+push_gset2:
+    0145 937A      ST	R23,-Y
+    0146 936A      ST	R22,-Y
+    0147 940C012E  JMP	push_gset1
+push_gset3:
+    0149 92BA      ST	R11,-Y
+    014A 92AA      ST	R10,-Y
+    014B 940C0145  JMP	push_gset2

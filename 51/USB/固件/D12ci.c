@@ -1,0 +1,237 @@
+#include <reg51.h>                /* special function register declarations   */
+#include "mainloop.h"
+#include "d12ci.h" 
+#include "absacc.h"
+#include "epphal.h"
+
+#define D12_DATA 	0x7FF0	 //偶数是数据地址
+#define D12_COMMAND 0x7FF1	 //奇数是命令地址
+
+extern EPPFLAGS bEPPflags;
+
+//设置地址使能
+void D12_SetAddressEnable(unsigned char bAddress, unsigned char bEnable)
+{
+	if(bEPPflags.bits.in_isr == 0)
+		DISABLE;
+
+	outportb(D12_COMMAND, 0xD0);//输出指令
+	if(bEnable)
+		bAddress |= 0x80;
+	outportb(D12_DATA, bAddress);//设置地址
+
+	if(bEPPflags.bits.in_isr == 0)
+		ENABLE;
+}
+
+//设置端点使能
+void D12_SetEndpointEnable(unsigned char bEnable)
+{
+	if(bEPPflags.bits.in_isr == 0)
+		DISABLE;
+
+	outportb(D12_COMMAND, 0xD8);//输出指令
+	if(bEnable)
+		outportb(D12_DATA, 1);//设置端点允许
+	else
+		outportb(D12_DATA, 0);//设置端点禁止
+
+	if(bEPPflags.bits.in_isr == 0)
+		ENABLE;
+}
+
+//模式设置
+void D12_SetMode(unsigned char bConfig, unsigned char bClkDiv)
+{
+	if(bEPPflags.bits.in_isr == 0)
+		DISABLE;
+
+	outportb(D12_COMMAND, 0xF3);//设置模式
+	outportb(D12_DATA, bConfig);
+	outportb(D12_DATA, bClkDiv);
+
+	if(bEPPflags.bits.in_isr == 0)
+		ENABLE;
+}
+
+//DMA工作方式设置
+void D12_SetDMA(unsigned char bMode)
+{
+	if(bEPPflags.bits.in_isr == 0)
+		DISABLE;
+
+	outportb(D12_COMMAND, 0xFB);//设置DMA工作方式
+	outportb(D12_DATA, bMode);
+
+	if(bEPPflags.bits.in_isr == 0)
+		ENABLE;
+}
+
+//读取中断寄存器
+unsigned short D12_ReadInterruptRegister(void)
+{
+	unsigned char b1;
+	unsigned int j;
+
+	outportb(D12_COMMAND, 0xF4);//读取中断寄存器
+	b1 = inportb(D12_DATA);
+	j = inportb(D12_DATA);
+
+	j <<= 8;
+	j += b1;
+
+	return j;
+}
+
+//端点选择
+unsigned char D12_SelectEndpoint(unsigned char bEndp)
+{
+	unsigned char c;
+
+	if(bEPPflags.bits.in_isr == 0)
+		DISABLE;
+
+	outportb(D12_COMMAND, bEndp);//端点选择
+	c = inportb(D12_DATA);
+
+	if(bEPPflags.bits.in_isr == 0)
+		ENABLE;
+
+	return c;
+}
+
+//读取最后传输状态
+unsigned char D12_ReadLastTransactionStatus(unsigned char bEndp)
+{
+	outportb(D12_COMMAND, 0x40 + bEndp);//返回最后传输状态
+	return inportb(D12_DATA);
+}
+
+//读取端点状态
+unsigned char D12_ReadEndpointStatus(unsigned char bEndp)
+{
+	unsigned char c;
+
+	if(bEPPflags.bits.in_isr == 0)
+		DISABLE;
+
+	outportb(D12_COMMAND, 0x80 + bEndp);//读取端点状态
+	c = inportb(D12_DATA);
+
+	if(bEPPflags.bits.in_isr == 0)
+		ENABLE;
+
+	return c;
+}
+
+//设置端点状态
+void D12_SetEndpointStatus(unsigned char bEndp, unsigned char bStalled)
+{
+	if(bEPPflags.bits.in_isr == 0)
+		DISABLE;
+
+	outportb(D12_COMMAND, 0x40 + bEndp);//设置端点状态
+	outportb(D12_DATA, bStalled);
+
+	if(bEPPflags.bits.in_isr == 0)
+		ENABLE;
+}
+
+unsigned short D12_ReadChipID(void)
+{
+	unsigned short i,j;
+
+	if(bEPPflags.bits.in_isr == 0)
+		DISABLE;
+
+	outportb(D12_COMMAND, 0xFD);
+	i=inportb(D12_DATA);
+	j=inportb(D12_DATA);
+	i += (j<<8);
+
+	if(bEPPflags.bits.in_isr == 0)
+		ENABLE;
+
+	return i;
+}
+
+//读取端点数据
+unsigned char D12_ReadEndpoint(unsigned char endp, unsigned char len, unsigned char * buf)
+{
+	unsigned char i, j;
+
+	if(bEPPflags.bits.in_isr == 0)
+		DISABLE;
+
+	outportb(D12_COMMAND, endp);
+	if((inportb(D12_DATA) & D12_FULLEMPTY) == 0) {
+		if(bEPPflags.bits.in_isr == 0)
+			ENABLE;
+		return 0;
+	}
+
+	outportb(D12_COMMAND, 0xF0);
+	j = inportb(D12_DATA);
+	j = inportb(D12_DATA);
+
+	if(j > len)
+		j = len;
+
+	for(i=0; i<j; i++)
+		*(buf+i) = inportb(D12_DATA);
+
+	outportb(D12_COMMAND, 0xF2);
+
+	if(bEPPflags.bits.in_isr == 0)
+		ENABLE;
+
+	return j;
+}
+
+//写端点
+unsigned char D12_WriteEndpoint(unsigned char endp, unsigned char len, unsigned char * buf)
+{
+	unsigned char i;
+
+	if(bEPPflags.bits.in_isr == 0)
+		DISABLE;
+
+	outportb(D12_COMMAND, endp);
+	i = inportb(D12_DATA);
+
+	outportb(D12_COMMAND, 0xF0);
+	outportb(D12_DATA, 0);
+	outportb(D12_DATA, len);
+
+	for(i=0; i<len; i++)
+		outportb(D12_DATA, *(buf+i));
+
+	outportb(D12_COMMAND, 0xFA);
+
+	if(bEPPflags.bits.in_isr == 0)
+		ENABLE;
+
+	return len;
+}
+
+//设置端点应答
+void D12_AcknowledgeEndpoint(unsigned char endp)
+{
+	outportb(D12_COMMAND, endp);
+	outportb(D12_COMMAND, 0xF1);
+	if(endp == 0)
+		outportb(D12_COMMAND, 0xF2);
+}
+
+//输出数据
+void outportb(unsigned int Addr, unsigned char Data)
+{
+	*((unsigned char xdata *) Addr) = Data;
+}
+
+//输入数据
+unsigned char inportb(unsigned int Addr)
+{
+	return *((unsigned char xdata *) Addr);
+}
+

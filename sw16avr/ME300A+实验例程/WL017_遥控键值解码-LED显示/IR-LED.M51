@@ -1,0 +1,168 @@
+BL51 BANKED LINKER/LOCATER V5.11                                                        03/29/2005  16:30:18  PAGE 1
+
+
+BL51 BANKED LINKER/LOCATER V5.11, INVOKED BY:
+C:\KEIL\C51\BIN\BL51.EXE IR-LED.obj TO IR-LED RAMSIZE (256)
+
+
+INPUT MODULES INCLUDED:
+  IR-LED.obj (IR_LED)
+
+
+LINK MAP OF MODULE:  IR-LED (IR_LED)
+
+
+            TYPE    BASE      LENGTH    RELOCATION   SEGMENT NAME
+            -----------------------------------------------------
+
+            * * * * * * *   D A T A   M E M O R Y   * * * * * * *
+            REG     0000H     0008H     ABSOLUTE     "REG BANK 0"
+
+            * * * * * * *   C O D E   M E M O R Y   * * * * * * *
+            CODE    0000H     00ADH     ABSOLUTE     
+
+
+
+SYMBOL TABLE OF MODULE:  IR-LED (IR_LED)
+
+  VALUE           TYPE          NAME
+  ----------------------------------
+
+  -------         MODULE        IR_LED
+  B:00B0H.7       SYMBOL        BEEP
+  C:0079H         SYMBOL        BEEP_BL
+  C:007BH         SYMBOL        BL1
+  C:008EH         SYMBOL        D1
+  C:0097H         SYMBOL        DEL
+  C:0099H         SYMBOL        DEL0
+  C:009BH         SYMBOL        DEL1
+  C:009DH         SYMBOL        DEL2
+  C:008CH         SYMBOL        DELAY
+  C:00A4H         SYMBOL        DELAY1
+  C:0086H         SYMBOL        DEX1
+  C:0088H         SYMBOL        DEX2
+  C:00A6H         SYMBOL        DL2
+  C:002AH         SYMBOL        I1
+  C:002FH         SYMBOL        I2
+  C:0031H         SYMBOL        I20
+  C:0038H         SYMBOL        I21
+  C:003FH         SYMBOL        I3
+  C:0048H         SYMBOL        I4
+  C:004FH         SYMBOL        I5
+  N:0020H         SYMBOL        IRCOM
+  B:00B0H.2       SYMBOL        IRIN
+  C:0028H         SYMBOL        IR_IN
+  C:006EH         SYMBOL        IR_SHOW
+  C:0078H         SYMBOL        IR_SHOW1
+  C:0051H         SYMBOL        L1
+  C:0041H         SYMBOL        LL
+  C:0009H         SYMBOL        LOOP0
+  C:0019H         SYMBOL        LOOP1
+  C:0021H         SYMBOL        LOOP2
+BL51 BANKED LINKER/LOCATER V5.11                                                      03/29/2005  16:30:18  PAGE 2
+
+
+  C:0026H         SYMBOL        LOOP3
+  C:0002H         SYMBOL        MAIN
+  C:0069H         SYMBOL        N1
+  D:0080H         SYMBOL        P0
+  D:0090H         SYMBOL        P1
+  D:00B0H         SYMBOL        P3
+  B:0090H.3       SYMBOL        RELAY
+  D:0081H         SYMBOL        SP
+  C:0000H         LINE#         29
+  C:0002H         LINE#         32
+  C:0005H         LINE#         33
+  C:0007H         LINE#         34
+  C:0009H         LINE#         35
+  C:000AH         LINE#         36
+  C:000BH         LINE#         37
+  C:000EH         LINE#         38
+  C:0010H         LINE#         39
+  C:0012H         LINE#         40
+  C:0014H         LINE#         41
+  C:0017H         LINE#         42
+  C:0019H         LINE#         44
+  C:001BH         LINE#         45
+  C:001CH         LINE#         46
+  C:001FH         LINE#         47
+  C:0021H         LINE#         48
+  C:0024H         LINE#         49
+  C:0026H         LINE#         51
+  C:0028H         LINE#         57
+  C:002AH         LINE#         58
+  C:002DH         LINE#         59
+  C:002FH         LINE#         60
+  C:0031H         LINE#         61
+  C:0033H         LINE#         62
+  C:0035H         LINE#         63
+  C:0038H         LINE#         64
+  C:003BH         LINE#         65
+  C:003DH         LINE#         66
+  C:003FH         LINE#         67
+  C:0041H         LINE#         68
+  C:0044H         LINE#         69
+  C:0046H         LINE#         70
+  C:0048H         LINE#         71
+  C:004BH         LINE#         72
+  C:004DH         LINE#         73
+  C:004FH         LINE#         74
+  C:0051H         LINE#         75
+  C:0053H         LINE#         76
+  C:0056H         LINE#         78
+  C:0058H         LINE#         79
+  C:0059H         LINE#         80
+  C:005AH         LINE#         82
+  C:005BH         LINE#         83
+  C:005CH         LINE#         84
+  C:005DH         LINE#         85
+  C:005EH         LINE#         86
+  C:0061H         LINE#         87
+  C:0063H         LINE#         88
+BL51 BANKED LINKER/LOCATER V5.11                                                      03/29/2005  16:30:18  PAGE 3
+
+
+  C:0064H         LINE#         89
+  C:0067H         LINE#         90
+  C:0069H         LINE#         91
+  C:006AH         LINE#         92
+  C:006DH         LINE#         93
+  C:006EH         LINE#         99
+  C:0070H         LINE#         100
+  C:0071H         LINE#         101
+  C:0074H         LINE#         102
+  C:0076H         LINE#         103
+  C:0078H         LINE#         104
+  C:0079H         LINE#         110
+  C:007BH         LINE#         111
+  C:007DH         LINE#         112
+  C:007FH         LINE#         113
+  C:0081H         LINE#         114
+  C:0083H         LINE#         115
+  C:0085H         LINE#         116
+  C:0086H         LINE#         117
+  C:0088H         LINE#         118
+  C:0089H         LINE#         119
+  C:008BH         LINE#         120
+  C:008CH         LINE#         122
+  C:008EH         LINE#         123
+  C:0090H         LINE#         124
+  C:0092H         LINE#         125
+  C:0094H         LINE#         126
+  C:0096H         LINE#         127
+  C:0097H         LINE#         131
+  C:0099H         LINE#         132
+  C:009BH         LINE#         133
+  C:009DH         LINE#         134
+  C:009FH         LINE#         135
+  C:00A1H         LINE#         136
+  C:00A3H         LINE#         137
+  C:00A4H         LINE#         140
+  C:00A6H         LINE#         141
+  C:00A8H         LINE#         142
+  C:00AAH         LINE#         143
+  C:00ACH         LINE#         144
+  -------         ENDMOD        IR_LED
+
+Program Size: data=8.0 xdata=0 code=173
+LINK/LOCATE RUN COMPLETE.  0 WARNING(S),  0 ERROR(S)

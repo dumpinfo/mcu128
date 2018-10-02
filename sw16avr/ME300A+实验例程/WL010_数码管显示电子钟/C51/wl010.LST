@@ -1,0 +1,245 @@
+C51 COMPILER V7.08   WL010                                                                 02/10/2004 20:07:51 PAGE 1   
+
+
+C51 COMPILER V7.08, COMPILATION OF MODULE WL010
+OBJECT MODULE PLACED IN wl010.OBJ
+COMPILER INVOKED BY: d:\Keil\C51\BIN\C51.EXE wl010.C ROM(SMALL) BROWSE DEBUG OBJECTEXTEND
+
+line level    source
+
+   1          /*******************************************************************************
+   2          *                                                                              *
+   3          *    File       : wl010.c                                                      *
+   4          *    Date       : 2004-1-5                                                     *
+   5          *    Version    : 1.0                                                          *
+   6          *                                                                              *
+   7          *    Author     : Freeman          freeman@willar.com                          *
+   8          *    Company    : Willar           www.willar.com                              *
+   9          *                                                                              *
+  10          ********************************************************************************
+  11          *    Descriptoon:                                                              *
+  12          *                 简易电子时钟                                                 *
+  13          *                 AN1---时调整                                                 *
+  14          *                 AN2---分调整                                                 *
+  15          *                                                                              *
+  16          *                 上电时初始化显示:  12-00-00                                  *
+  17          *                                                                              *
+  18          *           *    ****          ****    ****          ****    ****              *
+  19          *           *        *        *    *  *    *        *    *  *    *             *
+  20          *           *        *        *    *  *    *        *    *  *    *             *
+  21          *           *    ****  ****** *    *  *    * ****** *    *  *    *             *
+  22          *           *   *             *    *  *    *        *    *  *    *             *
+  23          *           *   *             *    *  *    *        *    *  *    *             *
+  24          *           *    ****          ****    ****          ****    ****              *
+  25          *                                                                              *
+  26          *                                                                              *
+  27          *******************************************************************************/
+  28          #include <reg51.h>
+  29          #include <intrins.h>
+  30          
+  31          unsigned char data dis_digit;
+  32          unsigned char key_s, key_v;
+  33          
+  34          unsigned char code dis_code[11]={0xc0,0xf9,0xa4,0xb0,   // 0, 1, 2, 3
+  35                                          0x99,0x92,0x82,0xf8,0x80,0x90, 0xff};// 4, 5, 6, 7, 8, 9, off 
+  36          unsigned char data dis_buf[8];
+  37          unsigned char data dis_index;
+  38          unsigned char hour,min,sec;
+  39          unsigned char sec100; 
+  40          
+  41          sbit    AN1 = P3^2;
+  42          sbit    AN2 = P3^3;
+  43          
+  44          bit scan_key();
+  45          void proc_key();
+  46          void inc_sec();
+  47          void inc_min();
+  48          void inc_hour();
+  49          void display();
+  50          void delayms(unsigned char ms);
+  51          
+  52          void main(void)
+  53          {
+  54   1              P0 = 0xff;
+  55   1              P2 = 0xff;
+C51 COMPILER V7.08   WL010                                                                 02/10/2004 20:07:51 PAGE 2   
+
+  56   1              TMOD = 0x11;            // 定时器0, 1工作模式1, 16位定时方式
+  57   1              TH1 = 0xdc;
+  58   1              TL1 = 0;
+  59   1      
+  60   1              TH0 = 0xFC;
+  61   1              TL0 = 0x17;
+  62   1              
+  63   1              hour = 12;
+  64   1              min = 00;
+  65   1              sec = 00;
+  66   1      
+  67   1              sec100 = 0;
+  68   1              
+  69   1              dis_buf[0] = dis_code[hour / 10];               // 时十位
+  70   1              dis_buf[1] = dis_code[hour % 10];               // 时个位
+  71   1              dis_buf[3] = dis_code[min / 10];                // 分十位
+  72   1              dis_buf[4] = dis_code[min % 10];                // 分个位
+  73   1              dis_buf[6] = dis_code[sec / 10];                // 秒十位
+  74   1              dis_buf[7] = dis_code[sec % 10];                // 秒个位
+  75   1              dis_buf[2] = 0xbf;                                              // 显示"-"
+  76   1              dis_buf[5] = 0xbf;                                              // 显示"-"
+  77   1                              
+  78   1              dis_digit = 0xfe;
+  79   1              dis_index = 0;
+  80   1              
+  81   1              TCON = 0x01;
+  82   1              IE = 0x8a;                              // 使能timer0,1 中断
+  83   1              
+  84   1              TR0 = 1;
+  85   1              TR1 = 1;
+  86   1      
+  87   1              key_v = 0x03;
+  88   1      
+  89   1              while(1)
+  90   1              {
+  91   2                      if(scan_key())
+  92   2                      {
+  93   3                              delayms(10);
+  94   3                              if(scan_key())
+  95   3                              {
+  96   4                                      key_v = key_s;
+  97   4                                      proc_key();
+  98   4                              }
+  99   3                      }
+ 100   2                      
+ 101   2              }
+ 102   1      }
+ 103          
+ 104          bit scan_key()
+ 105          {
+ 106   1              key_s = 0x00;
+ 107   1              key_s |= AN2;
+ 108   1              key_s <<= 1;
+ 109   1              key_s |= AN1;
+ 110   1              return(key_s ^ key_v);  
+ 111   1      }
+ 112          
+ 113          void proc_key()
+ 114          {
+ 115   1              EA = 0;
+ 116   1              if((key_v & 0x01) == 0)         // AN1
+ 117   1              {
+C51 COMPILER V7.08   WL010                                                                 02/10/2004 20:07:51 PAGE 3   
+
+ 118   2                      inc_hour();
+ 119   2              }
+ 120   1              else if((key_v & 0x02) == 0)    // AN2
+ 121   1              {
+ 122   2                      min++;
+ 123   2                      if(min > 59)
+ 124   2                      {
+ 125   3                              min = 0;
+ 126   3                      }
+ 127   2                      dis_buf[3] = dis_code[min / 10];                // 分十位
+ 128   2                      dis_buf[4] = dis_code[min % 10];                // 分个位
+ 129   2              }
+ 130   1      
+ 131   1              EA = 1;
+ 132   1      }
+ 133          
+ 134          void timer0() interrupt 1
+ 135          // 定时器0中断服务程序, 用于数码管的动态扫描
+ 136          // dis_index --- 显示索引, 用于标识当前显示的数码管和缓冲区的偏移量
+ 137          // dis_digit --- 位选通值, 传送到P2口用于选通当前数码管的数值, 如等于0xfe时,
+ 138          //                              选通P2.0口数码管
+ 139          // dis_buf   --- 显于缓冲区基地址       
+ 140          {
+ 141   1              TH0 = 0xFC;
+ 142   1              TL0 = 0x17;
+ 143   1              
+ 144   1              P2 = 0xff;                                                      // 先关闭所有数码管
+ 145   1              P0 = dis_buf[dis_index];                        // 显示代码传送到P0口
+ 146   1              P2 = dis_digit;                                         // 
+ 147   1      
+ 148   1              dis_digit = _crol_(dis_digit,1);        // 位选通值左移, 下次中断时选通下一位数码管
+ 149   1              dis_index++;                                            // 
+ 150   1                                              
+ 151   1              dis_index &= 0x07;                      // 8个数码管全部扫描完一遍之后，再回到第一个开始下一次扫描
+ 152   1      } 
+ 153          
+ 154          void timer1() interrupt 3
+ 155          {
+ 156   1              TH1 = 0xdc;
+ 157   1              
+ 158   1              sec100++;
+ 159   1              
+ 160   1              if(sec100 >= 100)
+ 161   1              {
+ 162   2                      sec100 = 0;
+ 163   2                      inc_sec();
+ 164   2              }
+ 165   1      }
+ 166          
+ 167          void inc_sec()
+ 168          {
+ 169   1              sec++;
+ 170   1              if(sec > 59)
+ 171   1              {
+ 172   2                      sec = 0;
+ 173   2                      inc_min();
+ 174   2              }
+ 175   1              dis_buf[6] = dis_code[sec / 10];                // 秒十位
+ 176   1              dis_buf[7] = dis_code[sec % 10];                // 秒个位       
+ 177   1      }
+ 178          
+ 179          void inc_min()
+C51 COMPILER V7.08   WL010                                                                 02/10/2004 20:07:51 PAGE 4   
+
+ 180          {
+ 181   1              min++;
+ 182   1              if(min > 59)
+ 183   1              {
+ 184   2                      min = 0;
+ 185   2                      inc_hour();
+ 186   2              }
+ 187   1              dis_buf[3] = dis_code[min / 10];                // 分十位
+ 188   1              dis_buf[4] = dis_code[min % 10];                // 分个位
+ 189   1      }
+ 190          
+ 191          void inc_hour()
+ 192          {
+ 193   1              hour++;
+ 194   1              if(hour > 23)
+ 195   1              {
+ 196   2                      hour = 0;
+ 197   2              }
+ 198   1              if(hour > 9)
+ 199   1                      dis_buf[0] = dis_code[hour / 10];               // 时十位
+ 200   1              else
+ 201   1                      dis_buf[0] = 0xff;                                      // 当小时的十位为0时不显示
+ 202   1              dis_buf[1] = dis_code[hour % 10];               // 时个位
+ 203   1      
+ 204   1      }
+ 205          
+ 206          
+ 207          void delayms(unsigned char ms)  
+ 208          // 延时子程序
+ 209          {                                               
+ 210   1              unsigned char i;
+ 211   1              while(ms--)
+ 212   1              {
+ 213   2                      for(i = 0; i < 120; i++);
+ 214   2              }
+ 215   1      }
+ 216          
+
+
+MODULE INFORMATION:   STATIC OVERLAYABLE
+   CODE SIZE        =    494    ----
+   CONSTANT SIZE    =     11    ----
+   XDATA SIZE       =   ----    ----
+   PDATA SIZE       =   ----    ----
+   DATA SIZE        =     16    ----
+   IDATA SIZE       =   ----    ----
+   BIT SIZE         =   ----    ----
+END OF MODULE INFORMATION.
+
+
+C51 COMPILATION COMPLETE.  0 WARNING(S),  0 ERROR(S)

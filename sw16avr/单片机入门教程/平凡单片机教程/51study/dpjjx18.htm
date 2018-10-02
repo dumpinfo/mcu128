@@ -1,0 +1,67 @@
+<HTML>
+<HEAD>
+<META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=gb_2312-80">
+<META NAME="Generator" CONTENT="Microsoft FrontPage 5.0">
+<TITLE>计数器与定时器</TITLE>
+</HEAD>
+<BODY background="../back.jpg">
+<FONT FACE="黑体" LANG="ZH-CN" SIZE=2>
+<P ALIGN="CENTER" style="line-height: 150%; margin-top: 0; margin-bottom: 0">计数器与定时器</P>
+</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>
+<P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">一、计数概念的引入</P>
+</FONT>
+<P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">
+<FONT FACE="宋体" LANG="ZH-CN" SIZE=2>从选票的统计谈起：画“正”。这就是计数，生活中计数的例子处处可见。例：录音机上的计数器、家里面用的电度表、汽车上的里程表等等，再举一个工业生产中的例子，线缆行业在电线生产出来之后要计米，也就是测量长度，怎么测法呢？用尺量？不现实，太长不说，要一边做一边量呢，怎么办呢？行业中有很巧妙的方法，用一个周长是</font><FONT SIZE=2>1</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>米的轮子，将电缆绕在上面一周，由线带轮转，这样轮转一周不就是线长</FONT><FONT SIZE=2>1</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>米嘛，所以只要记下轮转了多少圈，就可以知道走过的线有多长了。</font></P>
+<FONT FACE="宋体" LANG="ZH-CN" SIZE=2>
+<P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">二、计数器的容量</P>
+</FONT>
+<P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">
+<FONT FACE="宋体" LANG="ZH-CN" SIZE=2>从一个生活中的例子看起：一个水盆在水龙头下，水龙没关紧，水一滴滴地滴入盆中。水滴不断落下，盆的容量是有限的，过一段时间之后，水就会逐渐变满。录音机上的计数器最多只计到</font><FONT SIZE=2>999….</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>那么单片机中的计数器有多大的容量呢？</FONT><FONT SIZE=2>8031</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>单片机中有两个计数器，分别称之为</FONT><FONT SIZE=2>T0</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>和</FONT><FONT SIZE=2>T1</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>，这两个计数器分别是由两个</FONT><FONT SIZE=2>8</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>位的</FONT><FONT SIZE=2>RAM</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>单元组成的，即每个计数器都是</FONT><FONT SIZE=2>16</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>位的计数器，最大的计数量是</FONT><FONT SIZE=2>65536</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>。</font></P>
+<FONT FACE="宋体" LANG="ZH-CN" SIZE=2>
+<P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">三、定时</P>
+</FONT>
+<P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">
+<FONT SIZE=2>    8031</font><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>中的计数器除了可以作为计数之用外，还可以用作时钟，时钟的用途当然很大，如打铃器，电视机定时关机，空调定时开关等等，那么计数器是如何作为定时器来用的呢？</font></P>
+<P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">
+<FONT FACE="宋体" LANG="ZH-CN" SIZE=2>一个闹钟，我将它定时在</font><FONT SIZE=2>1</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>个小时后闹响，换言之，也可以说是秒针走了（</FONT><FONT SIZE=2>3600</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>）次，所以时间就转化为秒针走的次数的，也就是计数的次数了，可见，计数的次数和时间之间的确十分相关。那么它们的关系是什么呢？那就是秒针每一次走动的时间正好是</FONT><FONT SIZE=2>1</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>秒。</font></P>
+<FONT FACE="宋体" LANG="ZH-CN" SIZE=2> 
+<P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">
+<img src="jx1801.gif" width="598" height="199"></P>
+<P ALIGN="center" style="line-height: 150%; margin-top: 0; margin-bottom: 0">图1</P>
+<P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">结论：只要计数脉冲的间隔相等，则计数值就代表了时间的流逝。</P>
+<P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">由此，单片机中的定时器和计数器是一个东西，只不过计数器是记录的外界发生的事情，而定时器则是由单片机提供一个非常稳定的计数源。</P>
+</FONT> 
+<P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">
+<FONT FACE="宋体" LANG="ZH-CN" SIZE=2>那么提供组定时器的是计数源是什么呢？看图</font><FONT SIZE=2>1</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>，原来就是由单片机的晶振经过</FONT><FONT SIZE=2>12</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>分频后获得的一个脉冲源。晶振的频率当然很准，所以这个计数脉冲的时间间隔也很准。问题：一个</FONT><FONT SIZE=2>12M</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>的晶振，它提供给计数器的脉冲时间间隔是多少呢？当然这很容易，就是</FONT><FONT SIZE=2>12M/12</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>等于</FONT><FONT SIZE=2>1M</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>，也就是</FONT><FONT SIZE=2>1</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>个微秒。</font></P>
+<P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">
+<FONT FACE="宋体" LANG="ZH-CN" SIZE=2>结论：计数脉冲的间隔与晶振有关，</font><FONT SIZE=2>12M</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>的晶振，计数脉冲的间隔是</FONT><FONT SIZE=2>1</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>微秒。</font></P>
+<FONT FACE="宋体" LANG="ZH-CN" SIZE=2>
+<P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">四、溢出</P>
+</FONT>
+<P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">
+<FONT FACE="宋体" LANG="ZH-CN" SIZE=2>让我们再来看水滴的例子，当水不断落下，盆中的水不断变满，最终有一滴水使得盆中的水满了。这时如果再有一滴水落下，就会发生什么现象？水会漫出来，用个术语来讲就是“溢出”。</FONT><font size="2">
+</font>    </P>
+<P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">
+<FONT FACE="宋体" LANG="ZH-CN" SIZE=2>水溢出是流到地上，而计数器溢出后将使得</font><FONT SIZE=2>TF0</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>变为“</FONT><FONT SIZE=2>1</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>”。至于</FONT><FONT SIZE=2>TF0</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>是什么我们稍后再谈。一旦</FONT><FONT SIZE=2>TF0</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>由</FONT><FONT SIZE=2>0</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>变成</FONT><FONT SIZE=2>1</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>，就是产生了变化，产生了变化就会引发事件，就象定时的时间一到，闹钟就会响一样。至于会引发什么事件，我们下次课再介绍，现在我们来研究另一个问题：要有多少个计数脉冲才会使</FONT><FONT SIZE=2>TF0</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>由</FONT><FONT SIZE=2>0</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>变为</FONT><FONT SIZE=2>1</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>。</font></P>
+<FONT FACE="宋体" LANG="ZH-CN" SIZE=2>
+<P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">五、任意定时及计数的方法</P>
+</FONT>
+<P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">
+<FONT FACE="宋体" LANG="ZH-CN" SIZE=2>刚才已研究过，计数器的容量是</font><FONT SIZE=2>16</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>位，也就是最大的计数值到</FONT><FONT SIZE=2>65536</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>，因此计数计到</FONT><FONT SIZE=2>65536</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>就会产生溢出。这个没有问题，问题是我们现实生活中，经常会有少于</FONT><FONT SIZE=2>65536</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>个计数值的要求，如包装线上，一打为</FONT><FONT SIZE=2>12</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>瓶，一瓶药片为</FONT><FONT SIZE=2>100</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>粒，怎么样来满足这个要求呢？</font></P>
+<FONT SIZE=2>
+<P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">……</P>
+</FONT>
+<P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">
+<FONT FACE="宋体" LANG="ZH-CN" SIZE=2>提示：如果是一个空的盆要</font><FONT SIZE=2>1</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>万滴水滴进去才会满，我在开始滴水之前就先放入一勺水，还需要</FONT><FONT SIZE=2>10000</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>滴嘛？</font></P>
+<P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">
+<FONT FACE="宋体" LANG="ZH-CN" SIZE=2>对了，我们采用预置数的方法，我要计</FONT><FONT SIZE=2>100</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>，那我就先放进</FONT><FONT SIZE=2>65436</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>，再来</FONT><FONT SIZE=2>100</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>个脉冲，不就到了</FONT><FONT SIZE=2>65536</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>了吗。</font></P>
+<P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">
+<FONT FACE="宋体" LANG="ZH-CN" SIZE=2>定时也是如此，每个脉冲是</font><FONT SIZE=2>1</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>微秒，则计满</FONT><FONT SIZE=2>65536</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>个脉冲需时</FONT><FONT SIZE=2>65.536</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>毫秒，但现在我只要</FONT><FONT SIZE=2>10</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>毫秒就可以了，怎么办？</font></P>
+<FONT SIZE=2>
+<P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">……</P>
+</FONT>
+<P ALIGN="CENTER" style="line-height: 150%; margin-top: 0; margin-bottom: 0">
+<FONT SIZE=2>10</font><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>个毫秒为</FONT><FONT SIZE=2>10000</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>个微秒，所以，只要在计数器里面放进</FONT><FONT SIZE=2>55536</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>就可以了。</font></P>
+<FONT FACE="黑体" LANG="ZH-CN" SIZE=4>
+<P ALIGN="CENTER" style="line-height: 150%; margin-top: 0; margin-bottom: 0"></P></FONT></BODY>
+</HTML>

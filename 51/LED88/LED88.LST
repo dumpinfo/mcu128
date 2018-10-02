@@ -1,0 +1,63 @@
+C51 COMPILER V7.06   LED88                                                                 01/28/2008 21:28:19 PAGE 1   
+
+
+C51 COMPILER V7.06, COMPILATION OF MODULE LED88
+OBJECT MODULE PLACED IN LED88.OBJ
+COMPILER INVOKED BY: d:\Keil\C51\BIN\C51.EXE LED88.c BROWSE DEBUG OBJECTEXTEND
+
+stmt level    source
+
+   1          #include"reg51.h"
+   2          #include"51usb.h"                         //51USB实验板头文件
+   3          
+   4          #define  uchar unsigned char
+   5          #define  uint  unsigned int
+   6          ///////数码管数据//////////
+   7          /*
+   8          C51格式:
+   9          unsigned char code Tab[]={0xC0,0xF9,0xA4,0xB0,0x99,0x92,0x82,0xF8,
+  10                                    0x80,0x90,0x88,0x83,0xC6,0xA1,0x86,0x8E};
+  11          汇编语言格式:
+  12          TAB:    DB C0H,F9H,A4H,B0H
+  13                  DB 99H,92H,82H,F8H
+  14                  DB 80H,90H,88H,83H
+  15                  DB C6H,A1H,86H,8EH
+  16          请选择并复制到文本中去。
+  17          */
+  18          void delay(uint ticks);// 延时程序的声明
+  19          unsigned char code Tab[]={0x81,0x42,0x24,0x18,0x18,0x24,0x42,0x81};
+  20          void main()
+  21          {
+  22   1       uchar i=0,j=0;
+  23   1       while(1)
+  24   1       {
+  25   2               XBYTE[0x100]= Tab[0];
+  26   2               XBYTE[0x200]= Tab[1];
+  27   2               XBYTE[0x400]= Tab[2];
+  28   2               XBYTE[0x800]= Tab[3];
+  29   2               XBYTE[0x1000]= Tab[4];
+  30   2               XBYTE[0x2000]= Tab[5];
+  31   2               XBYTE[0x4000]= Tab[6];
+  32   2               XBYTE[0x8000]= Tab[7];
+  33   2       }
+  34   1      }
+  35          //////////// 延时程序的实现////////////////////
+  36          void delay(uint ticks)
+  37          {
+  38   1       uchar i;
+  39   1       for(;ticks!=0;ticks--)for(i=200;i!=0;i--);
+  40   1      }
+
+
+MODULE INFORMATION:   STATIC OVERLAYABLE
+   CODE SIZE        =     95    ----
+   CONSTANT SIZE    =      8    ----
+   XDATA SIZE       =   ----    ----
+   PDATA SIZE       =   ----    ----
+   DATA SIZE        =   ----       2
+   IDATA SIZE       =   ----    ----
+   BIT SIZE         =   ----    ----
+END OF MODULE INFORMATION.
+
+
+C51 COMPILATION COMPLETE.  0 WARNING(S),  0 ERROR(S)

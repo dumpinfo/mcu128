@@ -1,0 +1,27 @@
+<html>
+<body>
+<pre>
+<h1>礦ision2 Build Log</h1>
+<h2>Project:</h2>
+D:\产品光盘\ME300\ME300B实验例程\WL030_1602LCD移动显示程序\ASM\WL030.uv2
+Project File Date:  02/05/2006
+
+<h2>Output:</h2>
+Build target 'Target 1'
+assembling 1602LCD_YD.asm...
+creating library WL030.LIB...
+TRANSFER
+"1602LCD_YD.obj" 
+TO "WL030.LIB"
+LIB51 LIBRARY MANAGER V4.24
+COPYRIGHT KEIL ELEKTRONIK GmbH 1987 - 2002
+"WL030.LIB" - 0 Error(s), 0 Warning(s).
+Build target 'Target 1'
+assembling 1602LCD_YD.asm...
+linking...
+Program Size: data=8.0 xdata=0 code=287
+creating hex file from "WL030"...
+"WL030" - 0 Error(s), 0 Warning(s).
+</pre>
+</body>
+</html>

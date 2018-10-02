@@ -1,0 +1,104 @@
+C51 COMPILER V7.50   MAIN                                                                  12/13/2006 05:49:42 PAGE 1   
+
+
+C51 COMPILER V7.50, COMPILATION OF MODULE MAIN
+OBJECT MODULE PLACED IN main.OBJ
+COMPILER INVOKED BY: C:\Keil\C51\BIN\C51.EXE main.c BROWSE DEBUG OBJECTEXTEND
+
+line level    source
+
+   1          #include"reg52.h"
+   2          #include"51usb.h"                  //51USB实验板的头文件
+   3          
+   4          #define  uchar unsigned char
+   5          #define  uint  unsigned int
+   6          
+   7          void initsys();            //初始化系统
+   8          void display();            //显示刷新
+   9          void delay(uint ticks);
+  10          
+  11          unsigned char code      SEG[8]={0x00,0x02,0x04,0x06,0x08,0x0A,0x0C,0x0E};
+  12          unsigned char code  Tab[]       =       {0xC0,0xF9,0xA4,0xB0,0x99,0x92,0x82,0xF8,
+  13                                                   0x80,0x90,0x88,0x83,0xC6,0xA1,0x86,0x8E};
+  14          
+  15          unsigned char Count=0;
+  16          unsigned char Number;
+  17          
+  18          /*
+  19          请进入Debug模式，软件调试
+  20          查看states和sec
+  21          这两个参数会每隔50ms运行到断点一次
+  22          */
+  23          void ISR_Timer2() interrupt 5 using 1
+  24          {
+  25   1              TF2=0;
+  26   1              Count++;          //观察断点
+  27   1      
+  28   1      }
+  29          
+  30          void main()
+  31          {
+  32   1       initsys();
+  33   1               while(1)
+  34   1               {
+  35   2                         if(Count>20)
+  36   2                         {
+  37   3                                   Count=0;
+  38   3                                       if(Number++==0x0f)     Number=0;       
+  39   3                         } 
+  40   2                         display();
+  41   2               }
+  42   1      }
+  43          
+  44          
+  45          void initsys()
+  46          {
+  47   1       //3CB0
+  48   1       //(RCAP2L,RCAP2H)===>(TL2,TH2)
+  49   1       TL2    =0xB0;
+  50   1       RCAP2L =0xB0;
+  51   1       TH2    =0x3C;
+  52   1       RCAP2H =0x3C;
+  53   1      
+  54   1       TR2=1; //Star Timer2
+  55   1       ET2=1;         //Enable Timer2 Interrupt
+C51 COMPILER V7.50   MAIN                                                                  12/13/2006 05:49:42 PAGE 2   
+
+  56   1       EA     =1;             
+  57   1      
+  58   1      }
+  59          
+  60          void display()
+  61          {
+  62   1       unsigned char index;
+  63   1      
+  64   1       for(index=0;index!=6;index++)
+  65   1       {
+  66   2               P1=1;//关显示
+  67   2               LED=Tab[Number];       //查表显示数码管数据
+  68   2               P1=SEG[index];
+  69   2               delay(10);
+  70   2       }
+  71   1      }
+  72          
+  73          
+  74          //////////// 延时程序的实现////////////////////
+  75          void delay(uint ticks)
+  76          {
+  77   1       uchar i;
+  78   1       for(;ticks!=0;ticks--)for(i=50;i!=0;i--);
+  79   1      }
+
+
+MODULE INFORMATION:   STATIC OVERLAYABLE
+   CODE SIZE        =    108    ----
+   CONSTANT SIZE    =     24    ----
+   XDATA SIZE       =   ----    ----
+   PDATA SIZE       =   ----    ----
+   DATA SIZE        =      2       1
+   IDATA SIZE       =   ----    ----
+   BIT SIZE         =   ----    ----
+END OF MODULE INFORMATION.
+
+
+C51 COMPILATION COMPLETE.  0 WARNING(S),  0 ERROR(S)

@@ -1,0 +1,522 @@
+<HTML>
+<HEAD>
+<META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=gb_2312-80">
+<META NAME="Generator" CONTENT="Microsoft FrontPage 5.0">
+<TITLE>串行接口</TITLE>
+</HEAD>
+<BODY background="../back.jpg">
+<FONT FACE="宋体" LANG="ZH-CN" SIZE=2>
+<P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">串行接口</P>
+</FONT>
+<FONT FACE="宋体" LANG="ZH-CN" SIZE=3>
+<OL>
+
+<P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">
+</FONT>
+<FONT FACE="宋体" LANG="ZH-CN" SIZE=2>
+<LI>
+<p style="line-height: 150%; margin-top: 0; margin-bottom: 0">概述</LI></p>
+</FONT>
+<FONT FACE="宋体" LANG="ZH-CN" SIZE=3>
+<p style="line-height: 150%; margin-top: 0; margin-bottom: 0"></P></OL>
+
+<OL>
+  <P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">
+  <FONT FACE="宋体" LANG="ZH-CN" SIZE=2>
+  <LI>
+  <p style="line-height: 150%; margin-top: 0; margin-bottom: 0">串行接口的一般概念</LI>
+  单片机与外界进行信息交换称之为通讯。
+</OL>
+</FONT>
+</FONT>
+<p style="line-height: 150%; margin-top: 0; margin-bottom: 0"><FONT SIZE=2>8051</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>单片机的通讯方式有两种：</FONT></p>
+<p style="line-height: 150%; margin-top: 0; margin-bottom: 0">
+<FONT FACE="宋体" LANG="ZH-CN" SIZE=2>并行通讯:数据的各位同时发送或接收。</FONT></p>
+<p style="line-height: 150%; margin-top: 0; margin-bottom: 0">
+<FONT FACE="宋体" LANG="ZH-CN" SIZE=2>串行通讯:数据一位一位顺序发送或接收。参看下图：</FONT></p>
+<p style="line-height: 150%; margin-top: 0; margin-bottom: 0"><font size="2">
+<img src="DPJ221.gif" width="565" height="341"></font></p>
+<FONT FACE="宋体" LANG="ZH-CN" SIZE=3>
+<p style="line-height: 150%; margin-top: 0; margin-bottom: 0"></P>
+</FONT>
+<FONT FACE="宋体" LANG="ZH-CN" SIZE=2>
+<P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">串行通讯的方式：</P>
+</FONT>
+<OL><FONT FACE="宋体" LANG="ZH-CN" SIZE=3>
+
+<P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">
+</font><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>
+
+  <LI>
+  <p style="line-height: 150%; margin-top: 0; margin-bottom: 0">异步通讯：它用一个起始位表示字符的开始，用停止位表示字符的结束。其每帧的格式如下：</LI></p>
+</font><FONT FACE="宋体" LANG="ZH-CN" SIZE=3>
+
+  <p style="line-height: 150%; margin-top: 0; margin-bottom: 0"></P>
+</font>
+  <P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">
+  <FONT FACE="宋体" LANG="ZH-CN" SIZE=2>在一帧格式中，先是一个起始位</font><FONT SIZE=2>0</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>，然后是</FONT><FONT SIZE=2>8</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>个数据位，规定低位在前，高位在后，接下来是奇偶校验位（可以省略），最后是停止位</FONT><FONT SIZE=2>1</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>。用这种格式表示字符，则字符可以一个接一个地传送。</font></P>
+  <P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">
+<FONT FACE="宋体" LANG="ZH-CN" SIZE=2>在异步通讯中，</font><FONT SIZE=2>CPU</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>与外设之间必须有两项规定，即字符格式和波特率。字符格式的规定是双方能够在对同一种</FONT><FONT SIZE=2>0</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>和</FONT><FONT SIZE=2>1</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>的串理解成同一种意义。原则上字符格式可以由通讯的双方自由制定，但从通用、方便的角度出发，一般还是使用一些标准为好，如采用</FONT><FONT SIZE=2>ASCII</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>标准。</font></P>
+  <P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">
+<FONT FACE="宋体" LANG="ZH-CN" SIZE=2>波特率即数据传送的速率，其定义是每秒钟传送的二进制数的位数。例如，数据传送的速率是</font><FONT SIZE=2>120</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>字符</FONT><FONT SIZE=2>/s</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>，而每个字符如上述规定包含</FONT><FONT SIZE=2>10</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>数位，则传送波特率为</FONT><FONT SIZE=2>1200</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>波特。</font></P><FONT FACE="宋体" LANG="ZH-CN" SIZE=3>
+<P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0"></font>
+  <FONT FACE="宋体" LANG="ZH-CN" SIZE=2>
+  <LI>
+  <p style="line-height: 150%; margin-top: 0; margin-bottom: 0">同步通讯：在同步通讯中，每个字符要用起始位和停止位作为字符开始和结束的标志，占用了时间；所以在数据块传递时，为了提高速度，常去掉这些标志，采用同步传送。由于数据块传递开始要用同步字符来指示，同时要求由时钟来实现发送端与接收端之间的同步，故硬件较复杂。</LI></p>
+  </font><FONT FACE="宋体" LANG="ZH-CN" SIZE=3>
+  <p style="line-height: 150%; margin-top: 0; margin-bottom: 0"></P>
+<P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">
+  <FONT FACE="宋体" LANG="ZH-CN" SIZE=2>
+  <LI>
+  <p style="line-height: 150%; margin-top: 0; margin-bottom: 0">通讯方向：在串行通讯中，把通讯接口只能发送或接收的单向传送方法叫单工传送；而把数据在甲乙两机之间的双向传递，称之为双工传送。在双工传送方式中又分为半双工传送和全双工传送。半双工传送是两机之间不能同时进行发送和接收，任一时该，只能发或者只能收信息。</LI></p>
+  </font><FONT FACE="宋体" LANG="ZH-CN" SIZE=3>
+  <p style="line-height: 150%; margin-top: 0; margin-bottom: 0"></P></font></font></OL>
+
+<P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">
+<FONT SIZE=2>2</font><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>．</FONT><FONT SIZE=2>8051</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>单片机的串行接口结构</font></P>
+<P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">
+<FONT SIZE=2>8051</font><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>串行接口是一个可编程的全双工串行通讯接口。它可用作异步通讯方式（</FONT><FONT SIZE=2>UART</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>），与串行传送信息的外部设备相连接，或用于通过标准异步通讯协议进行全双工的</FONT><FONT SIZE=2>8051</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>多机系统也可以通过同步方式，使用</FONT><FONT SIZE=2>TTL</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>或</FONT><FONT SIZE=2>CMOS</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>移位寄存器来扩充</FONT><FONT SIZE=2>I/O</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>口。</font></P>
+<P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">
+<FONT SIZE=2>8051</font><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>单片机通过引脚</FONT><FONT SIZE=2>RXD</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>（</FONT><FONT SIZE=2>P3.0</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>，串行数据接收端）和引脚</FONT><FONT SIZE=2>TXD</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>（</FONT><FONT SIZE=2>P3.1</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>，串行数据发送端）与外界通讯。</FONT><FONT SIZE=2>SBUF</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>是串行口缓冲寄存器，包括发送寄存器和接收寄存器。它们有相同名字和地址空间，但不会出现冲突，因为它们两个一个只能被</FONT><FONT SIZE=2>CPU</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>读出数据，一个只能被</FONT><FONT SIZE=2>CPU</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>写入数据。</font></P>
+<FONT FACE="宋体" LANG="ZH-CN" SIZE=3>
+<OL>
+
+<P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">
+
+</FONT>
+<FONT FACE="宋体" LANG="ZH-CN" SIZE=2>
+<LI>
+<p style="line-height: 150%; margin-top: 0; margin-bottom: 0">串行口的控制与状态寄存器</LI></p>
+
+</FONT>
+<FONT FACE="宋体" LANG="ZH-CN" SIZE=3>
+<p style="line-height: 150%; margin-top: 0; margin-bottom: 0"></P></OL>
+
+</FONT>
+<OL>
+  <FONT FACE="宋体" LANG="ZH-CN" SIZE=3> 
+  <P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">
+  </font>
+  <LI>
+  <p style="line-height: 150%; margin-top: 0; margin-bottom: 0">
+  <FONT FACE="宋体" LANG="ZH-CN" SIZE=2>串行口控制寄存器</font><FONT SIZE=2>SCON</LI> </font>
+  <FONT SIZE=3>
+  </p>
+  <p style="line-height: 150%; margin-top: 0; margin-bottom: 0"></P>
+  </FONT>
+  <P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">
+  <FONT FACE="宋体" LANG="ZH-CN" SIZE=2>它用于定义串行口的工作方式及实施接收和发送控制。字节地址为</font><FONT SIZE=2>98H</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>，其各位定义如下表：</font></P>
+  <TABLE BORDER CELLSPACING=1 CELLPADDING=7 WIDTH=592>
+    <TR>
+      <TD WIDTH="13%" VALIGN="TOP"> <FONT SIZE=2>
+        <P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">D7
+        </FONT></TD>
+      <TD WIDTH="13%" VALIGN="TOP"> <FONT SIZE=2>
+        <P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">D6
+        </FONT></TD>
+      <TD WIDTH="13%" VALIGN="TOP"> <FONT SIZE=2>
+        <P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">D5
+        </FONT></TD>
+      <TD WIDTH="13%" VALIGN="TOP"> <FONT SIZE=2>
+        <P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">D4
+        </FONT></TD>
+      <TD WIDTH="13%" VALIGN="TOP"> <FONT SIZE=2>
+        <P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">D3
+        </FONT></TD>
+      <TD WIDTH="13%" VALIGN="TOP"> <FONT SIZE=2>
+        <P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">D2
+        </FONT></TD>
+      <TD WIDTH="13%" VALIGN="TOP"> <FONT SIZE=2>
+        <P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">D1
+        </FONT></TD>
+      <TD WIDTH="13%" VALIGN="TOP"> <FONT SIZE=2>
+        <P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">D0
+        </FONT></TD>
+    </TR>
+    <TR>
+      <TD WIDTH="13%" VALIGN="TOP"> <FONT SIZE=2>
+        <P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">SM0
+        </FONT></TD>
+      <TD WIDTH="13%" VALIGN="TOP"> <FONT SIZE=2>
+        <P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">SM1
+        </FONT></TD>
+      <TD WIDTH="13%" VALIGN="TOP"> <FONT SIZE=2>
+        <P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">SM2
+        </FONT></TD>
+      <TD WIDTH="13%" VALIGN="TOP"> <FONT SIZE=2>
+        <P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">REN
+        </FONT></TD>
+      <TD WIDTH="13%" VALIGN="TOP"> <FONT SIZE=2>
+        <P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">TB8
+        </FONT></TD>
+      <TD WIDTH="13%" VALIGN="TOP"> <FONT SIZE=2>
+        <P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">RB8
+        </FONT></TD>
+      <TD WIDTH="13%" VALIGN="TOP"> <FONT SIZE=2>
+        <P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">TI
+        </FONT></TD>
+      <TD WIDTH="13%" VALIGN="TOP"> <FONT SIZE=2>
+        <P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">RI
+        </FONT></TD>
+    </TR>
+  </TABLE>
+  <P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">
+  <FONT SIZE=2>SM0</font><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>、</FONT><FONT SIZE=2>SM1</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>：串行口工作方式选择位，其定义如下：</font></P>
+  <TABLE BORDER CELLSPACING=1 CELLPADDING=7 WIDTH=592>
+    <TR>
+      <TD WIDTH="14%" VALIGN="TOP"> 
+        <P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">
+        <FONT SIZE=2>SM0</font><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>、</FONT><FONT SIZE=2>SM1 </FONT>
+      </TD>
+      <TD WIDTH="19%" VALIGN="TOP"> <FONT FACE="宋体" LANG="ZH-CN" SIZE=2>
+        <P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">工作方式
+        </FONT></TD>
+      <TD WIDTH="42%" VALIGN="TOP"> <FONT FACE="宋体" LANG="ZH-CN" SIZE=2>
+        <P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">功能描述
+        </FONT></TD>
+      <TD WIDTH="25%" VALIGN="TOP"> <FONT FACE="宋体" LANG="ZH-CN" SIZE=2>
+        <P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">波特率
+        </FONT></TD>
+    </TR>
+    <TR>
+      <TD WIDTH="14%" VALIGN="TOP"> <FONT SIZE=2>
+        <P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">0 0
+        </FONT></TD>
+      <TD WIDTH="19%" VALIGN="TOP"> 
+        <P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">
+        <FONT FACE="宋体" LANG="ZH-CN" SIZE=2>方式</font><FONT SIZE=2>0 </FONT>
+      </TD>
+      <TD WIDTH="42%" VALIGN="TOP"> 
+        <P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">
+        <FONT SIZE=2>8</font><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>位移位寄存器</FONT><font size="2">
+        </font>
+      </TD>
+      <TD WIDTH="25%" VALIGN="TOP"> <FONT SIZE=2>
+        <P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">Fosc/12
+        </FONT></TD>
+    </TR>
+    <TR>
+      <TD WIDTH="14%" VALIGN="TOP"> <FONT SIZE=2>
+        <P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">0 1
+        </FONT></TD>
+      <TD WIDTH="19%" VALIGN="TOP"> 
+        <P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">
+        <FONT FACE="宋体" LANG="ZH-CN" SIZE=2>方式</font><FONT SIZE=2>1 </FONT>
+      </TD>
+      <TD WIDTH="42%" VALIGN="TOP"> 
+        <P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">
+        <FONT SIZE=2>10</font><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>位</FONT><FONT SIZE=2>UART </FONT>
+      </TD>
+      <TD WIDTH="25%" VALIGN="TOP"> <FONT FACE="宋体" LANG="ZH-CN" SIZE=2>
+        <P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">可变
+        </FONT></TD>
+    </TR>
+    <TR>
+      <TD WIDTH="14%" VALIGN="TOP"> <FONT SIZE=2>
+        <P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">1 0
+        </FONT></TD>
+      <TD WIDTH="19%" VALIGN="TOP"> 
+        <P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">
+        <FONT FACE="宋体" LANG="ZH-CN" SIZE=2>方式</font><FONT SIZE=2>2 </FONT>
+      </TD>
+      <TD WIDTH="42%" VALIGN="TOP"> 
+        <P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">
+        <FONT SIZE=2>11</font><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>位</FONT><FONT SIZE=2>UART </FONT>
+      </TD>
+      <TD WIDTH="25%" VALIGN="TOP"> 
+        <P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">
+        <FONT SIZE=2>Fosc/64</font><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>或</FONT><FONT SIZE=2>fosc/32 </FONT>
+      </TD>
+    </TR>
+    <TR>
+      <TD WIDTH="14%" VALIGN="TOP"> <FONT SIZE=2>
+        <P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">1 1
+        </FONT></TD>
+      <TD WIDTH="19%" VALIGN="TOP"> 
+        <P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">
+        <FONT FACE="宋体" LANG="ZH-CN" SIZE=2>方式</font><FONT SIZE=2>3 </FONT>
+      </TD>
+      <TD WIDTH="42%" VALIGN="TOP"> 
+        <P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">
+        <FONT SIZE=2>11</font><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>位</FONT><FONT SIZE=2>UART </FONT>
+      </TD>
+      <TD WIDTH="25%" VALIGN="TOP"> <FONT FACE="宋体" LANG="ZH-CN" SIZE=2>
+        <P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">可变
+        </FONT></TD>
+    </TR>
+  </TABLE>
+  <P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">
+  <FONT FACE="宋体" LANG="ZH-CN" SIZE=2>其中</font><FONT SIZE=2>fosc</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>为晶振频率</font></P>
+  <P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">
+  <FONT SIZE=2>SM2</font><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>：多机通讯控制位。在方式</FONT><FONT SIZE=2>0</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>时，</FONT><FONT SIZE=2>SM2</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>一定要等于</FONT><FONT SIZE=2>0</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>。在方式</FONT><FONT SIZE=2>1</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>中，当（</FONT><FONT SIZE=2>SM2</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>）</FONT><FONT SIZE=2>=1</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>则只有接收到有效停止位时，</FONT><FONT SIZE=2>RI</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>才置</FONT><FONT SIZE=2>1</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>。在方式</FONT><FONT SIZE=2>2</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>或方式</FONT><FONT SIZE=2>3</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>当（</FONT><FONT SIZE=2>SM2</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>）</FONT><FONT SIZE=2>=1</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>且接收到的第九位数据</FONT><FONT SIZE=2>RB8=0</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>时，</FONT><FONT SIZE=2>RI</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>才置1。</font></P>
+  <P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">
+  <FONT SIZE=2>REN</font><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>：接收允许控制位。由软件置位以允许接收，又由软件清</FONT><FONT SIZE=2>0</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>来禁止接收。</font></P>
+  <P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">
+  <FONT SIZE=2>TB8: </font><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>是要发送数据的第</FONT><FONT SIZE=2>9</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>位。在方式</FONT><FONT SIZE=2>2</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>或方式</FONT><FONT SIZE=2>3</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>中，要发送的第</FONT><FONT SIZE=2>9</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>位数据，根据需要由软件置</FONT><FONT SIZE=2>1</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>或清</FONT><FONT SIZE=2>0</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>。例如，可约定作为奇偶校验位，或在多机通讯中作为区别地址帧或数据帧的标志位。</font></P>
+  <P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">
+  <FONT SIZE=2>RB8</font><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>：接收到的数据的第</FONT><FONT SIZE=2>9</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>位。在方式</FONT><FONT SIZE=2>0</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>中不使用</FONT><FONT SIZE=2>RB8</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>。在方式</FONT><FONT SIZE=2>1</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>中，若（</FONT><FONT SIZE=2>SM2</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>）</FONT><FONT SIZE=2>=0</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>，</FONT><FONT SIZE=2>RB8</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>为接收到的停止位。在方式</FONT><FONT SIZE=2>2</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>或方式</FONT><FONT SIZE=2>3</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>中，</FONT><FONT SIZE=2>RB8</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>为接收到的第</FONT><FONT SIZE=2>9</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>位数据。</font></P>
+  <P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">
+  <FONT SIZE=2>TI</font><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>：</FONT><FONT SIZE=2> 
+    </FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>发送中断标志。在方式</FONT><FONT SIZE=2>0</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>中，第</FONT><FONT SIZE=2>8</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>位发送结束时，由硬件置位。在其它方式的发送停止位前，由硬件置位。</FONT><FONT SIZE=2>TI</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>置位既表示一帧信息发送结束，同时也是申请中断，可根据需要，用软件查询的方法获得数据已发送完毕的信息，或用中断的方式来发送下一个数据。</FONT><FONT SIZE=2>TI</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>必须用软件清</FONT><FONT SIZE=2>0</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>。</font></P>
+  <P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">
+  <FONT SIZE=2>RI</font><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>：</FONT><FONT SIZE=2> 
+    </FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>接收中断标志位。在方式</FONT><FONT SIZE=2>0</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>，当接收完第</FONT><FONT SIZE=2>8</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>位数据后，由硬件置位。在其它方式中，在接收到停止位的中间时刻由硬件置位（例外情况见于</FONT><FONT SIZE=2>SM2</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>的说明）。</FONT><FONT SIZE=2>RI</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>置位表示一帧数据接收完毕，可用查询的方法获知或者用中断的方法获知。</FONT><FONT SIZE=2>RI</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>也必须用软件清</FONT><FONT SIZE=2>0</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>。</font></P>
+  <FONT FACE="宋体" LANG="ZH-CN" SIZE=3> 
+  <P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">
+  </FONT>
+  <LI>
+  <p style="line-height: 150%; margin-top: 0; margin-bottom: 0">
+  <FONT FACE="宋体" LANG="ZH-CN" SIZE=2>特殊功能寄存器</font><FONT SIZE=2>PCON</LI> </font>
+  <FONT SIZE=3>
+  </p>
+  <p style="line-height: 150%; margin-top: 0; margin-bottom: 0"></P>
+  </font>
+</OL>
+<P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">
+
+<FONT SIZE=2>PCON</font><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>是为了在</FONT><FONT SIZE=2>CHMOS</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>的</FONT><FONT SIZE=2>80C51</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>单片机上实现电源控制而附加的。其中最高位是</FONT><FONT SIZE=2>SMOD</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>。</font></P><FONT FACE="宋体" LANG="ZH-CN" SIZE=3>
+<OL>
+
+<P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">
+
+</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>
+<LI>
+<p style="line-height: 150%; margin-top: 0; margin-bottom: 0">串行口的工作方式</LI></p>
+
+</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=3>
+<p style="line-height: 150%; margin-top: 0; margin-bottom: 0"></P></OL>
+
+</FONT>
+<P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">
+<FONT SIZE=2>8051</font><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>单片机的全双工串行口可编程为</FONT><FONT SIZE=2>4</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>种工作方式，现分述如下：</font></P><OL>
+<FONT FACE="宋体" LANG="ZH-CN" SIZE=3>
+
+<P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0"></font><LI>
+<p style="line-height: 150%; margin-top: 0; margin-bottom: 0">
+<FONT FACE="宋体" LANG="ZH-CN" SIZE=2>方式</font><FONT SIZE=2>0</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>为移位寄存器输入</FONT><FONT SIZE=2>/</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>输出方式。可外接移位寄存器以扩展</FONT><FONT SIZE=2>I/O</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>口，也可以外接同步输入</FONT><FONT SIZE=2>/</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>输出设备。</FONT><FONT SIZE=2>8</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>位串行数据者是从</FONT><FONT SIZE=2>RXD</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>输入或输出，</FONT><FONT SIZE=2>TXD</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>用来输出同步脉冲。</font><font size="2"></LI></font><FONT FACE="宋体" LANG="ZH-CN" SIZE=3></p>
+<p style="line-height: 150%; margin-top: 0; margin-bottom: 0"></P></font></OL><OL>
+
+<FONT FACE="宋体" LANG="ZH-CN" SIZE=3>
+
+<P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0"></font><LI>
+<p style="line-height: 150%; margin-top: 0; margin-bottom: 0">
+<FONT FACE="宋体" LANG="ZH-CN" SIZE=2>输出</font><FONT SIZE=2> </FONT>
+<FONT FACE="宋体" LANG="ZH-CN" SIZE=2>串行数据从</FONT><FONT SIZE=2>RXD</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>引脚输出，</FONT><FONT SIZE=2>TXD</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>引脚输出移位脉冲。</FONT><FONT SIZE=2>CPU</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>将数据写入发送寄存器时，立即启动发送，将</FONT><FONT SIZE=2>8</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>位数据以</FONT><FONT SIZE=2>fos/12</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>的固定波特率从</FONT><FONT SIZE=2>RXD</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>输出，低位在前，高位在后。发送完一帧数据后，发送中断标志</FONT><FONT SIZE=2>TI</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>由硬件置位。</font><font size="2"></LI></font><FONT FACE="宋体" LANG="ZH-CN" SIZE=3></p>
+<p style="line-height: 150%; margin-top: 0; margin-bottom: 0"></P>
+<P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0"></FONT><LI>
+<p style="line-height: 150%; margin-top: 0; margin-bottom: 0">
+<FONT FACE="宋体" LANG="ZH-CN" SIZE=2>输入</font><FONT SIZE=2> </FONT>
+<FONT FACE="宋体" LANG="ZH-CN" SIZE=2>当串行口以方式</FONT><FONT SIZE=2>0</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>接收时，先置位允许接收控制位</FONT><FONT SIZE=2>REN</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>。此时，</FONT><FONT SIZE=2>RXD</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>为串行数据输入端，</FONT><FONT SIZE=2>TXD</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>仍为同步脉冲移位输出端。当（</FONT><FONT SIZE=2>RI</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>）</FONT><FONT SIZE=2>=0</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>和（</FONT><FONT SIZE=2>REN</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>）</FONT><FONT SIZE=2>=1</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>同时满足时，开始接收。当接收到第</FONT><FONT SIZE=2>8</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>位数据时，将数据移入接收寄存器，并由硬件置位</FONT><FONT SIZE=2>RI</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>。</font><font size="2"></LI></font><FONT FACE="宋体" LANG="ZH-CN" SIZE=3></p>
+<p style="line-height: 150%; margin-top: 0; margin-bottom: 0"></P></font></OL>
+<FONT FACE="宋体" LANG="ZH-CN" SIZE=2> 
+<P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">下面两图分别是方式</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=3><FONT SIZE=2>0</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>扩展输出和输入的接线图。</FONT></FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>
+</FONT>
+<P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">
+<FONT FACE="宋体" LANG="ZH-CN" SIZE=2><img src="dpjjx232.gif" width="559" height="203"> 
+  </font>
+<FONT FACE="宋体" LANG="ZH-CN" SIZE=3> 
+<p style="line-height: 150%; margin-top: 0; margin-bottom: 0"></P>
+</FONT> 
+<OL><FONT FACE="宋体" LANG="ZH-CN" SIZE=3>
+
+<P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0"></font><LI>
+  <p style="line-height: 150%; margin-top: 0; margin-bottom: 0">
+  <FONT FACE="宋体" LANG="ZH-CN" SIZE=2>方式</font><FONT SIZE=2>1</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>为波特率可变的</FONT><FONT SIZE=2>10</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>位异步通讯接口方式。发送或接收一帧信息，包括</FONT><FONT SIZE=2>1</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>个起始位</FONT><FONT SIZE=2>0</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>，</FONT><FONT SIZE=2>8</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>个数据位和</FONT><FONT SIZE=2>1</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>个停止位</FONT><FONT SIZE=2>1</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>。</font><font size="2"></LI></font><FONT FACE="宋体" LANG="ZH-CN" SIZE=3></p>
+  <p style="line-height: 150%; margin-top: 0; margin-bottom: 0"></P></font></OL><OL>
+
+<FONT FACE="宋体" LANG="ZH-CN" SIZE=3>
+
+<P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0"></font><LI>
+<p style="line-height: 150%; margin-top: 0; margin-bottom: 0">
+<FONT FACE="宋体" LANG="ZH-CN" SIZE=2>输出</font><FONT SIZE=2>  </FONT>
+<FONT FACE="宋体" LANG="ZH-CN" SIZE=2>当</FONT><FONT SIZE=2>CPU</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>执行一条指令将数据写入发送缓冲</FONT><FONT SIZE=2>SBUF</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>时，就启动发送。串行数据从</FONT><FONT SIZE=2>TXD</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>引脚输出，发送完一帧数据后，就由硬件置位</FONT><FONT SIZE=2>TI</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>。</font><font size="2"></LI></font><FONT FACE="宋体" LANG="ZH-CN" SIZE=3></p>
+<p style="line-height: 150%; margin-top: 0; margin-bottom: 0"></P>
+<P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0"></FONT><LI>
+<p style="line-height: 150%; margin-top: 0; margin-bottom: 0">
+<FONT FACE="宋体" LANG="ZH-CN" SIZE=2>输入</font><FONT SIZE=2>  </FONT>
+<FONT FACE="宋体" LANG="ZH-CN" SIZE=2>在（</FONT><FONT SIZE=2>REN</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>）</FONT><FONT SIZE=2>=1</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>时，串行口采样</FONT><FONT SIZE=2>RXD</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>引脚，当采样到</FONT><FONT SIZE=2>1</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>至</FONT><FONT SIZE=2>0</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>的跳变时，确认是开始位</FONT><FONT SIZE=2>0</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>，就开始接收一帧数据。只有当（</FONT><FONT SIZE=2>RI</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>）</FONT><FONT SIZE=2>=0</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>且停止位为</FONT><FONT SIZE=2>1</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>或者（</FONT><FONT SIZE=2>SM2</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>）</FONT><FONT SIZE=2>=0</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>时，停止位才进入</FONT><FONT SIZE=2>RB8</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>，</FONT><FONT SIZE=2>8</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>位数据才能进入接收寄存器，并由硬件置位中断标志</FONT><FONT SIZE=2>RI</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>；否则信息丢失。所以在方式</FONT><FONT SIZE=2>1</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>接收时，应先用软件清零</FONT><FONT SIZE=2>RI</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>和</FONT><FONT SIZE=2>SM2</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>标志。</font><font size="2"></LI></font><FONT FACE="宋体" LANG="ZH-CN" SIZE=3></p>
+<p style="line-height: 150%; margin-top: 0; margin-bottom: 0"></P></font></OL><OL>
+
+<FONT FACE="宋体" LANG="ZH-CN" SIZE=3>
+
+<P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0"></font><LI>
+<p style="line-height: 150%; margin-top: 0; margin-bottom: 0">
+<FONT FACE="宋体" LANG="ZH-CN" SIZE=2>方式</font><FONT SIZE=2>2</LI></font><FONT SIZE=3></p>
+<p style="line-height: 150%; margin-top: 0; margin-bottom: 0"></P></font></OL>
+
+<P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">
+<FONT FACE="宋体" LANG="ZH-CN" SIZE=2>方式月为固定波特率的</font><FONT SIZE=2>11</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>位</FONT><FONT SIZE=2>UART</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>方式。它比方式</FONT><FONT SIZE=2>1</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>增加了一位可程控为</FONT><FONT SIZE=2>1</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>或</FONT><FONT SIZE=2>0</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>的第</FONT><FONT SIZE=2>9</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>位数据。</font></P><OL>
+<FONT FACE="宋体" LANG="ZH-CN" SIZE=3>
+
+<P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0"></font>
+  <LI>
+  <p style="line-height: 150%; margin-top: 0; margin-bottom: 0">
+  <FONT FACE="宋体" LANG="ZH-CN" SIZE=2>输出</font><FONT SIZE=2>: </FONT>
+  <FONT FACE="宋体" LANG="ZH-CN" SIZE=2>发送的串行数据由</FONT><FONT SIZE=2>TXD</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>端输出一帧信息为</FONT><FONT SIZE=2>11</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>位，附加的第</FONT><FONT SIZE=2>9</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>位来自</FONT><FONT SIZE=2>SCON</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>寄存器的</FONT><FONT SIZE=2>TB8</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>位，用软件置位或复位。它可作为多机通讯中地址</FONT><FONT SIZE=2>/</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>数据信息的标志位，也可以作为数据的奇偶校验位。当</FONT><FONT SIZE=2>CPU</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>执行一条数据写入</FONT><FONT SIZE=2>SUBF</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>的指令时，就启动发送器发送。发送一帧信息后，置位中断标志</FONT><FONT SIZE=2>TI</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>。</font><font size="2"></LI>
+  </font>
+  <FONT FACE="宋体" LANG="ZH-CN" SIZE=3></p>
+  <p style="line-height: 150%; margin-top: 0; margin-bottom: 0"></P>
+<P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0"></FONT>
+  <LI>
+  <p style="line-height: 150%; margin-top: 0; margin-bottom: 0">
+  <FONT FACE="宋体" LANG="ZH-CN" SIZE=2>输入</font><FONT SIZE=2>: </FONT>
+  <FONT FACE="宋体" LANG="ZH-CN" SIZE=2>在（</FONT><FONT SIZE=2>REN</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>）</FONT><FONT SIZE=2>=1</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>时，串行口采样</FONT><FONT SIZE=2>RXD</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>引脚，当采样到</FONT><FONT SIZE=2>1</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>至</FONT><FONT SIZE=2>0</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>的跳变时，确认是开始位</FONT><FONT SIZE=2>0</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>，就开始接收一帧数据。在接收到附加的第</FONT><FONT SIZE=2>9</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>位数据后，当（</FONT><FONT SIZE=2>RI</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>）</FONT><FONT SIZE=2>=0</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>或者（</FONT><FONT SIZE=2>SM2</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>）</FONT><FONT SIZE=2>=0</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>时，第</FONT><FONT SIZE=2>9</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>位数据才进入</FONT><FONT SIZE=2>RB8</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>，</FONT><FONT SIZE=2>8</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>位数据才能进入接收寄存器，并由硬件置位中断标志</FONT><FONT SIZE=2>RI</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>；否则信息丢失。且不置位</FONT><FONT SIZE=2>RI</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>。再过一位时间后，不管上述条件时否满足，接收电路即行复位，并重新检测</FONT><FONT SIZE=2>RXD</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>上从</FONT><FONT SIZE=2>1</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>到</FONT><FONT SIZE=2>0</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>的跳变。</font><font size="2"></LI>
+  </font>
+  <FONT FACE="宋体" LANG="ZH-CN" SIZE=3></p>
+  <p style="line-height: 150%; margin-top: 0; margin-bottom: 0"></P></font></OL><OL>
+
+<FONT FACE="宋体" LANG="ZH-CN" SIZE=3>
+
+<P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0"></font><LI>
+<p style="line-height: 150%; margin-top: 0; margin-bottom: 0">
+<FONT FACE="宋体" LANG="ZH-CN" SIZE=2>工作方式</font><FONT SIZE=2>3</LI></font><FONT SIZE=3></p>
+<p style="line-height: 150%; margin-top: 0; margin-bottom: 0"></P></font></OL><DIR>
+<P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">
+<FONT FACE="宋体" LANG="ZH-CN" SIZE=2>方式</font><FONT SIZE=2>3</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>为波特率可变的</FONT><FONT SIZE=2>11</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>位</FONT><FONT SIZE=2>UART</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>方式。除波特率外，其余与方式</FONT><FONT SIZE=2>2</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>相同。</font></P></DIR><FONT FACE="宋体" LANG="ZH-CN" SIZE=3>
+
+<OL>
+
+<P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">
+
+</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>
+
+<LI>
+<p style="line-height: 150%; margin-top: 0; margin-bottom: 0">波特率选择</LI></p>
+
+</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=3>
+
+<p style="line-height: 150%; margin-top: 0; margin-bottom: 0"></P></OL>
+
+</FONT>
+<P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">
+<FONT FACE="宋体" LANG="ZH-CN" SIZE=2>如前所述，在串行通讯中，收发双方的数据传送率（波特率）要有一定的约定。在</font><FONT SIZE=2>8051</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>串行口的四种工作方式中，方式</FONT><FONT SIZE=2>0</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>和</FONT><FONT SIZE=2>2</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>的波特率是固定的，而方式</FONT><FONT SIZE=2>1</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>和</FONT><FONT SIZE=2>3</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>的波特率是可变的，由定时器</FONT><FONT SIZE=2>T1</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>的溢出率控制。</font></P><OL>
+<FONT FACE="宋体" LANG="ZH-CN" SIZE=3>
+
+<P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0"></font><LI>
+<p style="line-height: 150%; margin-top: 0; margin-bottom: 0">
+<FONT FACE="宋体" LANG="ZH-CN" SIZE=2>方式</font><FONT SIZE=2>0</LI></font><FONT SIZE=3></p>
+<p style="line-height: 150%; margin-top: 0; margin-bottom: 0"></P>
+</FONT>
+<P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">
+<FONT FACE="宋体" LANG="ZH-CN" SIZE=2>方式</font><FONT SIZE=2>0</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>的波特率固定为主振频率的</FONT><FONT SIZE=2>1/12</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>。</font></P><FONT FACE="宋体" LANG="ZH-CN" SIZE=3>
+<P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0"></FONT><LI>
+<p style="line-height: 150%; margin-top: 0; margin-bottom: 0">
+<FONT FACE="宋体" LANG="ZH-CN" SIZE=2>方式</font><FONT SIZE=2>2</LI></font><FONT SIZE=3></p>
+<p style="line-height: 150%; margin-top: 0; margin-bottom: 0"></P></font></OL>
+
+<P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">
+<FONT FACE="宋体" LANG="ZH-CN" SIZE=2>方式</font><FONT SIZE=2>2</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>的波特率由</FONT><FONT SIZE=2>PCON</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>中的选择位</FONT><FONT SIZE=2>SMOD</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>来决定，可由下式表示：</font></P>
+<P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0"> 
+<FONT FACE="宋体" LANG="ZH-CN" SIZE=2>波特率</font><FONT SIZE=2>=2的SMOD次方除以64再乘一个fosc，也就是</font><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>当</font><FONT SIZE=2>SMOD=1</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>时，波特率为</FONT><FONT SIZE=2>1/32fosc</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>，当</FONT><FONT SIZE=2>SMOD=0</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>时，波特率为</FONT><FONT SIZE=2>1/64fosc</font></P>
+<P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0"> 
+<FONT SIZE=2>3</font><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>．方式1和方式</FONT><FONT SIZE=2>3</font></P>
+<P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">
+<FONT FACE="宋体" LANG="ZH-CN" SIZE=2>定时器</font><FONT SIZE=2>T1</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>作为波特率发生器，其公式如下：</font></P><FONT FACE="宋体" LANG="ZH-CN" SIZE=3>
+<P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0"></P>
+</FONT> 
+<P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">
+<FONT FACE="宋体" LANG="ZH-CN" SIZE=2>波特率</font><FONT SIZE=2>=</font><font face="宋体" lang="ZH-CN" size=2><img src="Image5.gif" width="52" height="43">定时器T1溢出率 
+  </font></P>
+<P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">
+<FONT SIZE=2>      T1</font><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>溢出率</FONT><FONT SIZE=2>=           T1</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>计数率</FONT><FONT SIZE=2>/</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>产生溢出所需的周期数</font></P><FONT FACE="宋体" LANG="ZH-CN" SIZE=3>
+<P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0"></P>
+</FONT>
+<P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">
+<FONT FACE="宋体" LANG="ZH-CN" SIZE=2>式中</font><FONT SIZE=2>T1</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>计数率取决于它工作在定时器状态还是计数器状态。当工作于定时器状态时，</FONT><FONT SIZE=2>T1</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>计数率为</FONT><FONT SIZE=2>fosc/12;</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>当工作于计数器状态时，</FONT><FONT SIZE=2>T1</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>计数率为外部输入频率，此频率应小于</FONT><FONT SIZE=2>fosc/24</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>。产生溢出所需周期与定时器</FONT><FONT SIZE=2>T1</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>的工作方式、</FONT><FONT SIZE=2>T1</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>的预置值有关。</font></P>
+<p style="line-height: 150%; margin-top: 0; margin-bottom: 0">
+<FONT FACE="宋体" LANG="ZH-CN" SIZE=2>定时器</font><FONT SIZE=2>T1</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>工作于方式</FONT><FONT SIZE=2>0</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>：溢出所需周期数</FONT><FONT SIZE=2>=8192-x </font>
+</p>
+<P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">
+<FONT FACE="宋体" LANG="ZH-CN" SIZE=2>定时器</font><FONT SIZE=2>T1</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>工作于方式</FONT><FONT SIZE=2>1</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>：溢出所需周期数</FONT><FONT SIZE=2>=65536-x</font></P>
+<P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">
+<FONT FACE="宋体" LANG="ZH-CN" SIZE=2>定时器</font><FONT SIZE=2>T1</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>工作于方式</FONT><FONT SIZE=2>2</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>：溢出所需周期数</FONT><FONT SIZE=2>=256-x</font></P>
+<P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">
+<FONT FACE="宋体" LANG="ZH-CN" SIZE=2>因为方式</font><FONT SIZE=2>2</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>为自动重装入初值的</FONT><FONT SIZE=2>8</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>位定时器</FONT><FONT SIZE=2>/</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>计数器模式，所以用它来做波特率发生器最恰当。</font></P>
+<P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">
+<FONT FACE="宋体" LANG="ZH-CN" SIZE=2>当时钟频率选用</font><FONT SIZE=2>11.0592MHZ</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>时，取易获得标准的波特率，所以很多单片机系统选用这个看起来“怪”的晶振就是这个道理。</font></P>
+<P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">
+<FONT FACE="宋体" LANG="ZH-CN" SIZE=2>下表列出了定时器</font><FONT SIZE=2>T1</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>工作于方式</FONT><FONT SIZE=2>2</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>常用波特率及初值。</font></P>
+<TABLE BORDER CELLSPACING=1 CELLPADDING=7 WIDTH=592>
+<TR><TD WIDTH="25%" VALIGN="TOP">
+<FONT FACE="宋体" LANG="ZH-CN" SIZE=2>
+<P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">常用波特率</FONT></TD>
+<TD WIDTH="25%" VALIGN="TOP">
+<FONT SIZE=2>
+<P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">Fosc(MHZ)</FONT></TD>
+<TD WIDTH="25%" VALIGN="TOP">
+<FONT SIZE=2>
+<P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">SMOD</FONT></TD>
+<TD WIDTH="25%" VALIGN="TOP">
+<P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">
+<FONT SIZE=2>TH1</font><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>初值</FONT></TD>
+</TR>
+<TR><TD WIDTH="25%" VALIGN="TOP">
+<FONT SIZE=2>
+<P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">19200</FONT></TD>
+<TD WIDTH="25%" VALIGN="TOP">
+<FONT SIZE=2>
+<P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">11.0592</FONT></TD>
+<TD WIDTH="25%" VALIGN="TOP">
+<FONT SIZE=2>
+<P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">1</FONT></TD>
+<TD WIDTH="25%" VALIGN="TOP">
+<FONT SIZE=2>
+<P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">FDH</FONT></TD>
+</TR>
+<TR><TD WIDTH="25%" VALIGN="TOP">
+<FONT SIZE=2>
+<P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">9600</FONT></TD>
+<TD WIDTH="25%" VALIGN="TOP">
+<FONT SIZE=2>
+<P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">11.0592</FONT></TD>
+<TD WIDTH="25%" VALIGN="TOP">
+<FONT SIZE=2>
+<P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">0</FONT></TD>
+<TD WIDTH="25%" VALIGN="TOP">
+<FONT SIZE=2>
+<P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">FDH</FONT></TD>
+</TR>
+<TR><TD WIDTH="25%" VALIGN="TOP">
+<FONT SIZE=2>
+<P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">4800</FONT></TD>
+<TD WIDTH="25%" VALIGN="TOP">
+<FONT SIZE=2>
+<P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">11.0592</FONT></TD>
+<TD WIDTH="25%" VALIGN="TOP">
+<FONT SIZE=2>
+<P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">0</FONT></TD>
+<TD WIDTH="25%" VALIGN="TOP">
+<FONT SIZE=2>
+<P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">FAH</FONT></TD>
+</TR>
+<TR><TD WIDTH="25%" VALIGN="TOP">
+<FONT SIZE=2>
+<P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">2400</FONT></TD>
+<TD WIDTH="25%" VALIGN="TOP">
+<FONT SIZE=2>
+<P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">11.0592</FONT></TD>
+<TD WIDTH="25%" VALIGN="TOP">
+<FONT SIZE=2>
+<P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">0</FONT></TD>
+<TD WIDTH="25%" VALIGN="TOP">
+<FONT SIZE=2>
+<P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">F4h</FONT></TD>
+</TR>
+<TR><TD WIDTH="25%" VALIGN="TOP">
+<FONT SIZE=2>
+<P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">1200</FONT></TD>
+<TD WIDTH="25%" VALIGN="TOP">
+<FONT SIZE=2>
+<P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">11.0592</FONT></TD>
+<TD WIDTH="25%" VALIGN="TOP">
+<FONT SIZE=2>
+<P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">0</FONT></TD>
+<TD WIDTH="25%" VALIGN="TOP">
+<FONT SIZE=2>
+<P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">E8h</FONT></TD>
+</TR>
+</TABLE>
+
+<p style="line-height: 150%; margin-top: 0; margin-bottom: 0">　</p>
+</BODY>
+</HTML>

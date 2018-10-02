@@ -1,0 +1,199 @@
+BL51 BANKED LINKER/LOCATER V5.12                                                        12/13/2006  05:49:42  PAGE 1
+
+
+BL51 BANKED LINKER/LOCATER V5.12, INVOKED BY:
+C:\KEIL\C51\BIN\BL51.EXE STARTUP.obj, main.obj TO AutoReload RAMSIZE (256)
+
+
+MEMORY MODEL: SMALL
+
+
+INPUT MODULES INCLUDED:
+  STARTUP.obj (?C_STARTUP)
+  main.obj (MAIN)
+  C:\KEIL\C51\LIB\C51S.LIB (?C_INIT)
+
+
+LINK MAP OF MODULE:  AutoReload (?C_STARTUP)
+
+
+            TYPE    BASE      LENGTH    RELOCATION   SEGMENT NAME
+            -----------------------------------------------------
+
+            * * * * * * *   D A T A   M E M O R Y   * * * * * * *
+            REG     0000H     0008H     ABSOLUTE     "REG BANK 0"
+            DATA    0008H     0002H     UNIT         ?DT?MAIN
+            DATA    000AH     0001H     UNIT         _DATA_GROUP_
+            IDATA   000BH     0001H     UNIT         ?STACK
+
+            * * * * * * *   C O D E   M E M O R Y   * * * * * * *
+            CODE    0000H     0003H     ABSOLUTE     
+            CODE    0003H     0027H     UNIT         ?PR?DISPLAY?MAIN
+                    002AH     0001H                  *** GAP ***
+            CODE    002BH     0003H     ABSOLUTE     
+            CODE    002EH     008CH     UNIT         ?C_C51STARTUP
+            CODE    00BAH     001DH     UNIT         ?PR?MAIN?MAIN
+            CODE    00D7H     0018H     UNIT         ?CO?MAIN
+            CODE    00EFH     0013H     UNIT         ?PR?INITSYS?MAIN
+            CODE    0102H     0010H     UNIT         ?PR?_DELAY?MAIN
+            CODE    0112H     0005H     UNIT         ?PR?ISR_TIMER2?MAIN
+            CODE    0117H     0004H     UNIT         ?C_INITSEG
+
+
+
+OVERLAY MAP OF MODULE:   AutoReload (?C_STARTUP)
+
+
+SEGMENT                          DATA_GROUP 
+  +--> CALLED SEGMENT          START    LENGTH
+----------------------------------------------
+?C_C51STARTUP                  -----    -----
+  +--> ?PR?MAIN?MAIN
+  +--> ?C_INITSEG
+
+?PR?MAIN?MAIN                  -----    -----
+  +--> ?PR?INITSYS?MAIN
+  +--> ?PR?DISPLAY?MAIN
+
+?PR?DISPLAY?MAIN               000AH    0001H
+  +--> ?CO?MAIN
+  +--> ?PR?_DELAY?MAIN
+
+BL51 BANKED LINKER/LOCATER V5.12                                                      12/13/2006  05:49:42  PAGE 2
+
+
+
+
+SYMBOL TABLE OF MODULE:  AutoReload (?C_STARTUP)
+
+  VALUE           TYPE          NAME
+  ----------------------------------
+
+  -------         MODULE        ?C_STARTUP
+  C:002EH         SEGMENT       ?C_C51STARTUP
+  I:000BH         SEGMENT       ?STACK
+  C:0000H         PUBLIC        ?C_STARTUP
+  D:00E0H         SYMBOL        ACC
+  D:00F0H         SYMBOL        B
+  D:0083H         SYMBOL        DPH
+  D:0082H         SYMBOL        DPL
+  N:0000H         SYMBOL        IBPSTACK
+  N:0100H         SYMBOL        IBPSTACKTOP
+  N:0080H         SYMBOL        IDATALEN
+  C:0031H         SYMBOL        IDATALOOP
+  N:0000H         SYMBOL        PBPSTACK
+  N:0000H         SYMBOL        PBPSTACKTOP
+  N:0000H         SYMBOL        PDATALEN
+  N:0000H         SYMBOL        PDATASTART
+  N:0000H         SYMBOL        PPAGE
+  N:0000H         SYMBOL        PPAGEENABLE
+  D:00A0H         SYMBOL        PPAGE_SFR
+  D:0081H         SYMBOL        SP
+  C:002EH         SYMBOL        STARTUP1
+  N:0000H         SYMBOL        XBPSTACK
+  N:0000H         SYMBOL        XBPSTACKTOP
+  N:0000H         SYMBOL        XDATALEN
+  N:0000H         SYMBOL        XDATASTART
+  C:0000H         LINE#         92
+  C:002EH         LINE#         99
+  C:0030H         LINE#         100
+  C:0031H         LINE#         101
+  C:0032H         LINE#         102
+  C:0034H         LINE#         151
+  C:0037H         LINE#         155
+  -------         ENDMOD        ?C_STARTUP
+
+  -------         MODULE        MAIN
+  C:0000H         SYMBOL        _ICE_DUMMY_
+  D:0090H         PUBLIC        P1
+  D:00B0H         PUBLIC        P3
+  C:0112H         PUBLIC        ISR_Timer2
+  B:00A8H.7       PUBLIC        EA
+  D:0008H         PUBLIC        Count
+  D:00A8H         PUBLIC        IE
+  C:00DFH         PUBLIC        Tab
+  C:00EFH         PUBLIC        initsys
+  D:00B8H         PUBLIC        IP
+  D:00CBH         PUBLIC        RCAP2H
+  D:00CAH         PUBLIC        RCAP2L
+  C:00BAH         PUBLIC        main
+  D:0098H         PUBLIC        SCON
+  D:0088H         PUBLIC        TCON
+BL51 BANKED LINKER/LOCATER V5.12                                                      12/13/2006  05:49:42  PAGE 3
+
+
+  B:00A8H.5       PUBLIC        ET2
+  B:00C8H.7       PUBLIC        TF2
+  D:00CDH         PUBLIC        TH2
+  D:00CCH         PUBLIC        TL2
+  B:00C8H.2       PUBLIC        TR2
+  C:00D7H         PUBLIC        SEG
+  D:00C8H         PUBLIC        T2CON
+  D:0009H         PUBLIC        Number
+  C:0102H         PUBLIC        _delay
+  C:0003H         PUBLIC        display
+  D:00D0H         PUBLIC        PSW
+  -------         PROC          ISR_TIMER2
+  C:0112H         LINE#         23
+  C:0112H         LINE#         25
+  C:0114H         LINE#         26
+  C:0116H         LINE#         28
+  -------         ENDPROC       ISR_TIMER2
+  -------         PROC          MAIN
+  C:00BAH         LINE#         30
+  C:00BAH         LINE#         31
+  C:00BAH         LINE#         32
+  C:00BDH         LINE#         33
+  C:00BDH         LINE#         34
+  C:00BDH         LINE#         35
+  C:00C4H         LINE#         36
+  C:00C4H         LINE#         37
+  C:00C7H         LINE#         38
+  C:00D2H         LINE#         39
+  C:00D2H         LINE#         40
+  C:00D5H         LINE#         41
+  -------         ENDPROC       MAIN
+  -------         PROC          INITSYS
+  C:00EFH         LINE#         45
+  C:00EFH         LINE#         46
+  C:00EFH         LINE#         49
+  C:00F2H         LINE#         50
+  C:00F5H         LINE#         51
+  C:00F8H         LINE#         52
+  C:00FBH         LINE#         54
+  C:00FDH         LINE#         55
+  C:00FFH         LINE#         56
+  C:0101H         LINE#         58
+  -------         ENDPROC       INITSYS
+  -------         PROC          DISPLAY
+  -------         DO            
+  D:000AH         SYMBOL        index
+  -------         ENDDO         
+  C:0003H         LINE#         60
+  C:0003H         LINE#         61
+  C:0003H         LINE#         64
+  C:0006H         LINE#         65
+  C:0006H         LINE#         66
+  C:0009H         LINE#         67
+  C:0013H         LINE#         68
+  C:001BH         LINE#         69
+  C:0022H         LINE#         70
+  C:0029H         LINE#         71
+BL51 BANKED LINKER/LOCATER V5.12                                                      12/13/2006  05:49:42  PAGE 4
+
+
+  -------         ENDPROC       DISPLAY
+  -------         PROC          _DELAY
+  D:0006H         SYMBOL        ticks
+  -------         DO            
+  D:0005H         SYMBOL        i
+  -------         ENDDO         
+  C:0102H         LINE#         75
+  C:0102H         LINE#         76
+  C:0102H         LINE#         78
+  C:0111H         LINE#         79
+  -------         ENDPROC       _DELAY
+  -------         ENDMOD        MAIN
+
+Program Size: data=12.0 xdata=0 code=282
+LINK/LOCATE RUN COMPLETE.  0 WARNING(S),  0 ERROR(S)

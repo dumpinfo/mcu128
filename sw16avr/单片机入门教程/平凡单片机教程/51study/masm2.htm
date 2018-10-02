@@ -1,0 +1,217 @@
+<html>
+<head>
+<title>汇编程序的格式</title>
+<meta http-equiv="Content-Type" content="text/html; charset=gb2312">
+</head>
+
+<body bgcolor="#cccccc">
+<b> 
+<p align="center" style="line-height: 150%; margin-top: 0; margin-bottom: 0">
+<font face="黑体" lang="ZH-CN" size=2>第三节</font><font size=2> 
+  </font><font face="黑体" lang="ZH-CN" size=2>汇编程序输入和输出文件的格式</font></p> 
+</b> 
+<p style="line-height: 150%; margin-top: 0; margin-bottom: 0"> <b><font face="宋体" lang="ZH-CN"><a name="_Toc416236552">
+<font size="2">一、源文件</font></a></font><font face="黑体" lang="ZH-CN"><font size="2">
+</font></p>
+<p style="line-height: 150%; margin-top: 0; margin-bottom: 0"></p>
+</font></b> 
+<p align="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">
+<font face="宋体" lang="ZH-CN" size=2>源文件是由文字编缉器编写的由汇编指令和ＭＡＳＭ５１伪指令构成的文本文件。源文件一般应以．ＡＳＭ为扩展名。</font></p>
+<ol>
+  <p style="line-height: 150%; margin-top: 0; margin-bottom: 0"><b><font face="宋体" lang="ZH-CN"> 
+  <a name="_Toc416236552"><font size="2">二、源文件的格式</font></a><font size="2">
+  </font></p>
+  <p style="line-height: 150%; margin-top: 0; margin-bottom: 0"></p>
+  </font></b> 
+  <p align="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">
+  <font face="宋体" lang="ZH-CN" size=2>以回车作为结束的一行称为语句行。每一语句行长度应少于８０个字符（即４０个汉字）。每一个语句行对于汇编程序来说都是一条单独的命令行，它可以是一条汇编语言指令，也可以是一条注释，或是空白（即什么也不写），还可以是系统允许的伪指令。所有行必须按照ＩＮＴＥＬ标准格式书写即：</font></p>
+  <p align="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">
+  <font face="宋体" lang="ZH-CN" size=2>标号：</font><font size=2> 
+    </font><font face="宋体" lang="ZH-CN" size=2>命令</font><font size=2>  
+    </font><font face="宋体" lang="ZH-CN" size=2>参数</font><font size=2>  
+    </font><font face="宋体" lang="ZH-CN" size=2>；注释</font></p> 
+  <p align="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">
+  <font face="宋体" lang="ZH-CN" size=2>即一行由四部份组成，各部份的顺序不能搞错，但可以根据需要缺省其中的一部份或几部份，甚至全部省去，即空白行。标号后面必须有‘：’，而命令语句和参数之间必须用空格分开，如果命令有多个参数，则参数与参数之间必须用‘，’分开，注释前必须用‘；’，也即‘；’后面的语句将不参与汇编，不生成代码，所以可以在‘；’引导的后面写任何字符，包括汉字。</font></p>
+  <p align="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">
+  <font face="宋体" lang="ZH-CN" size=2>标号是标志程序中某一行的符号名，标号的数值就是标号所在行代码的地址。在宏汇编ＭＡＳＭ５１中标号的长度不受限制，但标号中不能包含‘：’或其它的一些特殊符号，也不以用汉字，可以用数字作标号，但必须用字母开头。当标号作参数用（如标号作转移地址），在命令后面出现时，必须舍去‘：’（如</font><font size=2> 
+  </font><font face="Arial" size=2> 
+    LJMP START</font><font face="宋体" lang="ZH-CN" size=2>中的</font><font size=2>  
+  </font><font face="Arial" size=2> 
+    START</font><font face="宋体" lang="ZH-CN" size=2>）。</font></p>
+  <p align="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">
+  <font face="宋体" lang="ZH-CN" size=2>每行只能有一个标号，一个标号只能用在一处，如果有两行用了同一个标号，则汇编时就会出错。由于标号的长度没有限制，可以用有意义的英文来说明行，使源程序读起来更方便。</font></p>
+  <p align="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">
+  <font face="宋体" lang="ZH-CN" size=2>命令及参数请参考有关单片机教材，其规定符合ＩＮＴＥＬ公司的５１单片机汇编语言要求。这里必须注意：当采用十六进制数时，如果数值是以</font><font face="Arial" size=2>A,B,C,D,E,F</font><font face="宋体" lang="ZH-CN" size=2>开头的，则为了区分是数字还是字母，应当在这些数字前加</font><font face="Arial" size=2>'0'</font><font face="宋体" lang="ZH-CN" size=2>，如</font><font face="Arial" size=2>FFH</font><font face="宋体" lang="ZH-CN" size=2>，应当写成</font><font face="Arial" size=2>0FFH</font><font face="宋体" lang="ZH-CN" size=2>，</font><font face="Arial" size=2>C0H</font><font face="宋体" lang="ZH-CN" size=2>应写成</font><font face="Arial" size=2>0C0H</font><font face="宋体" lang="ZH-CN" size=2>等。</font></p>
+  <p align="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">
+  <font face="宋体" lang="ZH-CN" size=2>注释用于对程序的说明，它以分号开始，以回车结束。源程序行可以只包含注释，注释只是被复制到列表文件中，不产生机器码。由于汇编程序不直观，所以在编写源程序时，应当养成多写注释的习惯，这样有助于源程序的阅读。否则，时间一长，自编的程序也会搞不清表达的含义。典型的注释有如下几种：１．在一行的后面写，以说明这一行语句的用途；２．在一段子程序的前面写，以说明这一子程序的用途，由什么程序调用，入口参数，出口值，占用资源等等情况；３．在整个源程序的最前面书写，以说明本程序的用途，资源的分配等情况。以下是一个例子：</font></p>
+  <i> 
+  <p align="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">
+  <font face="Arial" size=2>;</font><font face="宋体" lang="ZH-CN" size=2>堆栈从</font><font face="Arial" size=2>5FH</font><font face="宋体" lang="ZH-CN" size=2>起</font></p>
+  <p align="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">
+  <font face="Arial" size=2>;01H</font><font face="宋体" lang="ZH-CN" size=2>单元</font><font face="Arial" size=2>,</font><font face="宋体" lang="ZH-CN" size=2>用作键盘扫描程序判断是否有键按下</font><font face="Arial" size=2>,</font><font face="宋体" lang="ZH-CN" size=2>有为</font><font face="Arial" size=2>'1',</font><font face="宋体" lang="ZH-CN" size=2>无为</font><font face="Arial" size=2>'0'</font></p>
+  <p align="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0"> 
+  <font face="Arial" size=2>;38H</font><font face="宋体" lang="ZH-CN" size=2>单元</font><font face="Arial" size=2>,</font><font face="宋体" lang="ZH-CN" size=2>音量大小代码</font><font face="Arial" size=2>,</font><font face="宋体" lang="ZH-CN" size=2>初始为</font><font face="Arial" size=2>2</font></p>
+  <font face="Arial" size=2> 
+  <p align="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0"> ORG 0000H</p>
+  <p align="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0"> LJMP START</p>
+  </font> 
+  <p align="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">
+  <font face="Arial" size=2> ORG 0003H ;</font><font face="宋体" lang="ZH-CN" size=2>外中断</font><font face="Arial" size=2>0</font><font face="宋体" lang="ZH-CN" size=2>处理程序</font></p>
+  <font face="Arial" size=2> 
+  <p align="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0"> NOP</p>
+  <p align="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0"> RET</p>
+  </font> 
+  <p align="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">
+  <font face="Arial" size=2>START: ;</font><font face="宋体" lang="ZH-CN" size=2>初始化程序</font></p>
+  <font face="Arial" size=2> 
+  <p align="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0"> MOV SP,5FH</p> 
+  <p align="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0"> .</p>
+  <p align="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0"> .</p>
+  <p align="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">;***********************************************</p>
+  </font> 
+  <p align="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">
+  <font face="Arial" size=2>;</font><font face="宋体" lang="ZH-CN" size=2>以上初始化程序</font></p>
+  <font face="Arial" size=2> 
+  <p align="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">;***********************************************</p>
+  <p align="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">MAIN:</p>
+  <p align="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0"> LCALL KEY</p>
+  <p align="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0"> LJMP MAIN</p>
+  <p align="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">;**********************************************</p>
+  </font> 
+  <p align="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">
+  <font face="Arial" size=2>;</font><font face="宋体" lang="ZH-CN" size=2>以上主程序</font></p>
+  <font face="Arial" size=2> 
+  <p align="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">;*******************************************</p>
+  <p align="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">;***********************************************</p>
+  </font> 
+  <p align="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">
+  <font face="Arial" size=2>;</font><font face="宋体" lang="ZH-CN" size=2>以下键盘程序</font><font face="Arial" size=2>,</font><font face="宋体" lang="ZH-CN" size=2>键值从</font><font face="Arial" size=2>0</font><font face="宋体" lang="ZH-CN" size=2>开始</font></p>
+  <font face="Arial" size=2> 
+  <p align="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">;***************************************</p>
+  <p align="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">KEY:</p>
+  </font> 
+  <p align="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">
+  <font face="Arial" size=2> PUSH PSW ;</font><font face="宋体" lang="ZH-CN" size=2>将</font><font face="Arial" size=2>PSW</font><font face="宋体" lang="ZH-CN" size=2>推入堆栈</font></p>
+  <p align="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">
+  <font face="Arial" size=2> SETB RS0 ;</font><font face="宋体" lang="ZH-CN" size=2>选第一工作区</font></p> 
+  <font face="Arial" size=2> 
+  <p align="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0"> MOV SBUF,#00H</p> 
+  <p align="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">KEY_DISP:</p>
+  <p align="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0"> .</p>
+  <p align="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0"> .</p>
+  <p align="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0"> .</p>
+  <p align="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0"> POP PSW</p>
+  <p align="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0"> RET</p>
+  <p align="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">;*********************************************************</p>
+  </font> 
+  <p align="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">
+  <font face="Arial" size=2>;</font><font face="宋体" lang="ZH-CN" size=2>以上键盘程序</font></p>
+  <font face="Arial" size=2> 
+  <p align="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">;********************************************************</p>
+  <p align="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0"> .</p>
+  <p align="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0"> .</p>
+  </font></i>
+  <p style="line-height: 150%; margin-top: 0; margin-bottom: 0"><b><font face="宋体" lang="ZH-CN"> <a name="_Toc416236553">
+  <font size="2">三、算术表达式和算术操作</font></a><font size="2"> </font></p>
+  <p style="line-height: 150%; margin-top: 0; margin-bottom: 0"></p>
+  </font></b> 
+  <p align="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">
+  <font face="宋体" lang="ZH-CN" size=2>在宏汇编中允许使用一个算术表达式的结果来作为一个参数使用，从而使编写源程序时更为灵活。算术表达式由参数与算术操作符组成，其中参数可以是数值类型，符号类型或字符串类型。而算术表达式的最后运算结果即为该算术表达式所代表的参数。它是一个十六位的二进制数。在可以用数值的任何地方，都可以使用表达式，例如直接值，转移和子程序调用的址址部分。汇编命令内表达式由汇编解释程序在汇编时计算，改变表达式值的唯一方法就是修改参数值。</font></p>
+  <p align="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">
+  <font face="宋体" lang="ZH-CN" size=2>算术表达式的最简单的形式就是只有一个参数，这个参数的值也就是它的结果。一般形式为参数与算术操作符的组合，它们之间用某些限定符予以隔离，例如空格、制表符等。</font></p>
+  <p align="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">
+  <font face="宋体" lang="ZH-CN" size=2>在宏汇编中，所有的参数值均为整数，以十六位二进制形式存放，因此其表示范围为０～６５５３５。对于负数则以其补码来表示。下面给出一个例子介绍宏汇编中允许使用的各种算术操作符，请大家仔细阅读。</font></p>
+  <i> 
+  <p align="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">
+  <font face="Arial" size=2>MOV A,#3+5 ;MOV A,#8,</font><font face="宋体" lang="ZH-CN" size=2>加法</font><font face="Arial" size=2>,</font><font face="宋体" lang="ZH-CN" size=2>前面加</font><font face="Arial" size=2>'#'</font><font face="宋体" lang="ZH-CN" size=2>号代表是立即数</font></p> 
+  <p align="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">
+  <font face="Arial" size=2>MOV A,3+5 ;MOV A,8 ,</font><font face="宋体" lang="ZH-CN" size=2>加法</font><font face="Arial" size=2>,</font><font face="宋体" lang="ZH-CN" size=2>未加</font><font face="Arial" size=2>'#'</font><font face="宋体" lang="ZH-CN" size=2>号代表</font><font face="Arial" size=2>3+5</font><font face="宋体" lang="ZH-CN" size=2>是地址</font></p> 
+  <p align="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">
+  <font face="Arial" size=2>MOV A,5-3 ;MOV A,2 ,</font><font face="宋体" lang="ZH-CN" size=2>减法</font></p> 
+  <p align="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">
+  <font face="Arial" size=2>MOV A,3-5 ;MOV A,0FEH,</font><font face="宋体" lang="ZH-CN" size=2>减法</font></p> 
+  <p align="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">
+  <font face="Arial" size=2>MOV A,#5-3 ;MOV A,#2,</font><font face="宋体" lang="ZH-CN" size=2>减法</font></p> 
+  <p align="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">
+  <font face="Arial" size=2>MOV A,#5*3 ;MOV A,#15,</font><font face="宋体" lang="ZH-CN" size=2>乘法</font></p> 
+  <p align="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">
+  <font face="Arial" size=2>MOV A,#6/3 ;MOV A,#2 ,</font><font face="宋体" lang="ZH-CN" size=2>除法</font></p> 
+  <p align="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">
+  <font face="Arial" size=2>MOV A,#6 MOD 3 ;MOV A,#0 ,</font><font face="宋体" lang="ZH-CN" size=2>取模运算</font></p> 
+  <p align="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">
+  <font face="Arial" size=2>MOV A,01010010 SHR 3 ;MOV A,E3H  
+    ,</font><font face="宋体" lang="ZH-CN" size=2>向右移位</font><font face="Arial" size=2>,01010010</font><font face="宋体" lang="ZH-CN" size=2>向右移</font><font face="Arial" size=2>3</font><font face="宋体" lang="ZH-CN" size=2>位</font></p>
+  <p align="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">
+  <font face="Arial" size=2>MOV A,#21 SHL 5 ;MOV A,#0A0H ,</font><font face="宋体" lang="ZH-CN" size=2>向左移位</font><font face="Arial" size=2>,21</font><font face="宋体" lang="ZH-CN" size=2>向左移</font><font face="Arial" size=2>5</font><font face="宋体" lang="ZH-CN" size=2>位</font></p> 
+  <p align="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">
+  <font face="Arial" size=2>MOV A, # NOT 0A5H ;MOV A,#5AH ,</font><font face="宋体" lang="ZH-CN" size=2>取</font><font face="Arial" size=2>0A5H</font><font face="宋体" lang="ZH-CN" size=2>的反</font></p> 
+  <p align="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">
+  <font face="Arial" size=2>MOV A,#10101111 OR 11110000 ;MOV  
+    A,#57H,</font><font face="宋体" lang="ZH-CN" size=2>求两数之或</font></p>
+  <p align="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">
+  <font face="Arial" size=2>MOV A,#10101010 AND 00001111 ;MOV  
+    A,#52H,</font><font face="宋体" lang="ZH-CN" size=2>求两数之与</font></p>
+  <p align="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">
+  <font face="Arial" size=2>MOV A,#4B2H XOR 3197 ;MOV A,#0CFH,</font><font face="宋体" lang="ZH-CN" size=2>求两数之异或</font></p> 
+  <p align="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">
+  <font face="Arial" size=2>MOV A,#(HIGH 4567H) ;MOV A,#45H  
+    ,</font><font face="宋体" lang="ZH-CN" size=2>取</font><font face="Arial" size=2>4567H</font><font face="宋体" lang="ZH-CN" size=2>的高两位</font></p>
+  <p align="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">
+  <font face="Arial" size=2>MOV A,LOW 4567H ;MOV A,67H ,</font><font face="宋体" lang="ZH-CN" size=2>取</font><font face="Arial" size=2>4567H</font><font face="宋体" lang="ZH-CN" size=2>的低两位</font></p> 
+  <font face="Arial" size=2> 
+  <p align="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">END<b><font face="宋体" lang="ZH-CN"> </font></b></p>
+  </font></i><b><font face="宋体" lang="ZH-CN"> 
+  <p align="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0"> <a name="_Toc416236554">
+  <font size="2">四、机器码代码文件</font></a><font size="2"> </font>
+  <p style="line-height: 150%; margin-top: 0; margin-bottom: 0"></p>
+  </font></b> 
+  <p align="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">
+  <font face="宋体" lang="ZH-CN" size=2>机器码代码文件由宏汇编产生，为了与一般的ＨＥＸ文件相区别，通常由宏汇编产生的机器码代码文件被称为ＩＮＴＥＬ文件。该文件是由能够在处理器上运行的机器指令码组成。它可被用来传送到仿真器或用户系统中进行调试或运行。</font></p>
+  <p align="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">
+  <font face="宋体" lang="ZH-CN" size=2>ＩＮＴＥＬ</font><font size=2> 
+    </font><font face="宋体" lang="ZH-CN" size=2>ＨＥＸ文件由若干行组成，每行表示一个记录，它的每一行都是可以打印的ＡＳＣＩＩ字符，用两个字符，用两个字符来表示一个字节的值。每一行的格式如下：</font></p> 
+  <p align="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">
+  <font face="Arial" size=2>:CC aaaa tt dd.......dd ss</font><font face="宋体" lang="ZH-CN" size=2>冒号</font><font face="Arial" size=2>":"</font><font face="宋体" lang="ZH-CN" size=2>为每一行的起始符，随后为一组数据在其中。</font><font face="Arial" size=2>CC  
+    </font><font face="宋体" lang="ZH-CN" size=2>为由两个字节表示的十六进制数，它的范围为</font><font face="Arial" size=2>00H~10H,</font><font face="宋体" lang="ZH-CN" size=2>它表示该记录包含的机器代码的字节数。</font></p>
+  <p align="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">
+  <font face="Arial" size=2> aaaa</font><font face="宋体" lang="ZH-CN" size=2>为用ＡＳＣＩＩ码表示的四个十六进制数，它是该记录第一个数据字节所驻存的存储空间的绝对地址。</font></p>
+  <p align="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">
+  <font face="Arial" size=2>tt</font><font face="宋体" lang="ZH-CN" size=2>是表示该记录数据类型的一个代码，若该记录为数据，则</font><font face="Arial" size=2>tt</font><font face="宋体" lang="ZH-CN" size=2>为</font><font face="Arial" size=2>0</font><font face="宋体" lang="ZH-CN" size=2>，否则是其它值。</font><font face="Arial" size=2>dd</font><font face="宋体" lang="ZH-CN" size=2>表示代码的实际字节值，每一个字节值用两个字符表示。（将会有</font><font face="Arial" size=2>cc</font><font face="宋体" lang="ZH-CN" size=2>个</font><font face="Arial" size=2>dd</font><font face="宋体" lang="ZH-CN" size=2>数据）</font><font face="Arial" size=2>ss</font><font face="宋体" lang="ZH-CN" size=2>是一个和校验，它是从计数器到最后一个数据字节的所有字节值累加和的相所数。</font></p>
+  <p align="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">
+  <font face="宋体" lang="ZH-CN" size=2>当</font><font face="Arial" size=2>ss</font><font face="宋体" lang="ZH-CN" size=2>与记录中所有的字相加时，其结果应该为零，若为其它值则表明该记录有错。</font></p>
+  <p style="line-height: 150%; margin-top: 0; margin-bottom: 0">
+  <b><font face="宋体" lang="ZH-CN"> <a name="_Toc416236555"><font size="2">五、列表文件</font></a><font size="2">
+  </font></p>
+  <p style="line-height: 150%; margin-top: 0; margin-bottom: 0"></p>
+  </font></b> 
+  <p align="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">
+  <font face="宋体" lang="ZH-CN" size=2>由汇编程序生成的第二个文件是列表文件，它以ＬＳＴ为扩展名，也是一个ＡＳＣＩＩ码字符文件，回而可以被打印显示，也可以作为程序的文档。</font></p>
+  <p align="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">
+  <font face="宋体" lang="ZH-CN" size=2>列表文件是分页的，每页的长度由缺省值决定。也可以通过伪指令</font><font face="Arial" size=2>&amp;PAGE</font><font face="宋体" lang="ZH-CN" size=2>来决定。每页以一起始行开始，用来指出汇编的类型类型和版本，以及页号。</font></p>
+  <p align="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">
+  <font face="宋体" lang="ZH-CN" size=2>当用户使用</font><font face="Arial" size=2>&amp;TITLE</font><font face="宋体" lang="ZH-CN" size=2>伪指令时，该行后面紧接着一个标题行，当用户使用</font><font face="Arial" size=2>SUBTITLE</font><font face="宋体" lang="ZH-CN" size=2>指令时，后再接一个子标题行。例如：</font><font face="Arial" size=2>The  
+    Cybernetic Micro Sysystems 8051 FamilyAssembler,Version 3.03 Page 109-10-83</font><font face="宋体" lang="ZH-CN" size=2>。</font></p> 
+  <p align="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">
+  <font face="宋体" lang="ZH-CN" size=2>每页的其它部分由用户程序、汇编所产生的绝对地址和机器代码组成。通常一个行的第一个字符是一个空格，若出现</font><font face="Arial" size=2>"I"</font><font face="宋体" lang="ZH-CN" size=2>则指出这一行是个外部来的文件。而</font><font face="Arial" size=2>"+"</font><font face="宋体" lang="ZH-CN" size=2>则表明是一个宏扩展行。后面接着的四个字符通常是当前语句的程序地址，以十六进制形式给出，</font><font face="Arial" size=2>END</font><font face="宋体" lang="ZH-CN" size=2>指令前的四个字符表示该指令的起始地址参数值。后面有一个空格。</font></p>
+  <p align="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">
+  <font face="宋体" lang="ZH-CN" size=2>程序计数器后是１０个字符的空间，它通常包含该行汇编出的目标代码的十六进制值。显示出的字节值的数目依赖于每条语句所要求的字节数目，这里，每个字节值用两字符表示。对等价指令，这个域还包含一个等号（</font><font face="Arial" size=2>=</font><font face="宋体" lang="ZH-CN" size=2>）。不生成目标代码的源程序行中该域全为空格。</font></p>
+  <p align="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">
+  <font face="宋体" lang="ZH-CN" size=2>每行的前１６个字符后面的剩余部分包含着台的源程序文件。因而列表文件的每一行长度为源程序的长度再加上１６列字符。如果是用８０列宽的打印纸则源程序行的长度应小于６４列，否则打印设备在打印时反长行切断，或则分成两行。</font></p>
+</ol>
+<p align="center"><a href="dpjjx.htm"><font size="2">
+<img src="back1.gif" border="0" width="43" height="55"></font></a></p>
+<p align="center">　</p>
+
+<p>　</p>
+
+          <hr width="550" SIZE="1" align="center">     
+
+<p align="center" style="line-height: 150%; margin-top: 0; margin-bottom: 0"><font size="2">伟纳电子 COPYRIGHT &reg; 2000  
+<a href="http://www.willar.com">http://www.willar.com</a><br>                                           
+&nbsp; E-mail:<a href="mailto:support@willar.com">support@willar.com</a></font>      
+ 
+<p align="center" style="line-height: 150%; margin-top: 0; margin-bottom: 0">　     
+
+<p align="center" style="line-height: 150%; margin-top: 0; margin-bottom: 0">　
+</body>
+</html>

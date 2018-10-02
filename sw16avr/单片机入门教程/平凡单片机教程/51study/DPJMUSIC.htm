@@ -1,0 +1,55 @@
+<HTML>
+<HEAD>
+<META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=gb_2312-80">
+<META NAME="Generator" CONTENT="Microsoft FrontPage 5.0">
+<TITLE>单片机音乐程序的设计与实验</TITLE>
+<META NAME="Template" CONTENT="C:\PROGRAM FILES\MICROSOFT OFFICE\OFFICE\html.dot">
+</HEAD>
+<BODY LINK="#0000ff" VLINK="#800080">
+
+<FONT FACE="宋体" LANG="ZH-CN" SIZE=2>
+
+<B><P ALIGN="CENTER" style="line-height: 150%; margin-top: 0; margin-bottom: 0">单片机音乐程序的设计与实验</P>
+</B></FONT><FONT FACE="宋体" LANG="ZH-CN">
+<P ALIGN="CENTER" style="line-height: 150%; margin-top: 0; margin-bottom: 0">
+<font size="2">周振安</font></P>
+<P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">&#9;
+<font size="2">利用单片机（或单板机）奏乐大概是无线电爱好者感兴趣的问题之一。本文从单片机的基本发间实验出发，谈谈音乐程序的设计原理，并给出具体实例，以供参考。</font></P>
+<OL>
+
+<P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0"><LI>
+<p style="line-height: 150%; margin-top: 0; margin-bottom: 0"><font size="2">单片机的基本发音实验</LI></font></p>
+<p style="line-height: 150%; margin-top: 0; margin-bottom: 0"></P></OL>
+
+<P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">&#9;
+<font size="2">我们知道，声音的频谱范围约在几十到几千赫兹，若能利用程序来控制单处机某个口线的“高”电平或低电平，则在该口线上就能产生一定频率的矩形波，接上喇叭就能发出一定频率的声音，若再利用延时程序控制“高”“低”电平的持续时间，就能改变输出频率，从而改变音调。</font></P>
+<P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">
+<font size="2">例如，要产生</font></FONT><font size="2"><FONT FACE="System" LANG="ZH-CN">200HZ</FONT><FONT FACE="宋体" LANG="ZH-CN">的音频信号，按图</FONT><FONT FACE="System" LANG="ZH-CN">1</FONT><FONT FACE="宋体" LANG="ZH-CN">接入喇叭（若属临时实验，也可将喇叭直接接在</FONT><FONT FACE="System" LANG="ZH-CN">P1</FONT></font><FONT FACE="宋体" LANG="ZH-CN"><font size="2">口线上），实验程序为：</font></P>
+<P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">&#9;
+<font size="2">其中子程序</font></FONT><font size="2"><FONT FACE="System" LANG="ZH-CN">DEL</FONT><FONT FACE="宋体" LANG="ZH-CN">为延时子程序，当</FONT><FONT FACE="System" LANG="ZH-CN">R3</FONT><FONT FACE="宋体" LANG="ZH-CN">为</FONT><FONT FACE="System" LANG="ZH-CN">1</FONT><FONT FACE="宋体" LANG="ZH-CN">时，延时时间约为</FONT><FONT FACE="System" LANG="ZH-CN">20us</FONT><FONT FACE="宋体" LANG="ZH-CN">，</FONT><FONT FACE="System" LANG="ZH-CN">R3</FONT><FONT FACE="宋体" LANG="ZH-CN">中存放延时常数，对</FONT><FONT FACE="System" LANG="ZH-CN">200HZ</FONT><FONT FACE="宋体" LANG="ZH-CN">音频，其周期为</FONT><FONT FACE="System" LANG="ZH-CN">1/200</FONT><FONT FACE="宋体" LANG="ZH-CN">秒，即</FONT><FONT FACE="System" LANG="ZH-CN">5ms</FONT><FONT FACE="宋体" LANG="ZH-CN">。这样，当</FONT><FONT FACE="System" LANG="ZH-CN">P1.4</FONT><FONT FACE="宋体" LANG="ZH-CN">的高电平或低电平的持续时间为</FONT><FONT FACE="System" LANG="ZH-CN">2.5ms</FONT><FONT FACE="宋体" LANG="ZH-CN">，即</FONT><FONT FACE="System" LANG="ZH-CN">R3</FONT><FONT FACE="宋体" LANG="ZH-CN">的时间常数取</FONT><FONT FACE="System" LANG="ZH-CN">2500/20=125(7DH)</FONT><FONT FACE="宋体" LANG="ZH-CN">时，就能发出</FONT><FONT FACE="System" LANG="ZH-CN">200HZ</FONT><FONT FACE="宋体" LANG="ZH-CN">的音调。将上述程序键入学习机，并不断修改</FONT><FONT FACE="System" LANG="ZH-CN">R3</FONT></font><FONT FACE="宋体" LANG="ZH-CN"><font size="2">的常数可以感到音调的变化。</font></P>
+<P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">&#9;
+<font size="2">乐曲中，每一音符对应着确定的频率，表</font></FONT><font size="2"><FONT FACE="System" LANG="ZH-CN">1</FONT><FONT FACE="宋体" LANG="ZH-CN">给出</FONT><FONT FACE="System" LANG="ZH-CN">C</FONT></font><FONT FACE="宋体" LANG="ZH-CN"><font size="2">调时各音符频率及其相应的时间常数。</font></P>
+<P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">
+<font size="2">读者可以根据表</font></FONT><font size="2"><FONT FACE="System" LANG="ZH-CN">1</FONT><FONT FACE="宋体" LANG="ZH-CN">所提供的常数，将其</FONT><FONT FACE="System" LANG="ZH-CN">16</FONT><FONT FACE="宋体" LANG="ZH-CN">进制代码送入</FONT><FONT FACE="System" LANG="ZH-CN">R3</FONT><FONT FACE="宋体" LANG="ZH-CN">，反复练习体会。根据表</FONT><FONT FACE="System" LANG="ZH-CN">1</FONT></font><FONT FACE="宋体" LANG="ZH-CN"><font size="2">可以奏出音符。仅这还不够，要准确奏出一首曲子，必须准确地控制乐曲节奏，即一音符的持续时间。</font></P>
+<P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">&#9;
+<font size="2">音符的节拍我们可以用定时器</font></FONT><font size="2"><FONT FACE="System" LANG="ZH-CN">T0</FONT><FONT FACE="宋体" LANG="ZH-CN">来控制，送入不同的初值，就可以产生不同的定时时间。便如某歌曲的节奏为每分钟</FONT><FONT FACE="System" LANG="ZH-CN">94</FONT><FONT FACE="宋体" LANG="ZH-CN">拍，即一拍为</FONT><FONT FACE="System" LANG="ZH-CN">0.64</FONT><FONT FACE="宋体" LANG="ZH-CN">秒。其它节拍与时间的对应关系见表</FONT><FONT FACE="System" LANG="ZH-CN">2</FONT></font><FONT FACE="宋体" LANG="ZH-CN"><font size="2">。</font></P>
+<P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">&#9;
+<font size="2">但时，由于</font></FONT><font size="2"><FONT FACE="System" LANG="ZH-CN">T0</FONT><FONT FACE="宋体" LANG="ZH-CN">的最大定时时间只能为</FONT><FONT FACE="System" LANG="ZH-CN">131</FONT><FONT FACE="宋体" LANG="ZH-CN">毫秒，因此不可能直接用改变</FONT><FONT FACE="System" LANG="ZH-CN">T0</FONT><FONT FACE="宋体" LANG="ZH-CN">的时间初值来实现不同节拍。我们可以用</FONT><FONT FACE="System" LANG="ZH-CN">T0</FONT><FONT FACE="宋体" LANG="ZH-CN">来产生</FONT><FONT FACE="System" LANG="ZH-CN">10</FONT><FONT FACE="宋体" LANG="ZH-CN">毫秒的时间基准，然后设置一个中断计数器，通过判别中断计数器的值来控制节拍时间的长短。表</FONT><FONT FACE="System" LANG="ZH-CN">2</FONT><FONT FACE="宋体" LANG="ZH-CN">中也给出了各种节拍所对应的时间常数。例如对</FONT><FONT FACE="System" LANG="ZH-CN">1/4</FONT><FONT FACE="宋体" LANG="ZH-CN">拍音符，定时时间为</FONT><FONT FACE="System" LANG="ZH-CN">0.16</FONT><FONT FACE="宋体" LANG="ZH-CN">秒，相应的时间常数为</FONT><FONT FACE="System" LANG="ZH-CN">16</FONT><FONT FACE="宋体" LANG="ZH-CN">（即</FONT><FONT FACE="System" LANG="ZH-CN">10H</FONT><FONT FACE="宋体" LANG="ZH-CN">）；对</FONT><FONT FACE="System" LANG="ZH-CN">3</FONT><FONT FACE="宋体" LANG="ZH-CN">拍音符，定时时间为</FONT><FONT FACE="System" LANG="ZH-CN">1.92</FONT><FONT FACE="宋体" LANG="ZH-CN">秒，相应时间长数为</FONT><FONT FACE="System" LANG="ZH-CN">192</FONT><FONT FACE="宋体" LANG="ZH-CN">（即</FONT><FONT FACE="System" LANG="ZH-CN">C0H</FONT></font><FONT FACE="宋体" LANG="ZH-CN"><font size="2">）。</font></P>
+<P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">&#9;
+<font size="2">我们将每一音符的时间常数和其相应的节拍常数作为一组，按顺序将乐曲中的所有常数排列成一个表，然后由查表程序依次取出，产生音符并控制节奏，就可以实现演奏效果。</font></P>
+<P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">&#9;
+<font size="2">此外，结束符和体止符可以分别用代码</font></FONT><font size="2"><FONT FACE="System" LANG="ZH-CN">00H</FONT><FONT FACE="宋体" LANG="ZH-CN">和</FONT><FONT FACE="System" LANG="ZH-CN">FFH</FONT><FONT FACE="宋体" LANG="ZH-CN">来表示，若查表结果为</FONT><FONT FACE="System" LANG="ZH-CN">00H</FONT><FONT FACE="宋体" LANG="ZH-CN">，则表示曲子终了；若查表结果为</FONT><FONT FACE="System" LANG="ZH-CN">FFH</FONT></font><FONT FACE="宋体" LANG="ZH-CN"><font size="2">，则产生相应的停顿效果。</font></P>
+<P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">
+<font size="2">为了产生手弹的节奏感，在某些音符（例如两个相同音符）音插入一个时间单位的频率略有不同的音符。</font></P>
+<P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">
+<font size="2">程序框图如图</font></FONT><FONT FACE="System" LANG="ZH-CN" size="2">2</FONT><FONT FACE="宋体" LANG="ZH-CN"><font size="2">所示。</font></P>
+<P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">&#9;
+<font size="2">下面给出程序序请单，可直接在</font></FONT><font size="2"><FONT FACE="System" LANG="ZH-CN">TD-III</FONT><FONT FACE="宋体" LANG="ZH-CN">型学习机上演奏，对其它不同型号的学习机，只需相应地改变一下地址即可。本程序演奏的是民歌“八月桂花遍地开”，</FONT><FONT FACE="System" LANG="ZH-CN">C</FONT><FONT FACE="宋体" LANG="ZH-CN">调，节奏为</FONT><FONT FACE="System" LANG="ZH-CN">94</FONT><FONT FACE="宋体" LANG="ZH-CN">拍</FONT><FONT FACE="System" LANG="ZH-CN">/</FONT><FONT FACE="宋体" LANG="ZH-CN">分。读者也可以自行找出一首歌，按表</FONT><FONT FACE="System" LANG="ZH-CN">1</FONT><FONT FACE="宋体" LANG="ZH-CN">和表</FONT><FONT FACE="System" LANG="ZH-CN">2</FONT></font><FONT FACE="宋体" LANG="ZH-CN"><font size="2">给定的常数，将乐曲翻译成码表输入机器，而程序不变。本实验方法简便，即使不懂音乐的人，将一首陌生的曲子翻译成代码也是易事，和着机器的演奏学唱一首歌曲，其趣味无穷。</font></P>
+<P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">
+<font size="2">程序清单（略，请参看源程序的说明）。</font></P>
+</FONT><FONT FACE="System" LANG="ZH-CN" size="2">
+<P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0"><IMG SRC="Image1.gif" WIDTH=532 HEIGHT=607></P>
+</FONT><FONT FACE="宋体" LANG="ZH-CN">
+<P ALIGN="RIGHT" style="line-height: 150%; margin-top: 0; margin-bottom: 0">
+<font size="2">《无线电》</font></FONT><font size="2"><FONT FACE="System" LANG="ZH-CN">1992</FONT><FONT FACE="宋体" LANG="ZH-CN">年第</FONT><FONT FACE="System" LANG="ZH-CN">3</FONT></font><FONT FACE="宋体" LANG="ZH-CN"><font size="2">期。</font></P></FONT></BODY>
+</HTML>

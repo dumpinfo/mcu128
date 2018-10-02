@@ -1,0 +1,174 @@
+<HTML>
+<HEAD>
+<META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=gb_2312-80">
+<META NAME="Generator" CONTENT="Microsoft FrontPage 5.0">
+<TITLE>单片机指令（三）</TITLE>
+</HEAD>
+<BODY background="../back.jpg">
+<FONT FACE="宋体" LANG="ZH-CN" SIZE=2> 
+<P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">单片机指令（三）</P>
+</FONT>
+<P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">
+<FONT SIZE=2>2</font><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>、累加器</FONT><FONT SIZE=2>A</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>与片外</FONT><FONT SIZE=2>RAM</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>之间的数据传递类指令</font></P>
+<FONT SIZE=2>
+<P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">MOVX   A,@Ri</P>
+<P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">MOVX   @Ri,A</P>
+<P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">MOVX&#9;#9; A,@DPTR</P>
+<P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">MOVX   @DPTR,A</P>
+</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>
+<P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">说明：</P>
+</FONT>
+<P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">
+<FONT SIZE=2>1</font><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>）在</FONT><FONT SIZE=2>51</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>中，与外部存储器</FONT><FONT SIZE=2>RAM</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>打交道的只可以是</FONT><FONT SIZE=2>A</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>累加器。所有需要送入外部</FONT><FONT SIZE=2>RAM</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>的数据必需要通过</FONT><FONT SIZE=2>A</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>送去，而所有要读入的外部</FONT><FONT SIZE=2>RAM</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>中的数据也必需通过</FONT><FONT SIZE=2>A</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>读入。在此我们可以看出内外部</FONT><FONT SIZE=2>RAM</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>的区别了，内部</FONT><FONT SIZE=2>RAM</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>间可以直接进行数据的传递，而外部则不行，比如，要将外部</FONT><FONT SIZE=2>RAM</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>中某一单元（设为</FONT><FONT SIZE=2>0100H</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>单元的数据）送入另一个单元（设为</FONT><FONT SIZE=2>0200H</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>单元），也必须先将</FONT><FONT SIZE=2>0100H</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>单元中的内容读入</FONT><FONT SIZE=2>A</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>，然后再送到</FONT><FONT SIZE=2>0200H</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>单元中去。</font></P>
+<p style="line-height: 150%; margin-top: 0; margin-bottom: 0">
+<FONT FACE="宋体" LANG="ZH-CN" SIZE=2>2）要读或写外部的</font><FONT SIZE=2>RAM</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>，当然也必须要知道</FONT><FONT SIZE=2>RAM</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>的地址，在后两条指令中，地址是被直接放在</FONT><FONT SIZE=2>DPTR</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>中的。而前两条指令，由于</FONT><FONT SIZE=2>Ri</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>（即</FONT><FONT SIZE=2>R0</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>或</FONT><FONT SIZE=2>R1</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>）只是一个</FONT><FONT SIZE=2>8</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>位的寄存器，所以只提供低</FONT><FONT SIZE=2>8</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>位地址。因为有时扩展的外部</FONT><FONT SIZE=2>RAM</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>的数量比较少，少于或等于</FONT><FONT SIZE=2>256</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>个，就只需要提供</FONT><FONT SIZE=2>8</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>位地址就够了。</font><font size="2"></LI></font><FONT FACE="宋体" LANG="ZH-CN" SIZE=3></p>
+<p style="line-height: 150%; margin-top: 0; margin-bottom: 0"></P>
+</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>
+<P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">
+3）使用时应当首先将要读或写的地址送入</FONT><FONT SIZE=2>DPTR</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>或</FONT><FONT SIZE=2>Ri</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>中，然后再用读写命令。</font><font size="2"></LI></font><FONT FACE="宋体" LANG="ZH-CN" SIZE=3><p style="line-height: 150%; margin-top: 0; margin-bottom: 0"></P></font>
+<P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">
+
+<FONT FACE="宋体" LANG="ZH-CN" SIZE=2>例：将外部</font><FONT SIZE=2>RAM</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>中</FONT><FONT SIZE=2>100H</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>单元中的内容送入外部</FONT><FONT SIZE=2>RAM</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>中</FONT><FONT SIZE=2>200H</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>单元中。</font></P>
+<P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">
+<FONT SIZE=2>MOV    DPTR</font><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>，</FONT><FONT SIZE=2>#0100H</font></P>
+<P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">
+<FONT SIZE=2>MOVX   A</font><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>，</FONT><FONT SIZE=2>@DPTR</font></P>
+<FONT SIZE=2>
+<P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">MOV    DPTR,#0200H</P>
+<P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">MOVX   @DPTR,A</P>
+</FONT>
+<p style="line-height: 150%; margin-top: 0; margin-bottom: 0">　</p>
+<p style="line-height: 150%; margin-top: 0; margin-bottom: 0">
+<font face="宋体" size="2">3、</font><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>程序存储器向累加器</font><FONT SIZE=2>A</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>传送指令</font><font size="2"></LI></font></p>
+<P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">
+<FONT SIZE=2>&nbsp;&nbsp;&nbsp; MOVC     A</font><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>，</FONT><FONT SIZE=2>@A+DPTR</font></P>
+<P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">
+<FONT FACE="宋体" LANG="ZH-CN" SIZE=2>&nbsp;&nbsp;&nbsp; 本指令是将</font><B><I><FONT SIZE=2>ROM</font></i></B><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>中的数送入</FONT><FONT SIZE=2>A</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>中。本指令也被称为查表指令，常用此指令来查一个已做好在</FONT><B><I><FONT SIZE=2>ROM</font></i></B><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>中的表格</font></P>
+<FONT FACE="宋体" LANG="ZH-CN" SIZE=2>
+<P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">&nbsp;&nbsp;&nbsp; 
+说明：</P></font>
+<p style="line-height: 150%; margin-top: 0; margin-bottom: 0">
+<FONT FACE="宋体" LANG="ZH-CN" SIZE=2>&nbsp;&nbsp;&nbsp; 
+此条指令引出一个新的寻址方法：变址寻址。本指令是要在</font><FONT SIZE=2>ROM</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>的一个地址单元中找出数据，显然必须知道这个单元的地址，这个单元的地址是这样确定的：在执行本指令立脚点</FONT><FONT SIZE=2>DPTR</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>中有一个数，</FONT><FONT SIZE=2>A</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>中有一个数，执行指令时，将</FONT><FONT SIZE=2>A</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>和</FONT><FONT SIZE=2>DPTR</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>中的数加起为，就成为要查找的单元的地址。</font><font size="2"></LI></font><FONT FACE="宋体" LANG="ZH-CN" SIZE=3></p>
+<p style="line-height: 150%; margin-top: 0; margin-bottom: 0"></P>
+</FONT>
+<p style="line-height: 150%; margin-top: 0; margin-bottom: 0">
+<FONT FACE="宋体" LANG="ZH-CN" SIZE=2>1）查找到的结果被放在</font><FONT SIZE=2>A</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>中，因此，本条指令执行前后，</FONT><FONT SIZE=2>A</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>中的值不一定相同。</font><font size="2"></LI></font><FONT FACE="宋体" LANG="ZH-CN" SIZE=3></p>
+<p style="line-height: 150%; margin-top: 0; margin-bottom: 0"></P></font>
+<P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">
+
+<FONT FACE="宋体" LANG="ZH-CN" SIZE=2>&nbsp;&nbsp;&nbsp;&nbsp; 例：有一个数在</font><FONT SIZE=2>R0</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>中，要求用查表的方法确定它的平方值（此数的取值范围是</FONT><FONT SIZE=2>0-5</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>）</font></P>
+<DIR>
+<P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">
+<FONT SIZE=2>MOV     DPTR</font><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>，</FONT><FONT SIZE=2>#TABLE</font></P>
+<P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">
+<FONT SIZE=2>MOV     A</font><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>，</FONT><FONT SIZE=2>R0</font></P>
+<P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">
+<FONT SIZE=2>MOVC    A</font><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>，</FONT><FONT SIZE=2>@A+DPTR</font></P>
+<FONT SIZE=2>
+<P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">.</P>
+<P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">.</P>
+<P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">TABLE:&#9;DB   0,1,4,9,16,25</P>
+</FONT>
+<P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">
+<FONT FACE="宋体" LANG="ZH-CN" SIZE=2>设</font><FONT SIZE=2>R0</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>中的值为</FONT><FONT SIZE=2>2</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>，送入</FONT><FONT SIZE=2>A</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>中，而</FONT><FONT SIZE=2>DPTR</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>中的值则为</FONT><FONT SIZE=2>TABLE</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>，则最终确定的</FONT><FONT SIZE=2>ROM</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>单元的地址就是</FONT><FONT SIZE=2>TABLE+2</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>，也就是到这个单元中去取数，取到的是</FONT><FONT SIZE=2>4</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>，显然它正是</FONT><FONT SIZE=2>2</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>的平方。其它数据也可以类推。</font></P><FONT FACE="宋体" LANG="ZH-CN" SIZE=3>
+<P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0"><HR ALIGN="RIGHT" WIDTH="4%" SIZE=1><HR ALIGN="RIGHT" WIDTH="4%" SIZE=1><HR ALIGN="RIGHT" WIDTH="4%" SIZE=1></FONT>
+<FONT FACE="宋体" LANG="ZH-CN" SIZE=2>
+<p style="line-height: 150%; margin-top: 0; margin-bottom: 0">标号的真实含义：从这个地方也可以看到另一个问题，我们使用了标号来替代具体的单元地址。事实上，标号的真实含义就是地址数值。在这里它代表了，</FONT><FONT SIZE=2>0</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>，</FONT><FONT SIZE=2>1</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>，</FONT><FONT SIZE=2>4</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>，</FONT><FONT SIZE=2>9</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>，</FONT><FONT SIZE=2>16</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>，</FONT><FONT SIZE=2>25</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>这几个数据在</FONT><FONT SIZE=2>ROM</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>中存放的起点位置。而在以前我们学过的如</FONT><FONT SIZE=2>LCALL  DELAY</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>指令中，</FONT><FONT SIZE=2>DELAY </FONT>
+<FONT FACE="宋体" LANG="ZH-CN" SIZE=2>则代表了以</FONT><FONT SIZE=2>DELAY</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>为标号的那段程序在</FONT><FONT SIZE=2>ROM</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>中存放的起始地址。事实上，</FONT><FONT SIZE=2>CPU</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>正是通过这个地址才找到这段程序的。</p>
+</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=3>
+<p style="line-height: 150%; margin-top: 0; margin-bottom: 0"></P>
+<P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0"><HR ALIGN="RIGHT" WIDTH="4%" SIZE=1></FONT>
+<FONT FACE="宋体" LANG="ZH-CN" SIZE=2>
+<p style="line-height: 150%; margin-top: 0; margin-bottom: 0">可以通过以下的例子再来看一看标号的含义：</p>
+</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=3>
+<p style="line-height: 150%; margin-top: 0; margin-bottom: 0"></P>
+<P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0"><HR ALIGN="RIGHT" WIDTH="4%" SIZE=1></FONT>
+<p style="line-height: 150%; margin-top: 0; margin-bottom: 0"><FONT SIZE=2>MOV     DPTR</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>，</FONT><FONT SIZE=2>#100H</p>
+</FONT><FONT SIZE=3>
+<p style="line-height: 150%; margin-top: 0; margin-bottom: 0"></P>
+</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=3>
+<P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0"><HR ALIGN="RIGHT" WIDTH="4%" SIZE=1></FONT>
+<p style="line-height: 150%; margin-top: 0; margin-bottom: 0"><FONT SIZE=2>MOV     A</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>，</FONT><FONT SIZE=2>R0</p>
+</FONT><FONT SIZE=3>
+<p style="line-height: 150%; margin-top: 0; margin-bottom: 0"></P>
+</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=3>
+<P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0"><HR ALIGN="RIGHT" WIDTH="4%" SIZE=1></FONT>
+<p style="line-height: 150%; margin-top: 0; margin-bottom: 0"><FONT SIZE=2>MOVC    A</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>，</FONT><FONT SIZE=2>@A+DPTR</p>
+</FONT><FONT SIZE=3>
+<p style="line-height: 150%; margin-top: 0; margin-bottom: 0"></P>
+</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=3>
+<P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0"><HR ALIGN="RIGHT" WIDTH="4%" SIZE=1></FONT>
+<p style="line-height: 150%; margin-top: 0; margin-bottom: 0"><FONT SIZE=2>.</p>
+</FONT><FONT SIZE=3>
+<p style="line-height: 150%; margin-top: 0; margin-bottom: 0"></P>
+</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=3>
+<P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0"></P>
+</FONT><FONT SIZE=2>
+<P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">ORG   0100H.</P>
+<P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">&#9;DB   0,1,4,9,16,25</P>
+</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=3>
+<P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0"></P>
+</FONT>
+<P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">
+<FONT FACE="宋体" LANG="ZH-CN" SIZE=2>如果</font><FONT SIZE=2>R0</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>中的值为</FONT><FONT SIZE=2>2</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>，则最终地址为</FONT><FONT SIZE=2>100H+2</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>为</FONT><FONT SIZE=2>102H</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>，到</FONT><FONT SIZE=2>102H</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>单元中找到的是</FONT><FONT SIZE=2>4</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>。这个可以看懂了吧？</font></P>
+<FONT FACE="宋体" LANG="ZH-CN" SIZE=2>
+<P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">那为什么不这样写程序，要用标号呢？不是增加疑惑吗？</P>
+</FONT>
+<P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">
+<FONT FACE="宋体" LANG="ZH-CN" SIZE=2>如果这样写程序的话，在写程序时，我们就必须确定这张表格在</font><FONT SIZE=2>ROM</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>中的具体的位置，如果写完程序后，又想在这段程序前插入一段程序，那么这张表格的位置就又要变了，要改</FONT><FONT SIZE=2>ORG 100H</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>这句话了，我们是经常需要修改程序的，那多麻烦，所以就用标号来替代，只要一编译程序，位置就自动发生变化，我们把这个麻烦事交给计算机&#0;&#0;指</FONT><FONT SIZE=2>PC</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>机去做了。</font></P></DIR>
+<FONT FACE="宋体" LANG="ZH-CN" SIZE=2>
+
+<P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">堆栈操作</P>
+</FONT><FONT SIZE=2>
+<P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">PUSH    direct</P>
+<P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">POP&#9;#9; direct</P>
+</FONT>
+<P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">
+<FONT FACE="宋体" LANG="ZH-CN" SIZE=2>第一条指令称之为推入，就是将</font><FONT SIZE=2>direct</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>中的内容送入堆栈中，第二条指令称之为弹出，就是将堆栈中的内容送回到</FONT><FONT SIZE=2>direct</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>中。推入指令的执行过程是，首先将</FONT><FONT SIZE=2>SP</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>中的值加</FONT><FONT SIZE=2>1</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>，然后把</FONT><FONT SIZE=2>SP</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>中的值当作地址，将</FONT><FONT SIZE=2>direct</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>中的值送进以</FONT><FONT SIZE=2>SP</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>中的值为地址的</FONT><FONT SIZE=2>RAM</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>单元中。例：</font></P>
+<P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">
+<FONT SIZE=2>MOV&#9;SP</font><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>，</FONT><FONT SIZE=2>#5FH</font></P>
+<P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">
+<FONT SIZE=2>MOV&#9;A</font><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>，</FONT><FONT SIZE=2>#100</font></P>
+<P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">
+<FONT SIZE=2>MOV&#9;B</font><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>，</FONT><FONT SIZE=2>#20</font></P>
+<FONT SIZE=2>
+<P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">PUSH&#9;ACC</P>
+<P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">PUSH&#9;B</P>
+</FONT>
+<P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">
+<FONT FACE="宋体" LANG="ZH-CN" SIZE=2>则执行第一条</font><FONT SIZE=2>PUSH  ACC</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>指令是这样的：将</FONT><FONT SIZE=2>SP</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>中的值加</FONT><FONT SIZE=2>1</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>，即变为</FONT><FONT SIZE=2>60H</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>，然后将</FONT><FONT SIZE=2>A</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>中的值送到</FONT><FONT SIZE=2>60H</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>单元中，因此执行完本条指令后，</FONT><FONT SIZE=2> </FONT>
+<FONT FACE="宋体" LANG="ZH-CN" SIZE=2>内存</FONT><FONT SIZE=2>60H</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>单元的值就是</FONT><FONT SIZE=2>100</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>，同样，执行</FONT><FONT SIZE=2>PUSH  B</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>时，是将</FONT><FONT SIZE=2>SP+1</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>，即变为</FONT><FONT SIZE=2>61H</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>，然后将</FONT><FONT SIZE=2>B</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>中的值送入到</FONT><FONT SIZE=2>61H</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>单元中，即执行完本条指令后，</FONT><FONT SIZE=2>61H</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>单元中的值变为</FONT><FONT SIZE=2>20</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>。</font></P>
+<P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">
+<FONT SIZE=2>POP</font><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>指令的执行是这样的，首先将</FONT><FONT SIZE=2>SP</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>中的值作为地址，并将此地址中的数送到</FONT><FONT SIZE=2>POP</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>指令后面的那个</FONT><FONT SIZE=2>direct</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>中，然后</FONT><FONT SIZE=2>SP</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>减</FONT><FONT SIZE=2>1</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>。</font></P>
+<FONT FACE="宋体" LANG="ZH-CN" SIZE=2>
+<P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">接上例：</P>
+</FONT><FONT SIZE=2>
+<P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">POP&#9;B</P>
+<P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">POP&#9;ACC</P>
+</FONT>
+<P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">
+<FONT FACE="宋体" LANG="ZH-CN" SIZE=2>则执行过程是：将</font><FONT SIZE=2>SP</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>中的值（现在是</FONT><FONT SIZE=2>61H</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>）作为地址，取</FONT><FONT SIZE=2>61H</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>单元中的数值（现在是</FONT><FONT SIZE=2>20</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>），送到</FONT><FONT SIZE=2>B</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>中，所以执行完本条指令后</FONT><FONT SIZE=2>B</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>中的值是</FONT><FONT SIZE=2>20</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>，然后将</FONT><FONT SIZE=2>SP</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>减</FONT><FONT SIZE=2>1</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>，因此本条指令执行完后，</FONT><FONT SIZE=2>SP</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>的值变为</FONT><FONT SIZE=2>60H</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>，然后执行</FONT><FONT SIZE=2>POP   ACC</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>，将</FONT><FONT SIZE=2>SP</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>中的值（</FONT><FONT SIZE=2>60H</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>）作为地址，从该地址中取数（现在是</FONT><FONT SIZE=2>100</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>），并送到</FONT><FONT SIZE=2>ACC</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>中，所以执行完本条指令后，</FONT><FONT SIZE=2>ACC</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>中的值是</FONT><FONT SIZE=2>100</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>。</font></P>
+<P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">
+<FONT FACE="宋体" LANG="ZH-CN" SIZE=2>这有什么意义呢？</font><FONT SIZE=2>ACC</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>中的值本来就是</FONT><FONT SIZE=2>100</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>，</FONT><FONT SIZE=2>B</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>中的值本来就是</FONT><FONT SIZE=2>20</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>，是的，在本例中，的确没有意义，但在实际工作中，则在</FONT><FONT SIZE=2>PUSH   B</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>后往往要执行其他指令，而且这些指令会把</FONT><FONT SIZE=2>A</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>中的值，</FONT><FONT SIZE=2>B</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>中的值改掉，所以在程序的结束，如果我们要把</FONT><FONT SIZE=2>A</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>和</FONT><FONT SIZE=2>B</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>中的值恢复原值，那么这些指令就有意义了。</font></P>
+<P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">
+<FONT FACE="宋体" LANG="ZH-CN" SIZE=2>还有一个问题，如果我不用堆栈，比如说在</font><FONT SIZE=2>PUSH   ACC</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>指令处用</FONT><FONT SIZE=2>MOV     60H</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>，</FONT><FONT SIZE=2>A</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>，在</FONT><FONT SIZE=2>PUSH   B</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>处用指令</FONT><FONT SIZE=2>MOV   61H</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>，</FONT><FONT SIZE=2>B</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>，然后用</FONT><FONT SIZE=2>MOV     A</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>，</FONT><FONT SIZE=2>60H</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>，</FONT><FONT SIZE=2>MOV   B</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>，</FONT><FONT SIZE=2>61H</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>来替代两条</FONT><FONT SIZE=2>POP</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>指令，不是也一样吗？是的，从结果上看是一样的，但是从过程看是不一样的，</FONT><FONT SIZE=2>PUSH</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>和</FONT><FONT SIZE=2>POP</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>指令都是单字节，单周期指令，而</FONT><FONT SIZE=2>MOV</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>指令则是双字节，双周期指令。更何况，堆栈的作用不止于此，所以一般的计算机上都设有堆栈，而我们在编写子程序，需要保存数据时，通常也不采用后面的方法，而是用堆栈的方法来实现。</font></P>
+<FONT FACE="宋体" LANG="ZH-CN" SIZE=2>
+<P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">例：写出以下程序的运行结果</P>
+</FONT>
+<P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">
+<FONT SIZE=2>MOV&#9;30H</font><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>，</FONT><FONT SIZE=2>#12</font></P>
+<P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">
+<FONT SIZE=2>MOV&#9;31H</font><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>，</FONT><FONT SIZE=2>#23</font></P>
+<FONT SIZE=2>
+<P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">PUSH&#9;30H</P>
+<P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">PUSH&#9;31H</P>
+<P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">POP&#9;30H</P>
+<P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">POP&#9;31H</P>
+</FONT>
+<P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">
+<FONT FACE="宋体" LANG="ZH-CN" SIZE=2>结果是</font><FONT SIZE=2>30H</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>中的值变为</FONT><FONT SIZE=2>23</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>，而</FONT><FONT SIZE=2>31H</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>中的值则变为</FONT><FONT SIZE=2>12</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>。也就两者进行了数据交换。从这个例子可以看出：使用堆栈时，入栈的书写顺序和出栈的书写顺序必须相反，才能保证数据被送回原位，否则就要出错了。</font></P>
+<P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">
+<FONT FACE="宋体" LANG="ZH-CN" SIZE=2>作业：在</font><FONT SIZE=2>MCS51</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>下执行上面的例程，注意观察内存窗口和堆栈的变化。</font></P><FONT FACE="宋体" LANG="ZH-CN" SIZE=3>
+<P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0"></P></FONT></BODY>
+</HTML>

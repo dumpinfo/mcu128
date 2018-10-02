@@ -1,0 +1,71 @@
+XL
+H 2 areas 4 global symbols
+M demo.c
+S lsl8 Ref0000
+A text size 66 flags 0
+dbfile D:\AVR\demo\demo.c
+dbfunc e delay 0 fV
+dbsym r i 10 c
+dbsym r j 12 c
+dbline FFFFFFFF 0
+dbline 1B 0
+dbline 1D 0
+dbline 1D 4
+dbline 1E 4
+dbline 1E 8
+dbline 1F 8
+dbline 20 A
+dbline 21 C
+dbline 22 E
+dbline 23 10
+dbline 24 12
+dbline 25 14
+dbline 26 16
+dbline 27 18
+dbline 1E 18
+dbline 1E 1A
+dbline 28 1E
+dbline 1D 1E
+dbline 1D 20
+dbline FFFFFFFE 24
+dbline 0 24
+dbfunc e main 26 fV
+dbline FFFFFFFF 26
+dbline 2A 26
+dbline 2C 26
+dbline 2D 2A
+dbline 2F 2E
+dbline 30 2E
+dbline 30 36
+dbline 31 36
+dbline 32 3A
+dbline 33 4E
+dbline 34 50
+dbline 30 50
+dbline 30 5A
+dbline 35 62
+dbline 2F 62
+dbline FFFFFFFE 64
+dbline 0 64
+S _main Def0026
+S _delay Def0000
+A bss size 1 flags 20
+dbfile D:\AVR\demo\demo.c
+dbsym e i 0 c
+S _i Def0000
+T 00 00 00 27 0E C0 22 27 09 C0 00 00 00 00 00 00
+R 00 00 00 00
+T 0E 00 00 00 00 00 00 00 00 00 00 00 23 95 2F 3F
+R 00 00 00 00
+T 1C 00 A8 F3 03 95 0F 3F 80 F3 08 95
+R 00 00 00 00
+T 26 00 8F EF 8A BB 8B BB 1A C0 22 24 20 92 00 00
+R 00 00 00 00 00 0E 01 00
+T 34 00 12 C0 8F EF 8B BB 10 91 00 00 01 E0 0E 94
+R 00 00 00 00 00 0A 01 00
+T 42 00 00 00 20 2E 20 94 3B B2 32 20 3B BA D8 DF
+R 00 00 00 00 12 02 00 00
+T 50 00 80 91 00 00 8F 5F 80 93 00 00 80 91 00 00
+R 00 00 00 00 00 04 01 00 00 0A 01 00 00 0E 01 00
+T 5E 00 88 30 50 F3 E5 CF 08 95
+R 00 00 00 00

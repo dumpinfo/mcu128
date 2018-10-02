@@ -1,0 +1,102 @@
+BL51 BANKED LINKER/LOCATER V5.11                                                        08/18/2005  20:49:47  PAGE 1
+
+
+BL51 BANKED LINKER/LOCATER V5.11, INVOKED BY:
+C:\KEIL\C51\BIN\BL51.EXE wl027.obj TO wl027
+
+
+INPUT MODULES INCLUDED:
+  wl027.obj (WL027)
+
+
+LINK MAP OF MODULE:  wl027 (WL027)
+
+
+            TYPE    BASE      LENGTH    RELOCATION   SEGMENT NAME
+            -----------------------------------------------------
+
+            * * * * * * *   D A T A   M E M O R Y   * * * * * * *
+            REG     0000H     0008H     ABSOLUTE     "REG BANK 0"
+
+            * * * * * * *   C O D E   M E M O R Y   * * * * * * *
+            CODE    0000H     0094H     ABSOLUTE     
+
+
+
+SYMBOL TABLE OF MODULE:  wl027 (WL027)
+
+  VALUE           TYPE          NAME
+  ----------------------------------
+
+  -------         MODULE        WL027
+  D:00E0H         SYMBOL        ACC
+  C:008DH         SYMBOL        DEL1
+  C:008FH         SYMBOL        DEL2
+  C:008BH         SYMBOL        DELAY
+  B:00A8H.7       SYMBOL        EA
+  B:00A8H.1       SYMBOL        ET0
+  B:0090H.4       SYMBOL        K1
+  B:0090H.5       SYMBOL        K2
+  C:0057H         SYMBOL        LOOP1
+  C:005DH         SYMBOL        LOOP2
+  C:0062H         SYMBOL        LOOP3
+  C:0030H         SYMBOL        MAIN
+  D:0080H         SYMBOL        P0
+  D:0090H         SYMBOL        P1
+  D:00D0H         SYMBOL        PSW
+  D:008CH         SYMBOL        TH0
+  C:0076H         SYMBOL        TIME0
+  D:008AH         SYMBOL        TL0
+  D:0089H         SYMBOL        TMOD
+  B:0088H.4       SYMBOL        TR0
+  C:0000H         LINE#         30
+  C:000BH         LINE#         32
+  C:0030H         LINE#         35
+  C:0032H         LINE#         36
+  C:0034H         LINE#         37
+  C:0037H         LINE#         38
+  C:0039H         LINE#         39
+  C:003BH         LINE#         40
+  C:003EH         LINE#         41
+  C:0040H         LINE#         42
+BL51 BANKED LINKER/LOCATER V5.11                                                      08/18/2005  20:49:47  PAGE 2
+
+
+  C:0042H         LINE#         43
+  C:0045H         LINE#         46
+  C:0048H         LINE#         47
+  C:004BH         LINE#         48
+  C:004EH         LINE#         49
+  C:0050H         LINE#         50
+  C:0052H         LINE#         51
+  C:0055H         LINE#         52
+  C:0057H         LINE#         54
+  C:005AH         LINE#         55
+  C:005DH         LINE#         57
+  C:0060H         LINE#         58
+  C:0062H         LINE#         60
+  C:0064H         LINE#         61
+  C:0066H         LINE#         62
+  C:0069H         LINE#         63
+  C:006CH         LINE#         64
+  C:006EH         LINE#         65
+  C:0070H         LINE#         66
+  C:0073H         LINE#         67
+  C:0076H         LINE#         72
+  C:0078H         LINE#         73
+  C:007AH         LINE#         74
+  C:007DH         LINE#         75
+  C:0080H         LINE#         76
+  C:0083H         LINE#         77
+  C:0086H         LINE#         78
+  C:0088H         LINE#         79
+  C:008AH         LINE#         80
+  C:008BH         LINE#         84
+  C:008DH         LINE#         85
+  C:008FH         LINE#         86
+  C:0091H         LINE#         87
+  C:0093H         LINE#         88
+  -------         ENDMOD        WL027
+
+Program Size: data=8.0 xdata=0 code=148
+LINK/LOCATE RUN COMPLETE.  0 WARNING(S),  0 ERROR(S)

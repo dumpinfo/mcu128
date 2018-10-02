@@ -1,0 +1,218 @@
+BL51 BANKED LINKER/LOCATER V5.12                                                        02/05/2006  14:22:29  PAGE 1
+
+
+BL51 BANKED LINKER/LOCATER V5.12, INVOKED BY:
+D:\PROGRAM FILES\KEIL\C51\BIN\BL51.EXE 1602LCD_GD.obj TO WL029
+
+
+INPUT MODULES INCLUDED:
+  1602LCD_GD.obj (1602LCD_GD)
+
+
+LINK MAP OF MODULE:  WL029 (1602LCD_GD)
+
+
+            TYPE    BASE      LENGTH    RELOCATION   SEGMENT NAME
+            -----------------------------------------------------
+
+            * * * * * * *   D A T A   M E M O R Y   * * * * * * *
+            REG     0000H     0008H     ABSOLUTE     "REG BANK 0"
+
+            * * * * * * *   C O D E   M E M O R Y   * * * * * * *
+            CODE    0000H     016FH     ABSOLUTE     
+
+
+
+SYMBOL TABLE OF MODULE:  WL029 (1602LCD_GD)
+
+  VALUE           TYPE          NAME
+  ----------------------------------
+
+  -------         MODULE        1602LCD_GD
+  D:00E0H         SYMBOL        ACC
+  C:00EDH         SYMBOL        BUSYLOOP
+  C:012FH         SYMBOL        CHAR1
+  C:013FH         SYMBOL        CHAR2
+  C:014FH         SYMBOL        CHAR3
+  C:015FH         SYMBOL        CHAR4
+  C:00E2H         SYMBOL        CHECKBUSY
+  C:0107H         SYMBOL        DELAY
+  C:0126H         SYMBOL        DELAY1MS
+  C:0110H         SYMBOL        DELAY4
+  C:011DH         SYMBOL        DELAY5MS
+  C:0109H         SYMBOL        DL1
+  C:010BH         SYMBOL        DL2
+  C:0112H         SYMBOL        DL3
+  C:0114H         SYMBOL        DL4
+  C:0116H         SYMBOL        DL5
+  C:011FH         SYMBOL        DL6
+  C:0121H         SYMBOL        DL7
+  C:0128H         SYMBOL        DL8
+  C:012AH         SYMBOL        DL9
+  C:008EH         SYMBOL        LCDSET1
+  C:00A1H         SYMBOL        LCDSET2
+  C:00B4H         SYMBOL        LCD_CMD
+  C:00B6H         SYMBOL        LCD_CMD_NC
+  B:00A0H.2       SYMBOL        LCD_EN
+  C:0065H         SYMBOL        LCD_INIT
+  B:00A0H.0       SYMBOL        LCD_RS
+  B:00A0H.1       SYMBOL        LCD_RW
+  C:00D1H         SYMBOL        LCD_WDATA
+  C:0030H         SYMBOL        MAIN
+BL51 BANKED LINKER/LOCATER V5.12                                                      02/05/2006  14:22:29  PAGE 2
+
+
+  C:0037H         SYMBOL        MAIN1
+  D:0080H         SYMBOL        P0
+  D:00A0H         SYMBOL        P2
+  C:00F6H         SYMBOL        SHAN
+  D:0081H         SYMBOL        SP
+  C:00C7H         SYMBOL        WRITE0
+  C:00C5H         SYMBOL        WRITE1
+  C:0000H         LINE#         30
+  C:0030H         LINE#         35
+  C:0033H         LINE#         36
+  C:0035H         LINE#         37
+  C:0037H         LINE#         39
+  C:0039H         LINE#         40
+  C:003CH         LINE#         41
+  C:003EH         LINE#         42
+  C:0040H         LINE#         43
+  C:0042H         LINE#         44
+  C:0045H         LINE#         45
+  C:0047H         LINE#         46
+  C:0049H         LINE#         47
+  C:004BH         LINE#         48
+  C:004DH         LINE#         50
+  C:004FH         LINE#         51
+  C:0052H         LINE#         52
+  C:0054H         LINE#         53
+  C:0056H         LINE#         54
+  C:0058H         LINE#         55
+  C:005BH         LINE#         56
+  C:005DH         LINE#         57
+  C:005FH         LINE#         58
+  C:0061H         LINE#         59
+  C:0063H         LINE#         60
+  C:0065H         LINE#         66
+  C:0067H         LINE#         67
+  C:0069H         LINE#         68
+  C:006BH         LINE#         70
+  C:006DH         LINE#         71
+  C:006FH         LINE#         72
+  C:0071H         LINE#         74
+  C:0073H         LINE#         75
+  C:0075H         LINE#         76
+  C:0077H         LINE#         78
+  C:0079H         LINE#         79
+  C:007BH         LINE#         80
+  C:007DH         LINE#         82
+  C:007FH         LINE#         83
+  C:0081H         LINE#         85
+  C:0083H         LINE#         86
+  C:0085H         LINE#         88
+  C:0087H         LINE#         89
+  C:0089H         LINE#         91
+  C:008BH         LINE#         92
+  C:008DH         LINE#         93
+  C:008EH         LINE#         98
+  C:0090H         LINE#         99
+  C:0092H         LINE#         100
+  C:0094H         LINE#         101
+BL51 BANKED LINKER/LOCATER V5.12                                                      02/05/2006  14:22:29  PAGE 3
+
+
+  C:0096H         LINE#         102
+  C:0098H         LINE#         103
+  C:009AH         LINE#         104
+  C:009CH         LINE#         105
+  C:009EH         LINE#         106
+  C:00A0H         LINE#         107
+  C:00A1H         LINE#         109
+  C:00A3H         LINE#         110
+  C:00A5H         LINE#         111
+  C:00A7H         LINE#         112
+  C:00A9H         LINE#         113
+  C:00ABH         LINE#         114
+  C:00ADH         LINE#         115
+  C:00AFH         LINE#         116
+  C:00B1H         LINE#         117
+  C:00B3H         LINE#         118
+  C:00B4H         LINE#         124
+  C:00B6H         LINE#         126
+  C:00B8H         LINE#         127
+  C:00BAH         LINE#         128
+  C:00BCH         LINE#         129
+  C:00BEH         LINE#         130
+  C:00BFH         LINE#         131
+  C:00C0H         LINE#         132
+  C:00C1H         LINE#         133
+  C:00C2H         LINE#         134
+  C:00C4H         LINE#         135
+  C:00C5H         LINE#         140
+  C:00C7H         LINE#         142
+  C:00C8H         LINE#         143
+  C:00C9H         LINE#         144
+  C:00CAH         LINE#         145
+  C:00CCH         LINE#         146
+  C:00CEH         LINE#         147
+  C:00D0H         LINE#         148
+  C:00D1H         LINE#         154
+  C:00D3H         LINE#         155
+  C:00D5H         LINE#         156
+  C:00D7H         LINE#         157
+  C:00D9H         LINE#         158
+  C:00DBH         LINE#         159
+  C:00DCH         LINE#         160
+  C:00DDH         LINE#         161
+  C:00DEH         LINE#         162
+  C:00DFH         LINE#         163
+  C:00E1H         LINE#         164
+  C:00E2H         LINE#         171
+  C:00E4H         LINE#         172
+  C:00E7H         LINE#         173
+  C:00E9H         LINE#         174
+  C:00EBH         LINE#         175
+  C:00EDH         LINE#         177
+  C:00EEH         LINE#         178
+  C:00F1H         LINE#         179
+  C:00F3H         LINE#         180
+  C:00F5H         LINE#         181
+  C:00F6H         LINE#         186
+BL51 BANKED LINKER/LOCATER V5.12                                                      02/05/2006  14:22:29  PAGE 4
+
+
+  C:00F8H         LINE#         187
+  C:00FAH         LINE#         188
+  C:00FCH         LINE#         189
+  C:00FEH         LINE#         190
+  C:0100H         LINE#         191
+  C:0102H         LINE#         192
+  C:0104H         LINE#         193
+  C:0106H         LINE#         194
+  C:0107H         LINE#         200
+  C:0109H         LINE#         201
+  C:010BH         LINE#         202
+  C:010DH         LINE#         203
+  C:010FH         LINE#         204
+  C:0110H         LINE#         210
+  C:0112H         LINE#         211
+  C:0114H         LINE#         212
+  C:0116H         LINE#         213
+  C:0118H         LINE#         214
+  C:011AH         LINE#         215
+  C:011CH         LINE#         216
+  C:011DH         LINE#         222
+  C:011FH         LINE#         223
+  C:0121H         LINE#         224
+  C:0123H         LINE#         225
+  C:0125H         LINE#         226
+  C:0126H         LINE#         231
+  C:0128H         LINE#         232
+  C:012AH         LINE#         233
+  C:012CH         LINE#         234
+  C:012EH         LINE#         235
+  -------         ENDMOD        1602LCD_GD
+
+Program Size: data=8.0 xdata=0 code=367
+LINK/LOCATE RUN COMPLETE.  0 WARNING(S),  0 ERROR(S)

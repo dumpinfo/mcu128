@@ -1,0 +1,94 @@
+XL
+H 2 areas 8 global symbols
+M test.c
+S push_gset3 Ref0000
+S div32s Ref0000
+S pop_gset3 Ref0000
+A text size 90 flags 0
+dbfile F:\工程文件\avr\例程\mega128\232\test.c
+dbfunc e USART0_Init 0 fV
+dbsym r tmp A i
+dbsym r baud A i
+dbline FFFFFFFF 6
+dbline 8 6
+dbline B 6
+dbline C 4E
+dbline D 56
+dbline F 58
+dbline 11 5C
+dbline FFFFFFFE 62
+dbline 12 62
+dbline 0 66
+dbfunc e USART0_Transmit 68 fV
+dbsym r data 10 c
+dbline FFFFFFFF 68
+dbline 16 68
+dbline 19 68
+dbline 18 68
+dbline 1B 6C
+dbline FFFFFFFE 6E
+dbline 1C 6E
+dbline 0 6E
+dbfunc e USART0_Receive 70 fc
+dbline FFFFFFFF 70
+dbline 21 70
+dbline 24 70
+dbline 23 70
+dbline 26 74
+dbline FFFFFFFE 76
+dbline 0 76
+dbfunc e main 78 fV
+dbsym r n 14 c
+dbsym r tmp 14 c
+dbline FFFFFFFF 78
+dbline 2D 78
+dbline 2E 78
+dbline 2E 7A
+dbline 30 7A
+dbline 34 82
+dbline 35 82
+dbline 36 86
+dbline 37 86
+dbline 38 8A
+dbline 3A 8C
+dbline 3B 8C
+dbline 33 8C
+dbline FFFFFFFE 8E
+dbline 3C 8E
+dbline 0 8E
+S _main Def0078
+S _USART0_Init Def0000
+S _USART0_Receive Def0070
+S _USART0_Transmit Def0068
+A lit size 15 flags 0
+dbfile F:\工程文件\avr\例程\mega128\232\test.c
+dbsym e buffer 0 A[21:21]kc
+S _buffer Def0000
+T 00 00 68 74 74 70 3A 2F 2F 77 77 77 2E 61 76 72
+R 00 00 01 00
+T 0E 00 76 69 2E 63 6F 6D 00
+R 00 00 01 00
+T 00 00 0E 94 00 00 58 01 15 01 44 24 55 24 40 E8
+R 00 00 00 00 12 04 00 00
+T 0E 00 54 E8 6E E1 70 E0 5A 92 4A 92 3A 92 2A 92
+R 00 00 00 00
+T 1C 00 8A 01 9B 01 0E 94 00 00 40 E1 50 E0 60 E0
+R 00 00 00 00 12 08 01 00
+T 2A 00 70 E0 7A 93 6A 93 5A 93 4A 93 0E 94 00 00
+R 00 00 00 00 12 0E 01 00
+T 38 00 18 01 29 01 41 E0 50 E0 60 E0 70 E0 24 1A
+R 00 00 00 00
+T 46 00 35 0A 46 0A 57 0A 51 01 23 2C 33 24 20 92
+R 00 00 00 00
+T 54 00 90 00 A9 B8 88 E1 8A B9 86 E0 80 93 95 00
+R 00 00 00 00
+T 62 00 0E 94 00 00 08 95
+R 00 00 00 00 12 04 02 00
+T 68 00 5D 9B FE CF 0C B9 08 95
+R 00 00 00 00
+T 70 00 5F 9B FE CF 0C B1 08 95
+R 00 00 00 00
+T 78 00 44 27 00 E8 15 E2 C0 DF 05 C0 5F 9B 03 C0
+R 00 00 00 00
+T 86 00 F4 DF 40 2F EE DF FA CF 08 95
+R 00 00 00 00

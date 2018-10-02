@@ -1,0 +1,175 @@
+BL51 BANKED LINKER/LOCATER V5.03                                                        01/27/2008  14:48:05  PAGE 1
+
+
+BL51 BANKED LINKER/LOCATER V5.03, INVOKED BY:
+D:\KEIL\C51\BIN\BL51.EXE main.obj TO Lcd RAMSIZE (256)
+
+
+MEMORY MODEL: SMALL
+
+
+INPUT MODULES INCLUDED:
+  main.obj (MAIN)
+  D:\KEIL\C51\LIB\C51S.LIB (?C_STARTUP)
+  D:\KEIL\C51\LIB\C51S.LIB (?C?CLDPTR)
+
+
+LINK MAP OF MODULE:  Lcd (MAIN)
+
+
+            TYPE    BASE      LENGTH    RELOCATION   SEGMENT NAME
+            -----------------------------------------------------
+
+            * * * * * * *   D A T A   M E M O R Y   * * * * * * *
+            REG     0000H     0008H     ABSOLUTE     "REG BANK 0"
+            DATA    0008H     0004H     UNIT         _DATA_GROUP_
+            IDATA   000CH     0001H     UNIT         ?STACK
+
+            * * * * * * *   C O D E   M E M O R Y   * * * * * * *
+            CODE    0000H     0003H     ABSOLUTE     
+            CODE    0003H     0052H     UNIT         ?PR?MAIN?MAIN
+            CODE    0055H     0025H     UNIT         ?PR?_WRITELINE?MAIN
+            CODE    007AH     0021H     UNIT         ?CO?MAIN
+            CODE    009BH     001EH     UNIT         ?PR?INITLCD?MAIN
+            CODE    00B9H     0019H     UNIT         ?C?LIB_CODE
+            CODE    00D2H     0010H     UNIT         ?PR?_DELAY_MS?MAIN
+            CODE    00E2H     000CH     UNIT         ?C_C51STARTUP
+            CODE    00EEH     0008H     UNIT         ?PR?DELAY?MAIN
+            CODE    00F6H     0008H     UNIT         ?PR?_WRITEDATA?MAIN
+            CODE    00FEH     0008H     UNIT         ?PR?_WRITECOM?MAIN
+
+
+
+OVERLAY MAP OF MODULE:   Lcd (MAIN)
+
+
+SEGMENT                          DATA_GROUP 
+  +--> CALLED SEGMENT          START    LENGTH
+----------------------------------------------
+?C_C51STARTUP                  -----    -----
+  +--> ?PR?MAIN?MAIN
+
+?PR?MAIN?MAIN                  0008H    0001H
+  +--> ?PR?INITLCD?MAIN
+  +--> ?CO?MAIN
+  +--> ?PR?_WRITELINE?MAIN
+  +--> ?PR?_WRITECOM?MAIN
+  +--> ?PR?_DELAY_MS?MAIN
+
+?PR?INITLCD?MAIN               -----    -----
+  +--> ?PR?_WRITECOM?MAIN
+
+BL51 BANKED LINKER/LOCATER V5.03                                                      01/27/2008  14:48:05  PAGE 2
+
+
+?PR?_WRITECOM?MAIN             -----    -----
+  +--> ?PR?DELAY?MAIN
+
+?PR?_WRITELINE?MAIN            0009H    0003H
+  +--> ?PR?_WRITEDATA?MAIN
+
+?PR?_WRITEDATA?MAIN            -----    -----
+  +--> ?PR?DELAY?MAIN
+
+
+
+SYMBOL TABLE OF MODULE:  Lcd (MAIN)
+
+  VALUE           TYPE          NAME
+  ----------------------------------
+
+  -------         MODULE        MAIN
+  C:0000H         SYMBOL        _ICE_DUMMY_
+  D:00B0H         PUBLIC        P3
+  C:00EEH         PUBLIC        delay
+  C:0003H         PUBLIC        main
+  C:00F6H         PUBLIC        _writedata
+  C:00D2H         PUBLIC        _delay_ms
+  C:0055H         PUBLIC        _writeline
+  C:00FEH         PUBLIC        _writecom
+  C:009BH         PUBLIC        initlcd
+  -------         PROC          MAIN
+  -------         DO            
+  D:0008H         SYMBOL        i
+  -------         ENDDO         
+  C:0003H         LINE#         17
+  C:0003H         LINE#         18
+  C:0003H         LINE#         20
+  C:0006H         LINE#         21
+  C:0006H         LINE#         22
+  C:0006H         LINE#         23
+  C:000FH         LINE#         24
+  C:0014H         LINE#         25
+  C:001DH         LINE#         26
+  C:0020H         LINE#         27
+  C:0020H         LINE#         28
+  C:0027H         LINE#         29
+  C:002CH         LINE#         31
+  C:0033H         LINE#         32
+  C:0036H         LINE#         33
+  C:0036H         LINE#         34
+  C:003DH         LINE#         35
+  C:0042H         LINE#         36
+  C:0049H         LINE#         37
+  C:004EH         LINE#         38
+  C:0053H         LINE#         39
+  -------         ENDPROC       MAIN
+  -------         PROC          _DELAY_MS
+  D:0006H         SYMBOL        ticks
+  -------         DO            
+  D:0005H         SYMBOL        i
+  -------         ENDDO         
+BL51 BANKED LINKER/LOCATER V5.03                                                      01/27/2008  14:48:05  PAGE 3
+
+
+  C:00D2H         LINE#         43
+  C:00D2H         LINE#         44
+  C:00D2H         LINE#         46
+  C:00D6H         LINE#         47
+  C:00E1H         LINE#         49
+  -------         ENDPROC       _DELAY_MS
+  -------         PROC          DELAY
+  C:00EEH         LINE#         51
+  C:00EEH         LINE#         52
+  C:00EEH         LINE#         53
+  C:00F5H         LINE#         54
+  -------         ENDPROC       DELAY
+  -------         PROC          _WRITEDATA
+  D:0007H         SYMBOL        lcddata
+  C:00F6H         LINE#         56
+  C:00F6H         LINE#         57
+  C:00F6H         LINE#         58
+  C:00FBH         LINE#         59
+  -------         ENDPROC       _WRITEDATA
+  -------         PROC          _WRITECOM
+  D:0007H         SYMBOL        lcddata
+  C:00FEH         LINE#         62
+  C:00FEH         LINE#         63
+  C:00FEH         LINE#         64
+  C:0103H         LINE#         65
+  -------         ENDPROC       _WRITECOM
+  -------         PROC          _WRITELINE
+  D:0009H         SYMBOL        str
+  C:0055H         LINE#         68
+  C:005BH         LINE#         69
+  C:005BH         LINE#         70
+  C:0079H         LINE#         71
+  -------         ENDPROC       _WRITELINE
+  -------         PROC          INITLCD
+  C:009BH         LINE#         74
+  C:009BH         LINE#         75
+  C:009BH         LINE#         76
+  C:00A0H         LINE#         77
+  C:00A5H         LINE#         78
+  C:00AAH         LINE#         79
+  C:00AFH         LINE#         80
+  C:00B4H         LINE#         81
+  -------         ENDPROC       INITLCD
+  -------         ENDMOD        MAIN
+
+  -------         MODULE        ?C?CLDPTR
+  C:00B9H         PUBLIC        ?C?CLDPTR
+  -------         ENDMOD        ?C?CLDPTR
+
+Program Size: data=13.0 xdata=0 code=262
+LINK/LOCATE RUN COMPLETE.  0 WARNING(S),  0 ERROR(S)

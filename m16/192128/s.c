@@ -1,0 +1,140 @@
+//ICC-AVR application builder : 2007-10-25 22:16:04
+// Target : M16
+// Crystal: 6.0000Mhz
+
+#include <iom16v.h>
+#include <macros.h>
+
+#define LCD_DDR  DDRA
+#define LCD_PORT PORTA
+
+#define LCD_SID (1<<0)
+#define LCD_DL  (1<<1)
+#define LCD_DM  (1<<2)
+#define LCD_DR  (1<<3)
+#define LCD_DLL (1<<4)
+#define LCD_M   (1<<5)
+#define LCD_CL1 (1<<6)
+#define LCD_CL2 (1<<7)
+
+#define SET_LCD_SID()  (LCD_PORT |= LCD_SID)
+#define SET_LCD_DL()	(LCD_PORT |= LCD_DM)
+#define SET_LCD_DM()	(LCD_PORT |= LCD_DM)
+#define SET_LCD_DR()	(LCD_PORT |= LCD_DR)
+
+#define SET_LCD_DLL()	 (LCD_PORT |= LCD_DLL)
+#define SET_LCD_M() 	 (LCD_PORT |= LCD_M)
+#define SET_LCD_CL1()	 (LCD_PORT |= LCD_CL1)
+#define SET_LCD_CL2()	 (LCD_PORT |= LCD_CL2)
+
+
+#define CLR_LCD_SID() (LCD_PORT &= ~LCD_SID)
+#define CLR_LCD_DL()	(LCD_PORT &= ~LCD_DM)
+#define CLR_LCD_DM()	(LCD_PORT &= ~LCD_DM)
+#define CLR_LCD_DR()	(LCD_PORT &= ~LCD_DR)
+
+#define CLR_LCD_DLL()	 (LCD_PORT &= ~LCD_DLL)
+#define CLR_LCD_M()	 (LCD_PORT &= ~LCD_M)
+#define CLR_LCD_CL1()	 (LCD_PORT &= ~LCD_CL1)
+#define CLR_LCD_CL2()	 (LCD_PORT &= ~LCD_CL2)
+
+unsigned char data = 0;
+
+void port_init(void)
+{
+ PORTA = 0x00;
+ DDRA  = 0xFF;
+ PORTB = 0x00;
+ DDRB  = 0x00;
+ PORTC = 0x00; //m103 output only
+ DDRC  = 0x00;
+ PORTD = 0x00;
+ DDRD  = 0x00;
+}
+
+//TIMER0 initialize - prescale:1
+// WGM: Normal
+// desired value: 10uSec
+// actual value: 10.000uSec (0.0%)
+void timer0_init(void)
+{
+ TCCR0 = 0x00; //stop
+ TCNT0 = 0xC4; //set count
+ OCR0  = 0x3C;  //set compare
+ TCCR0 = 0x04; //start timer
+}
+
+#pragma interrupt_handler timer0_ovf_isr:10
+void timer0_ovf_isr(void)
+{
+ TCNT0 = 0xC4; //reload counter value
+ data++;
+ if(data == 2)
+ {
+ SET_LCD_DLL();
+ data = 0;
+ }
+ else
+ CLR_LCD_DLL();
+ 
+ SET_LCD_CL1();
+ CLR_LCD_CL1();
+ 
+ LCD_PORT = 0X0;     //×°ÔØÊý¾Ý
+ CLR_LCD_CL2();
+ SET_LCD_CL2();
+ 
+ 
+}
+
+//TIMER1 initialize - prescale:1
+// WGM: 0) Normal, TOP=0xFFFF
+// desired value: 1KHz
+// actual value:  1.000KHz (0.0%)
+void timer1_init(void)
+{
+ TCCR1B = 0x00; //stop
+ TCNT1H = 0xE8; //setup
+ TCNT1L = 0x90;
+ OCR1AH = 0x17;
+ OCR1AL = 0x70;
+ OCR1BH = 0x17;
+ OCR1BL = 0x70;
+ ICR1H  = 0x17;
+ ICR1L  = 0x70;
+ TCCR1A = 0x00;
+ TCCR1B = 0x01; //start Timer
+}
+
+#pragma interrupt_handler timer1_ovf_isr:9
+void timer1_ovf_isr(void)
+{
+ //TIMER1 has overflowed
+ TCNT1H = 0xE8; //reload counter high value
+ TCNT1L = 0x90; //reload counter low value
+}
+
+//call this routine to initialize all peripherals
+void init_devices(void)
+{
+ //stop errant interrupts until set up
+ CLI(); //disable all interrupts
+ port_init();
+ timer0_init();
+ timer1_init();
+
+ MCUCR = 0x00;
+ GICR  = 0x00;
+ TIMSK = 0x05; //timer interrupt sources
+ SEI(); //re-enable interrupts
+ //all peripherals are now initialized
+}
+
+//
+void main(void)
+{
+ init_devices();
+ SET_LCD_CL2();
+ //insert your functional code here...
+}
+

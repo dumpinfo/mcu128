@@ -1,0 +1,206 @@
+<HTML>
+<HEAD>
+<META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=gb_2312-80">
+<META NAME="Generator" CONTENT="Microsoft FrontPage 5.0">
+<TITLE>单片机指令（二）</TITLE>
+<META NAME="Template" CONTENT="C:\PROGRAM FILES\MICROSOFT OFFICE\OFFICE\html.dot">
+</HEAD>
+<BODY LINK="#0000ff" VLINK="#800080" background="../back.jpg">
+<FONT FACE="宋体" LANG="ZH-CN">
+<P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">
+<font size="2">单片机指令（二）</font></P>
+<OL>
+
+<P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0"><LI>
+<p style="line-height: 150%; margin-top: 0; margin-bottom: 0"><font size="2">数据传递类指令</LI></font></p>
+<p style="line-height: 150%; margin-top: 0; margin-bottom: 0"></P></OL>
+
+</FONT>
+<P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">
+<font size="2" FACE="宋体" LANG="ZH-CN">（3）以直接地址为目的操作数的指令</font></P>
+<P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">
+<FONT FACE="宋体" LANG="ZH-CN"><font size="2">MOV&#9;direct,A</font></font><font size="2"><FONT FACE="宋体" LANG="ZH-CN">&#9;&#9;例：</FONT><font face="宋体">
+</font></font><font size="2" FACE="宋体" LANG="ZH-CN">MOV 20H,A</font></P>
+<FONT FACE="宋体" LANG="ZH-CN">
+<P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">
+<font size="2">MOV&#9;direct,Rn MOV 20H,R1</font></P>
+<P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">
+<font size="2">MOV&#9;direct1,direct2 MOV 20H,30H</font></P>
+<P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">
+<font size="2">MOV direct,@Ri MOV 20H,@R1</font></P>
+<P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">
+<font size="2">MOV&#9;direct,#data MOV 20H,#34H</font></P>
+</FONT>
+<P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">
+<font size="2" FACE="宋体" LANG="ZH-CN">（4）以间接地址为目的操作数的指令</font></P>
+<P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">
+<FONT FACE="宋体" LANG="ZH-CN"><font size="2">MOV @Ri,A </font> </font>
+<FONT FACE="宋体" LANG="ZH-CN" size="2">例：MOV @R0,A</FONT></P>
+<FONT FACE="宋体" LANG="ZH-CN">
+<P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">
+<font size="2">MOV @Ri,direct MOV @R1,20H</font></P>
+<P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">
+<font size="2">MOV @Ri,#data MOV @R0,#34H</font></P>
+</FONT>
+<P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">
+<font size="2" FACE="宋体" LANG="ZH-CN">（5）十六位数的传递指令</font></P>
+<P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">
+<FONT FACE="宋体" LANG="ZH-CN"><font size="2">MOV DPTR</font></font><FONT FACE="宋体" LANG="ZH-CN" size="2">，#data16</FONT></P>
+<P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">
+<font size="2" FACE="宋体" LANG="ZH-CN">8051是一种8位机，这是唯一的一条16位立即数传递指令，其功能是将一个16位的立即数送入DPTR中去。其中高8位送入DPH，低8位送入DPL。例：MOV DPTR，#1234H，则执行完了之后DPH中的值为12H，DPL中的值为34H。反之，如果我们分别向DPH，DPL送数，则结果也一样。如有下面两条指令：MOV DPH，#35H，MOV DPL，#12H。则就相当于执行了MOV DPTR，#3512H。</font></P>
+<FONT FACE="宋体" LANG="ZH-CN" size="2">
+<P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">综合练习：</P>
+</FONT><OL><FONT FACE="宋体" LANG="ZH-CN">
+
+<P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0"><LI>
+  <p style="line-height: 150%; margin-top: 0; margin-bottom: 0"><font size="2">给出每条指令执行后的结果</LI></font></p>
+  <p style="line-height: 150%; margin-top: 0; margin-bottom: 0"></P></font>
+<TABLE BORDER CELLSPACING=1 CELLPADDING=7 WIDTH=607>
+<TR><TD WIDTH="28%" VALIGN="TOP" HEIGHT=113>
+<FONT FACE="宋体" LANG="ZH-CN">
+<P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">
+<b><font size="2">MOV 23H,#30H</font></b></P><DIR>
+<DIR>
+
+<P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">
+<b><font size="2">MOV 12H,#34H</font></b></P>
+<P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">
+<b><font size="2">MOV R0,#23H</font></b></P>
+<P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">
+<b><font size="2">MOV R7,#22H</font></b></P>
+<P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">
+<b><font size="2">MOV R1,12H</font></b></P>
+<P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">
+<b><font size="2">MOV A,@R0</font></b></P>
+<P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">
+<b><font size="2">MOV 34H,@R1</font></b></DIR>
+</DIR>
+</FONT></TD>
+<TD WIDTH="22%" VALIGN="TOP" HEIGHT=113>
+<FONT FACE="宋体" LANG="ZH-CN">
+<P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">
+<b><font size="2">(23h)=30h</font></b></P><DIR>
+<DIR>
+
+<P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">
+<b><font size="2">(12h)=34h</font></b></P>
+<P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">
+<b><font size="2">(R0)=23H</font></b></P>
+<P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">
+<b><font size="2">(R7)=22H</font></b></P>
+<P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">
+<b><font size="2">(R1)=12H</font></b></P>
+<P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">
+<b><font size="2">(A)=30H</font></b></P>
+<P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">
+<b><font size="2">(34H)=34H</font></b></DIR>
+</DIR>
+</FONT></TD>
+<TD WIDTH="28%" VALIGN="TOP" HEIGHT=113>
+<FONT FACE="宋体" LANG="ZH-CN">
+<P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">
+<b><font size="2">MOV 45H,34H</font></b></P><DIR>
+<DIR>
+
+<P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">
+<b><font size="2">MOV DPTR,#6712H</font></b></P>
+<P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">
+<b><font size="2">MOV 12H,DPH</font></b></P>
+<P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">
+<b><font size="2">MOV R0,DPL</font></b></P>
+<P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">
+<b><font size="2">MOV A,@R0</font></b></DIR>
+</DIR>
+</FONT></TD>
+<TD WIDTH="22%" VALIGN="TOP" HEIGHT=113>
+<FONT FACE="宋体" LANG="ZH-CN">
+<P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">
+<b><font size="2">(45H)=34H</font></b></P><DIR>
+<DIR>
+
+<P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">
+<b><font size="2">(DPTR)=6712H</font></b></P>
+<P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">
+<b><font size="2">(12H)=67H</font></b></P>
+<P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">
+<b><font size="2">(R0)=12H</font></b></P>
+<P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">
+<b><font size="2">(A)=67H</font></b></DIR>
+</DIR>
+</FONT></TD>
+</TR>
+</TABLE>
+
+<P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">
+<font size="2" FACE="宋体" LANG="ZH-CN">说明：用括号括起来代表内容，如（23H）则代表内部RAM23H单元中的值，（A）则代表累加器A单元中的值。</font></P><FONT FACE="宋体" LANG="ZH-CN">
+<P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0"><LI>
+  <p style="line-height: 150%; margin-top: 0; margin-bottom: 0"><font size="2">上机练习：</LI></font></font><LI>
+  <p style="line-height: 150%; margin-top: 0; margin-bottom: 0">
+  <font size="2" FACE="宋体" LANG="ZH-CN">进入</font><font size="2"><FONT FACE="宋体" LANG="ZH-CN">DOS状态，进入WAVE所在的目录，例D:\WAVE</FONT><font face="宋体"></LI>
+  </font></font> 
+  <LI>
+  <p style="line-height: 150%; margin-top: 0; margin-bottom: 0">
+  <font size="2" FACE="宋体" LANG="ZH-CN">键入</font><font size="2"><FONT FACE="宋体" LANG="ZH-CN">MCS51，出现如下画面</FONT><font face="宋体"></LI>
+  </font></font>
+  <FONT FACE="宋体" LANG="ZH-CN"> 
+  </p>
+  <p style="line-height: 150%; margin-top: 0; margin-bottom: 0"></P>
+  </FONT><FONT FACE="宋体" LANG="ZH-CN" size="2"> 
+  <P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">
+  <b><IMG SRC="1101.gif" width="564" height="303">图1</b></P>
+  </FONT><FONT FACE="宋体" LANG="ZH-CN"> 
+  <P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">
+  </FONT> 
+  <LI>
+  <p style="line-height: 150%; margin-top: 0; margin-bottom: 0">
+  <font size="2" FACE="宋体" LANG="ZH-CN">按</font><font size="2"><FONT FACE="宋体" LANG="ZH-CN">File-&gt;Open，出现对话框后，在Name处输入一个文件名（见图2），如果是下面列表中已存在的，则打开这个文件，如果不存在这个文件，则新建一个文件（见图3）</FONT><font face="宋体"></LI>
+  </font></font>
+  <FONT FACE="宋体" LANG="ZH-CN"> 
+  </p>
+  <p style="line-height: 150%; margin-top: 0; margin-bottom: 0"></P>
+  </FONT><FONT FACE="宋体" LANG="ZH-CN" size="2"> 
+  <P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">
+  <b><IMG SRC="1102.gif" width="560" height="303">图2<IMG SRC="1103.gif" width="351" height="230"></b></P>
+  </FONT><FONT FACE="宋体" LANG="ZH-CN"> 
+  <P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">
+  </FONT> 
+  <LI>
+  <p style="line-height: 150%; margin-top: 0; margin-bottom: 0">
+  <font size="2" FACE="宋体" LANG="ZH-CN">在空白处将上面的程序输入。见图</font><font size="2"><FONT FACE="宋体" LANG="ZH-CN">4。用ALT+A汇编通过。用F8即可单步执行，在执行过程中注意观察屏幕左边的工作寄存器及A累加器中的值的变化。</FONT><font face="宋体"></LI>
+  </font></font>
+  <FONT FACE="宋体" LANG="ZH-CN"> 
+  </p>
+  <p style="line-height: 150%; margin-top: 0; margin-bottom: 0"></P>
+  </FONT><FONT FACE="宋体" LANG="ZH-CN" size="2"> 
+  <P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">
+  <b><IMG SRC="1104.gif" width="560" height="302">图4</b></P>
+  </FONT><FONT FACE="宋体" LANG="ZH-CN"> 
+  <P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">
+  </FONT> 
+  <LI>
+  <p style="line-height: 150%; margin-top: 0; margin-bottom: 0">
+  <font size="2" FACE="宋体" LANG="ZH-CN">内存中值的变化在此是看不到的，可以用如下方法观察（看图</font><font size="2"><FONT FACE="宋体" LANG="ZH-CN">5）：将鼠标移到DATA，双击，则光标进入此行，此时可以键盘上的上下光标键上下翻动来观察内存值的变化。本行的最前面DATA后面的数据代表的是“一段”的开始地址，如现在为20H，再看屏幕的最上方，数字从0到F，显示两者相加就等于真正的地址值，如现在图上所示的内存20H、21H、22H、23H中的值分别是FBH 、0EH、E8H、30H。</FONT><font face="宋体"></LI>
+  </font></font>
+  <FONT FACE="宋体" LANG="ZH-CN"> 
+  </p>
+  <p style="line-height: 150%; margin-top: 0; margin-bottom: 0"></P>
+  </FONT><FONT FACE="System" LANG="ZH-CN"> 
+  <P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">
+  </FONT> 
+  <p style="line-height: 150%; margin-top: 0; margin-bottom: 0"><b>
+  <FONT FACE="宋体" LANG="ZH-CN" size="2"><IMG SRC="1105.gif" width="694" height="431">图5</font></b></p>
+  <p style="line-height: 150%; margin-top: 0; margin-bottom: 0">
+  <font size="2" FACE="宋体" LANG="ZH-CN">6、当运行完程序后，即进入它的反汇编区，不是我们想要的东西。为了再从头开始，可以用CTRL+F2功能键复位PC值。注意此时不会看到原来的窗口，为看到原来的窗口，请用ALT+4或ALT+5等来切换。当然以上操作也可以菜单进行。CTRL+F2是程序复位，用RUN菜单。窗口用WINDOWS菜单。</font></p>
+  <FONT FACE="宋体" LANG="ZH-CN"> 
+  <p style="line-height: 150%; margin-top: 0; margin-bottom: 0"></P>
+  </font> 
+</OL>
+<FONT FACE="宋体" LANG="ZH-CN"> 
+<DIR> 
+  <P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">
+  <font size="2">此次大家就用用熟这个软件吧，说实话，我并不很喜欢它，操作起来不方便，但给我的机器只能上这个，没办法，下次再给网友单独介绍一个好一点的吧。</font></P>
+</DIR>
+<p style="line-height: 150%; margin-top: 0; margin-bottom: 0"><font size="2">本页图片较多，如果大家无</font></FONT><font size="2" face="宋体">法忍受它的等待，<a href="dpjjx11.zip">请下载</a>
+</font></p>
+</BODY>
+</HTML>

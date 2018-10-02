@@ -1,0 +1,171 @@
+C51 COMPILER V7.20   WL009                                                                 03/29/2005 15:52:46 PAGE 1   
+
+
+C51 COMPILER V7.20, COMPILATION OF MODULE WL009
+OBJECT MODULE PLACED IN wl009.OBJ
+COMPILER INVOKED BY: C:\Keil\C51\BIN\C51.EXE wl009.C BROWSE DEBUG OBJECTEXTEND
+
+line level    source
+
+   1          /*******************************************************************************
+   2          *  标题:  伟纳电子ME300B单片机开发系统演示程序 - 1602LCD显示演示程序           *
+   3          *  文件:  wl009.C                                                              *
+   4          *  日期:  2004-1-5                                                             *
+   5          *  版本:  1.0                                                                  *
+   6          *  作者:  伟纳电子 - Freeman                                                   *
+   7          *  邮箱:  freeman@willar.com                                                   *
+   8          *  网站： http://www.willar.com                                                *
+   9          ********************************************************************************
+  10          *  描述:                                                                       *
+  11          *         1602字符型LCD显示演示程序                                            *
+  12          *         在第一行显示  welcome                                                *
+  13          *         在第一行显示  www.willar.com                                         *
+  14          *                                                                              *
+  15          ********************************************************************************
+  16          * 【版权】 Copyright(C)伟纳电子 www.willar.com  All Rights Reserved            *
+  17          * 【声明】 此程序仅用于学习与参考，引用请注明版权和作者信息！                  *
+  18          *******************************************************************************/
+  19          
+  20          
+  21          #include <reg51.h>
+  22          #include <intrins.h>
+  23          
+  24          typedef unsigned char BYTE;
+  25          typedef unsigned int WORD;
+  26          typedef bit BOOL ; 
+  27          
+  28          sbit rs = P2^0;         //
+  29          sbit rw = P2^1;
+  30          sbit ep = P2^2;
+  31          
+  32          BYTE code dis1[] = {"welcome!"};
+  33          BYTE code dis2[] = {"www.willar.com"};
+  34          
+  35          delay(BYTE ms)
+  36          {                                                       // 延时子程序
+  37   1              BYTE i;
+  38   1              while(ms--)
+  39   1              {
+  40   2                      for(i = 0; i< 250; i++)
+  41   2                      {
+  42   3                              _nop_();
+  43   3                              _nop_();
+  44   3                              _nop_();
+  45   3                              _nop_();
+  46   3                      }
+  47   2              }
+  48   1      }
+  49          
+  50          BOOL lcd_bz()
+  51          {                                                       // 测试LCD忙碌状态
+  52   1              BOOL result;
+  53   1              rs = 0;
+  54   1              rw = 1;
+  55   1              ep = 1;
+C51 COMPILER V7.20   WL009                                                                 03/29/2005 15:52:46 PAGE 2   
+
+  56   1              _nop_();
+  57   1              _nop_();
+  58   1              _nop_();
+  59   1              _nop_();
+  60   1              result = (BOOL)(P0 & 0x80);
+  61   1              ep = 0;
+  62   1              return result;  
+  63   1      }
+  64          
+  65          lcd_wcmd(BYTE cmd)
+  66          {                                                       // 写入指令数据到LCD
+  67   1              while(lcd_bz());
+  68   1              rs = 0;
+  69   1              rw = 0;
+  70   1              ep = 0;
+  71   1              _nop_();
+  72   1              _nop_();        
+  73   1              P0 = cmd;
+  74   1              _nop_();
+  75   1              _nop_();
+  76   1              _nop_();
+  77   1              _nop_();
+  78   1              ep = 1;
+  79   1              _nop_();
+  80   1              _nop_();
+  81   1              _nop_();
+  82   1              _nop_();
+  83   1              ep = 0;         
+  84   1      }
+  85          
+  86          lcd_pos(BYTE pos)
+  87          {                                                       //设定显示位置
+  88   1              lcd_wcmd(pos | 0x80);
+  89   1      }
+  90          
+  91          lcd_wdat(BYTE dat)      
+  92          {                                                       //写入字符显示数据到LCD
+  93   1              while(lcd_bz());
+  94   1              rs = 1;
+  95   1              rw = 0;
+  96   1              ep = 0;
+  97   1              P0 = dat;
+  98   1              _nop_();
+  99   1              _nop_();
+ 100   1              _nop_();
+ 101   1              _nop_();
+ 102   1              ep = 1;
+ 103   1              _nop_();
+ 104   1              _nop_();
+ 105   1              _nop_();
+ 106   1              _nop_();
+ 107   1              ep = 0; 
+ 108   1      }
+ 109          
+ 110          lcd_init()
+ 111          {                                                       //LCD初始化设定
+ 112   1              lcd_wcmd(0x38);                 //
+ 113   1              delay(1);
+ 114   1              lcd_wcmd(0x0c);                 //
+ 115   1              delay(1);
+ 116   1              lcd_wcmd(0x06);                 //
+ 117   1              delay(1);
+C51 COMPILER V7.20   WL009                                                                 03/29/2005 15:52:46 PAGE 3   
+
+ 118   1              lcd_wcmd(0x01);                 //清除LCD的显示内容
+ 119   1              delay(1);
+ 120   1      }
+ 121          
+ 122          main()
+ 123          {
+ 124   1              BYTE i;
+ 125   1              lcd_init();                             // 初始化LCD                    
+ 126   1              delay(10);
+ 127   1              lcd_pos(4);                             // 设置显示位置为第一行的第5个字符
+ 128   1              i = 0;
+ 129   1              while(dis1[i] != '\0')
+ 130   1              {                                               // 显示字符"welcome!"
+ 131   2                      lcd_wdat(dis1[i]);
+ 132   2                      i++;
+ 133   2              }
+ 134   1              lcd_pos(0x41);                  // 设置显示位置为第二行第二个字符
+ 135   1              i = 0;
+ 136   1              while(dis2[i] != '\0')
+ 137   1              {
+ 138   2                      lcd_wdat(dis2[i]);      // 显示字符"  www.willar.com  "
+ 139   2                      i++;
+ 140   2              }
+ 141   1              while(1);                               // 
+ 142   1      }
+ 143          
+ 144          
+
+
+MODULE INFORMATION:   STATIC OVERLAYABLE
+   CODE SIZE        =    193    ----
+   CONSTANT SIZE    =     24    ----
+   XDATA SIZE       =   ----    ----
+   PDATA SIZE       =   ----    ----
+   DATA SIZE        =   ----    ----
+   IDATA SIZE       =   ----    ----
+   BIT SIZE         =   ----       1
+END OF MODULE INFORMATION.
+
+
+C51 COMPILATION COMPLETE.  0 WARNING(S),  0 ERROR(S)

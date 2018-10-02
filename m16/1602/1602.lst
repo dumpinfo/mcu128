@@ -1,0 +1,558 @@
+__text_start:
+__start:
+    003B E5CF      LDI	R28,0x5F
+    003C E0D4      LDI	R29,4
+    003D BFCD      OUT	0x3D,R28
+    003E BFDE      OUT	0x3E,R29
+    003F 51C0      SUBI	R28,0x10
+    0040 40D0      SBCI	R29,0
+    0041 EA0A      LDI	R16,0xAA
+    0042 8308      STD	Y+0,R16
+    0043 2400      CLR	R0
+    0044 E7E8      LDI	R30,0x78
+    0045 E0F0      LDI	R31,0
+    0046 E010      LDI	R17,0
+    0047 37E8      CPI	R30,0x78
+    0048 07F1      CPC	R31,R17
+    0049 F011      BEQ	0x004C
+    004A 9201      ST	R0,Z+
+    004B CFFB      RJMP	0x0047
+    004C 8300      STD	Z+0,R16
+    004D E5EE      LDI	R30,0x5E
+    004E E0F0      LDI	R31,0
+    004F E6A0      LDI	R26,0x60
+    0050 E0B0      LDI	R27,0
+    0051 E010      LDI	R17,0
+    0052 37E6      CPI	R30,0x76
+    0053 07F1      CPC	R31,R17
+    0054 F021      BEQ	0x0059
+    0055 95C8      LPM
+    0056 9631      ADIW	R30,1
+    0057 920D      ST	R0,X+
+    0058 CFF9      RJMP	0x0052
+    0059 940E0125  CALL	_main
+_exit:
+    005B CFFF      RJMP	_exit
+FILE: E:\avr资料\例程\m16\1602\1602.h
+(0001) //ICC-AVR application builder : 2006-5-30 8:29:21
+(0002) // Target : M8
+(0003) // Crystal: 4.0000Mhz
+(0004) 
+(0005) #include <iom16v.h>
+(0006) #include <macros.h>
+(0007) 
+(0008) #define lcd_data_port PORTA       //定义数据口为PB口
+(0009) #define lcd_data_ddr DDRA
+(0010) #define lcd_busy_pin PINA
+(0011) #define lcd_busy_ddr DDRA
+(0012) #define lcd_control_port PORTD    //定义控制口为PA口
+(0013) #define lcd_control_ddr DDRD  
+(0014) 
+(0015) #define lcd_RS (1<<2) //PORTD^2
+(0016) #define lcd_RW (1<<3) //PORTD^3
+(0017) #define lcd_EN (1<<4) //PORTD^4
+(0018) #define busy 0x80 //LCD_DB7
+(0019) 
+(0020) 
+(0021) /*----------------------------------函数声明------------------------------------------*/
+(0022) void lcd_init(void);
+(0023) void lcd_write_command(unsigned char command,unsigned char wait_en);
+(0024) void lcd_write_data(unsigned char char_data);
+(0025) void wait_enable(void);
+(0026) void display_a_char(unsigned char position,unsigned char char_data);
+(0027) void display_a_string(unsigned char col,unsigned char *ptr);
+(0028) void delay_1ms(void);
+(0029) void delay_nms(unsigned int n);
+(0030) const unsigned char seg_table[]={0x30,0x31,0x32,0x33,0x34,0x35,
+(0031) 0x36,0x37,0x38,0x39};
+(0032) 
+(0033) 
+(0034) 
+(0035) //液晶初始化
+(0036) void lcd_init(void)
+(0037) {
+(0038)  delay_nms(100);
+_lcd_init:
+    005C E604      LDI	R16,0x64
+    005D E010      LDI	R17,0
+    005E D02C      RCALL	_delay_nms
+(0039)  lcd_write_command(0x38,0);//显示模式设置三次(此时不管lcd空闲与否)
+    005F 2722      CLR	R18
+    0060 E308      LDI	R16,0x38
+    0061 D038      RCALL	_lcd_write_command
+(0040)  delay_nms(20);
+    0062 E104      LDI	R16,0x14
+    0063 E010      LDI	R17,0
+    0064 D026      RCALL	_delay_nms
+(0041)  lcd_write_command(0x38,0);
+    0065 2722      CLR	R18
+    0066 E308      LDI	R16,0x38
+    0067 D032      RCALL	_lcd_write_command
+(0042)  delay_nms(20);
+    0068 E104      LDI	R16,0x14
+    0069 E010      LDI	R17,0
+    006A D020      RCALL	_delay_nms
+(0043)  lcd_write_command(0x38,0);
+    006B 2722      CLR	R18
+    006C E308      LDI	R16,0x38
+    006D D02C      RCALL	_lcd_write_command
+(0044)  delay_nms(20);
+    006E E104      LDI	R16,0x14
+    006F E010      LDI	R17,0
+    0070 D01A      RCALL	_delay_nms
+(0045)  
+(0046)  lcd_write_command(0x38,1);//显示模式设置(从此之后均需lcd空闲)
+    0071 E021      LDI	R18,1
+    0072 E308      LDI	R16,0x38
+    0073 D026      RCALL	_lcd_write_command
+(0047)  lcd_write_command(0x08,1);//显示关闭
+    0074 E021      LDI	R18,1
+    0075 E008      LDI	R16,0x8
+    0076 D023      RCALL	_lcd_write_command
+(0048)  lcd_write_command(0x01,1);//显示清屏
+    0077 E021      LDI	R18,1
+    0078 E001      LDI	R16,1
+    0079 D020      RCALL	_lcd_write_command
+(0049)  lcd_write_command(0x06,1);//显示光标移动设置
+    007A E021      LDI	R18,1
+    007B E006      LDI	R16,6
+    007C D01D      RCALL	_lcd_write_command
+(0050)  lcd_write_command(0x0c,1);//显示开及光标设置
+    007D E021      LDI	R18,1
+    007E E00C      LDI	R16,0xC
+    007F D01A      RCALL	_lcd_write_command
+    0080 9508      RET
+(0051) }
+(0052) 
+(0053) /*---------------------------------------延时函数-------------------------------------*/
+(0054) //1ms延时函数
+(0055) void delay_1ms(void)
+(0056) {
+(0057)  unsigned int i;
+(0058)  for(i=0;i<1600;i++);
+_delay_1ms:
+  i                    --> R16
+    0081 2700      CLR	R16
+    0082 2711      CLR	R17
+    0083 C002      RJMP	0x0086
+    0084 5F0F      SUBI	R16,0xFF
+    0085 4F1F      SBCI	R17,0xFF
+    0086 3400      CPI	R16,0x40
+    0087 E0E6      LDI	R30,6
+    0088 071E      CPC	R17,R30
+    0089 F3D0      BCS	0x0084
+    008A 9508      RET
+_delay_nms:
+  i                    --> R20
+  n                    --> R22
+    008B 940E0152  CALL	push_gset2
+    008D 01B8      MOVW	R22,R16
+(0059) }
+(0060) 
+(0061) //n ms延时函数
+(0062) void delay_nms(unsigned int n)
+(0063) {
+(0064)  unsigned int i;
+(0065)  for(i=0;i<n;i++)delay_1ms();
+    008E 2744      CLR	R20
+    008F 2755      CLR	R21
+    0090 C003      RJMP	0x0094
+    0091 DFEF      RCALL	_delay_1ms
+    0092 5F4F      SUBI	R20,0xFF
+    0093 4F5F      SBCI	R21,0xFF
+    0094 1746      CP	R20,R22
+    0095 0757      CPC	R21,R23
+    0096 F3D0      BCS	0x0091
+    0097 940E0146  CALL	pop_gset2
+    0099 9508      RET
+_lcd_write_command:
+  wait_en              --> R22
+  command              --> R20
+    009A 940E0152  CALL	push_gset2
+    009C 2F62      MOV	R22,R18
+    009D 2F40      MOV	R20,R16
+(0066) }
+(0067) 
+(0068) //写指令函数: E=高脉冲 RS=0 RW=0
+(0069) void lcd_write_command(unsigned char command,unsigned char wait_en)//command为指令，wait_en指定是否要检测LCD忙信号
+(0070) {
+(0071)  if(wait_en)wait_enable();//若wait_en为1，则要检测LCD忙信号，等待其空闲
+    009E 2366      TST	R22
+    009F F009      BEQ	0x00A1
+    00A0 D045      RCALL	_wait_enable
+(0072)  lcd_control_port&=~lcd_RS;//RS=0
+    00A1 9892      CBI	0x12,2
+(0073)  lcd_control_port&=~lcd_RW;//RW=0
+    00A2 9893      CBI	0x12,3
+(0074)  lcd_control_port&=~lcd_EN;//E=0,下面给LCD一个高脉冲
+    00A3 9894      CBI	0x12,4
+(0075)  NOP();
+    00A4 0000      NOP
+(0076)  lcd_control_port|=lcd_EN;//E=1
+    00A5 9A94      SBI	0x12,4
+(0077)  lcd_data_port=command;
+    00A6 BB4B      OUT	0x1B,R20
+(0078)  lcd_control_port&=~lcd_EN;//重设E=0
+    00A7 9894      CBI	0x12,4
+    00A8 940E0146  CALL	pop_gset2
+    00AA 9508      RET
+_display_a_char:
+  position_tem         --> R22
+  char_data            --> R20
+  position             --> R10
+    00AB 940E0150  CALL	push_gset3
+    00AD 2F42      MOV	R20,R18
+    00AE 2EA0      MOV	R10,R16
+(0079) }
+(0080) 
+(0081) //指定位置显示一个字符:第一行位置0~15,第二行16~31
+(0082) //显示一个字符函数
+(0083) void display_a_char(unsigned char position,unsigned char char_data)//参数position指定位置0~31,char_data为要显示的字符
+(0084) {
+(0085)  unsigned char position_tem;
+(0086)  if(position>=0x10)
+    00AF 2D8A      MOV	R24,R10
+    00B0 3180      CPI	R24,0x10
+    00B1 F018      BCS	0x00B5
+(0087)  position_tem=position+0xb0;
+    00B2 2F68      MOV	R22,R24
+    00B3 5560      SUBI	R22,0x50
+    00B4 C002      RJMP	0x00B7
+(0088)  else
+(0089)  position_tem=position+0x80;
+    00B5 2D6A      MOV	R22,R10
+    00B6 5860      SUBI	R22,0x80
+(0090)  lcd_write_command(position_tem,1);
+    00B7 E021      LDI	R18,1
+    00B8 2F06      MOV	R16,R22
+    00B9 DFE0      RCALL	_lcd_write_command
+(0091)  lcd_write_data(char_data);
+    00BA 2F04      MOV	R16,R20
+    00BB D01C      RCALL	_lcd_write_data
+    00BC 940E0149  CALL	pop_gset3
+    00BE 9508      RET
+_display_a_string:
+  col_tem              --> R20
+  i                    --> R22
+  ptr                  --> R10
+  col                  --> R20
+    00BF 940E0150  CALL	push_gset3
+    00C1 0159      MOVW	R10,R18
+    00C2 2F40      MOV	R20,R16
+(0092) }
+(0093) 
+(0094) //指定一行显示连续字符串:0显示在第一行,1显示在第二行,注字符串不能长于16个字符
+(0095) //显示一行连续字符串函数
+(0096) void display_a_string(unsigned char col,unsigned char *ptr)//参数col指定行,*ptr指字符串数组的首指针
+(0097) {
+(0098)  unsigned char col_tem,i;
+(0099)  col_tem=col<<4;//若col为1(即在LCD第二行显示字符串),先把col左移4位,使显示字符的首位置改到第二行首位,即位置16
+    00C3 2F84      MOV	R24,R20
+    00C4 708F      ANDI	R24,0xF
+    00C5 9582      SWAP	R24
+    00C6 2F48      MOV	R20,R24
+(0100)  for(i=0;i<16;i++)
+    00C7 2766      CLR	R22
+    00C8 C00A      RJMP	0x00D3
+(0101)  display_a_char(col_tem++,*(ptr+i));
+    00C9 2FE6      MOV	R30,R22
+    00CA 27FF      CLR	R31
+    00CB 0DEA      ADD	R30,R10
+    00CC 1DFB      ADC	R31,R11
+    00CD 8120      LDD	R18,Z+0
+    00CE 2E24      MOV	R2,R20
+    00CF 5F4F      SUBI	R20,0xFF
+    00D0 2D02      MOV	R16,R2
+    00D1 DFD9      RCALL	_display_a_char
+    00D2 9563      INC	R22
+    00D3 3160      CPI	R22,0x10
+    00D4 F3A0      BCS	0x00C9
+    00D5 940E0149  CALL	pop_gset3
+    00D7 9508      RET
+_lcd_write_data:
+  char_data            --> R20
+    00D8 940E0154  CALL	push_gset1
+    00DA 2F40      MOV	R20,R16
+(0102) }
+(0103) 
+(0104) //写数据函数: E =高脉冲 RS=1 RW=0
+(0105) void lcd_write_data(unsigned char char_data)
+(0106) {
+(0107)  wait_enable();//等待LCD空闲
+    00DB D00A      RCALL	_wait_enable
+(0108)  lcd_control_port|=lcd_RS;//RS=1
+    00DC 9A92      SBI	0x12,2
+(0109)  lcd_control_port&=~lcd_RW;//RW=0
+    00DD 9893      CBI	0x12,3
+(0110)  lcd_control_port&=~lcd_EN;//E=0,下面给LCD一个高脉冲
+    00DE 9894      CBI	0x12,4
+(0111)  NOP();
+    00DF 0000      NOP
+(0112)  lcd_control_port|=lcd_EN;//E=1
+    00E0 9A94      SBI	0x12,4
+(0113)  lcd_data_port=char_data;
+    00E1 BB4B      OUT	0x1B,R20
+(0114)  lcd_control_port&=~lcd_EN;//重设E=0
+    00E2 9894      CBI	0x12,4
+    00E3 940E0157  CALL	pop_gset1
+    00E5 9508      RET
+(0115) }
+(0116) 
+(0117) //正常读写操作之前必须检测LCD控制器状态:E=1 RS=0 RW=1;DB7: 0 LCD控制器空闲，1 LCD控制器忙。
+(0118) //检测忙信号,等待LCD空闲函数
+(0119) void wait_enable(void)
+(0120) {
+(0121)  lcd_busy_ddr&=~busy;//设置busy口为输入
+_wait_enable:
+    00E6 98D7      CBI	0x1A,7
+(0122)  lcd_control_port&=~lcd_RS;//RS=0
+    00E7 9892      CBI	0x12,2
+(0123)  lcd_control_port|=lcd_RW;//RW=1
+    00E8 9A93      SBI	0x12,3
+(0124)  NOP();
+    00E9 0000      NOP
+(0125)  lcd_control_port|=lcd_EN;//E=1
+    00EA 9A94      SBI	0x12,4
+(0126)  while(lcd_busy_pin&busy);//等待LCD_DB7为0
+    00EB 99CF      SBIC	0x19,7
+    00EC CFFE      RJMP	0x00EB
+(0127)  lcd_control_port&=~lcd_EN;//重设E=0
+    00ED 9894      CBI	0x12,4
+(0128)  lcd_busy_ddr|=busy;//设置busy口为输出
+    00EE 9AD7      SBI	0x1A,7
+    00EF 9508      RET
+FILE: E:\avr资料\例程\m16\1602\second.c
+(0001) //ICC-AVR application builder : 2006-12-22 20:34:51
+(0002) // Target : M8
+(0003) // Crystal: 6.0000Mhz
+(0004) //1602占用了PB口作为数据口,PA6,PA5,PA4分别是RS,WR,E
+(0005) //按纽采用循环检测方式工作，不采用中断方式.
+(0006) 
+(0007) 
+(0008) #include <iom16v.h>
+(0009) #include <macros.h>
+(0010) #include "1602.h"
+(0011) unsigned char led_buff[]="0000    ";
+(0012) unsigned char str1[]="0000";
+(0013) 
+(0014) 
+(0015) void timer1_init(void);
+(0016) void init_devices(void);
+(0017) unsigned char KeyPress(void);
+(0018) void delay_ms(unsigned int time);
+(0019) void StartCount(void);
+(0020) void StopCount(void);
+(0021) void Clear(void);
+(0022) unsigned int hour=0,minute=0,second=0,ms=0;
+(0023) unsigned char c_next=0,choose=0;
+(0024) 
+(0025) void port_init(void) 
+(0026) {
+(0027)  PORTB = 0xFF;
+_port_init:
+    00F0 EF8F      LDI	R24,0xFF
+    00F1 BB88      OUT	0x18,R24
+(0028)  DDRB  = 0xFF;
+    00F2 BB87      OUT	0x17,R24
+(0029)  PORTC = 0xFF; //m103 output only
+    00F3 BB85      OUT	0x15,R24
+(0030)  DDRC  = 0xFF;
+    00F4 BB84      OUT	0x14,R24
+(0031)  PORTD = 0xFF;
+    00F5 BB82      OUT	0x12,R24
+(0032)  DDRD  = 0xFF;
+    00F6 BB81      OUT	0x11,R24
+(0033)  PORTA = 0xFF;
+    00F7 BB8B      OUT	0x1B,R24
+(0034)  DDRA  = 0xFF;
+    00F8 BB8A      OUT	0x1A,R24
+    00F9 9508      RET
+(0035) }
+(0036) 
+(0037) //TIMER1 initialisation - prescale:8
+(0038) // WGM: 0) Normal, TOP=0xFFFF
+(0039) // desired value: 1mSec
+(0040) // actual value:  1.000mSec (0.0%)
+(0041) void timer1_init(void)
+(0042) {
+(0043)  TCCR1B = 0x00; //stop
+_timer1_init:
+    00FA 2422      CLR	R2
+    00FB BC2E      OUT	0x2E,R2
+(0044)  TCNT1H = 0x63; //setup
+    00FC E683      LDI	R24,0x63
+    00FD BD8D      OUT	0x2D,R24
+(0045)  TCNT1L = 0xc0;
+    00FE EC80      LDI	R24,0xC0
+    00FF BD8C      OUT	0x2C,R24
+(0046)  OCR1AH = 0x17;
+    0100 E187      LDI	R24,0x17
+    0101 BD8B      OUT	0x2B,R24
+(0047)  OCR1AL = 0x70;
+    0102 E780      LDI	R24,0x70
+    0103 BD8A      OUT	0x2A,R24
+(0048)  OCR1BH = 0x17;
+    0104 E187      LDI	R24,0x17
+    0105 BD89      OUT	0x29,R24
+(0049)  OCR1BL = 0x70;
+    0106 E780      LDI	R24,0x70
+    0107 BD88      OUT	0x28,R24
+(0050)  ICR1H  = 0x17;
+    0108 E187      LDI	R24,0x17
+    0109 BD87      OUT	0x27,R24
+(0051)  ICR1L  = 0x70;
+    010A E780      LDI	R24,0x70
+    010B BD86      OUT	0x26,R24
+(0052)  TCCR1A = 0x00;
+    010C BC2F      OUT	0x2F,R2
+(0053)  TCCR1B = 0x00; //start Timer
+    010D BC2E      OUT	0x2E,R2
+    010E 9508      RET
+_timer1_ovf_isr:
+    010F 938A      ST	R24,-Y
+    0110 B78F      IN	R24,0x3F
+    0111 938A      ST	R24,-Y
+(0054) }
+(0055) 
+(0056) #pragma interrupt_handler timer1_ovf_isr:9
+(0057) void timer1_ovf_isr(void)
+(0058) {
+(0059)  //TIMER1 has overflowed
+(0060)  TCNT1H = 0x63; //reload counter high value
+    0112 E683      LDI	R24,0x63
+    0113 BD8D      OUT	0x2D,R24
+(0061)  TCNT1L = 0xc0; //reload counter low value
+    0114 EC80      LDI	R24,0xC0
+    0115 BD8C      OUT	0x2C,R24
+    0116 9189      LD	R24,Y+
+    0117 BF8F      OUT	0x3F,R24
+    0118 9189      LD	R24,Y+
+    0119 9518      RETI
+(0062) }
+(0063) 
+(0064) //call this routine to initialise all peripherals
+(0065) void init_devices(void)
+(0066) {
+(0067)  //stop errant interrupts until set up
+(0068)  CLI(); //disable all interrupts
+_init_devices:
+    011A 94F8      BCLR	7
+(0069)  port_init();
+    011B DFD4      RCALL	_port_init
+(0070)  timer1_init();
+    011C DFDD      RCALL	_timer1_init
+(0071) 
+(0072)  MCUCR = 0x0A;
+    011D E08A      LDI	R24,0xA
+    011E BF85      OUT	0x35,R24
+(0073)  GICR  = 0x00;
+    011F 2422      CLR	R2
+    0120 BE2B      OUT	0x3B,R2
+(0074)  TIMSK = 0x04; //timer interrupt sources
+    0121 E084      LDI	R24,4
+    0122 BF89      OUT	0x39,R24
+(0075)  SEI(); //re-enable interrupts
+    0123 9478      BSET	7
+    0124 9508      RET
+(0076)  //all peripherals are now initialised
+(0077) }
+(0078) 
+(0079) //
+(0080) void main(void)
+(0081) {
+(0082)  init_devices();
+_main:
+    0125 DFF4      RCALL	_init_devices
+(0083)  lcd_init();
+    0126 DF35      RCALL	_lcd_init
+(0084)  //insert your functional code here...
+(0085)  display_a_string(0,led_buff);
+    0127 E620      LDI	R18,0x60
+    0128 E030      LDI	R19,0
+    0129 2700      CLR	R16
+    012A DF94      RCALL	_display_a_string
+(0086)  display_a_string(1,str1);
+    012B E629      LDI	R18,0x69
+    012C E030      LDI	R19,0
+    012D E001      LDI	R16,1
+    012E DF90      RCALL	_display_a_string
+    012F 9508      RET
+_delay_ms:
+  j                    --> R20
+  i                    --> R22
+  time                 --> R16
+    0130 940E0152  CALL	push_gset2
+(0087)  
+(0088) 
+(0089) }
+(0090) 
+(0091) //延时
+(0092) void delay_ms(unsigned int time)
+(0093) { unsigned int i,j;
+(0094)   
+(0095)   for(j=0;j<time;j++)
+    0132 2744      CLR	R20
+    0133 2755      CLR	R21
+    0134 C00B      RJMP	0x0140
+(0096)   { for(i=0;i<1000;i++)
+FILE: <library>
+    0135 2766      CLR	R22
+    0136 2777      CLR	R23
+    0137 C002      RJMP	0x013A
+    0138 5F6F      SUBI	R22,0xFF
+    0139 4F7F      SBCI	R23,0xFF
+    013A 3E68      CPI	R22,0xE8
+    013B E0E3      LDI	R30,3
+    013C 077E      CPC	R23,R30
+    013D F3D0      BCS	0x0138
+    013E 5F4F      SUBI	R20,0xFF
+    013F 4F5F      SBCI	R21,0xFF
+    0140 1740      CP	R20,R16
+    0141 0751      CPC	R21,R17
+    0142 F390      BCS	0x0135
+    0143 940E0146  CALL	pop_gset2
+    0145 9508      RET
+pop_gset2:
+    0146 E0E2      LDI	R30,2
+    0147 940C0158  JMP	pop
+pop_gset3:
+    0149 E0E4      LDI	R30,4
+    014A 940C0158  JMP	pop
+push_gset5:
+    014C 92FA      ST	R15,-Y
+    014D 92EA      ST	R14,-Y
+push_gset4:
+    014E 92DA      ST	R13,-Y
+    014F 92CA      ST	R12,-Y
+push_gset3:
+    0150 92BA      ST	R11,-Y
+    0151 92AA      ST	R10,-Y
+push_gset2:
+    0152 937A      ST	R23,-Y
+    0153 936A      ST	R22,-Y
+push_gset1:
+    0154 935A      ST	R21,-Y
+    0155 934A      ST	R20,-Y
+    0156 9508      RET
+pop_gset1:
+    0157 E0E1      LDI	R30,1
+pop:
+    0158 9149      LD	R20,Y+
+    0159 9159      LD	R21,Y+
+    015A FDE0      SBRC	R30,0
+    015B 9508      RET
+    015C 9169      LD	R22,Y+
+    015D 9179      LD	R23,Y+
+    015E FDE1      SBRC	R30,1
+    015F 9508      RET
+    0160 90A9      LD	R10,Y+
+    0161 90B9      LD	R11,Y+
+    0162 FDE2      SBRC	R30,2
+    0163 9508      RET
+    0164 90C9      LD	R12,Y+
+    0165 90D9      LD	R13,Y+
+    0166 FDE3      SBRC	R30,3
+    0167 9508      RET
+    0168 90E9      LD	R14,Y+
+    0169 90F9      LD	R15,Y+
+    016A 9508      RET

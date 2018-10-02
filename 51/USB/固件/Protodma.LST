@@ -1,0 +1,55 @@
+C51 COMPILER V7.06   PROTODMA                                                              02/01/2008 12:33:51 PAGE 1   
+
+
+C51 COMPILER V7.06, COMPILATION OF MODULE PROTODMA
+OBJECT MODULE PLACED IN Protodma.OBJ
+COMPILER INVOKED BY: d:\Keil\C51\BIN\C51.EXE Protodma.c BROWSE DEBUG OBJECTEXTEND
+
+stmt level    source
+
+   1          //#include <stdio.h>
+   2          #include <string.h>
+   3          
+   4          #include <reg51.h>                /* special function register declarations   */
+   5          #include "epphal.h"
+   6          
+   7          #include "d12ci.h"
+   8          #include "mainloop.h"
+   9          #include "usb100.h"
+  10          #include "chap_9.h"
+  11          
+  12          extern CONTROL_XFER ControlData;
+  13          extern IO_REQUEST idata ioRequest;
+  14          extern EPPFLAGS bEPPflags;
+  15          extern BOOL bNoRAM;
+  16          extern unsigned char idata EpBuf[EP2_PACKET_SIZE];
+  17          
+  18          
+  19          
+  20          
+  21          
+  22          
+  23          
+  24          
+  25          
+  26          
+  27          
+  28          
+  29          
+  30          
+  31          
+  32          
+
+
+MODULE INFORMATION:   STATIC OVERLAYABLE
+   CODE SIZE        =   ----    ----
+   CONSTANT SIZE    =   ----    ----
+   XDATA SIZE       =   ----    ----
+   PDATA SIZE       =   ----    ----
+   DATA SIZE        =   ----    ----
+   IDATA SIZE       =   ----    ----
+   BIT SIZE         =   ----    ----
+END OF MODULE INFORMATION.
+
+
+C51 COMPILATION COMPLETE.  0 WARNING(S),  0 ERROR(S)

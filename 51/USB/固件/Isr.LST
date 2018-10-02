@@ -1,0 +1,329 @@
+C51 COMPILER V7.06   ISR                                                                   02/01/2008 12:33:50 PAGE 1   
+
+
+C51 COMPILER V7.06, COMPILATION OF MODULE ISR
+OBJECT MODULE PLACED IN Isr.OBJ
+COMPILER INVOKED BY: d:\Keil\C51\BIN\C51.EXE Isr.c BROWSE DEBUG OBJECTEXTEND
+
+stmt level    source
+
+   1          #include <stdio.h>
+   2          #include <string.h>
+   3          
+   4          #include <reg51.h>                /* special function register declarations   */
+   5          
+   6          #include "epphal.h"
+   7          #include "d12ci.h"
+   8          #include "mainloop.h"
+   9          #include "usb100.h"
+  10          
+  11          extern void bus_reset(void);
+  12          extern void ep0_txdone(void);
+  13          extern void ep0_rxdone(void);
+  14          extern void ep1_txdone(void);
+  15          extern void ep1_rxdone(void);
+  16          extern void main_txdone(void);
+  17          extern void main_rxdone(void);
+  18          extern void dma_eot(void);
+  19          
+  20          /*
+  21          //*************************************************************************
+  22          //  Public static data
+  23          //*************************************************************************
+  24          */
+  25          #define uchar unsigned char 
+  26          EPPFLAGS bEPPflags;
+  27          
+  28          /* Control endpoint TX/RX buffers */
+  29          extern CONTROL_XFER ControlData;
+  30          
+  31          /* ISR static vars */
+  32          unsigned char idata GenEpBuf[EP1_PACKET_SIZE];
+  33          unsigned char idata EpBuf[EP2_PACKET_SIZE];
+  34          unsigned char idata mainbuflen;
+  35          IO_REQUEST idata ioRequest;
+  36          unsigned char ioSize, ioCount;
+  37          unsigned long ClockTicks = 0;
+  38          
+  39          extern BOOL bNoRAM;
+  40          /*//////////////////////////////*/
+  41          extern unsigned char ShuMa[7];
+  42          extern unsigned char index;
+  43          /*//////////////////////////////*/
+  44          usb_isr() interrupt 0    //外部中断0
+  45          {
+  46   1              DISABLE;
+  47   1              fn_usb_isr();   //USB处理函数
+  48   1              ENABLE;
+  49   1      }
+  50          
+  51          
+  52          timer_isr() interrupt 1   //定时0处理函数
+  53          {
+  54   1              //DISABLE;
+  55   1              TF0 = 0;
+C51 COMPILER V7.06   ISR                                                                   02/01/2008 12:33:50 PAGE 2   
+
+  56   1              TH0 =0xFA;//Timer0 1.5ms中断一次
+  57   1              TL0 =0x24;
+  58   1              if(++index==7)index=0;    //index加1，扫描用
+  59   1              ClockTicks++;
+  60   1              bEPPflags.bits.timer = 1;
+  61   1              //ENABLE;
+  62   1      }
+  63          
+  64          //USB中断处理
+  65          
+  66          //USB中断服务子程序
+  67          void fn_usb_isr()
+  68          {
+  69   1              unsigned int i_st;
+  70   1      
+  71   1              bEPPflags.bits.in_isr = 1;
+  72   1      
+  73   1              i_st = D12_ReadInterruptRegister();//读取中断寄存器
+  74   1      
+  75   1              if(i_st != 0) {
+  76   2                      if(i_st & D12_INT_BUSRESET) {
+  77   3                              bus_reset();//USB总线服务
+  78   3                              bEPPflags.bits.bus_reset = 1;
+  79   3                      }
+  80   2      
+  81   2                      if(i_st & D12_INT_EOT)
+  82   2                              dma_eot();//DMA传输结束
+  83   2      
+  84   2                      if(i_st & D12_INT_SUSPENDCHANGE)
+  85   2                              bEPPflags.bits.suspend = 1;//挂起改变
+  86   2      
+  87   2                      if(i_st & D12_INT_ENDP0IN)
+  88   2                              ep0_txdone();//端点0IN中断
+  89   2                      if(i_st & D12_INT_ENDP0OUT)
+  90   2                              ep0_rxdone();//端点0OUT中断
+  91   2                      if(i_st & D12_INT_ENDP1IN)
+  92   2                              ep1_txdone();//端点1IN中断
+  93   2                      if(i_st & D12_INT_ENDP1OUT)
+  94   2                              ep1_rxdone();//端点1OUT中断
+  95   2                      if(i_st & D12_INT_ENDP2IN)
+  96   2                              main_txdone();//端点2IN中断
+  97   2                      if(i_st & D12_INT_ENDP2OUT)
+  98   2                              main_rxdone();//端点2OUT中断
+  99   2              }
+ 100   1      
+ 101   1              bEPPflags.bits.in_isr = 0;
+ 102   1      }
+ 103          
+ 104          //总线复位处理子程序
+ 105          void bus_reset(void)
+ 106          {
+ 107   1      }
+ 108          
+ 109          //端点0 OUT中断
+ 110          void ep0_rxdone(void)
+ 111          {
+ 112   1              unsigned char ep_last, i;
+ 113   1      
+ 114   1              ep_last = D12_ReadLastTransactionStatus(0); //清中断标志
+ 115   1      
+ 116   1              if (ep_last & D12_SETUPPACKET) 
+ 117   1              {
+C51 COMPILER V7.06   ISR                                                                   02/01/2008 12:33:50 PAGE 3   
+
+ 118   2                      //接收到SETUP包（命令相位）
+ 119   2                      ControlData.wLength = 0;
+ 120   2                      ControlData.wCount = 0;
+ 121   2      
+ 122   2                      if( D12_ReadEndpoint(0, sizeof(ControlData.DeviceRequest),
+ 123   2                              (unsigned char *)(&(ControlData.DeviceRequest))) != sizeof(DEVICE_REQUEST) )
+ 124   2                      {
+ 125   3                              //SETUP包出错,返回
+ 126   3                              D12_SetEndpointStatus(0, 1);
+ 127   3                              D12_SetEndpointStatus(1, 1);
+ 128   3                              bEPPflags.bits.control_state = USB_IDLE;
+ 129   3                              return;
+ 130   3                      }
+ 131   2      
+ 132   2                      ControlData.DeviceRequest.wValue = SWAP(ControlData.DeviceRequest.wValue);
+ 133   2                      ControlData.DeviceRequest.wIndex = SWAP(ControlData.DeviceRequest.wIndex);
+ 134   2                      ControlData.DeviceRequest.wLength = SWAP(ControlData.DeviceRequest.wLength);
+ 135   2      
+ 136   2                      //对控制端点的输入/输出进行应答
+ 137   2                      D12_AcknowledgeEndpoint(0);
+ 138   2                      D12_AcknowledgeEndpoint(1);
+ 139   2      
+ 140   2                      ControlData.wLength = ControlData.DeviceRequest.wLength;
+ 141   2                      ControlData.wCount = 0;
+ 142   2      
+ 143   2                      if (ControlData.DeviceRequest.bmRequestType & (unsigned char)USB_ENDPOINT_DIRECTION_MASK)
+ 144   2                      {
+ 145   3                              //向主机传输数据
+ 146   3                              bEPPflags.bits.setup_packet = 1;
+ 147   3                              bEPPflags.bits.control_state = USB_TRANSMIT;            /* get command */
+ 148   3                      }
+ 149   2                      else
+ 150   2                      {  //从主机接收数据
+ 151   3                              if (ControlData.DeviceRequest.wLength == 0) //如果接收长度是0
+ 152   3                              {
+ 153   4                                      bEPPflags.bits.setup_packet = 1;
+ 154   4                                      bEPPflags.bits.control_state = USB_IDLE;                /* set command */
+ 155   4                              }
+ 156   3                              else 
+ 157   3                              {
+ 158   4                                      if(ControlData.DeviceRequest.wLength > MAX_CONTROLDATA_SIZE) 
+ 159   4                                      {
+ 160   5                                      
+ 161   5                                              bEPPflags.bits.control_state = USB_IDLE;
+ 162   5                                              D12_SetEndpointStatus(0, 1);
+ 163   5                                              D12_SetEndpointStatus(1, 1);
+ 164   5                                      }
+ 165   4                                      else 
+ 166   4                                      {
+ 167   5                                              bEPPflags.bits.control_state = USB_RECEIVE;     //设置接收状态
+ 168   5                                      }
+ 169   4                              } // set command with data
+ 170   3                      } // else set command
+ 171   2              } // if setup packet
+ 172   1      
+ 173   1              else if (bEPPflags.bits.control_state == USB_RECEIVE) 
+ 174   1              {
+ 175   2                      //接收数据 （数据相位）
+ 176   2                      i =     D12_ReadEndpoint(0, EP0_PACKET_SIZE,
+ 177   2                              ControlData.dataBuffer + ControlData.wCount);
+ 178   2                      ControlData.wCount += i;
+ 179   2                      if( i != EP0_PACKET_SIZE || ControlData.wCount >= ControlData.wLength) 
+C51 COMPILER V7.06   ISR                                                                   02/01/2008 12:33:50 PAGE 4   
+
+ 180   2                      {
+ 181   3                              //数据接收完毕
+ 182   3                              bEPPflags.bits.setup_packet = 1;
+ 183   3                              bEPPflags.bits.control_state = USB_IDLE;
+ 184   3                      }
+ 185   2              }
+ 186   1              else 
+ 187   1              {
+ 188   2                      bEPPflags.bits.control_state = USB_IDLE;//进入等待状态
+ 189   2              }
+ 190   1      }
+ 191          
+ 192          //端点0IN处理
+ 193          void ep0_txdone(void)
+ 194          {
+ 195   1              short i = ControlData.wLength - ControlData.wCount;
+ 196   1              D12_ReadLastTransactionStatus(1); //清中断标志位
+ 197   1              if (bEPPflags.bits.control_state != USB_TRANSMIT) 
+ 198   1                      return;//非发送状态,返回
+ 199   1      
+ 200   1              if( i >= EP0_PACKET_SIZE) 
+ 201   1              {
+ 202   2                      //剩下数据大于16字节,发送16字节
+ 203   2                      D12_WriteEndpoint(1, EP0_PACKET_SIZE, ControlData.pData + ControlData.wCount);
+ 204   2                      ControlData.wCount += EP0_PACKET_SIZE;
+ 205   2                      bEPPflags.bits.control_state = USB_TRANSMIT;
+ 206   2              }
+ 207   1              else if( i != 0) 
+ 208   1              {
+ 209   2                      //发送剩下数据
+ 210   2                      D12_WriteEndpoint(1, i, ControlData.pData + ControlData.wCount);
+ 211   2                      ControlData.wCount += i;
+ 212   2                      bEPPflags.bits.control_state = USB_IDLE;
+ 213   2              }
+ 214   1              else if (i == 0){
+ 215   2                      D12_WriteEndpoint(1, 0, 0); //发送完毕,发送0字节
+ 216   2                      bEPPflags.bits.control_state = USB_IDLE;
+ 217   2              }
+ 218   1      }
+ 219          
+ 220          //DMA结束处理
+ 221          void dma_eot(void)
+ 222          {
+ 223   1      }
+ 224          
+ 225          //端点1IN处理
+ 226          void ep1_txdone(void)
+ 227          {
+ 228   1              D12_ReadLastTransactionStatus(3); //清中断标志位
+ 229   1      }
+ 230          
+ 231          //端点1OUT处理
+ 232          /*extern unsigned char ShuMa[7];*/
+ 233          void ep1_rxdone(void)
+ 234          {  //控制LED/数码管/
+ 235   1              unsigned char len;
+ 236   1      
+ 237   1              D12_ReadLastTransactionStatus(2); //清中断标志位
+ 238   1              len = D12_ReadEndpoint(2, sizeof(GenEpBuf), GenEpBuf);//读取数据
+ 239   1              ShuMa[0]=GenEpBuf[0];
+ 240   1              ShuMa[1]=GenEpBuf[1];
+ 241   1              ShuMa[2]=GenEpBuf[2];
+C51 COMPILER V7.06   ISR                                                                   02/01/2008 12:33:50 PAGE 5   
+
+ 242   1              ShuMa[3]=GenEpBuf[3];
+ 243   1              ShuMa[4]=GenEpBuf[4];
+ 244   1              ShuMa[5]=GenEpBuf[5];
+ 245   1              ShuMa[6]=GenEpBuf[6];
+ 246   1              if(len != 0)
+ 247   1                      bEPPflags.bits.ep1_rxdone = 1;//标志接收到数据
+ 248   1      }
+ 249          
+ 250          //主端点IN控制
+ 251          void main_txdone(void)
+ 252          {
+ 253   1              D12_ReadLastTransactionStatus(5); //清中断标志位
+ 254   1      
+ 255   1      }
+ 256          
+ 257          //主端点OUT控制
+ 258          void main_rxdone(void)
+ 259          {
+ 260   1              unsigned char len,epstatus;
+ 261   1              D12_ReadLastTransactionStatus(4); //清中断标志位
+ 262   1              //接收数据
+ 263   1              len = D12_ReadEndpoint(4, 64, EpBuf);
+ 264   1              epstatus=D12_ReadEndpointStatus(4);
+ 265   1              epstatus &= 0x60;
+ 266   1              if (epstatus == 0x60)
+ 267   1                      len = D12_ReadEndpoint(4, 64, EpBuf);//读取双缓冲区数据
+ 268   1              if(len != 0)
+ 269   1              {
+ 270   2                      bEPPflags.bits.main_rxdone = 1;//标志接收到数据
+ 271   2              mainbuflen=len;
+ 272   2              }
+ 273   1      }
+ 274          
+ 275          
+ 276          
+ 277          
+ 278          
+ 279          
+ 280          
+ 281          
+ 282          
+ 283          
+ 284          
+ 285          
+ 286          
+ 287          
+ 288          
+ 289          
+ 290          
+ 291          
+ 292          
+ 293          
+ 294          
+ 295          
+ 296          
+
+
+MODULE INFORMATION:   STATIC OVERLAYABLE
+   CODE SIZE        =    759    ----
+   CONSTANT SIZE    =   ----    ----
+   XDATA SIZE       =   ----    ----
+   PDATA SIZE       =   ----    ----
+C51 COMPILER V7.06   ISR                                                                   02/01/2008 12:33:50 PAGE 6   
+
+   DATA SIZE        =      8       5
+   IDATA SIZE       =     87    ----
+   BIT SIZE         =   ----    ----
+END OF MODULE INFORMATION.
+
+
+C51 COMPILATION COMPLETE.  0 WARNING(S),  0 ERROR(S)

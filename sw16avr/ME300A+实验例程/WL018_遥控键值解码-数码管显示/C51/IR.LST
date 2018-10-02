@@ -1,0 +1,250 @@
+C51 COMPILER V7.50   IR                                                                    02/05/2006 17:44:55 PAGE 1   
+
+
+C51 COMPILER V7.50, COMPILATION OF MODULE IR
+OBJECT MODULE PLACED IN IR.OBJ
+COMPILER INVOKED BY: D:\Program Files\Keil\C51\BIN\C51.EXE IR.c BROWSE DEBUG OBJECTEXTEND
+
+line level    source
+
+   1          /*******************************************
+   2            数码管显示遥控器键值程序
+   3          ********************************************
+   4            
+   5           功能：每按下一键时数码管显示一位,当8个数码管显示完毕,重新从第一个开始显示
+   6          
+   7           作者：伟纳电子网友 dk_wang
+   8           
+   9           出处：伟纳电子论坛 www.willar.com
+  10          
+  11          ********************************************/
+  12          
+  13          
+  14          
+  15          
+  16          
+  17          #include <reg52.h>
+  18          #include <intrins.h>
+  19          #define uchar unsigned char
+  20          
+  21          /*******************************************
+  22          函数定义声明区
+  23          *******************************************/
+  24          uchar m;
+  25          
+  26          void delay(unsigned char m);
+  27          bit k_scan_estimate(void);     //flag 为1时表明有按键;按下否则无;
+  28               bit flag;                   //按键有无按下标志位;
+  29                   uchar key_initialization;   //按键初始化值;
+  30                   uchar key_prevenvient;      //按键前一状态值
+  31          
+  32          uchar key_dispose();
+  33               uchar key_h;        
+  34                   uchar key_l;
+  35                   uchar key;  
+  36               uchar key_before;//键值前一状态;
+  37          
+  38          
+  39          
+  40            uchar key_word(uchar key_m);//由键码值得出按键所对应的状态值;
+  41               uchar code digital_val[]={0xc0,0xf9,0xa4,0xb0,//0123
+  42                                         0x99,0x92,0x82,0xf8,//4567
+  43                                         0x80,0x90,0x88,0x00,//89AB
+  44                                         0x46,0x40,0x86,0x8e};//CDEF
+  45              uchar word_inx_before;
+  46              uchar word_inx;
+  47          
+  48          uchar data display_buffer[8]={0xff,0xff,0xff,0xff,0xff,0xff,0xff,0xff};
+  49          uchar buffer_i;//计数变量
+  50          uchar f;//位码变量
+  51          uchar r;//段码变量
+  52          uchar k;
+  53          
+  54          
+  55          void buzzer(void);//响片驱动程序
+C51 COMPILER V7.50   IR                                                                    02/05/2006 17:44:55 PAGE 2   
+
+  56            uchar buzzer_i;
+  57            sbit buzzer_voice=P3^7;
+  58            uchar buzzer_ii;
+  59          
+  60          
+  61          
+  62          /********************************************/
+  63          
+  64          
+  65          void main(void)
+  66          {
+  67   1        f=0;
+  68   1        r=0xfe;
+  69   1        TMOD=0x01;
+  70   1        EA=1;
+  71   1        ET0=1;
+  72   1        TH0=-2000/256;
+  73   1        TL0=-2000%256;
+  74   1        
+  75   1      
+  76   1        TR0=1;
+  77   1      while(1)
+  78   1         {
+  79   2         k_scan_estimate();
+  80   2         if(flag)
+  81   2         {
+  82   3          key_dispose();
+  83   3              if(flag)
+  84   3              {     buzzer();
+  85   4                 if(buffer_i==0)
+  86   4                   {
+  87   5                       for(k=0;k<8;k++)
+  88   5                         {display_buffer[k]=0xff;}
+  89   5                        }
+  90   4              display_buffer[buffer_i]=digital_val[key_word(key_dispose())];
+  91   4              buffer_i++;
+  92   4              buffer_i&=0x07;
+  93   4          flag=0;
+  94   4      }
+  95   3      }
+  96   2      }
+  97   1      }
+  98          
+  99          /*******************************
+ 100          定时器0中断入口
+ 101          ********************************/
+ 102          
+ 103          void timer0(void) interrupt 1
+ 104          {
+ 105   1         TR0=0;
+ 106   1         TH0=-2000/256;
+ 107   1         TL0=-2000%256;
+ 108   1         P0=display_buffer[f];
+ 109   1         f++;
+ 110   1         f&=0x07;
+ 111   1         P2=r;
+ 112   1         r=_crol_(r,1);
+ 113   1         TR0=1;
+ 114   1       }
+ 115          
+ 116          
+ 117          
+C51 COMPILER V7.50   IR                                                                    02/05/2006 17:44:55 PAGE 3   
+
+ 118          bit k_scan_estimate(void) //键盘状态判断,当有按下时标志位置位否则标志位为0;
+ 119          {
+ 120   1         key_initialization=0xf0;
+ 121   1         P1=key_initialization;
+ 122   1         key_initialization=P1;
+ 123   1      
+ 124   1         if(key_initialization^key_prevenvient)
+ 125   1            {
+ 126   2                    delay(50);
+ 127   2      
+ 128   2                       if(key_initialization^key_prevenvient)
+ 129   2                         {
+ 130   3                         key_prevenvient=key_initialization;
+ 131   3                         return(flag=1);
+ 132   3                         }
+ 133   2                      }
+ 134   1               else return(flag=0);
+ 135   1             
+ 136   1      }
+ 137          
+ 138          
+ 139          
+ 140          
+ 141           uchar key_dispose()//按键处理,当有按键按下时将返回键码值
+ 142           {key_before=key;
+ 143   1          key_l=0xfe;
+ 144   1      
+ 145   1          while(1)
+ 146   1              {
+ 147   2          P1=key_l;
+ 148   2              key_h=key_l=P1;
+ 149   2              if((key_l&0xf0)!=0xf0)
+ 150   2                 {
+ 151   3                  key_l&=0x0f;
+ 152   3                      key_h=P1&0xf0;
+ 153   3                      key=key_l|key_h;
+ 154   3                      return(key);
+ 155   3                      }
+ 156   2                else
+ 157   2                {
+ 158   3                 key_l=_crol_(key_l,1);
+ 159   3                 if((key_l&0x0f)==0x0f)
+ 160   3                     {
+ 161   4                           flag=0;
+ 162   4                       return(key_before);
+ 163   4                         }
+ 164   3                 }
+ 165   2               }
+ 166   1        }
+ 167          
+ 168          
+ 169            uchar key_word(uchar key_m)//输入键码值返回段码值;
+ 170            {
+ 171   1      
+ 172   1      
+ 173   1        uchar data key_val[]={0xee,0xed,0xeb,0xe7,//0,1,2,3
+ 174   1                               0xde,0xdd,0xdb,0xd7,//4,5,6,7
+ 175   1                               0xbe,0xbd,0xbb,0xb7,//8,9,A,B
+ 176   1                               0x7e,0x7d,0x7b,0x77};//C,D,E,F;
+ 177   1        uchar *pp=key_val;
+ 178   1               word_inx=0;
+ 179   1      for(;*pp!=key_m;pp++)
+C51 COMPILER V7.50   IR                                                                    02/05/2006 17:44:55 PAGE 4   
+
+ 180   1        {   word_inx++;
+ 181   2          if(pp>(key_val+0x0f)){return(word_inx_before);}
+ 182   2        }
+ 183   1       word_inx_before=word_inx;
+ 184   1        return(word_inx);
+ 185   1        }
+ 186          
+ 187          
+ 188          
+ 189            void delay(uchar m)  //延时程式
+ 190            {
+ 191   1        uchar n;
+ 192   1        while(m--)
+ 193   1        {
+ 194   2        for(n=250;n>0;n--);
+ 195   2        }
+ 196   1      
+ 197   1        }
+ 198          
+ 199          
+ 200          
+ 201          
+ 202            void buzzer(void)
+ 203            {
+ 204   1         
+ 205   1        
+ 206   1        for(buzzer_ii=150;buzzer_ii>0;buzzer_ii--)
+ 207   1        {
+ 208   2           for(buzzer_i=250;buzzer_i>0;buzzer_i--)
+ 209   2           { 
+ 210   3            buzzer_voice=~buzzer_voice;
+ 211   3                }
+ 212   2         }
+ 213   1         
+ 214   1         }
+ 215          
+ 216             
+ 217          
+ 218          
+ 219          
+ 220          
+ 221          
+
+
+MODULE INFORMATION:   STATIC OVERLAYABLE
+   CODE SIZE        =    357    ----
+   CONSTANT SIZE    =     32    ----
+   XDATA SIZE       =   ----    ----
+   PDATA SIZE       =   ----    ----
+   DATA SIZE        =     23      20
+   IDATA SIZE       =   ----    ----
+   BIT SIZE         =      1    ----
+END OF MODULE INFORMATION.
+
+
+C51 COMPILATION COMPLETE.  0 WARNING(S),  0 ERROR(S)

@@ -1,0 +1,125 @@
+;由FLASHMAN编写,QQ28479691
+;lcd12864显示程序
+;在第一行和第二行显示abcdefg
+;ME300B上运行成功
+
+.include "8515def.inc"
+.equ rs=0
+.equ rw=1
+.equ en=2
+.equ psb=3
+.equ rst=5
+
+.org $000
+	rjmp reset
+reset:
+.org $010
+	ldi r16,low(ramend)
+	ldi r17,high(ramend)
+	out spl,r16
+	out sph,r17
+main:
+	ser r16
+	out ddra,r16
+	out porta,r16
+	out ddrc,r16
+	out portc,r16
+	
+	rcall LcdIni
+	
+	ldi r16,$80
+	rcall WrOp
+	
+	ldi r16,'a'
+	rcall WrDat
+	
+	ldi r16,'b'
+	rcall WrDat
+	
+	ldi r16,'c'
+	rcall WrDat	
+	
+	ldi r16,'d'
+	rcall WrDat
+
+	ldi r16,'e'
+	rcall WrDat
+	
+	ldi r16,'f'
+	rcall WrDat
+	
+	ldi r16,'g'
+	rcall WrDat
+me:
+	rjmp me
+	;end of main
+;------------------------------------------ok
+LcdIni:
+	cbi portc,rst
+	ldi r16,250
+l_lp:
+	dec r16
+	brne l_lp
+	sbi portc,rst
+	nop
+	nop
+	nop
+	sbi portc,psb
+
+	ldi r16,$30
+	rcall WrOp
+	
+	ldi r16,$01
+	rcall WrOp
+	
+	ldi r16,$06
+	rcall WrOp
+	
+	ldi r16,$0c
+	rcall WrOp
+	ret
+;------------------------------------------
+WrOp:
+;将R16命令字传送到LCD
+	rcall check
+	cbi portc,rs
+	cbi portc,rw
+	cbi portc,en
+	out porta,r16
+	sbi portc,en
+	nop
+	nop
+	cbi portc,en
+	ret
+;------------------------------------------
+WrDat:
+;将R16数据传送到LCD
+	rcall check
+	sbi portc,rs
+	cbi portc,rw
+	cbi portc,en
+	out porta,r16
+	sbi portc,en
+	nop
+	nop
+	cbi portc,en
+	
+	ret
+;-----------------------------------------
+check:
+;忙位检测
+	cbi ddra,7			;设置PA的第七位为读入
+	sbi porta,7			;上拉电阻
+	cbi portc,rs
+	sbi portc,rw
+	sbi portc,en
+c_lp:
+	sbic pina,7			;为零时就退出
+	rjmp c_lp
+	cbi portc,en
+	sbi ddra,7
+	ret
+;-----------------------------------------
+
+
+

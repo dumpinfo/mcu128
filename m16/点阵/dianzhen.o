@@ -1,0 +1,166 @@
+XL
+H 4 areas C global symbols
+M dianzhen.c
+S push_gset2 Ref0000
+S pop_gset2 Ref0000
+A text size 152 flags 0
+dbfile E:\avr资料\例程\m16\点阵\dianzhen.c
+dbfunc e port_init 0 fV
+dbline FFFFFFFF 0
+dbline E 0
+dbline F 0
+dbline 10 4
+dbline 11 8
+dbline 12 A
+dbline 13 C
+dbline 14 E
+dbline 15 10
+dbline 16 12
+dbline FFFFFFFE 14
+dbline 0 14
+dbfunc e timer0_init 16 fV
+dbline FFFFFFFF 16
+dbline 1E 16
+dbline 1F 16
+dbline 20 1A
+dbline 21 1E
+dbline 22 22
+dbline FFFFFFFE 26
+dbline 0 26
+dbfunc e timer0_ovf_isr 28 fV
+dbline FFFFFFFF 48
+dbline 27 48
+dbline 28 48
+dbline 2B 4C
+dbline 2D 52
+dbline 2E 82
+dbline 2F 94
+dbline 31 A8
+dbline 33 BA
+dbline 34 DC
+dbline 36 F4
+dbline 38 FE
+dbline 3A 108
+dbline 3B 10C
+dbline 3C 10C
+dbline 3D 112
+dbline 3E 118
+dbline FFFFFFFE 118
+dbline 0 138
+dbfunc e init_devices 13A fV
+dbline FFFFFFFF 13A
+dbline 43 13A
+dbline 45 13A
+dbline 46 13C
+dbline 47 13E
+dbline 49 140
+dbline 4A 144
+dbline 4B 146
+dbline 4C 14A
+dbline FFFFFFFE 14C
+dbline 0 14C
+dbfunc e main 14E fV
+dbline FFFFFFFF 14E
+dbline 52 14E
+dbline 53 14E
+dbline FFFFFFFE 150
+dbline 0 150
+S _main Def014E
+S _timer0_ovf_isr Def0028
+S _port_init Def0000
+S _init_devices Def013A
+S _timer0_init Def0016
+A data size 16 flags 20
+dbfile E:\avr资料\例程\m16\点阵\dianzhen.c
+dbsym e data1 0 A[8:8]c
+dbsym e data2 8 A[8:8]c
+dbsym e addr 10 c
+dbsym e i 11 c
+dbsym e j 12 L
+S _data1 Def0000
+S _data2 Def0008
+S _i Def0011
+S _j Def0012
+S _addr Def0010
+A idata size 16 flags 0
+A vector size 28 flags C
+T 00 00 FF FD
+R 00 00 02 00
+T 02 00 BD BD
+R 00 00 02 00
+T 04 00 81 BD
+R 00 00 02 00
+T 06 00 BD FD
+R 00 00 02 00
+T 08 00 FF FD
+R 00 00 02 00
+T 0A 00 EB E7
+R 00 00 02 00
+T 0C 00 8F E7
+R 00 00 02 00
+T 0E 00 EB FD
+R 00 00 02 00
+T 10 00 01
+R 00 00 02 00
+T 11 00 00
+R 00 00 02 00
+T 12 00 00 00 00 00
+R 00 00 02 00
+T 00 00 22 24 2B BA 8F EF 8A BB 28 BA 87 BB 25 BA
+R 00 00 00 00
+T 0E 00 24 BA 22 BA 21 BA 08 95
+R 00 00 00 00
+T 16 00 22 24 23 BE 82 EC 82 BF 8E E3 8C BF 83 E0
+R 00 00 00 00
+T 24 00 83 BF 08 95
+R 00 00 00 00
+T 24 00 0C 94 14 00
+R 00 00 03 00 10 04 00 00
+T 28 00 2A 92 3A 92 4A 92 5A 92 8A 92 9A 92 8A 93
+R 00 00 00 00
+T 36 00 9A 93 AA 93 BA 93 EA 93 FA 93 2F B6 2A 92
+R 00 00 00 00
+T 44 00 0E 94 00 00 82 EC 82 BF 20 90 10 00 28 BA
+R 00 00 00 00 12 04 00 00 00 0C 01 00
+T 52 00 41 E0 50 E0 60 E0 70 E0 40 90 14 00 50 90
+R 00 00 00 00 00 0C 01 00
+T 60 00 15 00 20 90 12 00 30 90 13 00 24 0E 35 1E
+R 00 00 00 00 00 02 01 00 00 06 01 00 00 0A 01 00
+T 6E 00 46 1E 57 1E 30 92 13 00 20 92 12 00 50 92
+R 00 00 00 00 00 08 01 00 00 0C 01 00
+T 7C 00 15 00 40 92 14 00 48 E8 53 E1 60 E0 70 E0
+R 00 00 00 00 00 02 01 00 00 06 01 00
+T 8A 00 24 16 35 06 46 06 57 06 54 F4 80 E0 90 E0
+R 00 00 00 00 20 0C 01 00 00 00 40 0E 01 00 00 00
+T 98 00 E0 91 11 00 FF 27 E8 0F F9 1F 20 80 2B BA
+R 00 00 00 00 00 04 01 00
+T A6 00 09 C0 80 E0 90 E0 E0 91
+R 00 00 00 00 20 04 01 00 08 00 40 06 01 00 08 00
+T AE 00 11 00 FF 27 E8 0F F9 1F 20 80 2B BA 40 E1
+R 00 00 00 00 00 02 01 00
+T BC 00 57 E2 60 E0 70 E0 40 90 14 00 50 90 15 00
+R 00 00 00 00 00 0A 01 00 00 0E 01 00
+T CA 00 20 90 12 00 30 90 13 00 42 15 53 05 64 05
+R 00 00 00 00 00 04 01 00 00 08 01 00
+T D8 00 75 05 64 F4 40 E0 50 E0 60 E0 70 E0 50 93
+R 00 00 00 00
+T E6 00 13 00 40 93 12 00 70 93 15 00 60 93
+R 00 00 00 00 00 02 01 00 00 06 01 00 00 0A 01 00
+T F2 00 14 00 80 91 11 00 8F 5F 80 93 11 00 20 90
+R 00 00 00 00 00 02 01 00 00 06 01 00 00 0C 01 00
+T 00 01 10 00 22 0C 20 92 10 00 22 20 31 F4 81 E0
+R 00 00 00 00 00 02 01 00 00 08 01 00
+T 0E 01 80 93 10 00 22 24 20 92 11 00 0E 94 00 00
+R 00 00 00 00 00 04 01 00 00 0A 01 00 12 0E 01 00
+T 1C 01 29 90 2F BE F9 91 E9 91 B9 91 A9 91 99 91
+R 00 00 00 00
+T 2A 01 89 91 99 90 89 90 59 90 49 90 39 90 29 90
+R 00 00 00 00
+T 38 01 18 95
+R 00 00 00 00
+T 3A 01 F8 94 61 DF 6B DF 22 24 25 BE 2B BE 81 E0
+R 00 00 00 00
+T 48 01 89 BF 78 94 08 95
+R 00 00 00 00
+T 4E 01 F5 DF 08 95
+R 00 00 00 00

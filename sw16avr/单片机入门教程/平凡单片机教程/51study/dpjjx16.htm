@@ -1,0 +1,158 @@
+<HTML>
+<HEAD>
+<META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=gb_2312-80">
+<META NAME="Generator" CONTENT="Microsoft FrontPage 5.0">
+<TITLE>单片机第十四课 </TITLE>
+</HEAD>
+<BODY background="../back.jpg">
+<FONT FACE="宋体" LANG="ZH-CN" SIZE=2> 
+<P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">单片机第十三课</P>
+<P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">条件转移指令：</P>
+<P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">条件转移指令是指在满足一定条件时进行相对转移。</P>
+</FONT>
+<OL>
+  <LI>
+  <p style="line-height: 150%; margin-top: 0; margin-bottom: 0">
+  <FONT FACE="宋体" LANG="ZH-CN" SIZE=2>判</font><FONT SIZE=2>A</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>内容是否为</FONT><FONT SIZE=2>0</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>转移指令</font><font size="2"></LI>
+  </font>
+  <FONT FACE="宋体" LANG="ZH-CN" SIZE=3>
+  </p>
+  <p style="line-height: 150%; margin-top: 0; margin-bottom: 0"></P>
+  </FONT><FONT SIZE=2>
+  <P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">JZ&#9;&#9;rel</P>
+  <P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">JNZ&#9;&#9;rel</P>
+  </FONT>
+  <P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">
+  <FONT FACE="宋体" LANG="ZH-CN" SIZE=2>第一指令的功能是：如果</font><FONT SIZE=2>(A)=0</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>，则转移，否则顺序执行（执行本指令的下一条指令）。转移到什么地方去呢？如果按照传统的方法，就要算偏移量，很麻烦，好在现在我们可以借助于机器汇编了。因此这第指令我们可以这样理解：</FONT><FONT SIZE=2>JZ 
+    </FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>标号。即转移到标号处。下面举一例说明：</font></P>
+  <FONT SIZE=2>
+  <P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">MOV&#9;A,R0</P>
+  <P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">JZ&#9;&#9;L1</P>
+  <P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">MOV&#9;R1,#00H</P>
+  <P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">AJMP&#9;L2</P>
+  <P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">L1:&#9;MOV&#9;R1,#0FFH</P>
+  <P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">L2: SJMP &#9;L2</P>
+  </FONT>
+  <P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">
+  <FONT SIZE=2>END</font></P>
+  <P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">
+  <FONT FACE="宋体" LANG="ZH-CN" SIZE=2>在执行上面这段程序前如果</font><FONT SIZE=2>R0</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>中的值是</FONT><FONT SIZE=2>0</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>的话，就转移到</FONT><FONT SIZE=2>L1</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>执行，因此最终的执行结果是</FONT><FONT SIZE=2>R1</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>中的值为</FONT><FONT SIZE=2>0FFH</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>。而如果</FONT><FONT SIZE=2>R0</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>中的值不等于</FONT><FONT SIZE=2>0</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>，则顺序执行，也就是执行</FONT><FONT SIZE=2> 
+    MOV R1</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>，</FONT><FONT SIZE=2>#00H</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>指令。最终的执行结果是</FONT><FONT SIZE=2>R1</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>中的值等于</FONT><FONT SIZE=2>0</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>。</font></P>
+  <P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0"> 
+  <FONT FACE="宋体" LANG="ZH-CN" SIZE=2>第一条指令的功能清楚了，第二条当然就好理解了，如果</font><FONT SIZE=2>A</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>中的值不等于</FONT><FONT SIZE=2>0</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>，就转移。把上面的那个例子中的</FONT><FONT SIZE=2>JZ</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>改成</FONT><FONT SIZE=2>JNZ</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>试试吧，看看程序执行的结果是什么</FONT><FONT SIZE=2>?</font></P>
+  <P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0"> 　</P>
+  <FONT FACE="宋体" LANG="ZH-CN" SIZE=3>
+  <P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">
+  </FONT>
+  <FONT FACE="宋体" LANG="ZH-CN" SIZE=2>
+  <LI>
+  <p style="line-height: 150%; margin-top: 0; margin-bottom: 0">比较转移指令</LI> </p>
+  </FONT>
+  <FONT FACE="宋体" LANG="ZH-CN" SIZE=3>
+  <p style="line-height: 150%; margin-top: 0; margin-bottom: 0"></P>
+  </FONT><FONT SIZE=2>
+  <P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">CJNE&#9;&#9;A,#data,rel </P>
+  <P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">CJNE&#9;&#9;A,direct,rel</P>
+  <P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">CJNE&#9;&#9;Rn,#data,rel</P>
+  <P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">CJNE&#9;&#9;@Ri,#data,rel</P>
+  </FONT>
+  <P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">
+  <FONT FACE="宋体" LANG="ZH-CN" SIZE=2>第一条指令的功能是将</font><FONT SIZE=2>A</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>中的值和立即数</FONT><FONT SIZE=2>data</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>比较，如果两者相等，就顺序执行（执行本指令的下一条指令），如果不相等，就转移，同样地，我们可以将</FONT><FONT SIZE=2>rel</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>理解成标号，即：</FONT><FONT SIZE=2>CJNE&#9;A</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>，</FONT><FONT SIZE=2>#data,</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>标号。这样利用这条指令，我们就可以判断两数是否相等，这在很多场合是非常有用的。但有时还想得知两数比较之后哪个大，哪个小，本条指令也具有这样的功能，如果两数不相等，则</FONT><FONT SIZE=2>CPU</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>还会反映出哪个数大，哪个数小，这是用</FONT><FONT SIZE=2>CY</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>（进位位）来实现的。如果前面的数（</FONT><FONT SIZE=2>A</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>中的）大，则</FONT><FONT SIZE=2>CY=0</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>，否则</FONT><FONT SIZE=2>CY=1</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>，因此在程序转移后再次利用</FONT><FONT SIZE=2>CY</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>就可判断出</FONT><FONT SIZE=2>A</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>中的数比</FONT><FONT SIZE=2>data</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>大还是小了。</font></P>
+  <FONT FACE="宋体" LANG="ZH-CN" SIZE=2> 
+  <P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">例：</P>
+  </FONT>
+  <P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">
+  <FONT SIZE=2>MOV&#9;&#9;A,R0</font></P>
+  <P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">
+  <FONT SIZE=2>CJNE&#9;&#9;A,#10H,L1</font></P>
+  <FONT SIZE=2> 
+  <P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">&#9;MOV&#9;&#9;R1,#0FFH</P>
+  <P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">&#9;AJMP&#9;&#9;L3</P>
+  <P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">L1:&#9;JC&#9;&#9;&#9;L2</P>
+  <P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">&#9;MOV&#9;&#9;R1,#0AAH</P>
+  <P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">&#9;AJMP&#9;&#9;L3</P>
+  <P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">L2:&#9;MOV&#9;&#9;R1,#0FFH</P>
+  <P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">L3:&#9;SJMP&#9;&#9;L3</P>
+  </FONT>
+  <P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">
+  <FONT FACE="宋体" LANG="ZH-CN" SIZE=2>上面的程序中有一条指令我们还没学过，即</font><FONT SIZE=2>JC</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>，这条指令的原型是</FONT><FONT SIZE=2>JC&#9;rel,</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>作用和上面的</FONT><FONT SIZE=2>JZ</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>类似，但是它是判</FONT><FONT SIZE=2>CY</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>是</FONT><FONT SIZE=2>0</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>，还是</FONT><FONT SIZE=2>1</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>进行转移，如果</FONT><FONT SIZE=2>CY=1</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>，则转移到</FONT><FONT SIZE=2>JC</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>后面的标号处执行，如果</FONT><FONT SIZE=2>CY=0</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>则顺序执行（执行它的下面一条指令）。</font></P>
+  <P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0"> 
+  <FONT FACE="宋体" LANG="ZH-CN" SIZE=2>分析一下上面的程序，如果（</font><FONT SIZE=2>A</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>）</FONT><FONT SIZE=2>=10H</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>，则顺序执行，即</FONT><FONT SIZE=2>R1=0</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>。如果（</FONT><FONT SIZE=2>A</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>）不等于</FONT><FONT SIZE=2>10H</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>，则转到</FONT><FONT SIZE=2>L1</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>处继续执行，在</FONT><FONT SIZE=2>L1</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>处，再次进行判断，如果（</FONT><FONT SIZE=2>A</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>）</FONT><FONT SIZE=2>&gt;10H</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>，则</FONT><FONT SIZE=2>CY=1</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>，将顺序执行，即执行</FONT><FONT SIZE=2>MOV&#9;R1</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>，</FONT><FONT SIZE=2>#0AAH</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>指令，而如果（</FONT><FONT SIZE=2>A</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>）</FONT><FONT SIZE=2>&lt;10H</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>，则将转移到</FONT><FONT SIZE=2>L2</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>处指行，即执行</FONT><FONT SIZE=2>MOV&#9;R1</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>，</FONT><FONT SIZE=2>#0FFH</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>指令。因此最终结果是：本程序执行前，如果（</FONT><FONT SIZE=2>R0</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>）</FONT><FONT SIZE=2>=10H</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>，则（</FONT><FONT SIZE=2>R1</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>）</FONT><FONT SIZE=2>=00H</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>，如果（</FONT><FONT SIZE=2>R0</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>）</FONT><FONT SIZE=2>&gt;10H</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>，则（</FONT><FONT SIZE=2>R1</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>）</FONT><FONT SIZE=2>=0AAH</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>，如果（</FONT><FONT SIZE=2>R0</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>）</FONT><FONT SIZE=2>&lt;10H</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>，则（</FONT><FONT SIZE=2>R1</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>）</FONT><FONT SIZE=2>=0FFH</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>。</font></P>
+  <P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0"> 
+  <FONT FACE="宋体" LANG="ZH-CN" SIZE=2>弄懂了这条指令，其它的几条就类似了，第二条是把</font><FONT SIZE=2>A</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>当中的值和直接地址中的值比较，第三条则是将直接地址中的值和立即数比较，第四条是将间址寻址得到的数和立即数比较，这里就不详谈了，下面给出几个相应的例子。</font></P>
+  <P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">
+  <FONT SIZE=2>CJNE&#9;&#9;A,10H ;</font><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>把</FONT><FONT SIZE=2>A</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>中的值和</FONT><FONT SIZE=2>10H</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>中的值比较（注意和上题的区别）</font></P>
+  <P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">
+  <FONT SIZE=2>CJNE&#9;&#9;10H</font><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>，</FONT><FONT SIZE=2>#35H&#9;;</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>把</FONT><FONT SIZE=2>10H</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>中的值和</FONT><FONT SIZE=2>35H</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>中的值比较</font></P>
+  <P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">
+  <FONT SIZE=2>CJNE&#9;&#9;@R0,#35H ;</font><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>把</FONT><FONT SIZE=2>R0</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>中的值作为地址，从此地址中取数并和</FONT><FONT SIZE=2>35H</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>比较</font></P>
+  <P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">　</P>
+  <FONT FACE="宋体" LANG="ZH-CN" SIZE=3> 
+  <P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">
+  </FONT>
+  <FONT FACE="宋体" LANG="ZH-CN" SIZE=2> 
+  <LI>
+  <p style="line-height: 150%; margin-top: 0; margin-bottom: 0">循环转移指令</LI> </p>
+  </FONT>
+  <FONT FACE="宋体" LANG="ZH-CN" SIZE=3> 
+  <p style="line-height: 150%; margin-top: 0; margin-bottom: 0"></P>
+  </FONT><FONT SIZE=2>
+  <P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">DJNZ&#9;&#9;Rn,rel</P>
+  <P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">DJNZ&#9;&#9;direct,rel</P>
+  </FONT>
+  <P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">
+  <FONT FACE="宋体" LANG="ZH-CN" SIZE=2>第一条指令在前面的例子中有详细的分析，这里就不多谈了。第二条指令，只是将</font><FONT SIZE=2>Rn</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>改成直接地址，其它一样，也不多说了，给一个例子。</font></P>
+  <P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0"> 
+  <FONT SIZE=2>DJNZ&#9;&#9;10H</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>，</FONT><FONT SIZE=2>LOOP</font></P>
+  <P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0"> 
+  <FONT SIZE=2>3</font><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>．调用与返回指令</font></P>
+  <P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0"> 
+  <FONT FACE="宋体" LANG="ZH-CN" SIZE=2>（</font><FONT SIZE=2>1</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>）主程序与子程序&#9;在前面的灯的实验中，我们已用到过了子程序，只是我们并没有明确地介绍。子程序是干什么用的，为什么要用子程序技术呢？举个例子，我们数据老师布置了</FONT><FONT SIZE=2>10</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>道算术题，经过观察，每一道题中都包含一个（</FONT><FONT SIZE=2>3*5+2</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>）</FONT><FONT SIZE=2>*3</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>的运算，我们可以有两种选择，第一种，每做一道题，都把这个算式算一遍，第二种选择，我们可以先把这个结果算出来，也就是</FONT><FONT SIZE=2>51</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>，放在一边，然后要用到这个算式时就将</FONT><FONT SIZE=2>51</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>代进去。这两种方法哪种更好呢？不必多言。设计程序时也是这样，有时一个功能会在程序的不同地方反复使用，我们就可以把这个功能做成一段程序，每次需要用到这个功能时就“调用”一下。</font></P>
+  <p ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0"> 
+  <FONT FACE="宋体" LANG="ZH-CN" SIZE=2>（</font><FONT SIZE=2>2</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>）调用及回过程：主程序调用了子程序，子程序执行完之后必须再回到主程序继续执行，不能“一去不回头”，那么回到什么地方呢？是回到调用子程序的下面一条指令继续执行（当然啦，要是还回到这条指令，不又要再调用子程序了吗？那可就没完没了了</FONT><FONT SIZE=2>……</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>）。参考图</FONT><FONT SIZE=2>1</font></p>
+  <p ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">
+  <font size="2"><img src="dpjjx151.gif" width="232" height="282"></font></p>
+  <p ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">
+  <font size="2">图1</font></p>
+  <FONT FACE="宋体" LANG="ZH-CN" SIZE=3>
+  <P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">
+  </font>
+  <FONT FACE="宋体" LANG="ZH-CN" SIZE=2>
+  <LI>
+  <p style="line-height: 150%; margin-top: 0; margin-bottom: 0">调用指令</LI> </p>
+  </font>
+  <FONT FACE="宋体" LANG="ZH-CN" SIZE=3>
+  <p style="line-height: 150%; margin-top: 0; margin-bottom: 0"></P>
+  </font>
+</OL>
+
+<P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">
+<FONT SIZE=2>LCALL&#9;addr16   ;</font><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>长调用指令</font></P>
+<P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">
+<FONT SIZE=2>ACALL  addr11   ;</font><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>短调用指令</font></P>
+<P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">
+<FONT FACE="宋体" LANG="ZH-CN" SIZE=2>上面两条指令都是在主程序中调用子程序，两者有一定的区别，但在初学时，可以不加以区分，而且可以用</font><FONT SIZE=2>LCALL   </FONT>
+<FONT FACE="宋体" LANG="ZH-CN" SIZE=2>标号，</FONT><FONT SIZE=2>ACALL   </FONT>
+<FONT FACE="宋体" LANG="ZH-CN" SIZE=2>标号，来理解，即调用子程序。</font></P>
+<P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">
+<FONT FACE="宋体" LANG="ZH-CN" SIZE=2>（</font><FONT SIZE=2>5</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>）返回指令</FONT><FONT SIZE=2> </FONT>
+<FONT FACE="宋体" LANG="ZH-CN" SIZE=2>则说了，子程序执行完后必须回到主程序，如何返回呢？只要执行一条返回指令就可以了，即执行</font></P>
+<FONT SIZE=2>
+<P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">ret</P>
+</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>
+<P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">指令</P>
+</FONT>
+<P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">
+<FONT SIZE=2>4</font><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>．空操作指令</font></P>
+<FONT SIZE=2>
+<P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">nop</P>
+</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>
+<P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">空操作，就是什么事也不干，停一个周期，一般用作短时间的延时。</P>
+</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=3>
+<P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0"></P>
+<P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">　</P>
+<P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">　</P>
+<P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">　</P>
+<P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">　</P>
+<P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">　</P></FONT></BODY>
+</HTML>

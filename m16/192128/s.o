@@ -1,0 +1,143 @@
+XL
+H 4 areas 8 global symbols
+M s.c
+A text size C6 flags 0
+dbfile E:\新建文件夹\例程\m16\192128\s.c
+dbfunc e port_init 0 fV
+dbline FFFFFFFF 0
+dbline 2C 0
+dbline 2D 0
+dbline 2E 4
+dbline 2F 8
+dbline 30 A
+dbline 31 C
+dbline 32 E
+dbline 33 10
+dbline 34 12
+dbline FFFFFFFE 14
+dbline 0 14
+dbfunc e timer0_init 16 fV
+dbline FFFFFFFF 16
+dbline 3C 16
+dbline 3D 16
+dbline 3E 1A
+dbline 3F 1E
+dbline 40 22
+dbline FFFFFFFE 26
+dbline 0 26
+dbfunc e timer0_ovf_isr 28 fV
+dbline FFFFFFFF 32
+dbline 45 32
+dbline 46 32
+dbline 47 36
+dbline 48 40
+dbline 49 44
+dbline 4A 44
+dbline 4B 46
+dbline 4C 4C
+dbline 4E 4E
+dbline 50 50
+dbline 51 52
+dbline 53 54
+dbline 54 58
+dbline 55 5A
+dbline FFFFFFFE 5C
+dbline 0 66
+dbfunc e timer1_init 68 fV
+dbline FFFFFFFF 68
+dbline 5F 68
+dbline 60 68
+dbline 61 6C
+dbline 62 70
+dbline 63 74
+dbline 64 78
+dbline 65 7C
+dbline 66 80
+dbline 67 84
+dbline 68 88
+dbline 69 8C
+dbline 6A 8E
+dbline FFFFFFFE 92
+dbline 0 92
+dbfunc e timer1_ovf_isr 94 fV
+dbline FFFFFFFF 9A
+dbline 6F 9A
+dbline 71 9A
+dbline 72 9E
+dbline FFFFFFFE A2
+dbline 0 A8
+dbfunc e init_devices AA fV
+dbline FFFFFFFF AA
+dbline 77 AA
+dbline 79 AA
+dbline 7A AC
+dbline 7B AE
+dbline 7C B0
+dbline 7E B2
+dbline 7F B6
+dbline 80 B8
+dbline 81 BC
+dbline FFFFFFFE BE
+dbline 0 BE
+dbfunc e main C0 fV
+dbline FFFFFFFF C0
+dbline 87 C0
+dbline 88 C0
+dbline 89 C2
+dbline FFFFFFFE C4
+dbline 0 C4
+S _main Def00C0
+S _timer0_ovf_isr Def0028
+S _timer1_ovf_isr Def0094
+S _port_init Def0000
+S _init_devices Def00AA
+S _timer0_init Def0016
+S _timer1_init Def0068
+A data size 1 flags 20
+dbfile E:\新建文件夹\例程\m16\192128\s.c
+dbsym e data 0 c
+S _data Def0000
+A idata size 1 flags 0
+A vector size 28 flags C
+T 00 00 00
+R 00 00 02 00
+T 00 00 22 24 2B BA 8F EF 8A BB 28 BA 27 BA 25 BA
+R 00 00 00 00
+T 0E 00 24 BA 22 BA 21 BA 08 95
+R 00 00 00 00
+T 16 00 22 24 23 BE 84 EC 82 BF 8C E3 8C BF 84 E0
+R 00 00 00 00
+T 24 00 83 BF 08 95
+R 00 00 00 00
+T 24 00 0C 94 14 00
+R 00 00 03 00 10 04 00 00
+T 28 00 2A 92 8A 93 9A 93 2F B6 2A 92 84 EC 82 BF
+R 00 00 00 00
+T 36 00 80 91 00 00 8F 5F 80 93 00 00 82 30 29 F4
+R 00 00 00 00 00 04 01 00 00 0A 01 00
+T 44 00 DC 9A 22 24 20 92 00 00 01 C0 DC 98 DE 9A
+R 00 00 00 00 00 08 01 00
+T 52 00 DE 98 22 24 2B BA DF 98 DF 9A 29 90 2F BE
+R 00 00 00 00
+T 60 00 99 91 89 91 29 90 18 95
+R 00 00 00 00
+T 68 00 22 24 2E BC 88 EE 8D BD 80 E9 8C BD 87 E1
+R 00 00 00 00
+T 76 00 8B BD 80 E7 8A BD 87 E1 89 BD 80 E7 88 BD
+R 00 00 00 00
+T 84 00 87 E1 87 BD 80 E7 86 BD 2F BC 81 E0 8E BD
+R 00 00 00 00
+T 92 00 08 95
+R 00 00 00 00
+T 20 00 0C 94 4A 00
+R 00 00 03 00 10 04 00 00
+T 94 00 8A 93 8F B7 8A 93 88 EE 8D BD 80 E9 8C BD
+R 00 00 00 00
+T A2 00 89 91 8F BF 89 91 18 95
+R 00 00 00 00
+T AA 00 F8 94 A9 DF B3 DF DB DF 22 24 25 BE 2B BE
+R 00 00 00 00
+T B8 00 85 E0 89 BF 78 94 08 95
+R 00 00 00 00
+T C0 00 F4 DF DF 9A 08 95
+R 00 00 00 00

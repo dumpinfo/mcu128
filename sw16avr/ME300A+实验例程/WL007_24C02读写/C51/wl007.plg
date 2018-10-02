@@ -1,0 +1,14 @@
+<html>
+<body>
+<pre>
+<h1>µVision2 Build Log</h1>
+<h2>Project:</h2>
+F:\winf\ME300ÏµÁÐ\ME300A+\samples_release\WL007_24C02¶ÁÐ´\C51\wl007.uv2
+Project File Date:  03/29/2005
+
+<h2>Output:</h2>
+Build target 'Target 1'
+compiling wl007.C...
+linking...
+Program Size: data=12.1 xdata=0 code=269
+"wl007" - 0 Error(s), 0 Warning(s).

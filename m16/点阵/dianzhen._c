@@ -1,0 +1,83 @@
+//ICC-AVR application builder : 2007-6-12 20:23:24
+// Target : M16
+// Crystal: 4.0000Mhz
+
+#include <iom16v.h>
+#include <macros.h>
+unsigned char data1[]={0xff,0xfd,0xbd,0xbd,0x81,0xbd,0xbd,0xfd};
+unsigned char data2[]={0xff,0xfd,0xeb,0xe7,0x8f,0xe7,0xeb,0xfd};
+unsigned char addr = 1,i = 0;
+long int j = 0;
+void port_init(void)
+{
+ PORTA = 0x00;
+ DDRA  = 0xFF;
+ PORTB = 0x00;
+ DDRB  = 0xFF;
+ PORTC = 0x00; //m103 output only
+ DDRC  = 0x00;
+ PORTD = 0x00;
+ DDRD  = 0x00;
+}
+
+//TIMER0 initialize - prescale:64
+// WGM: Normal
+// desired value: 1KHz
+// actual value:  1.008KHz (0.8%)
+void timer0_init(void)
+{
+ TCCR0 = 0x00; //stop
+ TCNT0 = 0xC2; //set count
+ OCR0  = 0x3E;  //set compare
+ TCCR0 = 0x03; //start timer
+}
+
+#pragma interrupt_handler timer0_ovf_isr:10
+void timer0_ovf_isr(void)
+{
+ TCNT0 = 0xC2; //reload counter value
+ 
+ 
+ PORTB = addr;
+ j++;
+ if(j<5000)
+ PORTA = data1[i];
+ else
+ PORTA = data2[i];
+ 
+ if(j>10000)
+ j=0;
+ 
+ i++;
+ 
+ addr= addr<<1;
+ 
+ if(addr == 0)
+  {
+   addr =1;
+   i=0;
+  }
+}
+
+//call this routine to initialize all peripherals
+void init_devices(void)
+{
+ //stop errant interrupts until set up
+ CLI(); //disable all interrupts
+ port_init();
+ timer0_init();
+
+ MCUCR = 0x00;
+ GICR  = 0x00;
+ TIMSK = 0x01; //timer interrupt sources
+ SEI(); //re-enable interrupts
+ //all peripherals are now initialized
+}
+
+//
+void main(void)
+{
+ init_devices();
+ //insert your functional code here...
+}
+

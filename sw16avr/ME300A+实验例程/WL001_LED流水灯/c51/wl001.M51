@@ -1,0 +1,92 @@
+BL51 BANKED LINKER/LOCATER V5.11                                                        03/29/2005  15:39:16  PAGE 1
+
+
+BL51 BANKED LINKER/LOCATER V5.11, INVOKED BY:
+C:\KEIL\C51\BIN\BL51.EXE wl001.obj TO wl001 CODE (0X0000-0X0FFF)
+
+
+MEMORY MODEL: SMALL
+
+
+INPUT MODULES INCLUDED:
+  wl001.obj (WL001)
+  C:\KEIL\C51\LIB\C51S.LIB (?C_STARTUP)
+
+
+LINK MAP OF MODULE:  wl001 (WL001)
+
+
+            TYPE    BASE      LENGTH    RELOCATION   SEGMENT NAME
+            -----------------------------------------------------
+
+            * * * * * * *   D A T A   M E M O R Y   * * * * * * *
+            REG     0000H     0008H     ABSOLUTE     "REG BANK 0"
+            IDATA   0008H     0001H     UNIT         ?STACK
+
+            * * * * * * *   C O D E   M E M O R Y   * * * * * * *
+            CODE    0000H     0003H     ABSOLUTE     
+            CODE    0003H     0019H     UNIT         ?PR?MAIN?WL001
+            CODE    001CH     0012H     UNIT         ?PR?_DELAYMS?WL001
+            CODE    002EH     000CH     UNIT         ?C_C51STARTUP
+
+
+
+OVERLAY MAP OF MODULE:   wl001 (WL001)
+
+
+SEGMENT
+  +--> CALLED SEGMENT
+---------------------
+?C_C51STARTUP
+  +--> ?PR?MAIN?WL001
+
+?PR?MAIN?WL001
+  +--> ?PR?_DELAYMS?WL001
+
+
+
+SYMBOL TABLE OF MODULE:  wl001 (WL001)
+
+  VALUE           TYPE          NAME
+  ----------------------------------
+
+  -------         MODULE        WL001
+  C:0000H         SYMBOL        _ICE_DUMMY_
+  D:0080H         PUBLIC        P0
+  C:0003H         PUBLIC        main
+  C:001CH         PUBLIC        _delayms
+  -------         PROC          _DELAYMS
+  D:0007H         SYMBOL        ms
+  -------         DO            
+  D:0006H         SYMBOL        i
+BL51 BANKED LINKER/LOCATER V5.11                                                      03/29/2005  15:39:16  PAGE 2
+
+
+  -------         ENDDO         
+  C:001CH         LINE#         24
+  C:001CH         LINE#         26
+  C:001CH         LINE#         28
+  C:0022H         LINE#         29
+  C:0022H         LINE#         30
+  C:002DH         LINE#         31
+  C:002DH         LINE#         32
+  -------         ENDPROC       _DELAYMS
+  -------         PROC          MAIN
+  -------         DO            
+  D:0004H         SYMBOL        LED
+  -------         ENDDO         
+  C:0003H         LINE#         34
+  C:0003H         LINE#         35
+  C:0003H         LINE#         37
+  C:0005H         LINE#         38
+  C:0007H         LINE#         40
+  C:0007H         LINE#         41
+  C:0007H         LINE#         42
+  C:000CH         LINE#         43
+  C:0018H         LINE#         44
+  C:001AH         LINE#         45
+  -------         ENDPROC       MAIN
+  -------         ENDMOD        WL001
+
+Program Size: data=9.0 xdata=0 code=58
+LINK/LOCATE RUN COMPLETE.  0 WARNING(S),  0 ERROR(S)

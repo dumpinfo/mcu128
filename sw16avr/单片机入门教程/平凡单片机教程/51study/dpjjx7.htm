@@ -1,0 +1,106 @@
+<HTML>
+<HEAD>
+<META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=gb_2312-80">
+<META NAME="Generator" CONTENT="Microsoft FrontPage 5.0">
+<TITLE>单片机第六课</TITLE>
+</HEAD>
+<BODY background="../back.jpg">
+<FONT FACE="宋体" LANG="ZH-CN" SIZE=2>
+<P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">单片机第六课：单片机的内外部结构分析（四）</P>
+
+</FONT>
+<FONT FACE="宋体" LANG="ZH-CN" SIZE=3>
+<OL>
+
+<P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">
+
+</FONT>
+<FONT FACE="宋体" LANG="ZH-CN" SIZE=2>
+<LI>
+<p style="line-height: 150%; margin-top: 0; margin-bottom: 0">第三个实验</LI></p>
+
+</FONT>
+<FONT FACE="宋体" LANG="ZH-CN" SIZE=3>
+<p style="line-height: 150%; margin-top: 0; margin-bottom: 0"></P></OL>
+
+</FONT>
+<P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">
+<FONT FACE="宋体" LANG="ZH-CN" SIZE=2>上两次我们做过两个实验，都是让</font><FONT SIZE=2>P1.0</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>这个引脚使灯亮，我们可以设想：既然</FONT><FONT SIZE=2>P1.0</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>可以让灯亮，那么其它的引脚可不可以呢？看一下图</FONT><FONT SIZE=2>1</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>，它是</FONT><FONT SIZE=2>8031</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>单片机引脚的说明，在</FONT><FONT SIZE=2>P1.0</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>旁边有</FONT><FONT SIZE=2>P1.1</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>，</FONT><FONT SIZE=2>P1.2….P1.7</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>，它们是否都可以让灯亮呢？除了以</FONT><FONT SIZE=2>P1</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>开头的外，还有以</FONT><FONT SIZE=2>P0</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>，</FONT><FONT SIZE=2>P2</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>，</FONT><FONT SIZE=2>P3</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>开头的，数一下，一共是</FONT><FONT SIZE=2>32</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>个引脚，前面我们以学过</FONT><FONT SIZE=2>7</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>个引脚，加上这</FONT><FONT SIZE=2>32</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>个这</FONT><FONT SIZE=2>39</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>个了。它们都以</FONT><FONT SIZE=2>P</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>字开头，只是后面的数字不一样，它们是否有什么联系呢？它们能不能都让灯亮呢？在我们的实验板上，除了</FONT><FONT SIZE=2>P10</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>之外，还有</FONT><FONT SIZE=2>P11</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>&#0;&#0;</FONT><FONT SIZE=2>P17</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>都与</FONT><FONT SIZE=2>LED</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>相连，下面让我们来做一个实验，程序如下：</font></P>
+<P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">
+<FONT SIZE=2>MAIN</font><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>：&#9;</FONT>
+<FONT SIZE=2>MOV&#9;P1</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>，</FONT><FONT SIZE=2>#0FFH</font></P>
+<P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">
+<FONT SIZE=2>LCALL&#9;DELAY</font></P>
+<P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">
+<FONT SIZE=2>MOV&#9;P1</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>，</FONT><FONT SIZE=2>#00H</font></P>
+<FONT SIZE=2>
+<P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">&#9;&#9;LCALL&#9;DELAY</P>
+<P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">&#9;&#9;LJMP&#9;MAIN</P>
+</FONT>
+<P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">
+<FONT SIZE=2>DELAY</font><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>：</FONT><FONT SIZE=2>MOV&#9;R7</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>，</FONT><FONT SIZE=2>#250</font></P>
+<P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">
+<FONT SIZE=2>D1</font><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>：&#9;</FONT>
+<FONT SIZE=2> MOV   R6</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>，</FONT><FONT SIZE=2>#250</font></P>
+<P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">
+<FONT SIZE=2>D2</font><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>：&#9;</FONT>
+<FONT SIZE=2> DJNZ&#9;R6</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>，</FONT><FONT SIZE=2>D2</font></P>
+<P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">
+<FONT SIZE=2>&#9;&#9;DJNZ&#9;R7</font><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>，</FONT><FONT SIZE=2>D1</font></P>
+<FONT SIZE=2>
+<P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">&#9;&#9;RET</P><DIR>
+
+<P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0"> END</P></DIR>
+
+</FONT>
+<P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">
+<FONT FACE="宋体" LANG="ZH-CN" SIZE=2>将这段程序转为机器码，用编程器写入芯片中，结果如何？通电以后我们可以看到</font><FONT SIZE=2>8</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>只</FONT><FONT SIZE=2>LED</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>全部在闪动。因此，</FONT><FONT SIZE=2>P10</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>&#0;&#0;</FONT><FONT SIZE=2>P17</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>是全部可以点亮灯的。事实上，凡以</FONT><FONT SIZE=2>P</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>开头的这</FONT><FONT SIZE=2>32</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>个引脚都是可以点亮灯的，也就是说：这</FONT><FONT SIZE=2>32</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>个引脚都可以作为输出使用，如果不用来点亮</FONT><FONT SIZE=2>LED</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>，可以用来控制继电器，可以用来控制其它的执行机构。</font></P>
+<P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">
+<FONT FACE="宋体" LANG="ZH-CN" SIZE=2>程序分析：这段程序和前面做过的程序比较，只有两处不一样：第一句：原来是</font><FONT SIZE=2>SETB  P1.0</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>，现在改为</FONT><FONT SIZE=2>MOV    P1</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>，</FONT><FONT SIZE=2>#0FFH</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>，第三句：原来是</FONT><FONT SIZE=2>CLR    P1.0</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>，现在改为</FONT><FONT SIZE=2>MOV   P1.0</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>，</FONT><FONT SIZE=2>#00H</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>。从中可以看出，</FONT><FONT SIZE=2>P1</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>是</FONT><FONT SIZE=2>P1.0</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>&#0;&#0;</FONT><FONT SIZE=2>P1.7</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>的全体的代表，一个</FONT><FONT SIZE=2>P1</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>就表示了所有的这八个管脚了。当然用的指令也不一样了，是用</FONT><FONT SIZE=2>MOV</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>指令。为什么用这条指令？看图</FONT><FONT SIZE=2>2</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>，我们把</FONT><FONT SIZE=2>P1</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>作为一个整体，就把它当作是一个存储器的单元，对一个单元送进一个数可以用</FONT><FONT SIZE=2>MOV</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>指令。</font></P>
+<FONT FACE="宋体" LANG="ZH-CN" SIZE=2>
+<P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">二、第四个实验</P>
+</FONT>
+<P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">
+<FONT FACE="宋体" LANG="ZH-CN" SIZE=2>除了可以作为输出外，这</font><FONT SIZE=2>32</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>个引脚还可以做什么呢？下面再来做一个实验，程序如下：</font></P>
+<P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">
+<FONT SIZE=2>MAIN</font><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>：&#9;&#9;</FONT>
+<FONT SIZE=2>MOV&#9;P3</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>，</FONT><FONT SIZE=2>#0FFH</font></P>
+<P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">
+<FONT SIZE=2>LOOP</font><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>：&#9;&#9;</FONT>
+<FONT SIZE=2>MOV&#9;A</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>，</FONT><FONT SIZE=2>P3</font></P>
+<P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">
+<FONT SIZE=2>&#9;&#9;&#9;MOV&#9;P1</font><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>，</FONT><FONT SIZE=2>A</font></P>
+<FONT SIZE=2>
+<P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">&#9;&#9;&#9;LJMP&#9;LOOP</P>
+</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>
+<P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">先看一下实验的结果：所有灯全部不亮，然后我按下一个按钮，第（）个灯亮了，再按下另一个按钮，第（）个灯亮了，松开按钮灯就灭了。从这个实验现象结合电路来分析一下程序。</P>
+</FONT>
+<P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">
+<FONT FACE="宋体" LANG="ZH-CN" SIZE=2>从硬件电路的连线可以看出，有四个按钮被接入到</font><FONT SIZE=2>P3</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>口的</FONT><FONT SIZE=2>P32</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>，</FONT><FONT SIZE=2>P33</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>，</FONT><FONT SIZE=2>P34</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>，</FONT><FONT SIZE=2>P35</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>。第一条指令的用途我们可以猜到：使</FONT><FONT SIZE=2>P3</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>口全部为高电平。第二条指令是</FONT><FONT SIZE=2>MOV    A</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>，</FONT><FONT SIZE=2>P3</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>，其中</FONT><FONT SIZE=2> MOV</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>已经见，是送数的意思，这条指令的意思就是将</FONT><FONT SIZE=2>P3</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>口的数送到</FONT><FONT SIZE=2>A</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>中去，我们可以把</FONT><FONT SIZE=2>A</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>当成是一个中间单元（看图</FONT><FONT SIZE=2>3</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>），第三句话是将</FONT><FONT SIZE=2>A</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>中的数又送到</FONT><FONT SIZE=2>P1</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>口去，第四句话是循环，就是不断地重复这个过程，这我们已见过。当我们按下第一个按钮时，第（</FONT><FONT SIZE=2>3</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>）只灯亮了，所以</FONT><FONT SIZE=2>P12</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>口应当输出是低电平，为什么</FONT><FONT SIZE=2>P12</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>口会输出低电平呢？我们看一下有什么被送到了</FONT><FONT SIZE=2>P1</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>口，只有从</FONT><FONT SIZE=2>P3</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>口进来的数送到</FONT><FONT SIZE=2>A</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>，又被送到了</FONT><FONT SIZE=2>P1</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>口，所以，肯定是</FONT><FONT SIZE=2>P3</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>口进来的数使得</FONT><FONT SIZE=2>P12</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>位输出电平的。</FONT><FONT SIZE=2>P3</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>口的</FONT><FONT SIZE=2>P32</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>位的按钮被按下，使得</FONT><FONT SIZE=2>P32</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>位的电平为低，通过程序，又使</FONT><FONT SIZE=2>P12</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>口输出低电平，所以</FONT><FONT SIZE=2>P3</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>口起来了一个输入的作用。验证：按第二、三、四个按钮，同时按下</FONT><FONT SIZE=2>2</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>个、</FONT><FONT SIZE=2>3</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>个、</FONT><FONT SIZE=2>4</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>个按钮都可以得到同样的结论，所以</FONT><FONT SIZE=2>P3</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>口确实起到了输入作用，这样，我们可以看到，以</FONT><FONT SIZE=2>P</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>字开头的管脚，不仅可以用作输出，还可以用作输入，其它的管脚是否可以呢？是的，都可以。这</FONT><FONT SIZE=2>32</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>个引脚就称之为并行口，下面我们就对并行口的结构作一个分析，看一下它是怎样实现输入和输出的。</font></P><FONT FACE="宋体" LANG="ZH-CN" SIZE=3>
+<OL START=3>
+
+<P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">
+
+</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>
+<LI>
+<p style="line-height: 150%; margin-top: 0; margin-bottom: 0">并行口结构分析：</LI></p>
+
+</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=3>
+<p style="line-height: 150%; margin-top: 0; margin-bottom: 0"></P></OL>
+
+</FONT>
+<P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">
+<FONT SIZE=2>1</font><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>、输出结构</font></P>
+<P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">
+<FONT FACE="宋体" LANG="ZH-CN" SIZE=2>先看</font><FONT SIZE=2>P1</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>口的一位的结构示意图（只画出了输出部份）：从图中可以看出，开关的打开和合上代表了引脚输出的高和低，如果开关合上了，则引脚输出就是低，如果开关打开了，则输出高电平，这个开关是由一根线来控制的，这根数据总线是出自于</FONT><FONT SIZE=2>CPU</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>，让我们回想一下，数据总线是一根大家公用的线，很多的器件和它连在一起，在不同的时候，不同的器件当然需要不同的信号，如某一时刻我们让这个引脚输出高电平，并要求保持若干时间，在这段时间里，计算机当然在忙个不停，在与其它器件进行联络，这根控制线上的电平未必能保持原来的值不变，输出就会发生变化了。怎么解决这个问题呢？我们在存储器一节中学过，存储器中是可以存放电荷的，我们不妨也加一个小的存储器的单元，并在它的前面加一个开关，要让这一位输出时，就把开关打开，信号就进入存储器的单元，然后马上关闭开关，这样这一位的状态就被保存下来，直到下一次命令让它把开关再打开为止。这样就能使这一位的状态与别的器件无关了，这么一个小单元，我们给它一个很形象的名字，称之为“锁存器”。</font></P>
+<P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">
+<FONT SIZE=2>2</font><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>、输入结构</font></P>
+<P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">
+<FONT FACE="宋体" LANG="ZH-CN" SIZE=2>这是并行口的一位的输出结构示意图，再看，除了输出之外，还有两根线，一根从外部引脚接入，另一根从锁存器的输出接出，分别标明读引脚和读锁存器。这两根线是用于从外部接收信号的，为什么要两根呢？原来，在</font><FONT SIZE=2>51</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>单片机中输入有两种方式，分别称为‘读引脚’和‘读锁存器’，第一种方式是将引脚作为输入，那是真正地从外部引脚读进输入的值，第二种方式是该引脚处于输出状态时，有时需要改变这一位的状态，则并不需要真正地读引脚状态，而只是读入锁存器的状态，然后作某种变换后再输出。</font></P>
+<P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">
+<FONT FACE="宋体" LANG="ZH-CN" SIZE=2>&#9;请注意输入结构图，如果将这一根引线作为输入口使用，我们并不能保证在任何时刻都能得到正确的结果（为什么？）参考图</font><FONT SIZE=2>2</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>输入示意图。接在外部的开关如果打开，则应当是输入</FONT><FONT SIZE=2>1</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>，而如果闭合开关，则输入</FONT><FONT SIZE=2>0</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>，但是，如果单片机内部的开关是闭合的，那么不管外部的开关是开还是闭，单片机接受到的数据都是</FONT><FONT SIZE=2>0</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>。可见，要让这一端口作为输入使用，要先做一个‘准备工作’，就是先让内部的开关断开，也就是让端口输出‘</FONT><FONT SIZE=2>1</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>’才行。正因为要先做这么一个准备工作，所以我们称之为“准双向</FONT><FONT SIZE=2>I/O</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>口”。</font></P>
+<P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0"> 
+<FONT FACE="宋体" LANG="ZH-CN" SIZE=2>&#9;以上是</font><FONT SIZE=2>P1</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>口的一位的结构，</FONT><FONT SIZE=2>P1</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>口其它各位的结构与之相同，而其它三个口：</FONT><FONT SIZE=2>P0</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>、</FONT><FONT SIZE=2>P2</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>、</FONT><FONT SIZE=2>P3</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>则除入作为输入输出口之外还有其它用途，所以结构要稍复杂一些，但其用于输入、输出的结构是相同的。看图（）。对我们来说，这些附加的功能不必由我们来控制，所以我们就不去关心它了。</font></P>
+<P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">　</P>
+</BODY>
+</HTML>

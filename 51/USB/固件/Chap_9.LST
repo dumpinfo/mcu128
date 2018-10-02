@@ -1,0 +1,308 @@
+C51 COMPILER V7.06   CHAP_9                                                                02/01/2008 12:33:49 PAGE 1   
+
+
+C51 COMPILER V7.06, COMPILATION OF MODULE CHAP_9
+OBJECT MODULE PLACED IN Chap_9.OBJ
+COMPILER INVOKED BY: d:\Keil\C51\BIN\C51.EXE Chap_9.c BROWSE DEBUG OBJECTEXTEND
+
+stmt level    source
+
+   1          #include <stdio.h>
+   2          #include <string.h>
+   3          
+   4          #include <reg51.h>                /* special function register declarations   */
+   5          
+   6          #include "epphal.h"
+   7          #include "d12ci.h"
+   8          #include "mainloop.h"
+   9          #include "usb100.h"
+  10          #include "chap_9.h"
+  11          
+  12          #define NUM_ENDPOINTS   4                //端点数
+  13          //配置描述符总长度=USB配置描述符长度+USB接口描述符长度+端点数*端点描述符长度
+  14          #define CONFIG_DESCRIPTOR_LENGTH    sizeof(USB_CONFIGURATION_DESCRIPTOR) \
+  15                                                                                  + sizeof(USB_INTERFACE_DESCRIPTOR) \
+  16                                                                                  + (NUM_ENDPOINTS * sizeof(USB_ENDPOINT_DESCRIPTOR))
+  17                                                                             
+  18          extern CONTROL_XFER ControlData;
+  19          extern IO_REQUEST idata ioRequest;
+  20          extern EPPFLAGS bEPPflags;
+  21          
+  22          //设备描述符
+  23          code USB_DEVICE_DESCRIPTOR DeviceDescr =
+  24          {
+  25                  sizeof(USB_DEVICE_DESCRIPTOR),
+  26              USB_DEVICE_DESCRIPTOR_TYPE,
+  27              SWAP(0x0110),
+  28              USB_CLASS_CODE_TEST_CLASS_DEVICE,
+  29              0, 0,
+  30                  EP0_PACKET_SIZE,
+  31                  SWAP(0x0471),
+  32                  SWAP(0x0677),
+  33                  SWAP(0x0100),
+  34              0, 0, 0,
+  35                  1
+  36          };
+  37          
+  38          //配置描述符
+  39          code USB_CONFIGURATION_DESCRIPTOR ConfigDescr =
+  40          {
+  41              sizeof(USB_CONFIGURATION_DESCRIPTOR),
+  42              USB_CONFIGURATION_DESCRIPTOR_TYPE,
+  43              SWAP(CONFIG_DESCRIPTOR_LENGTH),
+  44                  1,
+  45                  1,
+  46              0,
+  47                  0xa0,//自供电
+  48                  0x32
+  49          };
+  50          
+  51          //接口描述符
+  52          code USB_INTERFACE_DESCRIPTOR InterfaceDescr =
+  53          {
+  54              sizeof(USB_INTERFACE_DESCRIPTOR),
+  55              USB_INTERFACE_DESCRIPTOR_TYPE,
+C51 COMPILER V7.06   CHAP_9                                                                02/01/2008 12:33:49 PAGE 2   
+
+  56              0,
+  57              0,
+  58                  NUM_ENDPOINTS,
+  59                  USB_CLASS_CODE_TEST_CLASS_DEVICE,
+  60                  USB_SUBCLASS_CODE_TEST_CLASS_D12,
+  61                  USB_PROTOCOL_CODE_TEST_CLASS_D12,
+  62                  0
+  63          };
+  64          
+  65          //端点描述符
+  66          code USB_ENDPOINT_DESCRIPTOR EP1_TXDescr =
+  67          {
+  68                  sizeof(USB_ENDPOINT_DESCRIPTOR),
+  69                  USB_ENDPOINT_DESCRIPTOR_TYPE,
+  70                  0x81,
+  71                  USB_ENDPOINT_TYPE_INTERRUPT,
+  72                  SWAP(EP1_PACKET_SIZE),
+  73                  1
+  74          };
+  75          
+  76          code USB_ENDPOINT_DESCRIPTOR EP1_RXDescr =
+  77          {
+  78                  sizeof(USB_ENDPOINT_DESCRIPTOR),
+  79                  USB_ENDPOINT_DESCRIPTOR_TYPE,
+  80                  0x1,
+  81                  USB_ENDPOINT_TYPE_INTERRUPT,
+  82                  SWAP(EP1_PACKET_SIZE),
+  83                  1
+  84          };
+  85          
+  86          code USB_ENDPOINT_DESCRIPTOR EP2_TXDescr =
+  87          {
+  88                  sizeof(USB_ENDPOINT_DESCRIPTOR),
+  89                  USB_ENDPOINT_DESCRIPTOR_TYPE,
+  90                  0x82,
+  91                  USB_ENDPOINT_TYPE_BULK,
+  92                  SWAP(EP2_PACKET_SIZE),
+  93                  10
+  94          };
+  95          
+  96          code USB_ENDPOINT_DESCRIPTOR EP2_RXDescr =
+  97          {
+  98                  sizeof(USB_ENDPOINT_DESCRIPTOR),
+  99                  USB_ENDPOINT_DESCRIPTOR_TYPE,
+ 100                  0x2,
+ 101                  USB_ENDPOINT_TYPE_BULK,
+ 102                  SWAP(EP2_PACKET_SIZE),
+ 103                  10
+ 104          };
+ 105          
+ 106          /*
+ 107             //*************************************************************************
+ 108             // USB Protocol Layer
+ 109             //*************************************************************************
+ 110          */
+ 111          
+ 112          void reserved(void)
+ 113          {
+ 114   1              stall_ep0();
+ 115   1      }
+ 116          
+ 117          /*
+C51 COMPILER V7.06   CHAP_9                                                                02/01/2008 12:33:49 PAGE 3   
+
+ 118             //*************************************************************************
+ 119             // USB standard device requests
+ 120             //*************************************************************************
+ 121          */
+ 122          
+ 123          //获取设备状态
+ 124          void get_status(void)
+ 125          {
+ 126   1              unsigned char endp, txdat[2];
+ 127   1              unsigned char bRecipient = ControlData.DeviceRequest.bmRequestType & USB_RECIPIENT;
+ 128   1              unsigned char c;
+ 129   1      
+ 130   1              if (bRecipient == USB_RECIPIENT_DEVICE) {
+ 131   2                      if(bEPPflags.bits.remote_wakeup == 1)//获取远程唤醒状态
+ 132   2                              txdat[0] = 3;
+ 133   2                      else
+ 134   2                              txdat[0] = 1;
+ 135   2                      txdat[1]=0;
+ 136   2                      single_transmit(txdat, 2);
+ 137   2              } else if (bRecipient == USB_RECIPIENT_INTERFACE) {//获取接口状态
+ 138   2                      txdat[0]=0;
+ 139   2                      txdat[1]=0;
+ 140   2                      single_transmit(txdat, 2);
+ 141   2              } else if (bRecipient == USB_RECIPIENT_ENDPOINT) {//获取端点状态
+ 142   2                      endp = (unsigned char)(ControlData.DeviceRequest.wIndex & MAX_ENDPOINTS);
+ 143   2                      if (ControlData.DeviceRequest.wIndex & (unsigned char)USB_ENDPOINT_DIRECTION_MASK)
+ 144   2                              c = D12_SelectEndpoint(endp*2 + 1);     /* Control-in */
+ 145   2                      else
+ 146   2                              c = D12_SelectEndpoint(endp*2); /* Control-out */
+ 147   2                      if(c & D12_STALL)
+ 148   2                              txdat[0] = 1;
+ 149   2                      else
+ 150   2                              txdat[0] = 0;
+ 151   2                      txdat[1] = 0;
+ 152   2                      single_transmit(txdat, 2);
+ 153   2              } else
+ 154   1                      stall_ep0();
+ 155   1      }
+ 156          
+ 157          //特性清除
+ 158          void clear_feature(void)
+ 159          {
+ 160   1              unsigned char endp;
+ 161   1              unsigned char bRecipient = ControlData.DeviceRequest.bmRequestType & USB_RECIPIENT;
+ 162   1      
+ 163   1              if (bRecipient == USB_RECIPIENT_DEVICE
+ 164   1                      && ControlData.DeviceRequest.wValue == USB_FEATURE_REMOTE_WAKEUP) {//清除远程唤醒功能
+ 165   2                      DISABLE;
+ 166   2                      bEPPflags.bits.remote_wakeup = 0;
+ 167   2                      ENABLE;
+ 168   2                      single_transmit(0, 0);
+ 169   2              }
+ 170   1              else if (bRecipient == USB_RECIPIENT_ENDPOINT
+ 171   1                      && ControlData.DeviceRequest.wValue == USB_FEATURE_ENDPOINT_STALL) {//清除端点stall
+ 172   2                      endp = (unsigned char)(ControlData.DeviceRequest.wIndex & MAX_ENDPOINTS);
+ 173   2                      if (ControlData.DeviceRequest.wIndex & (unsigned char)USB_ENDPOINT_DIRECTION_MASK)
+ 174   2                              /* clear TX stall for IN on EPn. */
+ 175   2                              D12_SetEndpointStatus(endp*2 + 1, 0);
+ 176   2                      else
+ 177   2                              /* clear RX stall for OUT on EPn. */
+ 178   2                              D12_SetEndpointStatus(endp*2, 0);
+ 179   2                      single_transmit(0, 0);
+C51 COMPILER V7.06   CHAP_9                                                                02/01/2008 12:33:49 PAGE 4   
+
+ 180   2              } else
+ 181   1                      stall_ep0();
+ 182   1      }
+ 183          
+ 184          //特性设置
+ 185          void set_feature(void)
+ 186          {
+ 187   1              unsigned char endp;
+ 188   1              unsigned char bRecipient = ControlData.DeviceRequest.bmRequestType & USB_RECIPIENT;
+ 189   1      
+ 190   1              if (bRecipient == USB_RECIPIENT_DEVICE
+ 191   1                      && ControlData.DeviceRequest.wValue == USB_FEATURE_REMOTE_WAKEUP) {//设置远程唤醒功能
+ 192   2                      DISABLE;
+ 193   2                      bEPPflags.bits.remote_wakeup = 1;
+ 194   2                      ENABLE;
+ 195   2                      single_transmit(0, 0);
+ 196   2              }
+ 197   1              else if (bRecipient == USB_RECIPIENT_ENDPOINT
+ 198   1                      && ControlData.DeviceRequest.wValue == USB_FEATURE_ENDPOINT_STALL) {//设置端点stall
+ 199   2                      endp = (unsigned char)(ControlData.DeviceRequest.wIndex & MAX_ENDPOINTS);
+ 200   2                      if (ControlData.DeviceRequest.wIndex & (unsigned char)USB_ENDPOINT_DIRECTION_MASK)
+ 201   2                              /* clear TX stall for IN on EPn. */
+ 202   2                              D12_SetEndpointStatus(endp*2 + 1, 1);
+ 203   2                      else
+ 204   2                              /* clear RX stall for OUT on EPn. */
+ 205   2                              D12_SetEndpointStatus(endp*2, 1);
+ 206   2                      single_transmit(0, 0);
+ 207   2              } else
+ 208   1                      stall_ep0();
+ 209   1      }
+ 210          
+ 211          //设置地址
+ 212          void set_address(void)
+ 213          {
+ 214   1              D12_SetAddressEnable((unsigned char)(ControlData.DeviceRequest.wValue &
+ 215   1                      DEVICE_ADDRESS_MASK), 1);
+ 216   1              single_transmit(0, 0);
+ 217   1      }
+ 218          
+ 219          //获取描述符
+ 220          void get_descriptor(void)
+ 221          {
+ 222   1              unsigned char bDescriptor = MSB(ControlData.DeviceRequest.wValue);
+ 223   1      
+ 224   1              if (bDescriptor == USB_DEVICE_DESCRIPTOR_TYPE) {//获取设备描述符
+ 225   2                      code_transmit((unsigned char code *)&DeviceDescr, sizeof(USB_DEVICE_DESCRIPTOR));
+ 226   2              } else if (bDescriptor == USB_CONFIGURATION_DESCRIPTOR_TYPE) {//获取配置描述符
+ 227   2                      code_transmit((unsigned char code *)&ConfigDescr, CONFIG_DESCRIPTOR_LENGTH);
+ 228   2              } else
+ 229   1                      stall_ep0();
+ 230   1      }
+ 231          
+ 232          //获取配置状态
+ 233          void get_configuration(void)
+ 234          {
+ 235   1              unsigned char c = bEPPflags.bits.configuration;
+ 236   1              single_transmit(&c, 1);
+ 237   1      }
+ 238          
+ 239          //设置配置状态
+ 240          void set_configuration(void)
+ 241          {
+C51 COMPILER V7.06   CHAP_9                                                                02/01/2008 12:33:49 PAGE 5   
+
+ 242   1              if (ControlData.DeviceRequest.wValue == 0) {
+ 243   2                      //设备进入未配置状态
+ 244   2                      single_transmit(0, 0);
+ 245   2                      DISABLE;
+ 246   2                      bEPPflags.bits.configuration = 0;
+ 247   2                      ENABLE;
+ 248   2                      init_unconfig();
+ 249   2              } else if (ControlData.DeviceRequest.wValue == 1) {
+ 250   2                      //配置设备
+ 251   2                      single_transmit(0, 0);
+ 252   2      
+ 253   2                      init_unconfig();
+ 254   2                      init_config();
+ 255   2                      DISABLE;
+ 256   2                      bEPPflags.bits.configuration = 1;
+ 257   2                      ENABLE;
+ 258   2              } else
+ 259   1                      stall_ep0();
+ 260   1      }
+ 261          
+ 262          //获取接口状态
+ 263          void get_interface(void)
+ 264          {
+ 265   1              unsigned char txdat = 0;        /* Only/Current interface = 0 */
+ 266   1              single_transmit(&txdat, 1);
+ 267   1      }
+ 268          
+ 269          //设置接口状态
+ 270          void set_interface(void)
+ 271          {
+ 272   1              if (ControlData.DeviceRequest.wValue == 0 && ControlData.DeviceRequest.wIndex == 0)
+ 273   1                      single_transmit(0, 0);
+ 274   1              else
+ 275   1                      stall_ep0();
+ 276   1      }
+ 277          
+
+
+MODULE INFORMATION:   STATIC OVERLAYABLE
+   CODE SIZE        =    448    ----
+   CONSTANT SIZE    =     64    ----
+   XDATA SIZE       =   ----    ----
+   PDATA SIZE       =   ----    ----
+   DATA SIZE        =   ----      12
+   IDATA SIZE       =   ----    ----
+   BIT SIZE         =   ----    ----
+END OF MODULE INFORMATION.
+
+
+C51 COMPILATION COMPLETE.  0 WARNING(S),  0 ERROR(S)

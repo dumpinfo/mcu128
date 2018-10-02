@@ -1,0 +1,248 @@
+                        .module C_LEDPMD.C
+                        .area data(ram, con, rel)
+ 0000           _LM_Data::
+ 0000                   .blkb 2
+                        .area idata
+ 0000 0100              .word 1
+                        .area data(ram, con, rel)
+ 0002                   .dbfile E:\avr资料\例程\m16\LED跑马灯\C_LEDPMD.C
+ 0002                   .dbsym e LM_Data _LM_Data i
+                        .area text(rom, con, rel)
+ 0000                   .dbfile E:\avr资料\例程\m16\LED跑马灯\C_LEDPMD.C
+ 0000                   .dbfunc e port_init _port_init fV
+                        .even
+ 0000           _port_init::
+ 0000                   .dbline -1
+ 0000                   .dbline 15
+ 0000           ; //ICC-AVR application builder : 2007-3-14 9:32:42
+ 0000           ; // Target : M16
+ 0000           ; // Crystal: 7.3728Mhz
+ 0000           ; // Designed by solo       转载请注明
+ 0000           ; // http://www.ourembed.com     
+ 0000           ; // qq:15537031 phone:13879805760
+ 0000           ; //该程序使用了PA口，请将PA口接到LED的脚上，然后运行程序
+ 0000           ; //显示结果应该是循环点亮LED，
+ 0000           ; //请注意主频
+ 0000           ; #include <iom16v.h>
+ 0000           ; #include <macros.h>
+ 0000           ; 
+ 0000           ; unsigned LM_Data=1;
+ 0000           ; void port_init(void)
+ 0000           ; {
+ 0000                   .dbline 16
+ 0000           ;  PORTA = 0xFF;
+ 0000 8FEF              ldi R24,255
+ 0002 8BBB              out 0x1b,R24
+ 0004                   .dbline 17
+ 0004           ;  DDRA  = 0xFF;
+ 0004 8ABB              out 0x1a,R24
+ 0006                   .dbline 18
+ 0006           ;  PORTB = 0x00;
+ 0006 2224              clr R2
+ 0008 28BA              out 0x18,R2
+ 000A                   .dbline 19
+ 000A           ;  DDRB  = 0x00;
+ 000A 27BA              out 0x17,R2
+ 000C                   .dbline 20
+ 000C           ;  PORTC = 0x00; //m103 output only
+ 000C 25BA              out 0x15,R2
+ 000E                   .dbline 21
+ 000E           ;  DDRC  = 0x00;
+ 000E 24BA              out 0x14,R2
+ 0010                   .dbline 22
+ 0010           ;  PORTD = 0x00;
+ 0010 22BA              out 0x12,R2
+ 0012                   .dbline 23
+ 0012           ;  DDRD  = 0x00;
+ 0012 21BA              out 0x11,R2
+ 0014                   .dbline -2
+ 0014           L1:
+ 0014                   .dbline 0 ; func end
+ 0014 0895              ret
+ 0016                   .dbend
+ 0016                   .dbfunc e timer1_init _timer1_init fV
+                        .even
+ 0016           _timer1_init::
+ 0016                   .dbline -1
+ 0016                   .dbline 31
+ 0016           ; }
+ 0016           ; 
+ 0016           ; //TIMER1 initialize - prescale:256
+ 0016           ; // WGM: 0) Normal, TOP=0xFFFF
+ 0016           ; // desired value: 1Sec
+ 0016           ; // actual value:  1.000Sec (0.0%)
+ 0016           ; void timer1_init(void)
+ 0016           ; {
+ 0016                   .dbline 32
+ 0016           ;  TCCR1B = 0x00; //stop
+ 0016 2224              clr R2
+ 0018 2EBC              out 0x2e,R2
+ 001A                   .dbline 33
+ 001A           ;  TCNT1H = 0xcF; //setup
+ 001A 8FEC              ldi R24,207
+ 001C 8DBD              out 0x2d,R24
+ 001E                   .dbline 34
+ 001E           ;  TCNT1L = 0xc1;
+ 001E 81EC              ldi R24,193
+ 0020 8CBD              out 0x2c,R24
+ 0022                   .dbline 35
+ 0022           ;  OCR1AH = 0x70;
+ 0022 80E7              ldi R24,112
+ 0024 8BBD              out 0x2b,R24
+ 0026                   .dbline 36
+ 0026           ;  OCR1AL = 0x7F;
+ 0026 8FE7              ldi R24,127
+ 0028 8ABD              out 0x2a,R24
+ 002A                   .dbline 37
+ 002A           ;  OCR1BH = 0x70;
+ 002A 80E7              ldi R24,112
+ 002C 89BD              out 0x29,R24
+ 002E                   .dbline 38
+ 002E           ;  OCR1BL = 0x7F;
+ 002E 8FE7              ldi R24,127
+ 0030 88BD              out 0x28,R24
+ 0032                   .dbline 39
+ 0032           ;  ICR1H  = 0x70;
+ 0032 80E7              ldi R24,112
+ 0034 87BD              out 0x27,R24
+ 0036                   .dbline 40
+ 0036           ;  ICR1L  = 0x7F;
+ 0036 8FE7              ldi R24,127
+ 0038 86BD              out 0x26,R24
+ 003A                   .dbline 41
+ 003A           ;  TCCR1A = 0x00;
+ 003A 2FBC              out 0x2f,R2
+ 003C                   .dbline 42
+ 003C           ;  TCCR1B = 0x04; //start Timer
+ 003C 84E0              ldi R24,4
+ 003E 8EBD              out 0x2e,R24
+ 0040                   .dbline -2
+ 0040           L2:
+ 0040                   .dbline 0 ; func end
+ 0040 0895              ret
+ 0042                   .dbend
+                        .area vector(rom, abs)
+                        .org 32
+ 0020 0C942100          jmp _timer1_ovf_isr
+                        .area text(rom, con, rel)
+ 0042                   .dbfile E:\avr资料\例程\m16\LED跑马灯\C_LEDPMD.C
+ 0042                   .dbfunc e timer1_ovf_isr _timer1_ovf_isr fV
+                        .even
+ 0042           _timer1_ovf_isr::
+ 0042 2A92              st -y,R2
+ 0044 3A92              st -y,R3
+ 0046 8A93              st -y,R24
+ 0048 9A93              st -y,R25
+ 004A 2FB6              in R2,0x3f
+ 004C 2A92              st -y,R2
+ 004E                   .dbline -1
+ 004E                   .dbline 47
+ 004E                   .dbline 49
+ 004E 8FEE              ldi R24,239
+ 0050 8DBD              out 0x2d,R24
+ 0052                   .dbline 50
+ 0052 8FEF              ldi R24,255
+ 0054 8CBD              out 0x2c,R24
+ 0056                   .dbline 51
+ 0056 20900000          lds R2,_LM_Data
+ 005A 30900100          lds R3,_LM_Data+1
+ 005E 2BBA              out 0x1b,R2
+ 0060                   .dbline 52
+ 0060 220C              lsl R2
+ 0062 331C              rol R3
+ 0064 30920100          sts _LM_Data+1,R3
+ 0068 20920000          sts _LM_Data,R2
+ 006C                   .dbline 53
+ 006C 2220              tst R2
+ 006E 41F4              brne L4
+ 0070 3320              tst R3
+ 0072 31F4              brne L4
+ 0074           X0:
+ 0074                   .dbline 54
+ 0074 81E0              ldi R24,1
+ 0076 90E0              ldi R25,0
+ 0078 90930100          sts _LM_Data+1,R25
+ 007C 80930000          sts _LM_Data,R24
+ 0080           L4:
+ 0080                   .dbline -2
+ 0080           L3:
+ 0080 2990              ld R2,y+
+ 0082 2FBE              out 0x3f,R2
+ 0084 9991              ld R25,y+
+ 0086 8991              ld R24,y+
+ 0088 3990              ld R3,y+
+ 008A 2990              ld R2,y+
+ 008C                   .dbline 0 ; func end
+ 008C 1895              reti
+ 008E                   .dbend
+ 008E                   .dbfunc e init_devices _init_devices fV
+                        .even
+ 008E           _init_devices::
+ 008E                   .dbline -1
+ 008E                   .dbline 59
+ 008E           ; }
+ 008E           ; 
+ 008E           ; #pragma interrupt_handler timer1_ovf_isr:9
+ 008E           ; void timer1_ovf_isr(void)
+ 008E           ; {
+ 008E           ;  //TIMER1 has overflowed
+ 008E           ;  TCNT1H = 0xeF; //reload counter high value
+ 008E           ;  TCNT1L = 0xff; //reload counter low value
+ 008E           ;  PORTA = LM_Data;
+ 008E           ;  LM_Data = LM_Data<<1;
+ 008E           ;  if (LM_Data == 0)
+ 008E           ;   LM_Data = 1;
+ 008E           ; }
+ 008E           ; 
+ 008E           ; //call this routine to initialize all peripherals
+ 008E           ; void init_devices(void)
+ 008E           ; {
+ 008E                   .dbline 61
+ 008E           ;  //stop errant interrupts until set up
+ 008E           ;  CLI(); //disable all interrupts
+ 008E F894              cli
+ 0090                   .dbline 62
+ 0090           ;  port_init();
+ 0090 B7DF              xcall _port_init
+ 0092                   .dbline 63
+ 0092           ;  timer1_init();
+ 0092 C1DF              xcall _timer1_init
+ 0094                   .dbline 65
+ 0094           ; 
+ 0094           ;  MCUCR = 0x00;
+ 0094 2224              clr R2
+ 0096 25BE              out 0x35,R2
+ 0098                   .dbline 66
+ 0098           ;  GICR  = 0x00;
+ 0098 2BBE              out 0x3b,R2
+ 009A                   .dbline 67
+ 009A           ;  TIMSK = 0x04; //timer interrupt sources
+ 009A 84E0              ldi R24,4
+ 009C 89BF              out 0x39,R24
+ 009E                   .dbline 68
+ 009E           ;  SEI(); //re-enable interrupts
+ 009E 7894              sei
+ 00A0                   .dbline -2
+ 00A0           L6:
+ 00A0                   .dbline 0 ; func end
+ 00A0 0895              ret
+ 00A2                   .dbend
+ 00A2                   .dbfunc e main _main fV
+                        .even
+ 00A2           _main::
+ 00A2                   .dbline -1
+ 00A2                   .dbline 74
+ 00A2           ;  //all peripherals are now initialized
+ 00A2           ; }
+ 00A2           ; 
+ 00A2           ; //
+ 00A2           ; void main(void)
+ 00A2           ; {
+ 00A2                   .dbline 75
+ 00A2           ;  init_devices();
+ 00A2 F5DF              xcall _init_devices
+ 00A4                   .dbline -2
+ 00A4           L7:
+ 00A4                   .dbline 0 ; func end
+ 00A4 0895              ret
+ 00A6                   .dbend

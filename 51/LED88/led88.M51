@@ -1,0 +1,137 @@
+BL51 BANKED LINKER/LOCATER V5.03                                                        01/28/2008  21:28:19  PAGE 1
+
+
+BL51 BANKED LINKER/LOCATER V5.03, INVOKED BY:
+D:\KEIL\C51\BIN\BL51.EXE .\STARTUP.obj, LED88.obj TO led88 RAMSIZE (256)
+
+
+MEMORY MODEL: SMALL
+
+
+INPUT MODULES INCLUDED:
+  .\STARTUP.obj (?C_STARTUP)
+  LED88.obj (LED88)
+
+
+LINK MAP OF MODULE:  led88 (?C_STARTUP)
+
+
+            TYPE    BASE      LENGTH    RELOCATION   SEGMENT NAME
+            -----------------------------------------------------
+
+            * * * * * * *   D A T A   M E M O R Y   * * * * * * *
+            REG     0000H     0008H     ABSOLUTE     "REG BANK 0"
+            DATA    0008H     0002H     UNIT         _DATA_GROUP_
+            IDATA   000AH     0001H     UNIT         ?STACK
+
+            * * * * * * *   C O D E   M E M O R Y   * * * * * * *
+            CODE    0000H     0003H     ABSOLUTE     
+            CODE    0003H     004FH     UNIT         ?PR?MAIN?LED88
+            CODE    0052H     0010H     UNIT         ?PR?_DELAY?LED88
+            CODE    0062H     000CH     UNIT         ?C_C51STARTUP
+            CODE    006EH     0008H     UNIT         ?CO?LED88
+
+
+
+OVERLAY MAP OF MODULE:   led88 (?C_STARTUP)
+
+
+SEGMENT                          DATA_GROUP 
+  +--> CALLED SEGMENT          START    LENGTH
+----------------------------------------------
+?C_C51STARTUP                  -----    -----
+  +--> ?PR?MAIN?LED88
+
+?PR?MAIN?LED88                 0008H    0002H
+  +--> ?CO?LED88
+
+
+
+SYMBOL TABLE OF MODULE:  led88 (?C_STARTUP)
+
+  VALUE           TYPE          NAME
+  ----------------------------------
+
+  -------         MODULE        ?C_STARTUP
+  C:0062H         SEGMENT       ?C_C51STARTUP
+  I:000AH         SEGMENT       ?STACK
+  C:0000H         PUBLIC        ?C_STARTUP
+  D:00E0H         SYMBOL        ACC
+  D:00F0H         SYMBOL        B
+  D:0083H         SYMBOL        DPH
+BL51 BANKED LINKER/LOCATER V5.03                                                      01/28/2008  21:28:19  PAGE 2
+
+
+  D:0082H         SYMBOL        DPL
+  N:0000H         SYMBOL        IBPSTACK
+  N:0100H         SYMBOL        IBPSTACKTOP
+  N:0080H         SYMBOL        IDATALEN
+  C:0065H         SYMBOL        IDATALOOP
+  N:0000H         SYMBOL        PBPSTACK
+  N:0000H         SYMBOL        PBPSTACKTOP
+  N:0000H         SYMBOL        PDATALEN
+  N:0000H         SYMBOL        PDATASTART
+  N:0000H         SYMBOL        PPAGE
+  N:0000H         SYMBOL        PPAGEENABLE
+  D:00A0H         SYMBOL        PPAGE_SFR
+  D:0081H         SYMBOL        SP
+  C:0062H         SYMBOL        STARTUP1
+  N:0000H         SYMBOL        XBPSTACK
+  N:0000H         SYMBOL        XBPSTACKTOP
+  N:0000H         SYMBOL        XDATALEN
+  N:0000H         SYMBOL        XDATASTART
+  C:0000H         LINE#         92
+  C:0062H         LINE#         99
+  C:0064H         LINE#         100
+  C:0065H         LINE#         101
+  C:0066H         LINE#         102
+  C:0068H         LINE#         151
+  C:006BH         LINE#         155
+  -------         ENDMOD        ?C_STARTUP
+
+  -------         MODULE        LED88
+  C:0000H         SYMBOL        _ICE_DUMMY_
+  D:00B0H         PUBLIC        P3
+  C:006EH         PUBLIC        Tab
+  C:0003H         PUBLIC        main
+  C:0052H         PUBLIC        _delay
+  -------         PROC          MAIN
+  -------         DO            
+  D:0008H         SYMBOL        i
+  D:0009H         SYMBOL        j
+  -------         ENDDO         
+  C:0003H         LINE#         20
+  C:0003H         LINE#         21
+  C:0003H         LINE#         22
+  C:0008H         LINE#         23
+  C:0008H         LINE#         24
+  C:0008H         LINE#         25
+  C:0011H         LINE#         26
+  C:001AH         LINE#         27
+  C:0023H         LINE#         28
+  C:002CH         LINE#         29
+  C:0035H         LINE#         30
+  C:003EH         LINE#         31
+  C:0047H         LINE#         32
+  C:0050H         LINE#         33
+  -------         ENDPROC       MAIN
+  -------         PROC          _DELAY
+  D:0006H         SYMBOL        ticks
+  -------         DO            
+  D:0005H         SYMBOL        i
+BL51 BANKED LINKER/LOCATER V5.03                                                      01/28/2008  21:28:19  PAGE 3
+
+
+  -------         ENDDO         
+  C:0052H         LINE#         36
+  C:0052H         LINE#         37
+  C:0052H         LINE#         39
+  C:0061H         LINE#         40
+  -------         ENDPROC       _DELAY
+  -------         ENDMOD        LED88
+
+*** WARNING L16: UNCALLED SEGMENT, IGNORED FOR OVERLAY PROCESS
+    SEGMENT: ?PR?_DELAY?LED88
+
+Program Size: data=11.0 xdata=0 code=118
+LINK/LOCATE RUN COMPLETE.  1 WARNING(S),  0 ERROR(S)

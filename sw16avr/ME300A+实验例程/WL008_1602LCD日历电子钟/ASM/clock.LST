@@ -1,0 +1,1130 @@
+A51 MACRO ASSEMBLER  CLOCK                                                                11/20/2005 17:47:35 PAGE     1
+
+
+MACRO ASSEMBLER A51 V7.08a
+OBJECT MODULE PLACED IN clock.OBJ
+ASSEMBLER INVOKED BY: d:\Keil\C51\BIN\A51.EXE clock.asm SET(SMALL) DEBUG EP
+
+LOC  OBJ            LINE     SOURCE
+
+                       1     ;********************************************************************************
+                       2     ;
+                       3     ;ÈÕÀúÊ±ÖÓ
+                       4     ;°´AN3,ÒÀ´Î½øÈëÄÖÖÓ¹¦ÄÜ£¬ÄÖÖÓÊ±¼ä£¬Äê,ÔÂ,ÈÕºÍÊ±,·Ö,ÃëÄ£Ê½£¬Ö±ÖÂÍË³öÉèÖÃ×´Ì¬
+                       5     ;°´AN4,µ÷ÕûÊÇ·ñÆðÓÃÄÖÖÓºÍµ÷½ÚÄÖÖÓÊ±,·Ö,Ãë,Äê,ÔÂ,ÈÕ,Ê±¼äµÄÊ±,·Ö,ÃëµÄÊý×Ö
+                       6     ;ÄÖÖÓÏìÊ±£¬°´AN4¼´¿ÉÍ£Ö¹ÄÖÖÓµÄÉùÏì
+                       7     ;Õý³£×´Ì¬,ÉÏÅÅ×îÇ°ÃæÏÔÊ¾Ò»×Ô¶¨Òå×Ö·û£¬ÏÂÅÅ×îÇ°ÃæÉÁ¶¯"willar"
+                       8     ;ÉèÖÃ×´Ì¬,LCDÉÏÅÅ×îÇ°ÃæÏÔÊ¾"P",ÏÂÅÅ×îÇ°ÃæÉèÖÃÄÖÖÓÊ±ÏÔÊ¾"alarm:"£¬ÆäËûÏÔÊ¾"time:"
+                       9     ;ÄÖÖÓÆôÓÃÊ±£¬ÔÚLCDÏÂÅÅÖÐ¼äÏÔÊ¾Ò»Ð¡À®°È£¬ÄÖÖÓ½ûÓÃÊ±£¬ÎÞ´ËÐ¡À®°È
+                      10     ;Äê´ú±ä»¯2000--2099,ÐÇÆÚ×Ô¶¯×ª»»
+                      11     ;³ÌÐòÖÐÓÐ×Ô¶¨Òå×Ö·ûÐ´Èë
+                      12     
+                      13     ;********************************************************************************* 
+                      14     
+                      15     
+                      16     ;**************±äÁ¿µÄ¶¨Òå***************** 
+  00A0                17     RS              BIT     P2.0            ;LCDÊý¾Ý/ÃüÁîÑ¡Ôñ¶Ë(H/L)
+  00A1                18     RW              BIT     P2.1            ;LCD¶Á/Ð´Ñ¡Ôñ¶Ë(H/L)
+  00A2                19     EP              BIT     P2.2            ;LCDÊ¹ÄÜ¿ØÖÆ
+  00B4                20     PRE             BIT     P3.4            ;µ÷Õû¼ü(AN3)
+  00B5                21     ADJ             BIT     P3.5            ;µ÷Õû¼ü(AN4)
+  00B7                22     SPK             BIT     P3.7            ;ÄÖÖÓÉùÒôÊä³ö¿Ú 
+                      23     
+  0018                24     YEAR            DATA    18H             ;Äê,ÔÂ,ÈÕ±äÁ¿
+  0019                25     MONTH           DATA    19H
+  001A                26     DATE            DATA    1AH
+  001B                27     WEEK            DATA    1BH
+                      28     
+  001C                29     HOUR            DATA    1CH             ;Ê±,·Ö,Ãë,°Ù·ÖÖ®Ò»Ãë±äÁ¿
+  001D                30     MIN             DATA    1DH
+  001E                31     SEC             DATA    1EH
+  001F                32     SEC100          DATA    1FH
+                      33                     
+  0020                34     HOUR_ARM        DATA    20H             ;ÄÖÖÓÊ±,·Ö,Ãë,±äÁ¿
+  0021                35     MIN_ARM         DATA    21H
+  0022                36     SEC_ARM         DATA    22H
+                      37     
+  0023                38     STATE           DATA    23H
+  0018                39     ALARM           BIT     STATE.0         ;ÄÖÖÓÊÇ·ñÆôÓÃ±êÖ¾1--ÆôÓÃ£¬0--½ûÖ¹                  
+                                  
+  0019                40     LEAP            BIT     STATE.1         ;ÊÇ·ñÈòÄê±êÖ¾1--ÈòÄê£¬0--Æ½Äê
+                      41     
+  0024                42     KEY_S           DATA    24H             ;µ±Ç°É¨Ãè¼üÖµ
+  0025                43     KEY_V           DATA    25H             ;ÉÏ´ÎÉ¨Ãè¼üÖµ
+                      44     
+  0026                45     DIS_BUF_U0      DATA    26H             ;LCDÉÏÅÅÏÔÊ¾»º³åÇø      
+  0027                46     DIS_BUF_U1      DATA    27H
+  0028                47     DIS_BUF_U2      DATA    28H
+  0029                48     DIS_BUF_U3      DATA    29H
+  002A                49     DIS_BUF_U4      DATA    2AH
+  002B                50     DIS_BUF_U5      DATA    2BH     
+  002C                51     DIS_BUF_U6      DATA    2CH
+  002D                52     DIS_BUF_U7      DATA    2DH
+  002E                53     DIS_BUF_U8      DATA    2EH
+  002F                54     DIS_BUF_U9      DATA    2FH
+  0030                55     DIS_BUF_U10     DATA    30H
+  0031                56     DIS_BUF_U11     DATA    31H
+  0032                57     DIS_BUF_U12     DATA    32H
+A51 MACRO ASSEMBLER  CLOCK                                                                11/20/2005 17:47:35 PAGE     2
+
+  0033                58     DIS_BUF_U13     DATA    33H
+  0034                59     DIS_BUF_U14     DATA    34H
+  0035                60     DIS_BUF_U15     DATA    35H
+                      61     
+                      62     
+  0036                63     DIS_BUF_L0      DATA    36H             ;LCDÏÂÅÅÏÔÊ¾»º³åÇø
+  0037                64     DIS_BUF_L1      DATA    37H
+  0038                65     DIS_BUF_L2      DATA    38H
+  0039                66     DIS_BUF_L3      DATA    39H
+  003A                67     DIS_BUF_L4      DATA    3AH
+  003B                68     DIS_BUF_L5      DATA    3BH     
+  003C                69     DIS_BUF_L6      DATA    3CH
+  003D                70     DIS_BUF_L7      DATA    3DH
+  003E                71     DIS_BUF_L8      DATA    3EH
+  003F                72     DIS_BUF_L9      DATA    3FH
+  0040                73     DIS_BUF_L10     DATA    40H
+  0041                74     DIS_BUF_L11     DATA    41H
+  0042                75     DIS_BUF_L12     DATA    42H
+  0043                76     DIS_BUF_L13     DATA    43H
+  0044                77     DIS_BUF_L14     DATA    44H
+  0045                78     DIS_BUF_L15     DATA    45H
+                      79     
+  0046                80     FLAG            DATA    46H             ;±êÊ¶µ÷Õû×´Ì¬ 0-ÄÖÖÓ¹¦ÄÜ£¬1-ÄÖÖÓÊ±£¬2-ÄÖÖÓ·Ö£¬3-ÄÖÖ
+                             ÓÃë
+                      81                                             ;4-Äê£¬5-ÔÂ£¬6-ÈÕ£¬7-Ê±£¬8-·Ö£¬9-Ãë£¬10-ÍË³öµ÷Õû¡£
+  0047                82     DIS_H           DATA    47H
+  0048                83     DIS_M           DATA    48H
+  0049                84     DIS_S           DATA    49H
+                      85     
+  004A                86     DIS_S0          DATA    4AH                                                  
+  004B                87     DIS_S1          DATA    4BH
+  004C                88     DIS_S2          DATA    4CH
+  004D                89     DIS_S3          DATA    4DH
+  004E                90     DIS_S4          DATA    4EH
+  004F                91     DIS_S5          DATA    4FH     
+                      92     
+                      93     
+                      94     ;******************³õÊ¼»¯***********************
+0000                  95                     ORG     0000H
+0000 020100           96                     LJMP    START
+000B                  97                     ORG     000BH
+000B 020479           98                     LJMP    TIMER0
+001B                  99                     ORG     001BH
+001B 0204CA          100                     LJMP    TIMER1
+0100                 101                     ORG     0100H
+0100 758160          102     START:          MOV     SP,#60H
+0103 7818            103                     MOV     R0,#18H
+0105 7400            104                     MOV     A,#00H
+0107 F6              105     MEM_INI:        MOV     @R0,A
+0108 08              106                     INC     R0
+0109 B85FFB          107                     CJNE    R0,#5FH,MEM_INI 
+010C 120768          108                     LCALL   DELAY_5ms       ;³õÊ¼»¯LCD
+010F 7838            109                     MOV     R0,#38H         ;ÉèÖÃLCDÎª16X2ÏÔÊ¾,5X7µãÕó,°ËÎ»Êý¾Ý½Ó¿Ú
+0111 12072C          110                     LCALL   LCD_WCMD
+0114 120768          111                     LCALL   DELAY_5ms
+0117 780C            112                     MOV     R0,#0CH         ;ÉèÖÃLCD¿ªÏÔÊ¾¼°¹â±êÐÎÊ½(¹â±ê²»ÉÁË¸,²»ÏÔÊ¾"-")
+0119 12072C          113                     LCALL   LCD_WCMD                
+011C 120768          114                     LCALL   DELAY_5ms
+011F 7806            115                     MOV     R0,#06H         ;LCDÏÔÊ¾¹â±êÒÆ¶¯ÉèÖÃ(¹â±êµØÖ·Ö¸Õë¼Ó1,ÕûÆÁÏÔÊ¾²»ÒÆ¶¯
+                             )    
+0121 12072C          116                     LCALL   LCD_WCMD
+0124 120768          117                     LCALL   DELAY_5ms
+0127 7801            118                     MOV     R0,#01H         ;Çå³ýLCDµÄÏÔÊ¾ÄÚÈÝ
+0129 12072C          119                     LCALL   LCD_WCMD
+012C 120768          120                     LCALL   DELAY_5ms
+                     121                     
+A51 MACRO ASSEMBLER  CLOCK                                                                11/20/2005 17:47:35 PAGE     3
+
+                     122                     
+                     123                                             ;µÚÒ»×Ô¶¨Òå×Ö·û£º
+012F 7840            124                     MOV     R0,#40H
+0131 12072C          125                     LCALL   lcd_wcmd        ;"01 000 000"µÚ1ÐÐµØÖ· (D7D6ÎªµØÖ·Éè¶¨ÃüÁîÐÎÊ½£DD5D
+                             4D3Îª×Ö·û´æ·ÅÎ»ÖÃ(0--7)£¬D2D1D0Îª×Ö·ûÐÐµØÖ·(0--7)£©
+0134 781F            126                     MOV     R0,#1FH
+0136 120746          127                     LCALL   lcd_wdat        ;"XXX 11111"µÚ1ÐÐÊý¾Ý£¨D7D6D5ÎªXXX£¬±íÊ¾ÎªÈÎÒâÊý(Ò»
+                             °ãÓÃ000£©£¬D4D3D2D1D0Îª×Ö·ûÐÐÊý¾Ý(1-µãÁÁ£¬0-Ï¨Ãð£©
+0139 7841            128                     MOV     R0,#41H
+013B 12072C          129                     LCALL   lcd_wcmd        ;"01 000 001"µÚ2ÐÐµØÖ·
+013E 7811            130                     MOV     R0,#11H
+0140 120746          131                     LCALL   lcd_wdat        ;"XXX 10001"µÚ2ÐÐÊý¾Ý
+0143 7842            132                     MOV     R0,#42H
+0145 12072C          133                     LCALL   lcd_wcmd        ;"01 000 010"µÚ3ÐÐµØÖ·
+0148 7815            134                     MOV     R0,#15H
+014A 120746          135                     LCALL   lcd_wdat        ;"XXX 10101"µÚ3ÐÐÊý¾Ý
+014D 7843            136                     MOV     R0,#43H
+014F 12072C          137                     LCALL   lcd_wcmd        ;"01 000 011"µÚ4ÐÐµØÖ·
+0152 7811            138                     MOV     R0,#11H
+0154 120746          139                     LCALL   lcd_wdat        ;"XXX 10001"µÚ4ÐÐÊý¾Ý
+0157 7844            140                     MOV     R0,#44H
+0159 12072C          141                     LCALL   lcd_wcmd        ;"01 000 100"µÚ5ÐÐµØÖ·
+015C 781F            142                     MOV     R0,#1FH
+015E 120746          143                     LCALL   lcd_wdat        ;"XXX 11111"µÚ5ÐÐÊý¾Ý
+0161 7845            144                     MOV     R0,#45H
+0163 12072C          145                     LCALL   lcd_wcmd        ;"01 000 101"µÚ6ÐÐµØÖ·
+0166 780A            146                     MOV     R0,#0AH
+0168 120746          147                     LCALL   lcd_wdat        ;"XXX 01010"µÚ6ÐÐÊý¾Ý
+016B 7846            148                     MOV     R0,#46H
+016D 12072C          149                     LCALL   lcd_wcmd        ;"01 000 110"µÚ7ÐÐµØÖ·
+0170 781F            150                     MOV     R0,#1FH
+0172 120746          151                     LCALL   lcd_wdat        ;"XXX 11111"µÚ7ÐÐÊý¾Ý
+0175 7847            152                     MOV     R0,#47H
+0177 12072C          153                     LCALL   lcd_wcmd        ;"01 000 111"µÚ8ÐÐµØÖ·
+017A 7800            154                     MOV     R0,#00H
+017C 120746          155                     LCALL   lcd_wdat        ;"XXX 00000"µÚ8ÐÐÊý¾Ý 
+                     156     
+                     157                                             ;µÚ¶þ¸ö×Ô¶¨Òå×Ö·û£º
+017F 7848            158                     MOV     R0,#48H
+0181 12072C          159                     LCALL   lcd_wcmd        ;"01 001 000"µÚ1ÐÐµØÖ·
+0184 7801            160                     MOV     R0,#01H
+0186 120746          161                     LCALL   lcd_wdat        ;"XXX 00001"µÚ1ÐÐÊý¾Ý
+0189 7849            162                     MOV     R0,#49H
+018B 12072C          163                     LCALL   lcd_wcmd        ;"01 001 001"µÚ2ÐÐµØÖ·
+018E 781B            164                     MOV     R0,#1BH
+0190 120746          165                     LCALL   lcd_wdat        ;"XXX 11011"µÚ2ÐÐÊý¾Ý
+0193 784A            166                     MOV     R0,#4AH
+0195 12072C          167                     LCALL   lcd_wcmd        ;"01 001 010"µÚ3ÐÐµØÖ·
+0198 781D            168                     MOV     R0,#1DH
+019A 120746          169                     LCALL   lcd_wdat        ;"XXX 11101"µÚ3ÐÐÊý¾Ý
+019D 784B            170                     MOV     R0,#4BH
+019F 12072C          171                     LCALL   lcd_wcmd        ;"01 001 011"µÚ4ÐÐµØÖ·
+01A2 7819            172                     MOV     R0,#19H
+01A4 120746          173                     LCALL   lcd_wdat        ;"XXX 11001"µÚ4ÐÐÊý¾Ý
+01A7 784C            174                     MOV     R0,#4CH
+01A9 12072C          175                     LCALL   lcd_wcmd        ;"01 001 100"µÚ5ÐÐµØÖ·
+01AC 781D            176                     MOV     R0,#1DH
+01AE 120746          177                     LCALL   lcd_wdat        ;"XXX 11101"µÚ5ÐÐÊý¾Ý
+01B1 784D            178                     MOV     R0,#4DH
+01B3 12072C          179                     LCALL   lcd_wcmd        ;"01 001 101"µÚ6ÐÐµØÖ·
+01B6 781B            180                     MOV     R0,#1BH
+01B8 120746          181                     LCALL   lcd_wdat        ;"XXX 11011"µÚ6ÐÐÊý¾Ý
+01BB 784E            182                     MOV     R0,#4EH
+01BD 12072C          183                     LCALL   lcd_wcmd        ;"01 001 110"µÚ7ÐÐµØÖ·
+01C0 7801            184                     MOV     R0,#01H
+01C2 120746          185                     LCALL   lcd_wdat        ;"XXX 00001"µÚ7ÐÐÊý¾Ý
+A51 MACRO ASSEMBLER  CLOCK                                                                11/20/2005 17:47:35 PAGE     4
+
+01C5 784F            186                     MOV     R0,#4FH
+01C7 12072C          187                     LCALL   lcd_wcmd        ;"01 001 111"µÚ8ÐÐµØÖ·
+01CA 7800            188                     MOV     R0,#00H
+01CC 120746          189                     LCALL   lcd_wdat        ;"XXX 00000"µÚ8ÐÐÊý¾Ý 
+                     190     
+01CF 751805          191                     MOV     YEAR,#5         ;ÖÃÄê³õÖµ       
+01D2 751901          192                     MOV     MONTH,#1        ;ÖÃÔÂ³õÖµ
+01D5 751A01          193                     MOV     DATE,#1         ;ÖÃÈÕ³õÖµ
+01D8 754A77          194                     MOV     DIS_S0,#77H     ;"w"
+01DB 754B69          195                     MOV     DIS_S1,#69H     ;"i"
+01DE 754C6C          196                     MOV     DIS_S2,#6CH     ;"l"
+01E1 754D6C          197                     MOV     DIS_S3,#6CH     ;"l"
+01E4 754E61          198                     MOV     DIS_S4,#61H     ;"a"
+01E7 754F72          199                     MOV     DIS_S5,#72H     ;"r"
+01EA 7900            200                     MOV     R1,#00H         ;ÏÔÊ¾Ò»×Ô¶¨Òå×Ö·û       
+01EC 120560          201                     LCALL   WEEK_PRO
+01EF 1205AC          202                     LCALL   UPDATE_BUF
+01F2 120669          203                     LCALL   DISPLAY_PRO     ;ÆÁÏÔ³õÊ¼»¯
+                     204     
+                     205     ;*********************Ö÷³ÌÐò********************* 
+01F5 75A88A          206     MAIN:           MOV     IE,#8AH         ;CPU¿ªÖÐ¶Ï,Timer0,Timer1¿ªÖÐ¶Ï          
+01F8 758911          207                     MOV     TMOD,#11H       ;Timer0,Timer1¹¤×÷ÓÚÄ£Ê½1, 16Î»¶¨Ê±·½Ê½
+01FB 758CDC          208                     MOV     TH0,#0DCH       ;Timer0ÖÃ10ms¶¨Ê±³õÖµ   
+01FE 758A00          209                     MOV     TL0,#00H                 
+0201 758DFF          210                     MOV     TH1,#0FFH       ;Timer1ÖÃÄÖÖÓÉùÒô³õÖµ 
+0204 758B00          211                     MOV     TL1,#00H                         
+0207 D218            212                     SETB    ALARM           ;³õÊ¼Æô¶¯ÄÖÖÓ¹¦ÄÜ       
+0209 C28E            213                     CLR     TR1             ;Timer1½ûÖ¹             
+020B D28C            214                     SETB    TR0             ;Timer0Æô¶¯
+020D 752503          215                     MOV     KEY_V,#03H
+                     216     
+0210 120246          217     MAIN_1:         LCALL   KEY_SCAN
+0213 E524            218                     MOV     A,KEY_S
+0215 6525            219                     XRL     A,KEY_V
+0217 60F7            220                     JZ      MAIN_1
+0219 120768          221                     LCALL   DELAY_5ms
+021C 120768          222                     LCALL   DELAY_5ms
+021F 120246          223                     LCALL   KEY_SCAN
+0222 E524            224                     MOV     A,KEY_S
+0224 6525            225                     XRL     A,KEY_V
+0226 60E8            226                     JZ      MAIN_1
+0228 852425          227                     MOV     KEY_V,KEY_S
+022B E525            228                     MOV     A,KEY_V
+022D 6401            229                     XRL     A,#01H
+022F 700A            230                     JNZ     MAIN_2
+0231 C28C            231                     CLR     TR0             ;½øÈëµ÷Õû×´Ì¬£¬½ûÖ¹Timer0
+0233 75A800          232                     MOV     IE,#00H         ;CPU½ûÖ¹ÖÐ¶Ï    
+0236 120255          233                     LCALL   KEY_PRE_PRO     ;PRE°´¼ü°´ÏÂ,µ÷ÓÃPRE°´¼ü´¦Àí³ÌÐò
+0239 80D5            234                     SJMP    MAIN_1
+023B E525            235     MAIN_2:         MOV     A,KEY_V
+023D 6402            236                     XRL     A,#02H
+023F 70CF            237                     JNZ     MAIN_1
+0241 12031B          238                     LCALL   KEY_ADJ_PRO     ;ADJ°´¼ü°´ÏÂ,µ÷ÓÃPRE°´¼ü´¦Àí³ÌÐò        
+0244 80CA            239                     SJMP    MAIN_1
+                     240     
+                     241     ;*******************°´¼üÉ¨Ãè³ÌÐò******************
+0246 E4              242     KEY_SCAN:       CLR     A
+0247 75B0FF          243                     MOV     P3,#0FFH
+024A A2B4            244                     MOV     C,PRE
+024C 92E1            245                     MOV     ACC.1,C
+024E A2B5            246                     MOV     C,ADJ
+0250 92E0            247                     MOV     ACC.0,C
+0252 F524            248                     MOV     KEY_S,A                 ;±¾´ÎÉ¨Ãè¼üÖµ´æÈëKEY_S
+                     249     
+0254 22              250                     RET
+                     251     
+A51 MACRO ASSEMBLER  CLOCK                                                                11/20/2005 17:47:35 PAGE     5
+
+                     252     ;**************PRE°´¼ü´¦Àí³ÌÐò*******************
+0255 0546            253     KEY_PRE_PRO:    INC     FLAG
+0257 AC46            254                     MOV     R4,FLAG
+0259 BC012F          255                     CJNE    R4,#1,KEY_PRE_1 ;×¢Òâ£¬¸ÃÖ¸Áî²»¸Ä±ä²Ù×÷
+025C 780E            256                     MOV     R0,#0EH
+025E 12072C          257                     LCALL   LCD_WCMD        ;ÏÔÊ¾¹â±ê"_",Õû¸ö¹â±ê²»ÉÁË¸
+0261 754A61          258                     MOV     DIS_S0,#61H     ;"a"
+0264 754B6C          259                     MOV     DIS_S1,#6cH     ;"l"
+0267 754C61          260                     MOV     DIS_S2,#61H     ;"a"
+026A 754D72          261                     MOV     DIS_S3,#72H     ;"r"
+026D 754E6D          262                     MOV     DIS_S4,#6dH     ;"m"
+0270 754F3A          263                     MOV     DIS_S5,#3aH     ;":"               
+0273 7950            264                     MOV     R1,#50H         ;"P"
+0275 852047          265                     MOV     DIS_H,HOUR_ARM  
+0278 852148          266                     MOV     DIS_M,MIN_ARM           
+027B 852249          267                     MOV     DIS_S,SEC_ARM
+027E 1205AC          268                     LCALL   UPDATE_BUF
+0281 120669          269                     LCALL   DISPLAY_PRO     ;¸üÐÂÆÁÏÔÄÚÈÝ
+0284 7847            270                     MOV     R0,#47H
+0286 120760          271                     LCALL   LCD_POS         ;Ê¹¹â±êÎ»ÓÚµÚÒ»¸öµ÷ÕûÏîÏÂ
+0289 611A            272                     JMP     KEY_PRE_E
+028B BC0207          273     KEY_PRE_1:      CJNE    R4,#2,KEY_PRE_2 
+028E 7849            274                     MOV     R0,#49H         
+0290 120760          275                     LCALL   LCD_POS         ;¹â±êÖÃÐ¡Ê±±¨¾¯ÉèÖÃÎ»ÖÃ
+0293 611A            276                     JMP     KEY_PRE_E
+0295 BC0307          277     KEY_PRE_2:      CJNE    R4,#3,KEY_PRE_3
+0298 784C            278                     MOV     R0,#4CH 
+029A 120760          279                     LCALL   LCD_POS         ;¹â±êÖÃ·ÖÖÓ±¨¾¯ÉèÖÃÎ»ÖÃ
+029D 807B            280                     JMP     KEY_PRE_E
+029F BC0407          281     KEY_PRE_3:      CJNE    R4,#4,KEY_PRE_4
+02A2 784F            282                     MOV     R0,#4FH         
+02A4 120760          283                     LCALL   LCD_POS         ;¹â±êÖÃÃëÊ±±¨¾¯ÉèÖÃÎ»ÖÃ
+02A7 8071            284                     JMP     KEY_PRE_E
+02A9 BC052A          285     KEY_PRE_4:      CJNE    R4,#5,KEY_PRE_5         
+02AC 754A74          286                     MOV     DIS_S0,#74H     ;"t"
+02AF 754B69          287                     MOV     DIS_S1,#69H     ;"i"
+02B2 754C6D          288                     MOV     DIS_S2,#6dH     ;"m"
+02B5 754D65          289                     MOV     DIS_S3,#65H     ;"e"
+02B8 754E3A          290                     MOV     DIS_S4,#3aH     ;":"
+02BB 754F20          291                     MOV     DIS_S5,#20H     ;" "               
+02BE 7950            292                     MOV     R1,#50H         ;"P"
+02C0 851C47          293                     MOV     DIS_H,HOUR      
+02C3 851D48          294                     MOV     DIS_M,MIN               
+02C6 851E49          295                     MOV     DIS_S,SEC
+02C9 1205AC          296                     LCALL   UPDATE_BUF
+02CC 120669          297                     LCALL   DISPLAY_PRO     ;¸üÐÂÆÁÏÔÄÚÈÝ
+02CF 7805            298                     MOV     R0,#05H
+02D1 120760          299                     LCALL   LCD_POS         ;¹â±êÖÃÄêµ÷ÕûÎ»ÖÃ       
+02D4 8044            300                     JMP     KEY_PRE_E
+02D6 BC0607          301     KEY_PRE_5:      CJNE    R4,#6, KEY_PRE_6
+02D9 7808            302                     MOV     R0,#08H
+02DB 120760          303                     LCALL   LCD_POS         ;¹â±êÖÃÔÂµ÷ÕûÎ»ÖÃ
+02DE 803A            304                     JMP     KEY_PRE_E       
+02E0 BC0707          305     KEY_PRE_6:      CJNE    R4,#7,KEY_PRE_7
+02E3 780B            306                     MOV     R0,#0bH
+02E5 120760          307                     LCALL   LCD_POS         ;¹â±êÖÃÈÕµ÷ÕûÎ»ÖÃ
+02E8 8030            308                     JMP     KEY_PRE_E
+02EA BC0807          309     KEY_PRE_7:      CJNE    R4,#8,KEY_PRE_8
+02ED 7849            310                     MOV     R0,#49H
+02EF 120760          311                     LCALL   LCD_POS         ;¹â±êÖÃÊ±µ÷ÕûÎ»ÖÃ
+02F2 8026            312                     JMP     KEY_PRE_E
+02F4 BC0907          313     KEY_PRE_8:      CJNE    R4,#9,KEY_PRE_9
+02F7 784C            314                     MOV     R0,#4cH
+02F9 120760          315                     LCALL   LCD_POS         ;¹â±êÖÃ·Öµ÷ÕûÎ»ÖÃ
+02FC 801C            316                     JMP     KEY_PRE_E
+02FE BC0A07          317     KEY_PRE_9:      CJNE    R4,#10,KEY_PRE_10
+A51 MACRO ASSEMBLER  CLOCK                                                                11/20/2005 17:47:35 PAGE     6
+
+0301 784F            318                     MOV     R0,#4fH
+0303 120760          319                     LCALL   LCD_POS         ;¹â±êÖÃÃëµ÷ÕûÎ»ÖÃ
+0306 8012            320                     JMP     KEY_PRE_E
+0308 754600          321     KEY_PRE_10:     MOV     FLAG,#0         ;FLAGµ½11£¬¾ÍÇåÁã
+030B 780C            322                     MOV     R0,#0CH
+030D 12072C          323                     LCALL   LCD_WCMD        ;ÉèÖÃLCD¿ªÏÔÊ¾¼°¹â±ê²»ÉÁË¸,²»ÏÔÊ¾"-"
+0310 7801            324                     MOV     R0,#01H
+0312 12072C          325                     LCALL   LCD_WCMD        ;Çå³ýLCDµÄÏÔÊ¾ÄÚÈÝ
+0315 75A88A          326                     MOV     IE,#8AH         ;CPU¿ªÖÐ¶Ï,TIMER0,TIMER1¿ªÖÐ¶Ï
+0318 D28C            327                     SETB    TR0             ;Æô¶¯TIMER0     
+031A                 328     KEY_PRE_E:
+031A 22              329                     RET
+                     330     
+                     331     ;**************ADJ°´¼ü´¦Àí³ÌÐò*******************
+031B AD46            332     KEY_ADJ_PRO:    MOV     R5,FLAG
+031D BD0008          333                     CJNE    R5,#0,KEY_ADJ_0         ;FLAG=0,Èç¹ûÓÐÄÖÖÓÉùÒô£¬¾ÍÍ£Ö¹ÄÖÖÓÉùÒô
+0320 A28E            334                     MOV     C,TR1
+0322 5002            335                     JNC     KEY_ADJ_A
+0324 C28E            336                     CLR     TR1
+0326 8178            337     KEY_ADJ_A:      JMP     KEY_ADJ_E
+0328 BD010F          338     KEY_ADJ_0:      CJNE    R5,#1,KEY_ADJ_1         ;FLAG=1£¬µ÷ÕûÊÇ·ñÆôÓÃÄÖÖÓ       
+032B B218            339                     CPL     ALARM
+032D 1205AC          340                     LCALL   UPDATE_BUF
+0330 120669          341                     LCALL   DISPLAY_PRO
+0333 7847            342                     MOV     R0,#47H
+0335 120760          343                     LCALL   LCD_POS
+0338 8178            344                     JMP     KEY_ADJ_E       
+033A BD021A          345     KEY_ADJ_1:      CJNE    R5,#2,KEY_ADJ_2         ;FLAG=2£¬µ÷ÕûÄÖÖÓÊ±
+033D 0520            346                     INC     HOUR_ARM
+033F E520            347                     MOV     A,HOUR_ARM
+0341 B41803          348                     CJNE    A,#24,KEY_ADJ_1_1
+0344 752000          349                     MOV     HOUR_ARM,#0
+0347 852047          350     KEY_ADJ_1_1:    MOV     DIS_H,HOUR_ARM
+034A 1205AC          351                     LCALL   UPDATE_BUF
+034D 120669          352                     LCALL   DISPLAY_PRO
+0350 7849            353                     MOV     R0,#49H
+0352 120760          354                     LCALL   LCD_POS
+0355 8178            355                     JMP     KEY_ADJ_E
+0357 BD031A          356     KEY_ADJ_2:      CJNE    R5,#3,KEY_ADJ_3         ;FLAG=3£¬µ÷ÕûÄÖÖÓ·Ö
+035A 0521            357                     INC     MIN_ARM
+035C E521            358                     MOV     A,MIN_ARM
+035E B43C03          359                     CJNE    A,#60,KEY_ADJ_2_1
+0361 752100          360                     MOV     MIN_ARM,#0
+0364 852148          361     KEY_ADJ_2_1:    MOV     DIS_M,MIN_ARM
+0367 1205AC          362                     LCALL   UPDATE_BUF
+036A 120669          363                     LCALL   DISPLAY_PRO
+036D 784C            364                     MOV     R0,#4CH
+036F 120760          365                     LCALL   LCD_POS
+0372 8178            366                     JMP     KEY_ADJ_E
+0374 BD041A          367     KEY_ADJ_3:      CJNE    R5,#4,KEY_ADJ_4         ;FLAG=4£¬µ÷ÕûÄÖÖÓÃë
+0377 0522            368                     INC     SEC_ARM
+0379 E522            369                     MOV     A,SEC_ARM
+037B B43C03          370                     CJNE    A,#60,KEY_ADJ_3_1
+037E 752200          371                     MOV     SEC_ARM,#0
+0381 852249          372     KEY_ADJ_3_1:    MOV     DIS_S,SEC_ARM
+0384 1205AC          373                     LCALL   UPDATE_BUF
+0387 120669          374                     LCALL   DISPLAY_PRO
+038A 784F            375                     MOV     R0,#4FH
+038C 120760          376                     LCALL   LCD_POS
+038F 8178            377                     JMP     KEY_ADJ_E 
+0391 BD051A          378     KEY_ADJ_4:      CJNE    R5,#5,KEY_ADJ_5         ;FLAG=5£¬µ÷ÕûÄê
+0394 0518            379                     INC     YEAR
+0396 E518            380                     MOV     A,YEAR
+0398 B46403          381                     CJNE    A,#100,KEY_ADJ_4_1
+039B 751800          382                     MOV     YEAR,#0
+039E 120560          383     KEY_ADJ_4_1:    LCALL   WEEK_PRO
+A51 MACRO ASSEMBLER  CLOCK                                                                11/20/2005 17:47:35 PAGE     7
+
+03A1 1205AC          384                     LCALL   UPDATE_BUF
+03A4 120669          385                     LCALL   DISPLAY_PRO
+03A7 7805            386                     MOV     R0,#05H
+03A9 120760          387                     LCALL   LCD_POS
+03AC 8178            388                     JMP     KEY_ADJ_E 
+03AE BD061A          389     KEY_ADJ_5:      CJNE    R5,#6,KEY_ADJ_6         ;FLAG=6£¬µ÷ÕûÔÂ
+03B1 0519            390                     INC     MONTH
+03B3 E519            391                     MOV     A,MONTH
+03B5 B40D03          392                     CJNE    A,#13,KEY_ADJ_5_1
+03B8 751901          393                     MOV     MONTH,#1
+03BB 120560          394     KEY_ADJ_5_1:    LCALL   WEEK_PRO
+03BE 1205AC          395                     LCALL   UPDATE_BUF
+03C1 120669          396                     LCALL   DISPLAY_PRO
+03C4 7808            397                     MOV     R0,#08H
+03C6 120760          398                     LCALL   LCD_POS
+03C9 8178            399                     JMP     KEY_ADJ_E 
+03CB BD0753          400     KEY_ADJ_6:      CJNE    R5,#7,KEY_ADJ_7         ;FLAG=7£¬µ÷ÕûÈÕ
+03CE 051A            401                     INC     DATE                    
+03D0 E519            402                     MOV     A,MONTH
+03D2 6402            403                     XRL     A,#2    
+03D4 7012            404                     JNZ     KEY_ADJ_6_2             ;²»ÊÇ¶þÔÂÌø×ª
+03D6 E51A            405                     MOV     A,DATE                  ;
+03D8 A219            406                     MOV     C,LEAP                  ;ÅÐ¶ÏÊÇ·ñÈòÄê
+03DA 4006            407                     JC      KEY_ADJ_6_1             
+03DC 641D            408                     XRL     A,#29                   ;Æ½Äê¶þÔÂÈÕÆÚ28Ìì       
+03DE 7031            409                     JNZ     KEY_ADJ_6_5                     
+03E0 802C            410                     JMP     KEY_ADJ_6_4             
+03E2 641E            411     KEY_ADJ_6_1:    XRL     A,#30                   ;ÈòÄê¶þÔÂÈÕÆÚ29Ìì
+03E4 702B            412                     JNZ     KEY_ADJ_6_5                     
+03E6 8026            413                     JMP     KEY_ADJ_6_4             ;Ìø×ªµ½ÔÂ´¦Àí
+03E8 E519            414     KEY_ADJ_6_2:    MOV     A,MONTH
+03EA 6404            415                     XRL     A,#4                    
+03EC 601A            416                     JZ      KEY_ADJ_6_3
+03EE E519            417                     MOV     A,MONTH
+03F0 6406            418                     XRL     A,#6
+03F2 6014            419                     JZ      KEY_ADJ_6_3
+03F4 E519            420                     MOV     A,MONTH
+03F6 6409            421                     XRL     A,#9
+03F8 600E            422                     JZ      KEY_ADJ_6_3
+03FA E519            423                     MOV     A,MONTH
+03FC 640B            424                     XRL     A,#11
+03FE 6008            425                     JZ      KEY_ADJ_6_3
+0400 E51A            426                     MOV     A,DATE
+0402 6420            427                     XRL     A,#32                   ;´óÔÂÈÕÆÚ31Ìì
+0404 700B            428                     JNZ     KEY_ADJ_6_5
+0406 8006            429                     JMP     KEY_ADJ_6_4     
+0408 E51A            430     KEY_ADJ_6_3:    MOV     A,DATE
+040A 641F            431                     XRL     A,#31                   ;Ð¡ÔÂÈÕÆÚ30Ìì
+040C 7003            432                     JNZ     KEY_ADJ_6_5
+040E 751A01          433     KEY_ADJ_6_4:    MOV     DATE,#1
+0411 120560          434     KEY_ADJ_6_5:    LCALL   WEEK_PRO
+0414 1205AC          435                     LCALL   UPDATE_BUF
+0417 120669          436                     LCALL   DISPLAY_PRO
+041A 780B            437                     MOV     R0,#0BH
+041C 120760          438                     LCALL   LCD_POS
+041F 8057            439                     JMP     KEY_ADJ_E 
+0421 BD081A          440     KEY_ADJ_7:      CJNE    R5,#8,KEY_ADJ_8         ;FLAG=8£¬µ÷ÕûÊ±
+0424 051C            441                     INC     HOUR
+0426 E51C            442                     MOV     A,HOUR
+0428 B41803          443                     CJNE    A,#24,KEY_ADJ_7_1
+042B 751C00          444                     MOV     HOUR,#0
+042E 851C47          445     KEY_ADJ_7_1:    MOV     DIS_H,HOUR
+0431 1205AC          446                     LCALL   UPDATE_BUF
+0434 120669          447                     LCALL   DISPLAY_PRO
+0437 7849            448                     MOV     R0,#49H
+0439 120760          449                     LCALL   LCD_POS
+A51 MACRO ASSEMBLER  CLOCK                                                                11/20/2005 17:47:35 PAGE     8
+
+043C 803A            450                     JMP     KEY_ADJ_E
+043E BD091A          451     KEY_ADJ_8:      CJNE    R5,#9,KEY_ADJ_9         ;FLAG=9£¬µ÷Õû·Ö
+0441 051D            452                     INC     MIN
+0443 E51D            453                     MOV     A,MIN
+0445 B43C03          454                     CJNE    A,#60,KEY_ADJ_8_1
+0448 751D00          455                     MOV     MIN,#0
+044B 851D48          456     KEY_ADJ_8_1:    MOV     DIS_M,MIN
+044E 1205AC          457                     LCALL   UPDATE_BUF
+0451 120669          458                     LCALL   DISPLAY_PRO
+0454 784C            459                     MOV     R0,#4CH
+0456 120760          460                     LCALL   LCD_POS
+0459 801D            461                     JMP     KEY_ADJ_E
+045B BD0A1A          462     KEY_ADJ_9:      CJNE    R5,#10,KEY_ADJ_E        ;FLAG=10£¬µ÷ÕûÃë
+045E 051E            463                     INC     SEC
+0460 E51E            464                     MOV     A,SEC
+0462 B43C03          465                     CJNE    A,#60,KEY_ADJ_9_1
+0465 751E00          466                     MOV     SEC,#0
+0468 851E49          467     KEY_ADJ_9_1:    MOV     DIS_S,SEC
+046B 1205AC          468                     LCALL   UPDATE_BUF
+046E 120669          469                     LCALL   DISPLAY_PRO
+0471 784F            470                     MOV     R0,#4FH
+0473 120760          471                     LCALL   LCD_POS
+0476 8000            472                     JMP     KEY_ADJ_E 
+0478                 473     KEY_ADJ_E:
+0478 22              474                     RET
+                     475     
+                     476     ;***************Timer0¶¨Ê±ÖÐ¶Ï³ÌÐò*****************
+0479 758CDC          477     TIMER0:         MOV     TH0,#0DCH
+047C 758A00          478                     MOV     TL0,#00H
+047F 051F            479                     INC     SEC100  
+0481 E51F            480                     MOV     A,SEC100
+0483 B46443          481                     CJNE    A,#100,TIMER0_E
+0486 751F00          482                     MOV     SEC100,#0
+0489 1204D3          483                     LCALL   TIME_PRO
+048C E51E            484                     MOV     A,SEC                   ;"willarÏÔÊ¾1ÃëÖÓ£¬ÏûÊ§Ò»ÃëÖÖ£¬ÐÎ³ÉÉÁ¶¯
+048E 5401            485                     ANL     A,#01
+0490 6014            486                     JZ      TIMER0_1
+0492 754A20          487                     MOV     DIS_S0,#20H             ;" "
+0495 754B20          488                     MOV     DIS_S1,#20H             ;" "
+0498 754C20          489                     MOV     DIS_S2,#20H             ;" "
+049B 754D20          490                     MOV     DIS_S3,#20H             ;" "
+049E 754E20          491                     MOV     DIS_S4,#20H             ;" "
+04A1 754F20          492                     MOV     DIS_S5,#20H             ;" "    
+04A4 8012            493                     SJMP    TIMER0_2                        
+04A6 754A77          494     TIMER0_1:       MOV     DIS_S0,#77H             ;"w"
+04A9 754B69          495                     MOV     DIS_S1,#69H             ;"i"
+04AC 754C6C          496                     MOV     DIS_S2,#6CH             ;"l"
+04AF 754D6C          497                     MOV     DIS_S3,#6CH             ;"l"
+04B2 754E61          498                     MOV     DIS_S4,#61H             ;"a"
+04B5 754F72          499                     MOV     DIS_S5,#72H             ;"r"    
+04B8 7900            500     TIMER0_2:       MOV     R1,#00H         
+04BA 851C47          501                     MOV     DIS_H,HOUR      
+04BD 851D48          502                     MOV     DIS_M,MIN               
+04C0 851E49          503                     MOV     DIS_S,SEC       
+04C3 1205AC          504                     LCALL   UPDATE_BUF
+04C6 120669          505                     LCALL   DISPLAY_PRO
+04C9                 506     TIMER0_E:               
+04C9 32              507                     RETI                            
+                     508     
+                     509     
+                     510     ;***********Timer1¶¨Ê±ÖÐ¶Ï³ÌÐò******************
+04CA 758DFF          511     TIMER1:         MOV     TH1,#0FFH
+04CD 758B00          512                     MOV     TL1,#00H
+04D0 B2B7            513                     CPL     SPK
+04D2 32              514                     RETI
+                     515     
+A51 MACRO ASSEMBLER  CLOCK                                                                11/20/2005 17:47:35 PAGE     9
+
+                     516     ;**************Ê±¼äÈÕÆÚ´¦Àíº¯Êý******************
+04D3 051E            517     TIME_PRO:       INC     SEC                     ;Ãë´¦Àí
+04D5 E51E            518                     MOV     A,SEC
+04D7 B43C71          519                     CJNE    A,#60,TIME_PRO_A
+04DA 751E00          520                     MOV     SEC,#0
+04DD 051D            521                     INC     MIN                     ;·Ö´¦Àí
+04DF E51D            522                     MOV     A,MIN
+04E1 B43C67          523                     CJNE    A,#60,TIME_PRO_A
+04E4 751D00          524                     MOV     MIN,#0
+04E7 051C            525                     INC     HOUR                    ;Ê±´¦Àí
+04E9 E51C            526                     MOV     A,HOUR
+04EB B4185D          527                     CJNE    A,#24,TIME_PRO_A
+04EE 751C00          528                     MOV     HOUR,#0 
+04F1 051A            529                     INC     DATE                    ;ÈÕ´¦Àí£¨ÈÕ´¦ÀíÒª¿¼ÂÇÊÇ·ñÈòÄê£¬´óÔÂ£¬Ð¡ÔÂ£©
+04F3 E519            530                     MOV     A,MONTH
+04F5 6402            531                     XRL     A,#2    
+04F7 7012            532                     JNZ     TIME_PRO_D2             ;²»ÊÇ¶þÔÂ£¬×ªTIME_PRO_D2
+04F9 E51A            533                     MOV     A,DATE                  ;
+04FB A219            534                     MOV     C,LEAP                  ;ÅÐ¶ÏÊÇ·ñÈòÄê
+04FD 4006            535                     JC      TIME_PRO_D1             
+04FF 641D            536                     XRL     A,#29                   ;Æ½Äê¶þÔÂÈÕÆÚ28Ìì       
+0501 7045            537                     JNZ     TIME_PRO_W                      
+0503 802C            538                     SJMP    TIME_PRO_M              ;Ìø×ªµ½ÔÂ´¦Àí
+0505 641E            539     TIME_PRO_D1:    XRL     A,#30                   ;ÈòÄê¶þÔÂÈÕÆÚ29Ìì
+0507 703F            540                     JNZ     TIME_PRO_W                      
+0509 8026            541                     SJMP    TIME_PRO_M              ;Ìø×ªµ½ÔÂ´¦Àí
+050B E519            542     TIME_PRO_D2:    MOV     A,MONTH
+050D 6404            543                     XRL     A,#4                    
+050F 601A            544                     JZ      TIME_PRO_D3
+0511 E519            545                     MOV     A,MONTH
+0513 6406            546                     XRL     A,#6
+0515 6014            547                     JZ      TIME_PRO_D3
+0517 E519            548                     MOV     A,MONTH
+0519 6409            549                     XRL     A,#9
+051B 600E            550                     JZ      TIME_PRO_D3
+051D E519            551                     MOV     A,MONTH
+051F 640B            552                     XRL     A,#11
+0521 6008            553                     JZ      TIME_PRO_D3
+0523 E51A            554                     MOV     A,DATE
+0525 6420            555                     XRL     A,#32                   ;´óÔÂÈÕÆÚ31Ìì
+0527 701F            556                     JNZ     TIME_PRO_W
+0529 8006            557                     SJMP    TIME_PRO_M              ;Ìø×ªµ½ÔÂ´¦Àí
+052B E51A            558     TIME_PRO_D3:    MOV     A,DATE
+052D 641F            559                     XRL     A,#31                   ;Ð¡ÔÂÈÕÆÚ30Ìì
+052F 7017            560                     JNZ     TIME_PRO_W      
+0531 751A01          561     TIME_PRO_M:     MOV     DATE,#1
+0534 0519            562                     INC     MONTH                   ;ÔÂ´¦Àí
+0536 E519            563                     MOV     A,MONTH
+0538 B40D0D          564                     CJNE    A,#13,TIME_PRO_W
+053B 751901          565                     MOV     MONTH,#1
+053E 0518            566                     INC     YEAR                    ;Äê´¦Àí
+0540 E518            567                     MOV     A,YEAR
+0542 B46403          568                     CJNE    A,#100,TIME_PRO_W
+0545 751800          569                     MOV     YEAR,#0
+0548 120560          570     TIME_PRO_W:     LCALL   WEEK_PRO                ;ÐÇÆÚ´¦Àí
+                     571                     
+054B 301811          572     TIME_PRO_A:     JNB     ALARM,TIME_PRO_E        ;alarm=0,ÄÖÖÓ¹¦ÄÜ½ûÓÃ£¬²»ÅÐ¶ÏÄÖÖÓÊ±¼äÊÇ·ñµ½
+                                  
+054E E51E            573                     MOV     A,SEC   
+0550 B5220C          574                     CJNE    A,SEC_ARM,TIME_PRO_E     ;alarm=1,ÄÖÖÓ¹¦ÄÜÆôÓÃ£¬ÅÐ¶ÏÃë
+0553 E51D            575                     MOV     A,MIN
+0555 B52107          576                     CJNE    A,MIN_ARM,TIME_PRO_E     ;alarm=1,ÄÖÖÓ¹¦ÄÜÆôÓÃ£¬ÅÐ¶Ï·Ö
+0558 E51C            577                     MOV     A,HOUR                                                             
+                                                                                                                        
+                                                                                                                        
+                                                                                                                        
+A51 MACRO ASSEMBLER  CLOCK                                                                11/20/2005 17:47:35 PAGE    10
+
+                                                                                                                        
+                                                                                                                        
+                                                                                  
+055A B52002          578                     CJNE    A,HOUR_ARM,TIME_PRO_E   ;alarm=1,ÄÖÖÓ¹¦ÄÜÆôÓÃ£¬ÅÐ¶ÏÊ±
+055D D28E            579                     SETB    TR1                     ;ÄÖÖÓÊ±¼äµ½£¬Æô¶¯Timer1(TR1=1)
+055F                 580     TIME_PRO_E:                     
+                     581     
+055F 22              582                     RET
+                     583     
+                     584     ;**********ÐÇÆÚ×Ô¶¯ÔËËãº¯Êý*********************
+                     585     ;ÐÇÆÚÔËËã³£ÊýW(5»ò6)
+                     586     ;ÈòÄêµÄÊýÄ¿L(0--99Äê:L=YEAR/4 Õû³ý)
+                     587     ;ÄêÊýYEAR
+                     588     ;ÔÂ²Î±äÊýMONTH_TAB(0,3,3,6,1,4,6,2,5,0,3,5)
+                     589     ;ÈÕÆÚDATE
+                     590     ;ÐÇÆÚÊý=(W+L+YEAR+MONTH_TAB+DATE)%7 (ÇóÓà)
+                     591     
+0560 E519            592     WEEK_PRO:       MOV     A,MONTH                 ;È·¶¨ÐÇÆÚÔËËã³£ÊýW
+0562 6401            593                     XRL     A,#1
+0564 6008            594                     JZ      WEEK_PRO_1
+0566 E519            595                     MOV     A,MONTH
+0568 6402            596                     XRL     A,#2
+056A 6002            597                     JZ      WEEK_PRO_1
+056C 800B            598                     SJMP    WEEK_PRO_2
+056E 12059A          599     WEEK_PRO_1:     LCALL   LEAP_PRO
+0571 A219            600                     MOV     C,LEAP
+0573 5004            601                     JNC     WEEK_PRO_2
+0575 7B05            602                     MOV     R3,#5
+0577 8002            603                     SJMP    WEEK_PRO_3
+0579 7B06            604     WEEK_PRO_2:     MOV     R3,#6
+057B E518            605     WEEK_PRO_3:     MOV     A,YEAR                  ;¼ÆËãÈòÄêµÄÊýÄ¿L
+057D 75F004          606                     MOV     B,#4
+0580 84              607                     DIV     AB
+0581 2B              608                     ADD     A,R3                    ;W+L
+0582 FB              609                     MOV     R3,A                    
+0583 E518            610                     MOV     A,YEAR
+0585 2B              611                     ADD     A,R3                    ;(W+L)+YEAR
+0586 FB              612                     MOV     R3,A                    
+0587 900771          613                     MOV     DPTR,#MONTH_TAB
+058A E519            614                     MOV     A,MONTH
+058C 93              615                     MOVC    A,@A+DPTR
+058D 2B              616                     ADD     A,R3                    ;(W+L+YEAR)+MONTH_TAB 
+058E FB              617                     MOV     R3,A
+058F E51A            618                     MOV     A,DATE
+0591 2B              619                     ADD     A,R3                    ;(W+L+YEAR+MONTH_TAB+DATE)
+0592 75F007          620                     MOV     B,#7
+0595 84              621                     DIV     AB                      ;ÓàÊý¼´ÎªÐÇÆÚÊý
+0596 85F01B          622                     MOV     WEEK,B  
+0599 22              623                     RET
+                     624     
+                     625     ;**********ÈòÄêµÄÅÐ¶Ïº¯Êý*********************
+                     626     ;ÈòÄêµÄÌõ¼þ£ºÄê(YEAR)ÄÜ±»4Õû³ý¡¢µ«²»ÄÜ±»100Õû³ý£»»òÕß±»400Õû³ý¡£
+                     627     ;Èç¹ûÎÒÃÇÖ»¿¼ÂÇ£¨00--99£©£¬ÔòÖ»Ðè¿¼ÂÇÄê(YEAR)ÄÜ±»4Õû³ý¼´¿É¡£
+059A E518            628     LEAP_PRO:       MOV     A,YEAR
+059C 75F004          629                     MOV     B,#4
+059F 84              630                     DIV     AB
+05A0 E5F0            631                     MOV     A,B
+05A2 6005            632                     JZ      LEAP_PRO_1      ;ÄÜ±»4Õû³ý
+05A4 C219            633                     CLR     LEAP            ;Æ½Äê£¬ÇåÁãLEAP 
+05A6 0205AB          634                     LJMP    LEAP_PRO_E
+05A9 D219            635     LEAP_PRO_1:     SETB    LEAP            ;ÈòÄê£¬ÖÃÎ»LEAP
+05AB                 636     LEAP_PRO_E:             
+05AB 22              637                     RET
+                     638     
+                     639     ;**********¸üÐÂÏÔÊ¾»º³åÇø********************
+                     640     ;Èë¿ÚR1,
+A51 MACRO ASSEMBLER  CLOCK                                                                11/20/2005 17:47:35 PAGE    11
+
+05AC 8926            641     UPDATE_BUF:     MOV     DIS_BUF_U0,R1   ;µ÷ÕûÊ±£¬"P",Õý³£¹¤×÷£¬ÏÔÊ¾Ò»×Ô¶¨Òå×Ö·û
+05AE 752720          642                     MOV     DIS_BUF_U1,#20H ;¿Õ¸ñ
+05B1 752832          643                     MOV     DIS_BUF_U2,#32H ;"2"
+05B4 752930          644                     MOV     DIS_BUF_U3,#30H ;"0"
+05B7 E518            645                     MOV     A,YEAR          ;¸üÐÂÄêÊý¾Ý
+05B9 75F00A          646                     MOV     B,#10
+05BC 84              647                     DIV     AB
+05BD 2430            648                     ADD     A,#48           ;¶þ½øÖÆ×ª»»ÎªASCMAÂë
+05BF F52A            649                     MOV     DIS_BUF_U4,A
+05C1 E5F0            650                     MOV     A,B
+05C3 2430            651                     ADD     A,#48
+05C5 F52B            652                     MOV     DIS_BUF_U5,A
+05C7 752C2D          653                     MOV     DIS_BUF_U6,#2DH ;"-"
+05CA E519            654                     MOV     A,MONTH         ;¸üÐÂÔÂÊý¾Ý
+05CC 75F00A          655                     MOV     B,#10
+05CF 84              656                     DIV     AB
+05D0 2430            657                     ADD     A,#48            
+05D2 F52D            658                     MOV     DIS_BUF_U7,A
+05D4 E5F0            659                     MOV     A,B
+05D6 2430            660                     ADD     A,#48
+05D8 F52E            661                     MOV     DIS_BUF_U8,A
+05DA 752F2D          662                     MOV     DIS_BUF_U9,#2DH ;"-"
+05DD E51A            663                     MOV     A,DATE          ;¸üÐÂÈÕÊý¾Ý
+05DF 75F00A          664                     MOV     B,#10
+05E2 84              665                     DIV     AB
+05E3 2430            666                     ADD     A,#48            
+05E5 F530            667                     MOV     DIS_BUF_U10,A
+05E7 E5F0            668                     MOV     A,B
+05E9 2430            669                     ADD     A,#48
+05EB F531            670                     MOV     DIS_BUF_U11,A
+05ED 753220          671                     MOV     DIS_BUF_U12,#20H;¿Õ¸ñ
+05F0 851BF0          672                     MOV     B,WEEK          ;¸üÐÂÐÇÆÚÊý¾Ý
+05F3 7403            673                     MOV     A,#3
+05F5 A4              674                     MUL     AB
+05F6 F5F0            675                     MOV     B,A
+05F8 90077E          676                     MOV     DPTR,#WEEK_TAB
+05FB 93              677                     MOVC    A,@A+DPTR
+05FC F533            678                     MOV     DIS_BUF_U13,A
+05FE E5F0            679                     MOV     A,B
+0600 04              680                     INC     A
+0601 93              681                     MOVC    A,@A+DPTR
+0602 F534            682                     MOV     DIS_BUF_U14,A
+0604 E5F0            683                     MOV     A,B
+0606 04              684                     INC     A
+0607 04              685                     INC     A
+0608 93              686                     MOVC    A,@A+DPTR
+0609 F535            687                     MOV     DIS_BUF_U15,A
+                     688                     
+060B E54A            689                     MOV     A,DIS_S0
+060D F536            690                     MOV     DIS_BUF_L0,A
+060F E54B            691                     MOV     A,DIS_S1
+0611 F537            692                     MOV     DIS_BUF_L1,A
+0613 E54C            693                     MOV     A,DIS_S2
+0615 F538            694                     MOV     DIS_BUF_L2,A
+0617 E54D            695                     MOV     A,DIS_S3
+0619 F539            696                     MOV     DIS_BUF_L3,A            
+061B E54E            697                     MOV     A,DIS_S4
+061D F53A            698                     MOV     DIS_BUF_L4,A            
+061F E54F            699                     MOV     A,DIS_S5
+0621 F53B            700                     MOV     DIS_BUF_L5,A
+0623 753C20          701                     MOV     DIS_BUF_L6,#20H ;¿Õ¸ñ
+0626 A218            702                     MOV     C,ALARM
+0628 4005            703                     JC      UPDATE_BUF_1
+062A 753D20          704                     MOV     DIS_BUF_L7,#20H ;ÄÖÖÓ½ûÓÃÊ±,ÏÔÊ¾¿Õ¸ñ
+062D 8003            705                     SJMP    UPDATE_BUF_2
+062F 753D01          706     UPDATE_BUF_1:   MOV     DIS_BUF_L7,#01H ;ÄÖÖÓÆôÓÃÊ±,ÏÔÊ¾Ð¡À®°È
+A51 MACRO ASSEMBLER  CLOCK                                                                11/20/2005 17:47:35 PAGE    12
+
+0632 E547            707     UPDATE_BUF_2:   MOV     A,DIS_H
+0634 75F00A          708                     MOV     B,#10
+0637 84              709                     DIV     AB
+0638 2430            710                     ADD     A,#48
+063A F53E            711                     MOV     DIS_BUF_L8,A
+063C E5F0            712                     MOV     A,B
+063E 2430            713                     ADD     A,#48
+0640 F53F            714                     MOV     DIS_BUF_L9,A
+0642 75403A          715                     MOV     DIS_BUF_L10,#3AH;":"    
+0645 E548            716                     MOV     A,DIS_M
+0647 75F00A          717                     MOV     B,#10
+064A 84              718                     DIV     AB
+064B 2430            719                     ADD     A,#48 
+064D F541            720                     MOV     DIS_BUF_L11,A
+064F E5F0            721                     MOV     A,B
+0651 2430            722                     ADD     A,#48
+0653 F542            723                     MOV     DIS_BUF_L12,A
+0655 75433A          724                     MOV     DIS_BUF_L13,#3AH;":"
+0658 E549            725                     MOV     A,DIS_S
+065A 75F00A          726                     MOV     B,#10
+065D 84              727                     DIV     AB
+065E 2430            728                     ADD     A,#48
+0660 F544            729                     MOV     DIS_BUF_L14,A
+0662 E5F0            730                     MOV     A,B
+0664 2430            731                     ADD     A,#48
+0666 F545            732                     MOV     DIS_BUF_L15,A
+0668 22              733                     RET
+                     734     
+                     735     ;************ÏÔÊ¾´¦Àí³ÌÐò*********************
+0669 7800            736     DISPLAY_PRO:    MOV     R0,#00H
+066B 120760          737                     LCALL   LCD_POS
+066E A826            738                     MOV     R0,DIS_BUF_U0
+0670 120746          739                     LCALL   LCD_WDAT
+0673 A827            740                     MOV     R0,DIS_BUF_U1
+0675 120746          741                     LCALL   LCD_WDAT
+0678 A828            742                     MOV     R0,DIS_BUF_U2
+067A 120746          743                     LCALL   LCD_WDAT
+067D A829            744                     MOV     R0,DIS_BUF_U3
+067F 120746          745                     LCALL   LCD_WDAT
+0682 A82A            746                     MOV     R0,DIS_BUF_U4
+0684 120746          747                     LCALL   LCD_WDAT
+0687 A82B            748                     MOV     R0,DIS_BUF_U5
+0689 120746          749                     LCALL   LCD_WDAT
+068C A82C            750                     MOV     R0,DIS_BUF_U6
+068E 120746          751                     LCALL   LCD_WDAT
+0691 A82D            752                     MOV     R0,DIS_BUF_U7
+0693 120746          753                     LCALL   LCD_WDAT
+0696 A82E            754                     MOV     R0,DIS_BUF_U8
+0698 120746          755                     LCALL   LCD_WDAT
+069B A82F            756                     MOV     R0,DIS_BUF_U9
+069D 120746          757                     LCALL   LCD_WDAT
+06A0 A830            758                     MOV     R0,DIS_BUF_U10
+06A2 120746          759                     LCALL   LCD_WDAT
+06A5 A831            760                     MOV     R0,DIS_BUF_U11
+06A7 120746          761                     LCALL   LCD_WDAT
+06AA A832            762                     MOV     R0,DIS_BUF_U12
+06AC 120746          763                     LCALL   LCD_WDAT
+06AF A833            764                     MOV     R0,DIS_BUF_U13
+06B1 120746          765                     LCALL   LCD_WDAT
+06B4 A834            766                     MOV     R0,DIS_BUF_U14
+06B6 120746          767                     LCALL   LCD_WDAT
+06B9 A835            768                     MOV     R0,DIS_BUF_U15
+06BB 120746          769                     LCALL   LCD_WDAT
+                     770     
+06BE 7840            771                     MOV     R0,#40H
+06C0 120760          772                     LCALL   LCD_POS
+A51 MACRO ASSEMBLER  CLOCK                                                                11/20/2005 17:47:35 PAGE    13
+
+06C3 A836            773                     MOV     R0,DIS_BUF_L0
+06C5 120746          774                     LCALL   LCD_WDAT
+06C8 A837            775                     MOV     R0,DIS_BUF_L1
+06CA 120746          776                     LCALL   LCD_WDAT
+06CD A838            777                     MOV     R0,DIS_BUF_L2
+06CF 120746          778                     LCALL   LCD_WDAT
+06D2 A839            779                     MOV     R0,DIS_BUF_L3
+06D4 120746          780                     LCALL   LCD_WDAT
+06D7 A83A            781                     MOV     R0,DIS_BUF_L4
+06D9 120746          782                     LCALL   LCD_WDAT
+06DC A83B            783                     MOV     R0,DIS_BUF_L5
+06DE 120746          784                     LCALL   LCD_WDAT
+06E1 A83C            785                     MOV     R0,DIS_BUF_L6
+06E3 120746          786                     LCALL   LCD_WDAT
+06E6 A83D            787                     MOV     R0,DIS_BUF_L7
+06E8 120746          788                     LCALL   LCD_WDAT
+06EB A83E            789                     MOV     R0,DIS_BUF_L8
+06ED 120746          790                     LCALL   LCD_WDAT
+06F0 A83F            791                     MOV     R0,DIS_BUF_L9
+06F2 120746          792                     LCALL   LCD_WDAT
+06F5 A840            793                     MOV     R0,DIS_BUF_L10
+06F7 120746          794                     LCALL   LCD_WDAT
+06FA A841            795                     MOV     R0,DIS_BUF_L11
+06FC 120746          796                     LCALL   LCD_WDAT
+06FF A842            797                     MOV     R0,DIS_BUF_L12
+0701 120746          798                     LCALL   LCD_WDAT
+0704 A843            799                     MOV     R0,DIS_BUF_L13
+0706 120746          800                     LCALL   LCD_WDAT
+0709 A844            801                     MOV     R0,DIS_BUF_L14
+070B 120746          802                     LCALL   LCD_WDAT
+070E A845            803                     MOV     R0,DIS_BUF_L15
+0710 120746          804                     LCALL   LCD_WDAT
+0713 22              805                     RET
+                     806             
+                     807     ;**********LCDÃ¦±êÖ¾BF²âÊÔ³ÌÐò**************
+0714 C0E0            808     BF_TEST:        PUSH    ACC             ;±£»¤ACCÊý¾Ý
+0716 C2A0            809                     CLR     RS              ;RS=0 
+0718 D2A1            810                     SETB    RW              ;RW=1
+071A D2A2            811                     SETB    EP              ;E=¸ßµçÆ½
+071C 00              812                     NOP
+071D 00              813                     NOP
+071E 00              814                     NOP
+071F 00              815                     NOP
+0720 7580FF          816                     MOV     P0,#0FFH         ;½«p0¿ÚÖÃ1£¬±£Ö¤ºóÃæÊý¾ÝÕýÈ·¶ÁÈë£¨ÓÉ P0¿Ú½á¹¹¾ö¶¨£
+                             ©
+0723 00              817     WT_BF:          NOP                      ; 
+0724 2087FC          818                     JB      P0.7,WT_BF       ;DB7=0  LCD¿ØÖÆÆ÷¿ÕÏÐ,DB7=1  LCD¿ØÖÆÆ÷Ã¦
+0727 C2A2            819                     CLR     EP
+0729 D0E0            820                     POP     ACC              ;ÊÍ·ÅACCÊý¾Ý
+072B 22              821                     RET
+                     822     
+                     823     ;**********LCDÖ¸ÁîÐ´Èë³ÌÐò******************
+                     824     ;³ÌÐòÈë¿Ú£ºR0
+072C 120714          825     LCD_WCMD:       LCALL   BF_TEST         ;¼ì²âÃ¦±êÖ¾                                     
+072F C2A0            826                     CLR     RS
+0731 C2A1            827                     CLR     RW
+0733 C2A2            828                     CLR     EP
+0735 00              829                     NOP
+0736 00              830                     NOP
+0737 8880            831                     MOV     P0,R0
+0739 00              832                     NOP
+073A 00              833                     NOP
+073B 00              834                     NOP
+073C 00              835                     NOP
+073D D2A2            836                     SETB    EP
+073F 00              837                     NOP
+A51 MACRO ASSEMBLER  CLOCK                                                                11/20/2005 17:47:35 PAGE    14
+
+0740 00              838                     NOP
+0741 00              839                     NOP
+0742 00              840                     NOP
+0743 C2A2            841                     CLR     EP
+0745 22              842                     RET
+                     843     
+                     844     ;**********LCDÊý¾ÝÐ´Èë³ÌÐò****************
+                     845     ;³ÌÐòÈë¿Ú£ºR0
+0746 120714          846     LCD_WDAT:       LCALL   BF_TEST         ;¼ì²âÃ¦±êÖ¾
+0749 D2A0            847                     SETB    RS
+074B C2A1            848                     CLR     RW
+074D C2A2            849                     CLR     EP
+074F 00              850                     NOP
+0750 00              851                     NOP
+0751 8880            852                     MOV     P0,R0
+0753 00              853                     NOP
+0754 00              854                     NOP
+0755 00              855                     NOP
+0756 00              856                     NOP
+0757 D2A2            857                     SETB    EP
+0759 00              858                     NOP
+075A 00              859                     NOP
+075B 00              860                     NOP
+075C 00              861                     NOP
+075D C2A2            862                     CLR     EP
+075F 22              863                     RET
+                     864     
+                     865     ;**********LCDÊý¾ÝÖ¸ÕëÎ»ÖÃ×Ó³ÌÐò**************
+                     866     ;³ÌÐòÈë¿Ú£ºR0
+0760 E8              867     LCD_POS:        MOV     A,R0
+0761 4480            868                     ORL     A,#80H
+0763 F8              869                     MOV     R0,A
+0764 12072C          870                     LCALL   LCD_WCMD
+0767 22              871                     RET
+                     872                     
+                     873     ;**********ÑÓÊ±Ô¼5ms×Ó³ÌÐò********************
+                     874     ;¾§Õñf=11.0592Mhz
+                     875     ;ÑÓÊ±Ê±¼ä=(1+(1+2*100+2)*25)*12/11.0592=5507us(Ô¼5ms)
+0768 7F19            876     DELAY_5ms:      MOV     R7,#25
+076A 7E64            877     DELAY1:         MOV     R6,#100
+076C DEFE            878     DELAY2:         DJNZ    R6,DELAY2
+076E DFFA            879                     DJNZ    R7,DELAY1
+0770 22              880                     RET
+                     881     
+                     882     ;***********ÐÇÆÚ×Ô¶¯ÔËËãÔÂ²Î±äÊý**************
+0771 00              883     MONTH_TAB:      DB      0
+0772 00              884                     DB      0
+0773 03              885                     DB      3
+0774 03              886                     DB      3
+0775 06              887                     DB      6
+0776 01              888                     DB      1
+0777 04              889                     DB      4
+0778 06              890                     DB      6
+0779 02              891                     DB      2
+077A 05              892                     DB      5
+077B 00              893                     DB      0
+077C 03              894                     DB      3
+077D 05              895                     DB      5
+                     896     
+077E 53554E          897     WEEK_TAB:       DB      'S','U','N'
+0781 4D4F4E          898                     DB      'M','O','N'
+0784 545545          899                     DB      'T','U','E'
+0787 574544          900                     DB      'W','E','D'
+078A 544855          901                     DB      'T','H','U'
+078D 465249          902                     DB      'F','R','I'
+0790 534154          903                     DB      'S','A','T'             
+A51 MACRO ASSEMBLER  CLOCK                                                                11/20/2005 17:47:35 PAGE    15
+
+                     904     
+                     905     
+                     906                     END
+A51 MACRO ASSEMBLER  CLOCK                                                                11/20/2005 17:47:35 PAGE    16
+
+SYMBOL TABLE LISTING
+------ ----- -------
+
+
+N A M E             T Y P E  V A L U E   ATTRIBUTES
+
+ACC. . . . . . . .  D ADDR   00E0H   A   
+ADJ. . . . . . . .  B ADDR   00B0H.5 A   
+ALARM. . . . . . .  B ADDR   0023H.0 A   
+B. . . . . . . . .  D ADDR   00F0H   A   
+BF_TEST. . . . . .  C ADDR   0714H   A   
+DATE . . . . . . .  D ADDR   001AH   A   
+DELAY1 . . . . . .  C ADDR   076AH   A   
+DELAY2 . . . . . .  C ADDR   076CH   A   
+DELAY_5MS. . . . .  C ADDR   0768H   A   
+DISPLAY_PRO. . . .  C ADDR   0669H   A   
+DIS_BUF_L0 . . . .  D ADDR   0036H   A   
+DIS_BUF_L1 . . . .  D ADDR   0037H   A   
+DIS_BUF_L10. . . .  D ADDR   0040H   A   
+DIS_BUF_L11. . . .  D ADDR   0041H   A   
+DIS_BUF_L12. . . .  D ADDR   0042H   A   
+DIS_BUF_L13. . . .  D ADDR   0043H   A   
+DIS_BUF_L14. . . .  D ADDR   0044H   A   
+DIS_BUF_L15. . . .  D ADDR   0045H   A   
+DIS_BUF_L2 . . . .  D ADDR   0038H   A   
+DIS_BUF_L3 . . . .  D ADDR   0039H   A   
+DIS_BUF_L4 . . . .  D ADDR   003AH   A   
+DIS_BUF_L5 . . . .  D ADDR   003BH   A   
+DIS_BUF_L6 . . . .  D ADDR   003CH   A   
+DIS_BUF_L7 . . . .  D ADDR   003DH   A   
+DIS_BUF_L8 . . . .  D ADDR   003EH   A   
+DIS_BUF_L9 . . . .  D ADDR   003FH   A   
+DIS_BUF_U0 . . . .  D ADDR   0026H   A   
+DIS_BUF_U1 . . . .  D ADDR   0027H   A   
+DIS_BUF_U10. . . .  D ADDR   0030H   A   
+DIS_BUF_U11. . . .  D ADDR   0031H   A   
+DIS_BUF_U12. . . .  D ADDR   0032H   A   
+DIS_BUF_U13. . . .  D ADDR   0033H   A   
+DIS_BUF_U14. . . .  D ADDR   0034H   A   
+DIS_BUF_U15. . . .  D ADDR   0035H   A   
+DIS_BUF_U2 . . . .  D ADDR   0028H   A   
+DIS_BUF_U3 . . . .  D ADDR   0029H   A   
+DIS_BUF_U4 . . . .  D ADDR   002AH   A   
+DIS_BUF_U5 . . . .  D ADDR   002BH   A   
+DIS_BUF_U6 . . . .  D ADDR   002CH   A   
+DIS_BUF_U7 . . . .  D ADDR   002DH   A   
+DIS_BUF_U8 . . . .  D ADDR   002EH   A   
+DIS_BUF_U9 . . . .  D ADDR   002FH   A   
+DIS_H. . . . . . .  D ADDR   0047H   A   
+DIS_M. . . . . . .  D ADDR   0048H   A   
+DIS_S. . . . . . .  D ADDR   0049H   A   
+DIS_S0 . . . . . .  D ADDR   004AH   A   
+DIS_S1 . . . . . .  D ADDR   004BH   A   
+DIS_S2 . . . . . .  D ADDR   004CH   A   
+DIS_S3 . . . . . .  D ADDR   004DH   A   
+DIS_S4 . . . . . .  D ADDR   004EH   A   
+DIS_S5 . . . . . .  D ADDR   004FH   A   
+EP . . . . . . . .  B ADDR   00A0H.2 A   
+FLAG . . . . . . .  D ADDR   0046H   A   
+HOUR . . . . . . .  D ADDR   001CH   A   
+HOUR_ARM . . . . .  D ADDR   0020H   A   
+IE . . . . . . . .  D ADDR   00A8H   A   
+KEY_ADJ_0. . . . .  C ADDR   0328H   A   
+KEY_ADJ_1. . . . .  C ADDR   033AH   A   
+KEY_ADJ_1_1. . . .  C ADDR   0347H   A   
+KEY_ADJ_2. . . . .  C ADDR   0357H   A   
+A51 MACRO ASSEMBLER  CLOCK                                                                11/20/2005 17:47:35 PAGE    17
+
+KEY_ADJ_2_1. . . .  C ADDR   0364H   A   
+KEY_ADJ_3. . . . .  C ADDR   0374H   A   
+KEY_ADJ_3_1. . . .  C ADDR   0381H   A   
+KEY_ADJ_4. . . . .  C ADDR   0391H   A   
+KEY_ADJ_4_1. . . .  C ADDR   039EH   A   
+KEY_ADJ_5. . . . .  C ADDR   03AEH   A   
+KEY_ADJ_5_1. . . .  C ADDR   03BBH   A   
+KEY_ADJ_6. . . . .  C ADDR   03CBH   A   
+KEY_ADJ_6_1. . . .  C ADDR   03E2H   A   
+KEY_ADJ_6_2. . . .  C ADDR   03E8H   A   
+KEY_ADJ_6_3. . . .  C ADDR   0408H   A   
+KEY_ADJ_6_4. . . .  C ADDR   040EH   A   
+KEY_ADJ_6_5. . . .  C ADDR   0411H   A   
+KEY_ADJ_7. . . . .  C ADDR   0421H   A   
+KEY_ADJ_7_1. . . .  C ADDR   042EH   A   
+KEY_ADJ_8. . . . .  C ADDR   043EH   A   
+KEY_ADJ_8_1. . . .  C ADDR   044BH   A   
+KEY_ADJ_9. . . . .  C ADDR   045BH   A   
+KEY_ADJ_9_1. . . .  C ADDR   0468H   A   
+KEY_ADJ_A. . . . .  C ADDR   0326H   A   
+KEY_ADJ_E. . . . .  C ADDR   0478H   A   
+KEY_ADJ_PRO. . . .  C ADDR   031BH   A   
+KEY_PRE_1. . . . .  C ADDR   028BH   A   
+KEY_PRE_10 . . . .  C ADDR   0308H   A   
+KEY_PRE_2. . . . .  C ADDR   0295H   A   
+KEY_PRE_3. . . . .  C ADDR   029FH   A   
+KEY_PRE_4. . . . .  C ADDR   02A9H   A   
+KEY_PRE_5. . . . .  C ADDR   02D6H   A   
+KEY_PRE_6. . . . .  C ADDR   02E0H   A   
+KEY_PRE_7. . . . .  C ADDR   02EAH   A   
+KEY_PRE_8. . . . .  C ADDR   02F4H   A   
+KEY_PRE_9. . . . .  C ADDR   02FEH   A   
+KEY_PRE_E. . . . .  C ADDR   031AH   A   
+KEY_PRE_PRO. . . .  C ADDR   0255H   A   
+KEY_S. . . . . . .  D ADDR   0024H   A   
+KEY_SCAN . . . . .  C ADDR   0246H   A   
+KEY_V. . . . . . .  D ADDR   0025H   A   
+LCD_POS. . . . . .  C ADDR   0760H   A   
+LCD_WCMD . . . . .  C ADDR   072CH   A   
+LCD_WDAT . . . . .  C ADDR   0746H   A   
+LEAP . . . . . . .  B ADDR   0023H.1 A   
+LEAP_PRO . . . . .  C ADDR   059AH   A   
+LEAP_PRO_1 . . . .  C ADDR   05A9H   A   
+LEAP_PRO_E . . . .  C ADDR   05ABH   A   
+MAIN . . . . . . .  C ADDR   01F5H   A   
+MAIN_1 . . . . . .  C ADDR   0210H   A   
+MAIN_2 . . . . . .  C ADDR   023BH   A   
+MEM_INI. . . . . .  C ADDR   0107H   A   
+MIN. . . . . . . .  D ADDR   001DH   A   
+MIN_ARM. . . . . .  D ADDR   0021H   A   
+MONTH. . . . . . .  D ADDR   0019H   A   
+MONTH_TAB. . . . .  C ADDR   0771H   A   
+P0 . . . . . . . .  D ADDR   0080H   A   
+P2 . . . . . . . .  D ADDR   00A0H   A   
+P3 . . . . . . . .  D ADDR   00B0H   A   
+PRE. . . . . . . .  B ADDR   00B0H.4 A   
+RS . . . . . . . .  B ADDR   00A0H.0 A   
+RW . . . . . . . .  B ADDR   00A0H.1 A   
+SEC. . . . . . . .  D ADDR   001EH   A   
+SEC100 . . . . . .  D ADDR   001FH   A   
+SEC_ARM. . . . . .  D ADDR   0022H   A   
+SP . . . . . . . .  D ADDR   0081H   A   
+SPK. . . . . . . .  B ADDR   00B0H.7 A   
+START. . . . . . .  C ADDR   0100H   A   
+STATE. . . . . . .  D ADDR   0023H   A   
+TH0. . . . . . . .  D ADDR   008CH   A   
+A51 MACRO ASSEMBLER  CLOCK                                                                11/20/2005 17:47:35 PAGE    18
+
+TH1. . . . . . . .  D ADDR   008DH   A   
+TIMER0 . . . . . .  C ADDR   0479H   A   
+TIMER0_1 . . . . .  C ADDR   04A6H   A   
+TIMER0_2 . . . . .  C ADDR   04B8H   A   
+TIMER0_E . . . . .  C ADDR   04C9H   A   
+TIMER1 . . . . . .  C ADDR   04CAH   A   
+TIME_PRO . . . . .  C ADDR   04D3H   A   
+TIME_PRO_A . . . .  C ADDR   054BH   A   
+TIME_PRO_D1. . . .  C ADDR   0505H   A   
+TIME_PRO_D2. . . .  C ADDR   050BH   A   
+TIME_PRO_D3. . . .  C ADDR   052BH   A   
+TIME_PRO_E . . . .  C ADDR   055FH   A   
+TIME_PRO_M . . . .  C ADDR   0531H   A   
+TIME_PRO_W . . . .  C ADDR   0548H   A   
+TL0. . . . . . . .  D ADDR   008AH   A   
+TL1. . . . . . . .  D ADDR   008BH   A   
+TMOD . . . . . . .  D ADDR   0089H   A   
+TR0. . . . . . . .  B ADDR   0088H.4 A   
+TR1. . . . . . . .  B ADDR   0088H.6 A   
+UPDATE_BUF . . . .  C ADDR   05ACH   A   
+UPDATE_BUF_1 . . .  C ADDR   062FH   A   
+UPDATE_BUF_2 . . .  C ADDR   0632H   A   
+WEEK . . . . . . .  D ADDR   001BH   A   
+WEEK_PRO . . . . .  C ADDR   0560H   A   
+WEEK_PRO_1 . . . .  C ADDR   056EH   A   
+WEEK_PRO_2 . . . .  C ADDR   0579H   A   
+WEEK_PRO_3 . . . .  C ADDR   057BH   A   
+WEEK_TAB . . . . .  C ADDR   077EH   A   
+WT_BF. . . . . . .  C ADDR   0723H   A   
+YEAR . . . . . . .  D ADDR   0018H   A   
+
+
+REGISTER BANK(S) USED: 0 
+
+
+ASSEMBLY COMPLETE.  0 WARNING(S), 0 ERROR(S)

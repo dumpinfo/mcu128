@@ -1,0 +1,186 @@
+__start:
+__text_start:
+    0047 EFCF      LDI	R28,0xFF
+    0048 E1D0      LDI	R29,0x10
+    0049 BFCD      OUT	0x3D,R28
+    004A BFDE      OUT	0x3E,R29
+    004B 51C0      SUBI	R28,0x10
+    004C 40D0      SBCI	R29,0
+    004D EA0A      LDI	R16,0xAA
+    004E 8308      STD	Y+0,R16
+    004F 2400      CLR	R0
+    0050 E0E1      LDI	R30,1
+    0051 E0F1      LDI	R31,1
+    0052 E011      LDI	R17,1
+    0053 30E1      CPI	R30,1
+    0054 07F1      CPC	R31,R17
+    0055 F011      BEQ	0x0058
+    0056 9201      ST	R0,Z+
+    0057 CFFB      RJMP	0x0053
+    0058 8300      STD	Z+0,R16
+    0059 E8EC      LDI	R30,0x8C
+    005A E0F0      LDI	R31,0
+    005B E0A0      LDI	R26,0
+    005C E0B1      LDI	R27,1
+    005D E010      LDI	R17,0
+    005E 38ED      CPI	R30,0x8D
+    005F 07F1      CPC	R31,R17
+    0060 F021      BEQ	0x0065
+    0061 95C8      LPM
+    0062 9631      ADIW	R30,1
+    0063 920D      ST	R0,X+
+    0064 CFF9      RJMP	0x005E
+    0065 940E00B3  CALL	_main
+_exit:
+    0067 CFFF      RJMP	_exit
+FILE: F:\mega128包\mega128例程\蜂鸣器基本实验\main.c
+(0001) 
+(0002) //PA0输出频率波形
+(0003) //请将PA0口接到蜂鸣器控制端
+(0004) //ICC-AVR application builder : 2007-6-26 15:44:31
+(0005) // Target : M128
+(0006) // Crystal: 6.0000Mhz
+(0007) 
+(0008) #include <iom128v.h>
+(0009) #include <macros.h>
+(0010) unsigned char Data=0XFE;
+(0011)   
+(0012) void port_init(void)
+(0013) {
+(0014)  PORTA = 0xFF;
+_port_init:
+    0068 EF8F      LDI	R24,0xFF
+    0069 BB8B      OUT	0x1B,R24
+(0015)  DDRA  = 0x00;
+    006A 2422      CLR	R2
+    006B BA2A      OUT	0x1A,R2
+(0016)  PORTB = 0xFF;
+    006C BB88      OUT	0x18,R24
+(0017)  DDRB  = 0x00;
+    006D BA27      OUT	0x17,R2
+(0018)  PORTC = 0xFF; //m103 output only
+    006E BB85      OUT	0x15,R24
+(0019)  DDRC  = 0x00;
+    006F BA24      OUT	0x14,R2
+(0020)  PORTD = 0xFF;
+    0070 BB82      OUT	0x12,R24
+(0021)  DDRD  = 0x00;
+    0071 BA21      OUT	0x11,R2
+(0022)  PORTE = 0xFF;
+    0072 B983      OUT	0x03,R24
+(0023)  DDRE  = 0x00;
+    0073 B822      OUT	0x02,R2
+(0024)  PORTF = 0xFF;
+    0074 93800062  STS	0x62,R24
+(0025)  DDRF  = 0x00;
+    0076 92200061  STS	0x61,R2
+(0026)  PORTG = 0x1F;
+    0078 E18F      LDI	R24,0x1F
+    0079 93800065  STS	0x65,R24
+(0027)  DDRG  = 0x00;
+    007B 92200064  STS	0x64,R2
+    007D 9508      RET
+(0028) }
+(0029) 
+(0030) //TIMER0 initialisation - prescale:8
+(0031) // WGM: Normal
+(0032) // desired value: 10KHz
+(0033) // actual value: 10.000KHz (0.0%)
+(0034) void timer0_init(void)
+(0035) {
+(0036)  TCCR0 = 0x00; //stop
+_timer0_init:
+    007E 2422      CLR	R2
+    007F BE23      OUT	0x33,R2
+(0037)  ASSR  = 0x00; //set async mode
+    0080 BE20      OUT	0x30,R2
+(0038)  TCNT0 = 0xB5; //set count
+    0081 EB85      LDI	R24,0xB5
+    0082 BF82      OUT	0x32,R24
+(0039)  OCR0  = 0x4B;
+    0083 E48B      LDI	R24,0x4B
+    0084 BF81      OUT	0x31,R24
+(0040)  TCCR0 = 0x02; //start timer
+    0085 E082      LDI	R24,2
+    0086 BF83      OUT	0x33,R24
+    0087 9508      RET
+_timer0_ovf_isr:
+    0088 922A      ST	R2,-Y
+    0089 938A      ST	R24,-Y
+    008A B62F      IN	R2,0x3F
+    008B 922A      ST	R2,-Y
+(0041) }
+(0042) 
+(0043) #pragma interrupt_handler timer0_ovf_isr:17
+(0044) void timer0_ovf_isr(void)
+(0045) {
+(0046)  TCNT0 = 0xB5; //reload counter value
+    008C EB85      LDI	R24,0xB5
+    008D BF82      OUT	0x32,R24
+(0047)   PORTA = Data;
+    008E 90200100  LDS	R2,Data
+    0090 BA2B      OUT	0x1B,R2
+(0048)  if(Data ==0XFE)
+    0091 2D82      MOV	R24,R2
+    0092 3F8E      CPI	R24,0xFE
+    0093 F421      BNE	0x0098
+(0049)   Data = 0XFF;
+    0094 EF8F      LDI	R24,0xFF
+    0095 93800100  STS	Data,R24
+    0097 C003      RJMP	0x009B
+(0050)  else
+(0051)   Data = 0XFE;
+    0098 EF8E      LDI	R24,0xFE
+    0099 93800100  STS	Data,R24
+    009B 9029      LD	R2,Y+
+    009C BE2F      OUT	0x3F,R2
+    009D 9189      LD	R24,Y+
+    009E 9029      LD	R2,Y+
+    009F 9518      RETI
+(0052) }
+(0053) 
+(0054) //call this routine to initialise all peripherals
+(0055) void init_devices(void)
+(0056) {
+(0057)  //stop errant interrupts until set up
+(0058)  CLI(); //disable all interrupts
+_init_devices:
+    00A0 94F8      BCLR	7
+(0059)  XDIV  = 0x00; //xtal divider
+    00A1 2422      CLR	R2
+    00A2 BE2C      OUT	0x3C,R2
+(0060)  XMCRA = 0x00; //external memory
+    00A3 9220006D  STS	0x6D,R2
+(0061)  port_init();
+    00A5 DFC2      RCALL	_port_init
+(0062)  timer0_init();
+    00A6 DFD7      RCALL	_timer0_init
+(0063) 
+(0064)  MCUCR = 0x00;
+    00A7 2422      CLR	R2
+    00A8 BE25      OUT	0x35,R2
+(0065)  EICRA = 0x00; //extended ext ints
+    00A9 9220006A  STS	0x6A,R2
+(0066)  EICRB = 0x00; //extended ext ints
+    00AB BE2A      OUT	0x3A,R2
+(0067)  EIMSK = 0x00;
+    00AC BE29      OUT	0x39,R2
+(0068)  TIMSK = 0x01; //timer interrupt sources
+    00AD E081      LDI	R24,1
+    00AE BF87      OUT	0x37,R24
+(0069)  ETIMSK = 0x00; //extended timer interrupt sources
+    00AF 9220007D  STS	0x7D,R2
+(0070)  SEI(); //re-enable interrupts
+    00B1 9478      BSET	7
+    00B2 9508      RET
+(0071)  //all peripherals are now initialised
+(0072) }
+(0073) 
+(0074) //
+(0075) void main(void)
+(0076) {
+(0077)  init_devices();
+FILE: <library>
+_main:
+    00B3 DFEC      RCALL	_init_devices
+    00B4 9508      RET

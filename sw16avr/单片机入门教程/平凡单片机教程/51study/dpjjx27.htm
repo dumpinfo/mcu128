@@ -1,0 +1,272 @@
+<HTML>
+<HEAD>
+<META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=gb_2312-80">
+<META NAME="Generator" CONTENT="Microsoft FrontPage 5.0">
+<TITLE>键盘接口与编程</TITLE>
+</HEAD>
+<BODY background="../back.jpg">
+<FONT FACE="宋体" LANG="ZH-CN" SIZE=2>
+<P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">键盘接口与编程</P>
+<P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">键盘是由若干按键组成的开关矩阵，它是微型计算机最常用的输入设备，用户可以通过键盘向计算机输入指令、地址和数据。一般单片机系统中采和非编码键盘，非编码键盘是由软件来识别键盘上的闭合键，它具有结构简单，使用灵活等特点，因此被广泛应用于单片机系统。</P>
+</FONT> 
+<OL>
+  <FONT FACE="宋体" LANG="ZH-CN" SIZE=3> 
+  <P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">
+  </font> 
+  <FONT FACE="宋体" LANG="ZH-CN" SIZE=2> 
+  <LI>
+  <p style="line-height: 150%; margin-top: 0; margin-bottom: 0">按键开关的抖动问题</LI>
+  </font> 
+  </p>
+  <p ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">
+  <FONT FACE="宋体" LANG="ZH-CN" SIZE=2>组成键盘的按键有触点式和非触点式两种，单片机中应用的一般是由机械触点构成的。在下图中，当开</font></p>
+  <table width="300" border="0" cellspacing="2" cellpadding="2">
+    <tr> 
+      <td> 
+        <p style="line-height: 150%; margin-top: 0; margin-bottom: 0">
+        <font face="宋体" lang="ZH-CN" size=2><img src="dpj271.gif" width=93 height=60 align="baseline"></font></p>
+        <p align="center" style="line-height: 150%; margin-top: 0; margin-bottom: 0">
+        <font size="2">图1</font></p>
+      </td>
+      <td> 
+        <p style="line-height: 150%; margin-top: 0; margin-bottom: 0">
+        <font face="宋体" lang="ZH-CN" size=2><img src="dpj272.gif" width="213" height="66"></font></p>
+        <p align="center" style="line-height: 150%; margin-top: 0; margin-bottom: 0">
+        <font face="宋体" size="2">图2</font></p>
+      </td>
+    </tr>
+  </table>
+  <p ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">
+  <FONT FACE="宋体" LANG="ZH-CN" SIZE=2>关</font><FONT SIZE=2>S</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>未被按下时，</FONT><FONT SIZE=2>P1</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>。</FONT><FONT SIZE=2>0</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>输入为高电平，</FONT><FONT SIZE=2>S</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>闭合后，</FONT><FONT SIZE=2>P1</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>。</FONT><FONT SIZE=2>0</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>输入为低电平。由于按键是机械触点，当机械触点断开、闭合时，会有抖动动，</FONT><FONT SIZE=2>P1</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>。</FONT><FONT SIZE=2>0</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>输入端的波形如图</FONT><FONT SIZE=2>2</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>所示。这种抖动对于人来说是感觉不到的，但对计算机来说，则是完全可以感应到的，因为计算机处理的速度是在微秒级，而机械抖动的时间至少是毫秒级，对计算机而言，这已是一个“漫长”的时间了。前面我们讲到中断时曾有个问题，就是说按键有时灵，有时不灵，其实就是这个原因，你只按了一次按键，可是计算机却已执行了多次中断的过程，如果执行的次数正好是奇数次，那么结果正如你所料，如果执行的次数是偶数次，那就不对了。</font></p>
+  <P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0"> 
+  <FONT FACE="宋体" LANG="ZH-CN" SIZE=2>为使</font><FONT SIZE=2>CPU</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>能正确地读出</FONT><FONT SIZE=2>P1</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>口的状态，对每一次按键只作一次响应，就必须考虑如何去除抖动，常用的去抖动的方法有两种：硬件方法和软件方法。单片机中常用软件法，因此，对于硬件方法我们不介绍。软件法其实很简单，就是在单片机获得</FONT><FONT SIZE=2>P1</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>。</FONT><FONT SIZE=2>0</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>口为低的信息后，不是立即认定</FONT><FONT SIZE=2>S1</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>已被按下，而是延时</FONT><FONT SIZE=2>10</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>毫秒或更长一些时间后再次检测</FONT><FONT SIZE=2>P1</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>。</FONT><FONT SIZE=2>0</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>口，如果仍为低，说明</FONT><FONT SIZE=2>S1</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>的确按下了，这实际上是避开了按键按下时的抖动时间。而在检测到按键释放后（</FONT><FONT SIZE=2>P1</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>。</FONT><FONT SIZE=2>0</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>为高）再延时</FONT><FONT SIZE=2>5-10</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>个毫秒，消除后沿的抖动，然后再对键值处理。不过一般情况下，我们通常不对按键释放的后沿进行处理，实践证明，也能满足一定的要求。当然，实际应用中，对按键的要求也是千差万别，要根据不同的需要来编制处理程序，但以上是消除键抖动的原则。</font></P>
+  <FONT FACE="宋体" LANG="ZH-CN" SIZE=3> 
+  <P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">
+  </font>
+  <FONT FACE="宋体" LANG="ZH-CN" SIZE=2> 
+  <LI>
+  <p style="line-height: 150%; margin-top: 0; margin-bottom: 0">键盘与单片机的连接 </p>
+  </font>
+  <FONT FACE="宋体" LANG="ZH-CN" SIZE=3> 
+    <table width="552" border="0" cellspacing="2" cellpadding="2">
+      <tr> 
+        <td width="187"> 
+          <p style="line-height: 150%; margin-top: 0; margin-bottom: 0">
+          <font face="宋体" lang="ZH-CN" size=2><img src="dpj273.gif" width="179" height="246"></font></p>
+          <p align="center" style="line-height: 150%; margin-top: 0; margin-bottom: 0">
+          <font size="2">图3</font></p>
+        </td>
+        <td width="351"> 
+          <p style="line-height: 150%; margin-top: 0; margin-bottom: 0">
+          <font size="2"><img src="DPJ274.gif" width="287" height="181"></font></p>
+          <p align="center" style="line-height: 150%; margin-top: 0; margin-bottom: 0">
+          <font size="2">图4</font></p>
+        </td>
+      </tr>
+    </table>
+  </LI>
+  </font>
+</OL>
+<p style="line-height: 150%; margin-top: 0; margin-bottom: 0"><FONT FACE="宋体" LANG="ZH-CN" SIZE=3>
+<font face="宋体" lang="ZH-CN" size=2>1、通过</font><font size=2>1/0</font><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>口连接。将每个按键的一端接到单片机的</FONT><FONT SIZE=2>I/O</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>口，另一端接地，这是最简单的方法，如图</FONT><FONT SIZE=2>3</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>所示是实验板上按键的接法，四个按键分别接到</FONT><FONT SIZE=2>P3.2 
+  </FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>、</FONT><FONT SIZE=2>P3.3</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>、</FONT><FONT SIZE=2>P3.4</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>和</FONT><FONT SIZE=2>P3.5</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>。对于这种键各程序可以采用不断查询的方法，功能就是：检测是否有键闭合，如有键闭合，则去除键抖动，判断键号并转入相应的键处理。下面给出一个例程。其功能很简单，四个键定义如下：</font></font><font size="2">
+</font> 
+</p>
+<OL>
+  <FONT FACE="宋体" LANG="ZH-CN" SIZE=3> 
+  <p style="line-height: 150%; margin-top: 0; margin-bottom: 0"></P>
+  </font> 
+</OL>
+
+<P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">
+<FONT SIZE=2>P3.2</font><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>：开始，按此键则灯开始流动（由上而下）</font></P>
+<P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">
+<FONT SIZE=2>P3.3</font><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>：停止，按此键则停止流动，所有灯为暗</font></P>
+<P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">
+<FONT SIZE=2>P3.4</font><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>：上，按此键则灯由上向下流动</font></P>
+<P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">
+<FONT SIZE=2>P3.5</font><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>：下，按此键则灯由下向上流动</font></P>
+<P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">
+<FONT SIZE=2>UpDown &#9;EQU&#9;00H&#9;;</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>上下行标志</font></P>
+<P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">
+<FONT SIZE=2>StartEnd&#9;EQU &#9;01H&#9;;</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>起动及停止标志</font></P>
+<P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">
+<FONT SIZE=2>LAMPCODE&#9;EQU&#9;21H&#9;;</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>存放流动的数据代码</font></P>
+<P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">
+<FONT SIZE=2>ORG&#9;0000H</font></P><FONT SIZE=2>
+<P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">&#9;AJMP&#9;MAIN</P>
+<P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">&#9;ORG&#9;30H</P>
+<P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">MAIN:</P>
+<P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">&#9;MOV&#9;SP,#5FH</P>
+<P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">&#9;MOV&#9;P1,#0FFH</P>
+</FONT>
+<P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">
+<FONT SIZE=2>&#9;CLR&#9;UpDown&#9;&#9;;</font><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>启动时处于向上的状态</font></P>
+<P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">
+<FONT SIZE=2>CLR&#9;StartEnd&#9;;</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>启动时处于停止状态</font></P>
+<P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">
+<FONT SIZE=2>MOV&#9;LAMPCODE,#0FEH&#9;;</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>单灯流动的代码&#9;</font></P>
+<FONT SIZE=2>
+<P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">LOOP:</P>
+</FONT>
+<P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">
+<FONT SIZE=2>&#9;ACALL&#9;KEY&#9;&#9;;</font><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>调用键盘程序</font></P>
+<P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">
+<FONT SIZE=2>JNB&#9;F0,LNEXT&#9;;</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>如果无键按下，则继续</font></P>
+<P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">
+<FONT SIZE=2>ACALL&#9;KEYPROC&#9;&#9;;</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>否则调用键盘处理程序</font></P>
+<FONT SIZE=2>
+<P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">LNEXT:</P>
+</FONT>
+<P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">
+<FONT SIZE=2>&#9;ACALL&#9;LAMP&#9;&#9;;</font><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>调用灯显示程序</font></P>
+<P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">
+<FONT SIZE=2>AJMP&#9;LOOP&#9;&#9;;</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>反复循环，主程序到此结束</font></P>
+<FONT SIZE=2>
+<P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">;---------------------------------------</P>
+<P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">DELAY:</P>
+<P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">&#9;MOV&#9;R7,#100</P>
+<P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">D1:&#9;MOV&#9;R6,#100</P>
+<P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">&#9;DJNZ&#9;R6,$</P>
+<P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">&#9;DJNZ&#9;R7,D1</P>
+<P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">&#9;RET</P>
+</FONT>
+<P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">
+<FONT SIZE=2>;----------------------------------------</font><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>延时程序，键盘处理中调用</font></P>
+<FONT SIZE=2>
+<P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">KEYPROC:</P>
+</FONT>
+<P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">
+<FONT SIZE=2>&#9;MOV&#9;A,B&#9;&#9;;</font><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>从</FONT><FONT SIZE=2>B</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>寄存器中获取键值</font></P>
+<P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">
+<FONT SIZE=2>JB&#9;ACC.2,KeyStart&#9;;</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>分析键的代码，某位被按下，则该位为</FONT><FONT SIZE=2>1</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>（因为在键盘程序中已取反）</font></P>
+<P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">
+<FONT SIZE=2>JB&#9;ACC.3,KeyOver</font></P><FONT SIZE=2>
+<P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">&#9;JB&#9;ACC.4,KeyUp</P>
+<P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">&#9;JB&#9;ACC.5,KeyDown</P>
+<P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">&#9;AJMP&#9;KEY_RET</P>
+<P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">KeyStart:</P>
+</FONT>
+<P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">
+<FONT SIZE=2>&#9;SETB&#9;StartEnd&#9;;</font><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>第一个键按下后的处理</font></P>
+<P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">
+<FONT SIZE=2>AJMP&#9;KEY_RET</font></P><FONT SIZE=2>
+<P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">KeyOver:</P>
+</FONT>
+<P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">
+<FONT SIZE=2>&#9;CLR&#9;StartEnd&#9;;</font><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>第二个键按下后的处理</font></P>
+<P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">
+<FONT SIZE=2>AJMP&#9;KEY_RET</font></P>
+<P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">
+<FONT SIZE=2>KeyUp:&#9;SETB&#9;UpDown&#9;&#9;;</font><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>第三个键按下后的处理</font></P>
+<P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">
+<FONT SIZE=2>AJMP&#9;KEY_RET</font></P><FONT SIZE=2>
+<P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">KeyDown:</P>
+</FONT>
+<P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">
+<FONT SIZE=2>&#9;CLR&#9;UpDown&#9;&#9;;</font><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>第四个键按下后的处理</font></P>
+<FONT SIZE=2>
+<P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">KEY_RET:RET</P>
+<P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">KEY:</P>
+</FONT>
+<P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">
+<FONT SIZE=2>&#9;CLR&#9;F0&#9;&#9;;</font><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>清</FONT><FONT SIZE=2>F0</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>，表示无键按下。</font></P>
+<P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">
+<FONT SIZE=2>ORL&#9;P3,#00111100B&#9;;</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>将</FONT><FONT SIZE=2>P3</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>口的接有键的四位置</FONT><FONT SIZE=2>1</font></P>
+<P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">
+<FONT SIZE=2>&#9;MOV&#9;A,P3&#9;&#9;;</font><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>取</FONT><FONT SIZE=2>P3</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>的值</font></P>
+<P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">
+<FONT SIZE=2>ORL&#9;A,#11000011B&#9;;</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>将其余</FONT><FONT SIZE=2>4</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>位置</FONT><FONT SIZE=2>1</font></P>
+<P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">
+<FONT SIZE=2>&#9;CPL&#9;A&#9;&#9;;</font><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>取反</font></P>
+<P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">
+<FONT SIZE=2>JZ&#9;K_RET&#9;&#9;;</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>如果为</FONT><FONT SIZE=2>0</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>则一定无键按下</font></P>
+<P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">
+<FONT SIZE=2>ACALL&#9;DELAY&#9;&#9;;</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>否则延时去键抖</font></P>
+<P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">
+<FONT SIZE=2>ORL&#9;P3,#00111100B</font></P><FONT SIZE=2>
+<P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">&#9;MOV&#9;A,P3</P>
+<P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">&#9;ORL&#9;A,#11000011B</P>
+<P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">&#9;CPL&#9;A</P>
+<P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">&#9;JZ&#9;K_RET</P>
+</FONT>
+<P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">
+<FONT SIZE=2>&#9;MOV&#9;B,A&#9;&#9;;</font><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>确实有键按下，将键值存入</FONT><FONT SIZE=2>B</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>中</font></P>
+<P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">
+<FONT SIZE=2>SETB&#9;F0&#9;&#9;;</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>设置有键按下的标志</font></P>
+<FONT SIZE=2>
+<P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">K_RET:&#9;&#9;&#9;&#9;</P>
+</FONT>
+<P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">
+<FONT SIZE=2>&#9;ORL&#9;P3,#00111100B&#9;;</font><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>此处循环等待键的释放</font></P>
+<P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">
+<FONT SIZE=2>MOV&#9;A,P3</font></P><FONT SIZE=2>
+<P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">&#9;ORL&#9;A,#11000011B</P>
+<P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">&#9;CPL&#9;A</P>
+</FONT>
+<P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">
+<FONT SIZE=2>&#9;JZ&#9;K_RET1&#9;&#9;;</font><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>直到读取的数据取反后为</FONT><FONT SIZE=2>0</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>说明键释放了，才从键盘处理程序中返回</font></P>
+<P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">
+<FONT SIZE=2>AJMP&#9;K_RET</font></P><FONT SIZE=2>
+<P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">K_RET1:&#9;</P>
+<P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">&#9;RET</P>
+<P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">;-----------------------------------&#9;</P>
+</FONT>
+<P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">
+<FONT SIZE=2>D500MS:&#9;&#9;&#9;&#9;;</font><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>流水灯的延迟时间</font></P>
+<P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">
+<FONT SIZE=2>PUSH&#9;PSW</font></P><FONT SIZE=2>
+<P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">&#9;SETB&#9;RS0</P>
+<P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">&#9;MOV&#9;R7,#200</P>
+<P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">D51:&#9;MOV&#9;R6,#250</P>
+<P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">D52:&#9;NOP</P>
+<P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">&#9;NOP</P>
+<P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">&#9;NOP</P>
+<P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">&#9;NOP</P>
+<P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">&#9;DJNZ&#9;R6,D52</P>
+<P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">&#9;DJNZ&#9;R7,D51</P>
+<P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">&#9;POP&#9;PSW</P>
+<P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">&#9;RET&#9;</P>
+<P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">;-----------------------------------</P>
+<P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">LAMP:</P>
+</FONT>
+<P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">
+<FONT SIZE=2>&#9;JB&#9;StartEnd,LampStart&#9;;</font><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>如果</FONT><FONT SIZE=2>StartEnd=1</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>，则启动</font></P>
+<P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">
+<FONT SIZE=2>MOV&#9;P1,#0FFH</font></P>
+<P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">
+<FONT SIZE=2>&#9;AJMP&#9;LAMPRET&#9;&#9;;</font><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>否则关闭所有显示，返回</font></P>
+<FONT SIZE=2>
+<P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">LampStart:</P>
+</FONT>
+<P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">
+<FONT SIZE=2>&#9;JB&#9;UpDown,LAMPUP&#9;;</font><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>如果</FONT><FONT SIZE=2>UpDown=1</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>，则向上流动</font></P>
+<P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">
+<FONT SIZE=2>MOV&#9;A,LAMPCODE</font></P>
+<P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">
+<FONT SIZE=2>&#9;RL&#9;A&#9;&#9;;</font><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>实际就是左移位而已</font></P>
+<P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">
+<FONT SIZE=2>MOV&#9;LAMPCODE,A&#9;</font></P><FONT SIZE=2>
+<P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">&#9;MOV&#9;P1,A</P>
+<P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">&#9;LCALL&#9;D500MS</P>
+<P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">&#9;AJMP&#9;LAMPRET</P>
+<P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">LAMPUP:</P>
+<P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">&#9;MOV&#9;A,LAMPCODE</P>
+</FONT>
+<P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">
+<FONT SIZE=2>&#9;RR&#9;A&#9;&#9;;</font><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>向下流动实际就是右移</font></P>
+<P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">
+<FONT SIZE=2>MOV&#9;LAMPCODE,A</font></P><FONT SIZE=2>
+<P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">&#9;MOV&#9;P1,A</P>
+<P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">&#9;LCALL&#9;D500MS</P>
+<P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">LAMPRET:&#9;</P>
+<P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">&#9;RET</P>
+<P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">END</P>
+</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>
+<P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">以上程序功能很简单，但它演示了一个键盘处理程序的基本思路，程序本身很简单，也不很实用，实际工作中还会有好多要考虑的因素，比如主循环每次都调用灯的循环程序，会造成按键反应“迟钝”，而如果一直按着键不放，则灯不会再流动，一直要到松开手为止，等等，大家可以仔细考虑一下这些问题，再想想有什么好的解决办法。</P>
+</FONT>
+<P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">
+<FONT SIZE=2>2</font><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>、采用中断方式：如图</FONT><FONT SIZE=2>4</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>所示。各个按键都接到一个与非上，当有任何一个按键按下时，都会使与门输出为低电平，从而引起单片机的中断，它的好处是不用在主程序中不断地循环查询，如果有键按下，单片机再去做相应的处理。</font></P>
+<P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">　</P>
+</BODY>
+</HTML>

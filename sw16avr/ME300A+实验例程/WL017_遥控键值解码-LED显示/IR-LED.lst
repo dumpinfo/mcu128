@@ -1,0 +1,227 @@
+A51 MACRO ASSEMBLER  IR_LED                                                               03/29/2005 16:30:18 PAGE     1
+
+
+MACRO ASSEMBLER A51 V7.10
+OBJECT MODULE PLACED IN IR-LED.OBJ
+ASSEMBLER INVOKED BY: C:\Keil\C51\BIN\A51.EXE IR-LED.asm SET(SMALL) DEBUG EP
+
+LOC  OBJ            LINE     SOURCE
+
+                       1     ;********************************************************************************
+                       2     ;*  标题:  伟纳电子ME300B单片机开发系统演示程序 - 遥控键值解码-LED显示          *
+                       3     ;*  文件:  IR-LED.asm                                                           *
+                       4     ;*  日期:  2005-3-20                                                            *
+                       5     ;*  版本:  1.0                                                                  *
+                       6     ;*  作者:  gguoqing                                                             *
+                       7     ;*  邮箱:  gguoqing@willar.com                                                  *
+                       8     ;*  网站： http://www.willar.com                                                *
+                       9     ;********************************************************************************
+                      10     ;*  描述:                                                                       *
+                      11     ;*          ME300B 遥控键值读取器                                               *
+                      12     ;*         LED 显示, P0口为LED的数据口                                          *
+                      13     ;*         上电后，将8个LED全部点亮                                             *
+                      14     ;*         K17键按下，继电器吸合。K19键按下，继电器关闭。                       *
+                      15     ;*                                                                              *
+                      16     ;********************************************************************************
+                      17     ;* 【版权】 Copyright(C)伟纳电子 www.willar.com  All Rights Reserved            *
+                      18     ;* 【声明】 此程序仅用于学习与参考，引用请注明版权和作者信息！                  *
+                      19     ;********************************************************************************
+                      20     
+                      21     ;-----------------------------------------------
+  0020                22            IRCOM  EQU  20H       ;20H-23H IR使用
+                      23     
+  00B2                24            IRIN   EQU  P3.2
+  00B7                25            BEEP   EQU  P3.7
+  0093                26            RELAY  EQU  P1.3
+                      27     ;------------------------------------------------
+0000                  28              ORG 0000H
+0000 8000             29              JMP  MAIN
+                      30     ;------------------------------------------------
+0002                  31     MAIN:
+0002 758160           32               MOV   SP,#60H
+0005 7400             33               MOV   A,#00H
+0007 7820             34               MOV   R0,#20H
+0009 F6               35     LOOP0:    MOV   @R0,A          ;20H-24H清零
+000A 08               36               INC   R0
+000B B825FB           37               CJNE  R0,#25H,LOOP0
+000E D2B2             38               SETB  IRIN
+0010 D2B7             39               SETB  BEEP
+0012 D293             40               SETB  RELAY
+0014 7522FF           41               MOV  22H,#0FFH
+0017 116E             42               CALL  IR_SHOW       ;8个LED全部亮
+0019                  43     LOOP1:
+0019 1128             44               CALL  IR_IN
+001B F4               45               CPL   A
+001C B44002           46               CJNE  A,#40H,LOOP2    ;K17键按下
+001F C293             47               CLR   RELAY           ;继电器吸合
+0021 B40402           48     LOOP2:    CJNE  A,#04H,LOOP3    ;K19键按下
+0024 D293             49               SETB  RELAY           ;继电器关闭
+                      50     
+0026 80F1             51     LOOP3:    JMP   LOOP1
+                      52     
+                      53     ;---------------------------------------------------
+                      54     ; IR 译码子程序
+                      55     ;---------------------------------------------------
+0028                  56     IR_IN:
+0028 7820             57               MOV   R0,#IRCOM
+002A 30B202           58      I1:      JNB  IRIN,I2       ;等待 IR 信号出现
+A51 MACRO ASSEMBLER  IR_LED                                                               03/29/2005 16:30:18 PAGE     2
+
+002D 80FB             59               JMP  I1
+002F 7C14             60      I2:      MOV  R4,#20
+0031 1197             61      I20:     CALL  DEL
+0033 DCFC             62               DJNZ  R4,I20
+0035 20B2F2           63               JB  IRIN,I1        ;确认IR信号出现
+0038 20B204           64      I21:     JB  IRIN,I3        ;等 IR 变为高电平
+003B 1197             65               CALL  DEL
+003D 80F9             66               JMP  I21
+003F 7B00             67      I3:      MOV  R3,#0         ;8位数清为0
+0041 30B204           68      LL:      JNB  IRIN,I4       ;等 IR 变为低电平
+0044 1197             69               CALL  DEL
+0046 80F9             70               JMP  LL
+0048 20B204           71      I4:      JB  IRIN,I5        ;等 IR 变为高电平
+004B 1197             72               CALL  DEL
+004D 80F9             73               JMP  I4
+004F 7A00             74      I5:      MOV  R2,#0         ;0.14ms 计数
+0051 1197             75      L1:      CALL  DEL
+0053 20B213           76               JB  IRIN, N1       ;等 IR 变为高电平
+                      77                                  ;IR=0，检查R2中的计数值
+0056 7408             78               MOV  A,#8
+0058 C3               79               CLR  C
+0059 9A               80               SUBB  A,R2         ;判断高低位
+                      81                                  ;IF C=0  BIT=0
+005A E6               82               MOV  A,@R0
+005B 13               83               RRC  A
+005C F6               84               MOV  @R0,A         ;处理完一位
+005D 0B               85               INC  R3
+005E BB08E0           86               CJNE  R3,#8,LL     ;需处理完8位
+0061 7B00             87               MOV  R3,#0
+0063 08               88               INC  R0
+0064 B824DA           89               CJNE  R0,#24H,LL   ;收集到4字节了
+0067 8005             90               JMP  IR_SHOW
+0069 0A               91      N1:      INC  R2
+006A BA1EE4           92               CJNE  R2,#30,L1    ;0.14ms 计数过长则时间到自动离开
+006D 22               93               RET
+                      94     ;---------------------------------------------------------------
+                      95     ;键值显示
+                      96     ;22H存入用户编码，23H存入用户编码的反码
+                      97     ;---------------------------------------------------------------
+006E                  98     IR_SHOW:
+006E E522             99               MOV A,22H
+0070 F4              100               CPL A                ;将22H取反后和23H比较
+0071 B52304          101               CJNE A,23H,IR_SHOW1  ;如果不等表示接收数据发生错误,放弃。
+0074 F580            102               MOV  P0,A
+0076 1179            103               CALL  BEEP_BL        ;蜂鸣器鸣响表示解码成功
+0078 22              104     IR_SHOW1: RET
+                     105     
+                     106     ;--------------------------------------------------------
+                     107     ;蜂鸣器响一声子程序
+                     108     ;--------------------------------------------------------
+0079                 109     BEEP_BL:
+0079 7E64            110              MOV  R6,#100
+007B 1186            111       BL1:   CALL  DEX1
+007D B2B7            112              CPL  BEEP
+007F DEFA            113              DJNZ  R6,BL1
+0081 7D14            114              MOV  R5,#20
+0083 118C            115              CALL  DELAY
+0085 22              116              RET
+0086 7FB4            117      DEX1:   MOV  R7,#180
+0088 00              118      DEX2:   NOP
+0089 DFFD            119              DJNZ  R7,DEX2
+008B 22              120              RET
+008C                 121      DELAY:                    ;延时R5×10MS
+008C 7E32            122              MOV  R6,#50
+008E 7F64            123       D1:    MOV  R7,#100
+0090 DFFE            124              DJNZ  R7,$
+A51 MACRO ASSEMBLER  IR_LED                                                               03/29/2005 16:30:18 PAGE     3
+
+0092 DEFA            125              DJNZ  R6,D1
+0094 DDF6            126              DJNZ  R5,DELAY
+0096 22              127              RET
+                     128     ;------------------------------------------------
+                     129     ; DELAY  R5*0.14MS
+0097                 130     DEL:
+0097 7D01            131               MOV  R5,#1       ;IR解码使用
+0099 7E02            132     DEL0:     MOV  R6,#2
+009B 7F20            133     DEL1:     MOV  R7,#32
+009D DFFE            134     DEL2:     DJNZ  R7,DEL2
+009F DEFA            135               DJNZ  R6,DEL1
+00A1 DDF6            136               DJNZ  R5,DEL0
+00A3 22              137               RET
+                     138     
+00A4                 139     DELAY1:                    ;延时5MS
+00A4 7E19            140              MOV  R6,#25
+00A6 7F64            141       DL2:   MOV  R7,#100
+00A8 DFFE            142              DJNZ  R7,$
+00AA DEFA            143              DJNZ  R6,DL2
+00AC 22              144              RET
+                     145     ;---------------------------------
+                     146             END               ;结束
+                             
+                             ;================================
+                             ;DT9122D 遥控器（伟纳电子）
+                             
+                             ;******  红外遥控器键值表  ******
+                             
+                             ;  10     03      01      06
+                             ;  09     1D      1F      0D
+                             ;  19     1B      11      15
+                             ;  17     12      16      4C
+                             ;  40     48      04      00
+                             ;  02     05      54      4D
+                             ;  0A     1E      0E      1A
+                             ;  1C     14      0F      0C
+                             ;================================
+                             
+A51 MACRO ASSEMBLER  IR_LED                                                               03/29/2005 16:30:18 PAGE     4
+
+SYMBOL TABLE LISTING
+------ ----- -------
+
+
+N A M E             T Y P E  V A L U E   ATTRIBUTES
+
+BEEP . . . . . . .  B ADDR   00B0H.7 A   
+BEEP_BL. . . . . .  C ADDR   0079H   A   
+BL1. . . . . . . .  C ADDR   007BH   A   
+D1 . . . . . . . .  C ADDR   008EH   A   
+DEL. . . . . . . .  C ADDR   0097H   A   
+DEL0 . . . . . . .  C ADDR   0099H   A   
+DEL1 . . . . . . .  C ADDR   009BH   A   
+DEL2 . . . . . . .  C ADDR   009DH   A   
+DELAY. . . . . . .  C ADDR   008CH   A   
+DELAY1 . . . . . .  C ADDR   00A4H   A   
+DEX1 . . . . . . .  C ADDR   0086H   A   
+DEX2 . . . . . . .  C ADDR   0088H   A   
+DL2. . . . . . . .  C ADDR   00A6H   A   
+I1 . . . . . . . .  C ADDR   002AH   A   
+I2 . . . . . . . .  C ADDR   002FH   A   
+I20. . . . . . . .  C ADDR   0031H   A   
+I21. . . . . . . .  C ADDR   0038H   A   
+I3 . . . . . . . .  C ADDR   003FH   A   
+I4 . . . . . . . .  C ADDR   0048H   A   
+I5 . . . . . . . .  C ADDR   004FH   A   
+IRCOM. . . . . . .  N NUMB   0020H   A   
+IRIN . . . . . . .  B ADDR   00B0H.2 A   
+IR_IN. . . . . . .  C ADDR   0028H   A   
+IR_SHOW. . . . . .  C ADDR   006EH   A   
+IR_SHOW1 . . . . .  C ADDR   0078H   A   
+L1 . . . . . . . .  C ADDR   0051H   A   
+LL . . . . . . . .  C ADDR   0041H   A   
+LOOP0. . . . . . .  C ADDR   0009H   A   
+LOOP1. . . . . . .  C ADDR   0019H   A   
+LOOP2. . . . . . .  C ADDR   0021H   A   
+LOOP3. . . . . . .  C ADDR   0026H   A   
+MAIN . . . . . . .  C ADDR   0002H   A   
+N1 . . . . . . . .  C ADDR   0069H   A   
+P0 . . . . . . . .  D ADDR   0080H   A   
+P1 . . . . . . . .  D ADDR   0090H   A   
+P3 . . . . . . . .  D ADDR   00B0H   A   
+RELAY. . . . . . .  B ADDR   0090H.3 A   
+SP . . . . . . . .  D ADDR   0081H   A   
+
+
+REGISTER BANK(S) USED: 0 
+
+
+ASSEMBLY COMPLETE.  0 WARNING(S), 0 ERROR(S)

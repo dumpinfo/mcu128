@@ -1,0 +1,91 @@
+BL51 BANKED LINKER/LOCATER V5.11                                                        03/29/2005  15:39:49  PAGE 1
+
+
+BL51 BANKED LINKER/LOCATER V5.11, INVOKED BY:
+C:\KEIL\C51\BIN\BL51.EXE wl002.obj TO wl002 CODE (0X0000-0X0FFF)
+
+
+INPUT MODULES INCLUDED:
+  wl002.obj (WL002)
+
+
+LINK MAP OF MODULE:  wl002 (WL002)
+
+
+            TYPE    BASE      LENGTH    RELOCATION   SEGMENT NAME
+            -----------------------------------------------------
+
+            * * * * * * *   D A T A   M E M O R Y   * * * * * * *
+            REG     0000H     0008H     ABSOLUTE     "REG BANK 0"
+            DATA    0008H     0002H     UNIT         DATA_SEG
+            IDATA   000AH     0014H     UNIT         STACK_SEG
+
+            * * * * * * *   C O D E   M E M O R Y   * * * * * * *
+            CODE    0000H     0003H     ABSOLUTE     
+                    0003H     0008H                  *** GAP ***
+            CODE    000BH     0003H     ABSOLUTE     
+            CODE    000EH     0032H     UNIT         CODE_SEG
+
+
+
+SYMBOL TABLE OF MODULE:  wl002 (WL002)
+
+  VALUE           TYPE          NAME
+  ----------------------------------
+
+  -------         MODULE        WL002
+  C:000EH         SEGMENT       CODE_SEG
+  D:0008H         SEGMENT       DATA_SEG
+  I:000AH         SEGMENT       STACK_SEG
+  C:0033H         SYMBOL        DELAYMS
+  C:0036H         SYMBOL        DLY_LP1
+  C:0038H         SYMBOL        DLY_LP2
+  C:003FH         SYMBOL        END_DLYMS
+  D:0008H         SYMBOL        FRQ
+  D:00A8H         SYMBOL        IE
+  C:000EH         SYMBOL        MAIN
+  C:0021H         SYMBOL        MAIN_LP
+  D:00B0H         SYMBOL        P3
+  D:0081H         SYMBOL        SP
+  B:00B0H.7       SYMBOL        SPK
+  I:000AH         SYMBOL        STACK
+  D:008CH         SYMBOL        TH0
+  C:002AH         SYMBOL        TIMER0
+  D:008AH         SYMBOL        TL0
+  D:0089H         SYMBOL        TMOD
+  D:0009H         SYMBOL        TMP
+  B:0088H.4       SYMBOL        TR0
+  C:0000H         LINE#         35
+  C:000BH         LINE#         39
+  C:000EH         LINE#         49
+  C:0011H         LINE#         51
+BL51 BANKED LINKER/LOCATER V5.11                                                      03/29/2005  15:39:49  PAGE 2
+
+
+  C:0014H         LINE#         52
+  C:0015H         LINE#         53
+  C:0017H         LINE#         54
+  C:0019H         LINE#         55
+  C:001CH         LINE#         56
+  C:001EH         LINE#         57
+  C:0021H         LINE#         61
+  C:0023H         LINE#         63
+  C:0025H         LINE#         64
+  C:0028H         LINE#         66
+  C:002AH         LINE#         74
+  C:002DH         LINE#         75
+  C:0030H         LINE#         76
+  C:0032H         LINE#         77
+  C:0033H         LINE#         87
+  C:0034H         LINE#         88
+  C:0036H         LINE#         90
+  C:0038H         LINE#         92
+  C:0039H         LINE#         93
+  C:003AH         LINE#         94
+  C:003BH         LINE#         95
+  C:003DH         LINE#         96
+  C:003FH         LINE#         99
+  -------         ENDMOD        WL002
+
+Program Size: data=30.0 xdata=0 code=56
+LINK/LOCATE RUN COMPLETE.  0 WARNING(S),  0 ERROR(S)

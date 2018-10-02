@@ -1,0 +1,119 @@
+Readme file for ICCtiny, ImageCraft C Compiler for Atmel's TinyAVRs (R)
+Make sure you subscribe to the icc-avr mailing list for program 
+update announcements. Refer to http://www.dragonsgate.net/mailman/listinfo
+for details.
+
+
+Current bug lists. They will be fixed ASAP.
+- Debug generation does not work for filenames longer than 13 characters.
+- If you have an expression of the form
+	char column;
+
+	if ((column << column) == 0 || column == 3)
+		...
+  
+  bad code is generated
+- If you have an interrupt handler and if the previous function's last 
+  instruction is a NOP, then the COFF file does not contain correct interrupt
+  entry for the handler. e.g.
+
+  void foo() { asm("nop"); }
+  #pragma interrupt_handler timer:4
+  void timer() { ...
+
+  causes the interrupt entry for timer not to be generated correctly under
+  COFF (hex file is OK)
+
+CHANGE LOG:
+7/28/02 - V6.11A
+  ADDed osccal.zip in \icc\examples.tiny. This contains AppNote 012 from AVR 
+  Freaks on how to write the Calibration Byte to the OSCCAL register and a
+  sample project
+
+  IDE
+    - Added NextErr/FirstErr
+    - Improved FindInFiles
+  Compiler
+    - the compiler was generating cli/sei pair to protect R30 (SP) 
+      modification even inside an interrupt handler (e.g. to do lpm flash
+      constant access). This causes interrupts to be enabled inside the
+      handler which can cause problems.
+
+02/11/02 - V6.11
+  ADDed support for OPTIONAL hardware dongle
+  IDE
+    - Add ISP support
+  Compiler
+    - fixed: if you reduce the stack size, the compiler starts to release
+      R0 and up for local use. However, in the interrupt handler code, it
+      still used R0 for saving and restoring the SREG.
+  Header files
+    - macros.h incorrectly #define'd flash to be const.
+    - iotiny*v.h added. These header files should be used instead of the
+      older iotiny*.h (without the ending 'v') since they define the
+      registers more consistently and they define the interrupt vectors. 
+    - assembly header files aiotiny*.s added. For documentation, see
+      \icc\include\tiny_c_lst and \icc\include\tiny_asm_lst for info on
+      these new header files
+
+07/16/01 - V6.10b
+  IDE
+    - Added new Project Tree
+    - The target device selection now allows you to select specific device
+      with the max. number of interrupt vector entry.
+    - You can now add a command to run after a successful build
+      Project->Options->Compiler
+    - Allow COFF/HEX to be selected as the output format, allowing both
+      COFF output for debugging and Intel HEX for ISP programming.
+  Header files
+    - fixed header file problems in iotiny12.h and iotiny15.h
+
+04/10/01 - V6.10a
+  Better Licensing dialog boxes. Mostly important for new users.
+
+03/27/01 - V6.10
+  IDE
+  	- NEW! Application Builder wizard for generating peripheral 
+      initialization code!
+	- You can now use UltraEdit32 (purchased separately :-) ), TextPad, or
+	  WinEdit "integrated"
+	  with the IDE. You can select different editors in
+	  Tools->EnvOptions->General->Editors. Future releases may include more
+	  editors and even tighter integration.
+  C Preprocessor
+  	- Russian characters were causing the preprocessor to hang
+	- Added vararg #define when -e flag is on:
+		#define db(a, ...)	printf(a, __VA_ARGS__)
+	  allows db() to be called with one or more arguments
+	- now accepts binary constant (0b....) if the 
+	  Project->Options->Compiler->AcceptExtension checkbox is on
+  Include Files
+  	- added iotiny10.h and fixed INT0 and INT1 in iotiny28.h
+
+01/29/01 - V6.00C
+  - Added *.src to the \icc\examples.tiny directory
+  Linker
+  	- the linker was generating HEX files with lower case HEX numbers and
+	  some programmer software do not handle them correctly
+
+10/06/00 - V6.00B
+  io1200.h was the wrong version
+  clarify the t0_int.h regarding interrupt # usage
+
+06.01/00 - V6.00A
+  IDE/Driver/library
+  	- now accepts vector from 0-9 to support Tiny15
+  Header File
+  	- now includes io1200.h
+
+02/09/00 - V6.00
+	Initial Release
+
+	CHANGES SINCE SOME EARLIER BETAS to improve compatibility with ICCAVR:
+	- interrupt handler now use 
+		#pragma interrupt_handler <func>:<vec>
+	  format, note that it takes a vector number and not a word
+	  address as before
+	- inline asm is now specified using asm() instead of _asm()
+	- variable references within inline asm now uses % key instead
+	  of $

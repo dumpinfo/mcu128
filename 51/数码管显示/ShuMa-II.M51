@@ -1,0 +1,100 @@
+BL51 BANKED LINKER/LOCATER V5.03                                                        01/28/2008  20:02:38  PAGE 1
+
+
+BL51 BANKED LINKER/LOCATER V5.03, INVOKED BY:
+D:\KEIL\C51\BIN\BL51.EXE ShuMa-II.obj TO ShuMa-II RAMSIZE (256)
+
+
+MEMORY MODEL: SMALL
+
+
+INPUT MODULES INCLUDED:
+  ShuMa-II.obj (SHUMA_II)
+  D:\KEIL\C51\LIB\C51S.LIB (?C_STARTUP)
+
+
+LINK MAP OF MODULE:  ShuMa-II (SHUMA_II)
+
+
+            TYPE    BASE      LENGTH    RELOCATION   SEGMENT NAME
+            -----------------------------------------------------
+
+            * * * * * * *   D A T A   M E M O R Y   * * * * * * *
+            REG     0000H     0008H     ABSOLUTE     "REG BANK 0"
+            DATA    0008H     0002H     UNIT         _DATA_GROUP_
+            IDATA   000AH     0001H     UNIT         ?STACK
+
+            * * * * * * *   C O D E   M E M O R Y   * * * * * * *
+            CODE    0000H     0003H     ABSOLUTE     
+            CODE    0003H     004FH     UNIT         ?PR?MAIN?SHUMA_II
+            CODE    0052H     0010H     UNIT         ?PR?_DELAY?SHUMA_II
+            CODE    0062H     0010H     UNIT         ?CO?SHUMA_II
+            CODE    0072H     000CH     UNIT         ?C_C51STARTUP
+
+
+
+OVERLAY MAP OF MODULE:   ShuMa-II (SHUMA_II)
+
+
+SEGMENT                          DATA_GROUP 
+  +--> CALLED SEGMENT          START    LENGTH
+----------------------------------------------
+?C_C51STARTUP                  -----    -----
+  +--> ?PR?MAIN?SHUMA_II
+
+?PR?MAIN?SHUMA_II              0008H    0002H
+  +--> ?CO?SHUMA_II
+
+
+
+SYMBOL TABLE OF MODULE:  ShuMa-II (SHUMA_II)
+
+  VALUE           TYPE          NAME
+  ----------------------------------
+
+  -------         MODULE        SHUMA_II
+  C:0000H         SYMBOL        _ICE_DUMMY_
+  D:00B0H         PUBLIC        P3
+  C:0062H         PUBLIC        Tab
+  C:0003H         PUBLIC        main
+  C:0052H         PUBLIC        _delay
+  -------         PROC          MAIN
+BL51 BANKED LINKER/LOCATER V5.03                                                      01/28/2008  20:02:38  PAGE 2
+
+
+  -------         DO            
+  D:0008H         SYMBOL        i
+  D:0009H         SYMBOL        j
+  -------         ENDDO         
+  C:0003H         LINE#         21
+  C:0003H         LINE#         22
+  C:0003H         LINE#         23
+  C:0008H         LINE#         24
+  C:0008H         LINE#         25
+  C:0008H         LINE#         26
+  C:0011H         LINE#         27
+  C:001AH         LINE#         28
+  C:0023H         LINE#         29
+  C:002CH         LINE#         30
+  C:0035H         LINE#         31
+  C:003EH         LINE#         32
+  C:0047H         LINE#         33
+  C:0050H         LINE#         34
+  -------         ENDPROC       MAIN
+  -------         PROC          _DELAY
+  D:0006H         SYMBOL        ticks
+  -------         DO            
+  D:0005H         SYMBOL        i
+  -------         ENDDO         
+  C:0052H         LINE#         37
+  C:0052H         LINE#         38
+  C:0052H         LINE#         40
+  C:0061H         LINE#         41
+  -------         ENDPROC       _DELAY
+  -------         ENDMOD        SHUMA_II
+
+*** WARNING L16: UNCALLED SEGMENT, IGNORED FOR OVERLAY PROCESS
+    SEGMENT: ?PR?_DELAY?SHUMA_II
+
+Program Size: data=11.0 xdata=0 code=126
+LINK/LOCATE RUN COMPLETE.  1 WARNING(S),  0 ERROR(S)

@@ -1,0 +1,249 @@
+<HTML>
+<HEAD>
+<META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=gb_2312-80">
+<META NAME="Generator" CONTENT="Microsoft FrontPage 5.0">
+<TITLE>定时中断实验</TITLE>
+<META NAME="Template" CONTENT="D:\MICROSOFT OFFICE\OFFICE\html.dot">
+</HEAD>
+<BODY LINK="#0000FF" VLINK="#800080" background="../back.jpg">
+<FONT FACE="宋体" LANG="ZH-CN" size="2"> 
+<P style="line-height: 150%; margin-top: 0; margin-bottom: 0">定时、中断练习一</P>
+</FONT><P style="line-height: 150%; margin-top: 0; margin-bottom: 0">
+<font size="2" FACE="System" LANG="ZH-CN">1</font><font size="2" FACE="宋体" LANG="ZH-CN">、利用定时器实现灯的闪烁</font></P>
+<FONT FACE="宋体" LANG="ZH-CN" size="2">
+<P style="line-height: 150%; margin-top: 0; margin-bottom: 0">在学单片机时我们第一个例子就是灯的闪烁，那是用延时程序做的，现在回想起来，这样做不很恰当，为什么呢？我们的主程序做了灯的闪烁，就不能再干其它的事了，难道单片机只能这样工作吗？当然不是，我们可以用定时器来实现灯的闪烁的功能。</P>
+</FONT><P style="line-height: 150%; margin-top: 0; margin-bottom: 0">
+<font size="2" FACE="宋体" LANG="ZH-CN">例</font><FONT FACE="System" LANG="ZH-CN" size="2">1</FONT><font size="2" FACE="宋体" LANG="ZH-CN">：查询方式</font></P>
+<TABLE CELLSPACING=0 BORDER=1 CELLPADDING=7 WIDTH=638>
+  <TR><TD VALIGN="TOP">
+<FONT FACE="System" LANG="ZH-CN">
+<P style="line-height: 150%; margin-top: 0; margin-bottom: 0"><font size="2">ORG&#9;0000H</font></P>
+<P style="line-height: 150%; margin-top: 0; margin-bottom: 0"><font size="2">AJMP&#9;START</font></P>
+<P style="line-height: 150%; margin-top: 0; margin-bottom: 0"><font size="2">ORG&#9;30H</font></P>
+<P style="line-height: 150%; margin-top: 0; margin-bottom: 0"><font size="2">START:</font></P>
+<P style="line-height: 150%; margin-top: 0; margin-bottom: 0">&#9;
+<font size="2">MOV&#9;P1,#0FFH  ;关所 灯</font></P>
+<P style="line-height: 150%; margin-top: 0; margin-bottom: 0">&#9;
+<font size="2">MOV&#9;TMOD,#00000001B ;定时/计数器0工作于方式1</font></P>
+<P style="line-height: 150%; margin-top: 0; margin-bottom: 0">&#9;
+<font size="2">MOV&#9;TH0,#15H&#9;</font>&#9;</P>
+<P style="line-height: 150%; margin-top: 0; margin-bottom: 0">&#9;
+<font size="2">MOV&#9;TL0,#0A0H  ;即数5536</font></P>
+<P style="line-height: 150%; margin-top: 0; margin-bottom: 0">&#9;
+<font size="2">SETB&#9;TR0&#9;    ;定时/计数器0开始运行</font></P>
+<P style="line-height: 150%; margin-top: 0; margin-bottom: 0"><font size="2">LOOP:JBC&#9;TF0,NEXT ;如果TF0等于1，则清TF0并转NEXT处</font></P>
+<P style="line-height: 150%; margin-top: 0; margin-bottom: 0">&#9;
+<font size="2">AJMP&#9;LOOP           ;否则跳转到LOOP处运行</font></P>
+<P style="line-height: 150%; margin-top: 0; margin-bottom: 0"><font size="2">NEXT:CPL&#9;P1.0</font></P>
+<P style="line-height: 150%; margin-top: 0; margin-bottom: 0">&#9;
+<font size="2">MOV&#9;TH0,#15H</font></P>
+<P style="line-height: 150%; margin-top: 0; margin-bottom: 0">&#9;
+<font size="2">MOV&#9;TL0,#9FH;重置定时/计数器的初值</font></P>
+<P style="line-height: 150%; margin-top: 0; margin-bottom: 0">&#9;
+<font size="2">AJMP&#9;LOOP</font></P>
+<P style="line-height: 150%; margin-top: 0; margin-bottom: 0">&#9;
+<font size="2">END&#9;AJMP&#9;LOOP</font></P>
+<P style="line-height: 150%; margin-top: 0; margin-bottom: 0"><font size="2">END</font></P>
+</FONT></TD>
+</TR>
+</TABLE>
+
+<FONT FACE="宋体" LANG="ZH-CN">
+<P style="line-height: 150%; margin-top: 0; margin-bottom: 0">　</P>
+</FONT>
+<P style="line-height: 150%; margin-top: 0; margin-bottom: 0">
+<font size="2" FACE="宋体" LANG="ZH-CN">键入程序，看到了什么？灯在闪烁了，这可是用定时器做的，不再是主程序的循环了。简单地分析一下程序，为什么用</font><font size="2"><FONT FACE="System" LANG="ZH-CN">JBC</FONT><FONT FACE="宋体" LANG="ZH-CN">呢？</FONT><FONT FACE="System" LANG="ZH-CN">TF0</FONT><FONT FACE="宋体" LANG="ZH-CN">是定时</FONT><FONT FACE="System" LANG="ZH-CN">/</FONT><FONT FACE="宋体" LANG="ZH-CN">计数器</FONT><FONT FACE="System" LANG="ZH-CN">0</FONT><FONT FACE="宋体" LANG="ZH-CN">的溢出标记位，当定时器产生溢出后，该位由</FONT><FONT FACE="System" LANG="ZH-CN">0</FONT><FONT FACE="宋体" LANG="ZH-CN">变</FONT><FONT FACE="System" LANG="ZH-CN">1</FONT><FONT FACE="宋体" LANG="ZH-CN">，所以查询该位就可知宇时时间是否已到。该位为</FONT><FONT FACE="System" LANG="ZH-CN">1</FONT><FONT FACE="宋体" LANG="ZH-CN">后，要用软件将标记位清</FONT><FONT FACE="System" LANG="ZH-CN">0</FONT><FONT FACE="宋体" LANG="ZH-CN">，以便下一次定时是间到时该位由</FONT><FONT FACE="System" LANG="ZH-CN">0</FONT><FONT FACE="宋体" LANG="ZH-CN">变</FONT><FONT FACE="System" LANG="ZH-CN">1</FONT><FONT FACE="宋体" LANG="ZH-CN">，所以用了</FONT><FONT FACE="System" LANG="ZH-CN">JBC</FONT><FONT FACE="宋体" LANG="ZH-CN">指令，该指位在判</FONT><FONT FACE="System" LANG="ZH-CN">1</FONT><FONT FACE="宋体" LANG="ZH-CN">转移的同时，还将该位清</FONT><FONT FACE="System" LANG="ZH-CN">0</FONT></font><font size="2" FACE="宋体" LANG="ZH-CN">。</font></P>
+<P style="line-height: 150%; margin-top: 0; margin-bottom: 0"> 
+<font size="2" FACE="宋体" LANG="ZH-CN">以上程序是可以实现灯的闪烁了，可是主程序除了让灯闪烁外，还是不能做其他的事啊！不，不对，我们可以在</font><font size="2"><FONT FACE="System" LANG="ZH-CN">LOOP</FONT><FONT FACE="宋体" LANG="ZH-CN">：</FONT><FONT FACE="System" LANG="ZH-CN">……</FONT><FONT FACE="宋体" LANG="ZH-CN">和</FONT><FONT FACE="System" LANG="ZH-CN">AJMP&#9;LOOP</FONT><FONT FACE="宋体" LANG="ZH-CN">指令之间插入一些指令来做其他的事情，只要保证执行这些指令的时间少于定时时间就行了。那我们在用软件延时程序的时候不是也可以用一些指令来替代</FONT><FONT FACE="System" LANG="ZH-CN">DJNZ</FONT><FONT FACE="宋体" LANG="ZH-CN">吗？是的，但是那就要求你精确计算所用指令的时间，然后再减去相应的</FONT><FONT FACE="System" LANG="ZH-CN">DJNZ</FONT></font><font size="2" FACE="宋体" LANG="ZH-CN">循环次数，很不方便，而现在只要求所用指令的时间少于定时时间就行，显然要求低了。当然，这样的方法还是不好，所以我们常用以下的方法来实现。</font></P>
+<P style="line-height: 150%; margin-top: 0; margin-bottom: 0">
+<font size="2" FACE="宋体" LANG="ZH-CN">程序</font><FONT FACE="System" LANG="ZH-CN" size="2">2</FONT><font size="2" FACE="宋体" LANG="ZH-CN">：用中断实现</font></P>
+<TABLE CELLSPACING=0 BORDER=1 CELLPADDING=7 WIDTH=641>
+  <TR> 
+    <TD VALIGN="TOP"> <FONT FACE="System" LANG="ZH-CN"> 
+      <P style="line-height: 150%; margin-top: 0; margin-bottom: 0">
+      <font size="2">ORG&#9;0000H</font></P>
+      <P style="line-height: 150%; margin-top: 0; margin-bottom: 0">
+      <font size="2">AJMP&#9;START</font></P>
+      <P style="line-height: 150%; margin-top: 0; margin-bottom: 0">
+      <font size="2">ORG&#9;000BH ;定时器0的中断向量地址</font></P>
+      <P style="line-height: 150%; margin-top: 0; margin-bottom: 0">
+      <font size="2">AJMP&#9;TIME0&#9;;跳转到真正的定时器程序处</font></P>
+      <P style="line-height: 150%; margin-top: 0; margin-bottom: 0">
+      <font size="2">ORG&#9;30H</font></P>
+      <P style="line-height: 150%; margin-top: 0; margin-bottom: 0">
+      <font size="2">START:</font></P>
+      <P style="line-height: 150%; margin-top: 0; margin-bottom: 0">&#9;
+      <font size="2">MOV&#9;P1,#0FFH ;关所 灯</font></P>
+      <P style="line-height: 150%; margin-top: 0; margin-bottom: 0">&#9;
+      <font size="2">MOV&#9;TMOD,#00000001B ;定时/计数器0工作于方式1</font></P>
+      <P style="line-height: 150%; margin-top: 0; margin-bottom: 0">&#9;
+      <font size="2">MOV&#9;TH0,#15H&#9;</font>&#9;</P>
+      <P style="line-height: 150%; margin-top: 0; margin-bottom: 0">&#9;
+      <font size="2">MOV&#9;TL0,#0A0H ;即数5536</font></P>
+      <P style="line-height: 150%; margin-top: 0; margin-bottom: 0">&#9;
+      <font size="2">SETB&#9;EA&#9;;开总中断允许</font></P>
+      <P style="line-height: 150%; margin-top: 0; margin-bottom: 0">&#9;
+      <font size="2">SETB&#9;ET0&#9;;开定时/计数器0允许</font></P>
+      <P style="line-height: 150%; margin-top: 0; margin-bottom: 0">
+      <font size="2">SETB&#9;TR0&#9;#9; ;定时/计数器0开始运行</font></P>
+      <P style="line-height: 150%; margin-top: 0; margin-bottom: 0">
+      <font size="2">LOOP:&#9;AJMP&#9;LOOP&#9;;真正工作时,这里可写任意程序</font></P>
+      <P style="line-height: 150%; margin-top: 0; margin-bottom: 0">
+      <font size="2">TIME0:&#9;&#9;&#9;;定时器0的中断处理程序</font></P>
+      <P style="line-height: 150%; margin-top: 0; margin-bottom: 0">&#9;
+      <font size="2">PUSH&#9;ACC</font></P>
+      <P style="line-height: 150%; margin-top: 0; margin-bottom: 0">
+      <font size="2">PUSH&#9;PSW&#9;;将PSW和ACC推入堆栈保护</font></P>
+      <P style="line-height: 150%; margin-top: 0; margin-bottom: 0">&#9;
+      <font size="2">CPL&#9;P1.0&#9;</font>&#9;</P>
+      <P style="line-height: 150%; margin-top: 0; margin-bottom: 0">&#9;
+      <font size="2">MOV&#9;TH0,#15H</font></P>
+      <P style="line-height: 150%; margin-top: 0; margin-bottom: 0">&#9;
+      <font size="2">MOV&#9;TL0,#0A0H&#9;;重置定时常数</font></P>
+      <P style="line-height: 150%; margin-top: 0; margin-bottom: 0">&#9;
+      <font size="2">POP&#9;PSW</font></P>
+      <P style="line-height: 150%; margin-top: 0; margin-bottom: 0">&#9;
+      <font size="2">POP&#9;ACC</font></P>
+      <P style="line-height: 150%; margin-top: 0; margin-bottom: 0">&#9;
+      <font size="2">RETI</font></P>
+      <P style="line-height: 150%; margin-top: 0; margin-bottom: 0">
+      <font size="2">END</font></P>
+      </FONT></TD>
+  </TR>
+</TABLE>
+
+<FONT FACE="宋体" LANG="ZH-CN">
+<P style="line-height: 150%; margin-top: 0; margin-bottom: 0">　</P>
+</FONT><P style="line-height: 150%; margin-top: 0; margin-bottom: 0">
+<font size="2" FACE="宋体" LANG="ZH-CN">上面的例子中，定时时间一到，</font><font size="2"><FONT FACE="System" LANG="ZH-CN">TF0</FONT><FONT FACE="宋体" LANG="ZH-CN">由</FONT><FONT FACE="System" LANG="ZH-CN">0</FONT><FONT FACE="宋体" LANG="ZH-CN">变</FONT><FONT FACE="System" LANG="ZH-CN">1</FONT><FONT FACE="宋体" LANG="ZH-CN">，就会引发中断，</FONT><FONT FACE="System" LANG="ZH-CN">CPU</FONT><FONT FACE="宋体" LANG="ZH-CN">将自动转至</FONT><FONT FACE="System" LANG="ZH-CN">000B</FONT><FONT FACE="宋体" LANG="ZH-CN">处寻找程序并执行，由于留给定时器中断的空间只有</FONT><FONT FACE="System" LANG="ZH-CN">8</FONT><FONT FACE="宋体" LANG="ZH-CN">个字节，显然不足以写下所有有中断处理程序，所以在</FONT><FONT FACE="System" LANG="ZH-CN">000B</FONT><FONT FACE="宋体" LANG="ZH-CN">处安排一条跳转指令，转到实际处理中断的程序处，这样，中断程序可以写在任意地方，也可以写任意长度了。进入定时中断后，首先要保存当前的一些状态，程序中只演示了保存存</FONT><FONT FACE="System" LANG="ZH-CN">ACC</FONT><FONT FACE="宋体" LANG="ZH-CN">和</FONT><FONT FACE="System" LANG="ZH-CN">PSW</FONT></font><font size="2" FACE="宋体" LANG="ZH-CN">，实际工作中应该根据需要将可能会改变的单元的值都推入堆栈进行保护（本程序中实际不需保存护任何值，这里只作个演示）。</font></P>
+<P style="line-height: 150%; margin-top: 0; margin-bottom: 0">
+<font size="2" FACE="宋体" LANG="ZH-CN">上面的两个程序运行后，我们发现灯的闪烁非常快，根本分辨不出来，只是视觉上感到灯有些晃动而已，为什么呢？我们可以计算一下，定时器中预置的数是</font><font size="2"><FONT FACE="System" LANG="ZH-CN">5536</FONT><FONT FACE="宋体" LANG="ZH-CN">，所以每计</FONT><FONT FACE="System" LANG="ZH-CN">60000</FONT><FONT FACE="宋体" LANG="ZH-CN">个脉冲就是定时时间到，这</FONT><FONT FACE="System" LANG="ZH-CN">60000</FONT><FONT FACE="宋体" LANG="ZH-CN">个脉冲的时间是多少呢？我们的晶振是</FONT><FONT FACE="System" LANG="ZH-CN">12M</FONT><FONT FACE="宋体" LANG="ZH-CN">，所以就是</FONT><FONT FACE="System" LANG="ZH-CN">60000</FONT><FONT FACE="宋体" LANG="ZH-CN">微秒，即</FONT><FONT FACE="System" LANG="ZH-CN">60</FONT><FONT FACE="宋体" LANG="ZH-CN">毫秒，因此速度是非常快的。如果我想实现一个</FONT><FONT FACE="System" LANG="ZH-CN">1S</FONT><FONT FACE="宋体" LANG="ZH-CN">的定时，该怎么办呢？在该晶振濒率下，最长的定时也就是</FONT><FONT FACE="System" LANG="ZH-CN">65</FONT><FONT FACE="宋体" LANG="ZH-CN">。</FONT><FONT FACE="System" LANG="ZH-CN">536</FONT></font><font size="2" FACE="宋体" LANG="ZH-CN">个毫秒啊！上面给出一个例子。</font></P>
+<TABLE CELLSPACING=0 BORDER=1 CELLPADDING=7 WIDTH=631>
+  <TR><TD VALIGN="TOP">
+<FONT FACE="System" LANG="ZH-CN">
+<P style="line-height: 150%; margin-top: 0; margin-bottom: 0"><font size="2">ORG&#9;0000H</font></P>
+<P style="line-height: 150%; margin-top: 0; margin-bottom: 0"><font size="2">AJMP&#9;START</font></P>
+<P style="line-height: 150%; margin-top: 0; margin-bottom: 0"><font size="2">ORG&#9;000BH  ;定时器0的中断向量地址</font></P>
+<P style="line-height: 150%; margin-top: 0; margin-bottom: 0"><font size="2">AJMP&#9;TIME0&#9;;跳转到真正的定时器程序处</font></P>
+<P style="line-height: 150%; margin-top: 0; margin-bottom: 0"><font size="2">ORG&#9;30H</font></P>
+<P style="line-height: 150%; margin-top: 0; margin-bottom: 0"><font size="2">START:</font></P>
+<P style="line-height: 150%; margin-top: 0; margin-bottom: 0">&#9;
+<font size="2">MOV&#9;P1,#0FFH  ;关所 灯</font></P>
+<P style="line-height: 150%; margin-top: 0; margin-bottom: 0">&#9;
+<font size="2">MOV&#9;30H,#00H  ;软件计数器预清0</font></P>
+<P style="line-height: 150%; margin-top: 0; margin-bottom: 0">&#9;
+<font size="2">MOV&#9;TMOD,#00000001B ;定时/计数器0工作于方式1</font></P>
+<P style="line-height: 150%; margin-top: 0; margin-bottom: 0">&#9;
+<font size="2">MOV&#9;TH0,#3CH&#9;</font>&#9;</P>
+<P style="line-height: 150%; margin-top: 0; margin-bottom: 0">&#9;
+<font size="2">MOV&#9;TL0,#0B0H  ;即数15536</font></P>
+<P style="line-height: 150%; margin-top: 0; margin-bottom: 0">&#9;
+<font size="2">SETB&#9;EA&#9;;开总中断允许</font></P>
+<P style="line-height: 150%; margin-top: 0; margin-bottom: 0">&#9;
+<font size="2">SETB&#9;ET0&#9;;开定时/计数器0允许</font></P>
+<P style="line-height: 150%; margin-top: 0; margin-bottom: 0"><font size="2">SETB&#9;TR0&#9;    ;定时/计数器0开始运行</font></P>
+<P style="line-height: 150%; margin-top: 0; margin-bottom: 0"><font size="2">LOOP:&#9;AJMP&#9;LOOP&#9;;真正工作时,这里可写任意程序</font></P>
+<P style="line-height: 150%; margin-top: 0; margin-bottom: 0"><font size="2">TIME0:&#9;&#9;&#9;;定时器0的中断处理程序</font></P>
+<P style="line-height: 150%; margin-top: 0; margin-bottom: 0">&#9;
+<font size="2">PUSH&#9;ACC</font></P>
+<P style="line-height: 150%; margin-top: 0; margin-bottom: 0"><font size="2">PUSH&#9;PSW&#9;;将PSW和ACC推入堆栈保护</font></P>
+<P style="line-height: 150%; margin-top: 0; margin-bottom: 0">&#9;
+<font size="2">INC&#9;30H</font></P>
+<P style="line-height: 150%; margin-top: 0; margin-bottom: 0">&#9;
+<font size="2">MOV&#9;A,30H</font></P>
+<P style="line-height: 150%; margin-top: 0; margin-bottom: 0">&#9;
+<font size="2">CJNE&#9;A,#20,T_RET&#9;;30H单元中的值到了20了吗?</font></P>
+<P style="line-height: 150%; margin-top: 0; margin-bottom: 0"><font size="2">T_L1:&#9;CPL&#9;P1.0&#9;&#9;;到了,取反P10</font></P>
+<P style="line-height: 150%; margin-top: 0; margin-bottom: 0">&#9;
+<font size="2">MOV&#9;30H,#0               ;清软件计数器</font></P>
+<P style="line-height: 150%; margin-top: 0; margin-bottom: 0"><font size="2">T_RET:</font></P>
+<P style="line-height: 150%; margin-top: 0; margin-bottom: 0">&#9;
+<font size="2">MOV&#9;TH0,#15H</font></P>
+<P style="line-height: 150%; margin-top: 0; margin-bottom: 0">&#9;
+<font size="2">MOV&#9;TL0,#9FH&#9;;重置定时常数</font></P>
+<P style="line-height: 150%; margin-top: 0; margin-bottom: 0">&#9;
+<font size="2">POP&#9;PSW</font></P>
+<P style="line-height: 150%; margin-top: 0; margin-bottom: 0">&#9;
+<font size="2">POP&#9;ACC</font></P>
+<P style="line-height: 150%; margin-top: 0; margin-bottom: 0">&#9;
+<font size="2">RETI</font></P>
+<P style="line-height: 150%; margin-top: 0; margin-bottom: 0"><font size="2">END</font></P>
+</FONT></TD>
+</TR>
+</TABLE>
+
+<P style="line-height: 150%; margin-top: 0; margin-bottom: 0">
+<font size="2" FACE="宋体" LANG="ZH-CN">先自己分析一下，看看是怎么实现的？这里采用了软件计数器的概念，思路是这样的，先用定时</font><font size="2"><FONT FACE="System" LANG="ZH-CN">/</FONT><FONT FACE="宋体" LANG="ZH-CN">计数器</FONT><FONT FACE="System" LANG="ZH-CN">0</FONT><FONT FACE="宋体" LANG="ZH-CN">做一个</FONT><FONT FACE="System" LANG="ZH-CN">50</FONT><FONT FACE="宋体" LANG="ZH-CN">毫秒的定时器，定时是间到了以后并不是立即取反</FONT><FONT FACE="System" LANG="ZH-CN">P10</FONT><FONT FACE="宋体" LANG="ZH-CN">，而是将软件计数器中的值加</FONT><FONT FACE="System" LANG="ZH-CN">1</FONT><FONT FACE="宋体" LANG="ZH-CN">，如果软件计数器计到了</FONT><FONT FACE="System" LANG="ZH-CN">20</FONT><FONT FACE="宋体" LANG="ZH-CN">，就取反</FONT><FONT FACE="System" LANG="ZH-CN">P10</FONT><FONT FACE="宋体" LANG="ZH-CN">，并清掉软件计数器中的值，否则直接返回，这样，就变成了</FONT><FONT FACE="System" LANG="ZH-CN">20</FONT><FONT FACE="宋体" LANG="ZH-CN">次定时中断才取反一次</FONT><FONT FACE="System" LANG="ZH-CN">P10</FONT><FONT FACE="宋体" LANG="ZH-CN">，因此定时时间就延长了成了</FONT><FONT FACE="System" LANG="ZH-CN">20*50</FONT><FONT FACE="宋体" LANG="ZH-CN">即</FONT><FONT FACE="System" LANG="ZH-CN">1000</FONT></font><font size="2" FACE="宋体" LANG="ZH-CN">毫秒了。</font></P>
+<P style="line-height: 150%; margin-top: 0; margin-bottom: 0">
+<font size="2" FACE="宋体" LANG="ZH-CN">这个思路在工程中是非常有用的，有的时候我们需要若干个定时器，可</font><font size="2"><FONT FACE="System" LANG="ZH-CN">51</FONT><FONT FACE="宋体" LANG="ZH-CN">中总共才有</FONT><FONT FACE="System" LANG="ZH-CN">2</FONT><FONT FACE="宋体" LANG="ZH-CN">个，怎么办呢？其实，只要这几个定时的时间有一定的公约数，我们就可以用软件定时器加以实现，如我要实现</FONT><FONT FACE="System" LANG="ZH-CN">P10</FONT><FONT FACE="宋体" LANG="ZH-CN">口所接灯按</FONT><FONT FACE="System" LANG="ZH-CN">1S</FONT><FONT FACE="宋体" LANG="ZH-CN">每次，而</FONT><FONT FACE="System" LANG="ZH-CN">P11</FONT><FONT FACE="宋体" LANG="ZH-CN">口所接灯按</FONT><FONT FACE="System" LANG="ZH-CN">2S</FONT><FONT FACE="宋体" LANG="ZH-CN">每次闪烁，怎么实现呢？对了我们用两个计数器，一个在它计到</FONT><FONT FACE="System" LANG="ZH-CN">20</FONT><FONT FACE="宋体" LANG="ZH-CN">时，取反</FONT><FONT FACE="System" LANG="ZH-CN">P10</FONT><FONT FACE="宋体" LANG="ZH-CN">，并清零，就如上面所示，另一个计到</FONT><FONT FACE="System" LANG="ZH-CN">40</FONT><FONT FACE="宋体" LANG="ZH-CN">取反</FONT><FONT FACE="System" LANG="ZH-CN">P11</FONT><FONT FACE="宋体" LANG="ZH-CN">，然后清</FONT><FONT FACE="System" LANG="ZH-CN">0</FONT></font><font size="2" FACE="宋体" LANG="ZH-CN">，不就行了吗？这部份的程序如下</font></P>
+<TABLE CELLSPACING=0 BORDER=1 CELLPADDING=7 WIDTH=645>
+  <TR><TD VALIGN="TOP">
+<FONT FACE="宋体" LANG="ZH-CN">
+<P style="line-height: 150%; margin-top: 0; margin-bottom: 0"><font size="2">ORG&#9;0000H</font></P>
+<P style="line-height: 150%; margin-top: 0; margin-bottom: 0"><font size="2">AJMP&#9;START</font></P>
+<P style="line-height: 150%; margin-top: 0; margin-bottom: 0"><font size="2">ORG&#9;000BH  ;定时器0的中断向量地址</font></P>
+<P style="line-height: 150%; margin-top: 0; margin-bottom: 0"><font size="2">AJMP&#9;TIME0&#9;;跳转到真正的定时器程序处</font></P>
+<P style="line-height: 150%; margin-top: 0; margin-bottom: 0"><font size="2">ORG&#9;30H</font></P>
+<P style="line-height: 150%; margin-top: 0; margin-bottom: 0"><font size="2">START:</font></P>
+<P style="line-height: 150%; margin-top: 0; margin-bottom: 0">&#9;
+<font size="2">MOV&#9;P1,#0FFH  ;关所 灯</font></P>
+<P style="line-height: 150%; margin-top: 0; margin-bottom: 0">&#9;
+<font size="2">MOV&#9;30H,#00H  ;软件计数器预清0</font></P>
+<P style="line-height: 150%; margin-top: 0; margin-bottom: 0">&#9;
+<font size="2">MOV&#9;TMOD,#00000001B ;定时/计数器0工作于方式1</font></P>
+<P style="line-height: 150%; margin-top: 0; margin-bottom: 0">&#9;
+<font size="2">MOV&#9;TH0,#3CH&#9;</font>&#9;</P>
+<P style="line-height: 150%; margin-top: 0; margin-bottom: 0">&#9;
+<font size="2">MOV&#9;TL0,#0B0H  ;即数15536</font></P>
+<P style="line-height: 150%; margin-top: 0; margin-bottom: 0">&#9;
+<font size="2">SETB&#9;EA&#9;;开总中断允许</font></P>
+<P style="line-height: 150%; margin-top: 0; margin-bottom: 0">&#9;
+<font size="2">SETB&#9;ET0&#9;;开定时/计数器0允许</font></P>
+<P style="line-height: 150%; margin-top: 0; margin-bottom: 0"><font size="2">SETB&#9;TR0&#9;    ;定时/计数器0开始运行</font></P>
+<P style="line-height: 150%; margin-top: 0; margin-bottom: 0"><font size="2">LOOP:&#9;AJMP&#9;LOOP&#9;;真正工作时,这里可写任意程序</font></P>
+<P style="line-height: 150%; margin-top: 0; margin-bottom: 0"><font size="2">TIME0:&#9;&#9;&#9;;定时器0的中断处理程序</font></P>
+<P style="line-height: 150%; margin-top: 0; margin-bottom: 0">&#9;
+<font size="2">PUSH&#9;ACC</font></P>
+<P style="line-height: 150%; margin-top: 0; margin-bottom: 0"><font size="2">PUSH&#9;PSW&#9;;将PSW和ACC推入堆栈保护</font></P>
+<P style="line-height: 150%; margin-top: 0; margin-bottom: 0">&#9;
+<font size="2">INC&#9;30H</font></P>
+<P style="line-height: 150%; margin-top: 0; margin-bottom: 0">&#9;
+<font size="2">INC&#9;31H&#9;;两个计数器都加1</font></P>
+<P style="line-height: 150%; margin-top: 0; margin-bottom: 0">&#9;
+<font size="2">MOV&#9;A,30H</font></P>
+<P style="line-height: 150%; margin-top: 0; margin-bottom: 0">&#9;
+<font size="2">CJNE&#9;A,#20,T_NEXT&#9;;30H单元中的值到了20了吗?</font></P>
+<P style="line-height: 150%; margin-top: 0; margin-bottom: 0"><font size="2">T_L1:&#9;CPL&#9;P1.0&#9;&#9;;到了,取反P10</font></P>
+<P style="line-height: 150%; margin-top: 0; margin-bottom: 0">&#9;
+<font size="2">MOV&#9;30H,#0               ;清软件计数器</font></P>
+<P style="line-height: 150%; margin-top: 0; margin-bottom: 0"><font size="2">T_NEXT:</font></P>
+<P style="line-height: 150%; margin-top: 0; margin-bottom: 0">&#9;
+<font size="2">MOV&#9;A,31H</font></P>
+<P style="line-height: 150%; margin-top: 0; margin-bottom: 0">&#9;
+<font size="2">CJNE&#9;A,#40,T_RET&#9;;31h单元中的值到40了吗?</font></P>
+<P style="line-height: 150%; margin-top: 0; margin-bottom: 0"><font size="2">T_L2:</font></P>
+<P style="line-height: 150%; margin-top: 0; margin-bottom: 0">&#9;
+<font size="2">CPL&#9;P1.1</font></P>
+<P style="line-height: 150%; margin-top: 0; margin-bottom: 0">&#9;
+<font size="2">MOV&#9;31H,#0&#9;&#9;;到了,取反P11,清计数器,返回</font></P>
+<P style="line-height: 150%; margin-top: 0; margin-bottom: 0"><font size="2">T_RET:</font></P>
+<P style="line-height: 150%; margin-top: 0; margin-bottom: 0"><font size="2">MOV&#9;TH0,#15H</font></P>
+<P style="line-height: 150%; margin-top: 0; margin-bottom: 0">&#9;
+<font size="2">MOV&#9;TL0,#9FH&#9;;重置定时常数</font></P>
+<P style="line-height: 150%; margin-top: 0; margin-bottom: 0">&#9;
+<font size="2">POP&#9;PSW</font></P>
+<P style="line-height: 150%; margin-top: 0; margin-bottom: 0">&#9;
+<font size="2">POP&#9;ACC</font></P>
+<P style="line-height: 150%; margin-top: 0; margin-bottom: 0">&#9;
+<font size="2">RETI</font></P>
+<P style="line-height: 150%; margin-top: 0; margin-bottom: 0"><font size="2">END</font></FONT></TD>
+</TR>
+</TABLE>
+
+<FONT FACE="宋体" LANG="ZH-CN">
+<P style="line-height: 150%; margin-top: 0; margin-bottom: 0"><a href="down/Exec061.asm">
+<font size="2">程序一下载</font></a><font size="2"> <a href="down/Exec061.hex">代码下载</a> <a href="down/exec062.asm">程序二下载</a> 
+  <a href="down/Exec062.hex">代码下载</a> <a href="down/exec063.asm">程序三下载</a> <a href="down/Exec063.hex">代码下载</a> 
+  <a href="down/exec064.ASM">程序四下载</a></font><a href="down/Exec064.hex"><font size="2"> 代码下载</font></a></P>
+<P style="line-height: 150%; margin-top: 0; margin-bottom: 0"><font size="2">您能用定时器的方法实现前面讲的流水灯吗？试试看。</font></P></FONT></BODY>
+</HTML>

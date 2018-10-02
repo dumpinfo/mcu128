@@ -1,0 +1,141 @@
+BL51 BANKED LINKER/LOCATER V5.11                                                        03/29/2005  15:43:28  PAGE 1
+
+
+BL51 BANKED LINKER/LOCATER V5.11, INVOKED BY:
+C:\KEIL\C51\BIN\BL51.EXE wl005.obj TO wl005 CODE (0X0000-0X0FFF)
+
+
+MEMORY MODEL: SMALL
+
+
+INPUT MODULES INCLUDED:
+  wl005.obj (WL005)
+  C:\KEIL\C51\LIB\C51S.LIB (?C_STARTUP)
+
+
+LINK MAP OF MODULE:  wl005 (WL005)
+
+
+            TYPE    BASE      LENGTH    RELOCATION   SEGMENT NAME
+            -----------------------------------------------------
+
+            * * * * * * *   D A T A   M E M O R Y   * * * * * * *
+            REG     0000H     0008H     ABSOLUTE     "REG BANK 0"
+            DATA    0008H     0002H     UNIT         _DATA_GROUP_
+            IDATA   000AH     0001H     UNIT         ?STACK
+
+            * * * * * * *   C O D E   M E M O R Y   * * * * * * *
+            CODE    0000H     0003H     ABSOLUTE     
+            CODE    0003H     002BH     UNIT         ?PR?MAIN?WL005
+            CODE    002EH     0024H     UNIT         ?PR?_PROC_KEY?WL005
+            CODE    0052H     0012H     UNIT         ?PR?_DELAYMS?WL005
+            CODE    0064H     000EH     UNIT         ?PR?SCAN_KEY?WL005
+            CODE    0072H     000CH     UNIT         ?C_C51STARTUP
+
+
+
+OVERLAY MAP OF MODULE:   wl005 (WL005)
+
+
+SEGMENT                          DATA_GROUP 
+  +--> CALLED SEGMENT          START    LENGTH
+----------------------------------------------
+?C_C51STARTUP                  -----    -----
+  +--> ?PR?MAIN?WL005
+
+?PR?MAIN?WL005                 0008H    0002H
+  +--> ?PR?SCAN_KEY?WL005
+  +--> ?PR?_DELAYMS?WL005
+  +--> ?PR?_PROC_KEY?WL005
+
+
+
+SYMBOL TABLE OF MODULE:  wl005 (WL005)
+
+  VALUE           TYPE          NAME
+  ----------------------------------
+
+  -------         MODULE        WL005
+  C:0000H         SYMBOL        _ICE_DUMMY_
+  D:0080H         PUBLIC        P0
+  D:0090H         PUBLIC        P1
+BL51 BANKED LINKER/LOCATER V5.11                                                      03/29/2005  15:43:28  PAGE 2
+
+
+  C:0003H         PUBLIC        main
+  C:002EH         PUBLIC        _proc_key
+  C:0064H         PUBLIC        scan_key
+  C:0052H         PUBLIC        _delayms
+  B:0090H.4       PUBLIC        K1
+  B:0090H.5       PUBLIC        K2
+  -------         PROC          MAIN
+  -------         DO            
+  D:0008H         SYMBOL        key_s
+  D:0009H         SYMBOL        key_v
+  -------         ENDDO         
+  C:0003H         LINE#         31
+  C:0003H         LINE#         32
+  C:0003H         LINE#         35
+  C:0006H         LINE#         36
+  C:0009H         LINE#         37
+  C:0009H         LINE#         38
+  C:0009H         LINE#         39
+  C:000EH         LINE#         40
+  C:0014H         LINE#         41
+  C:0014H         LINE#         42
+  C:0019H         LINE#         43
+  C:001EH         LINE#         44
+  C:0024H         LINE#         45
+  C:0024H         LINE#         46
+  C:0027H         LINE#         47
+  C:002CH         LINE#         48
+  C:002CH         LINE#         49
+  C:002CH         LINE#         50
+  -------         ENDPROC       MAIN
+  -------         PROC          SCAN_KEY
+  -------         DO            
+  D:0007H         SYMBOL        key_s
+  -------         ENDDO         
+  C:0064H         LINE#         53
+  C:0064H         LINE#         54
+  C:0064H         LINE#         56
+  C:0065H         LINE#         57
+  C:0068H         LINE#         58
+  C:006BH         LINE#         59
+  C:0071H         LINE#         60
+  C:0071H         LINE#         61
+  -------         ENDPROC       SCAN_KEY
+  -------         PROC          _PROC_KEY
+  D:0007H         SYMBOL        key_v
+  C:002EH         LINE#         63
+  C:002EH         LINE#         64
+  C:002EH         LINE#         65
+  C:0032H         LINE#         66
+  C:0032H         LINE#         67
+  C:003FH         LINE#         68
+  C:0040H         LINE#         69
+  C:0044H         LINE#         70
+  C:0044H         LINE#         71
+  C:0051H         LINE#         72
+  C:0051H         LINE#         73
+  -------         ENDPROC       _PROC_KEY
+BL51 BANKED LINKER/LOCATER V5.11                                                      03/29/2005  15:43:28  PAGE 3
+
+
+  -------         PROC          _DELAYMS
+  D:0007H         SYMBOL        ms
+  -------         DO            
+  D:0006H         SYMBOL        i
+  -------         ENDDO         
+  C:0052H         LINE#         75
+  C:0052H         LINE#         77
+  C:0052H         LINE#         79
+  C:0058H         LINE#         80
+  C:0058H         LINE#         81
+  C:0063H         LINE#         82
+  C:0063H         LINE#         83
+  -------         ENDPROC       _DELAYMS
+  -------         ENDMOD        WL005
+
+Program Size: data=11.0 xdata=0 code=126
+LINK/LOCATE RUN COMPLETE.  0 WARNING(S),  0 ERROR(S)

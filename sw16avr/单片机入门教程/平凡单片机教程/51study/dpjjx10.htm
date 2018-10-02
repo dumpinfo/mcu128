@@ -1,0 +1,257 @@
+<HTML>
+<HEAD>
+<META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=gb_2312-80">
+<TITLE>单片机第八课</TITLE>
+<style type="text/css">
+td {font-family: "宋体"; font-size: 9pt; font-weight: normal}
+a:link {color: #000099;font-size: 9pt; text-decoration: none}
+a:visited {color: #65038e; font-size: 9pt; text-decoration: none}
+a:hover {color: red; text-decoration: none}
+</style>
+</HEAD>
+<BODY LINK="#0000ff" VLINK="#800080" bgcolor="#ffffff" background="../back.jpg">
+<P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">
+<FONT LANG="ZH-CN" size="2">单片机第八课（寻址方式与指令系统）</FONT></P>
+<P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">
+<font size="2" LANG="ZH-CN">通过前面的学习，我们已经了解了单片机内部的结构，并且也已经知道，要控制单片机，让它为我们干学，要用指令，我们已学了几条指令，但很零散，从现在开始，我们将要系统地学习8051的指令部份。</font></P>
+<P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">
+<FONT LANG="ZH-CN" size="2">一、概述</FONT></P>
+<P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">
+<font size="2">1、指令的格式</font></P>
+<P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">
+<font size="2">我们已知，要让计算机做事，就得给计算机以指令，并且我们已知，计算机很“笨”，只能懂得数字，如前面我们写进机器的75H，90H，00H等等，所以指令的第一种格式就是机器码格式，也说是数字的形式。但这种形式实在是为难我们人了，太难记了，于是有另一种格式，助记符格式，如MOV  
+  P1，#0FFH，这样就好记了。 这两种格式之间的关系呢，我们不难理解，本质上它们完全等价，只是形式不一样而已。</font></P> 
+<P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">
+<font size="2">2、汇编</font></P>
+<P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">
+<font size="2">我们写指令使用汇编格式，而计算机只懂机器码格式，所以要将我们写的汇编格式的指令转换为机器码格式，这种转换有两种方法：手工汇编和机器汇编。手工汇编实际上就是查表，因为这两种格式纯粹是格式不同，所以是一一对应的，查一张表格就行了。不过手工查表总是嫌麻烦，所以就有了计算机软件，用计算机软件来替代手工查表，这就是机器汇编。</font></P>
+<P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">
+<font size="2">二、寻址</font></P>
+<P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">
+<font size="2" LANG="ZH-CN">让我们先来复习一下我们学过的一些指令：MOV  
+  P1，#0FFH，MOV  
+  R7，#0FFH这些指令都是将一些数据送到相应的位置中去，为什么要送数据呢？第一个因为送入的数可以让灯全灭掉，第二个是为了要实现延时，从这里我们可以看出来，在用单片机的编程语言编程时，经常要用到数据的传递，事实上数据传递是单片机编程时的一项重要工作，一共有28条指令（单片机共111条指令）。下面我们就从数据传递类指令开始吧。</font></P>
+<P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0"> 
+<font size="2" LANG="ZH-CN">分析一下MOV  
+  P1，#0FFH这条指令，我们不难得出结论，第一个词MOV是命令动词，也就是决定做什么事情的，MOV是MOVE少写了一个E，所以就是“传递”，这就是指令，规定做什么事情，后面还有一些参数，分析一下，数据传递必须要有一个“源”也就是你要送什么数，必须要有一个“目的”，也就是你这个数要送到什么地方去，显然在上面那条指令中，要送的数（源）就是0FFH，而要送达的地方（目的地）就是P1这个寄存器。在数据传递类指令中，均将目的地写在指令的后面，而将源写在最后。</font></P>
+<P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0"> 
+<font size="2" LANG="ZH-CN">这条指令中，送给P1是这个数本身，换言之，做完这条指令后，我们可以明确地知道，P1中的值是0FFH，但是并不是任何时候都可以直接给出数本身的。例如，在我们前面给出的延时程序例是这样写的：</font></P>
+<TABLE BORDER CELLSPACING=1 CELLPADDING=7 WIDTH=607>
+  <TR> 
+    <TD WIDTH="50%" VALIGN="TOP" HEIGHT=84> 
+      <P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">
+      <font size="2" LANG="ZH-CN">MAIN</font><font size="2"><FONT FACE="宋体" LANG="ZH-CN">： 
+      </FONT> 
+        <FONT LANG="ZH-CN">SETB P1.0 </FONT></font>
+      <font size="2" FACE="宋体" LANG="ZH-CN">　　　　；（１）</font></P>
+      <P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0"> 
+      <font size="2" FACE="宋体" LANG="ZH-CN">　　　</font><FONT LANG="ZH-CN" size="2">LCALL  
+        DELAY </FONT><font size="2" FACE="宋体" LANG="ZH-CN">；（２）</font></P> 
+      <P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0"> 
+      <font size="2" FACE="宋体" LANG="ZH-CN">　　　　</font><font size="2"><FONT LANG="ZH-CN">CLR  
+        P1.0 </FONT><FONT FACE="宋体" LANG="ZH-CN">　　　　</FONT> </font>
+      <font size="2" FACE="宋体" LANG="ZH-CN">；（３）</font></P> 
+      <P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0"> 
+      <font size="2" FACE="宋体" LANG="ZH-CN">　　　</font><FONT LANG="ZH-CN" size="2">LCALL  
+        DELAY </FONT><font size="2" FACE="宋体" LANG="ZH-CN">　　；（４）</font></P>
+      <P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0"> 
+      <font size="2" FACE="宋体" LANG="ZH-CN">　　　　</font><FONT LANG="ZH-CN" size="2">AJMP  
+        MAIN </FONT><font size="2" FACE="宋体" LANG="ZH-CN">　　　；（５）</font></P>
+      <P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">
+      <FONT FACE="宋体" LANG="ZH-CN" size="2">；以下子程序</FONT></P>
+      <P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">
+      <font size="2" LANG="ZH-CN">DELAY</font><font size="2"><FONT FACE="宋体" LANG="ZH-CN">：</FONT> 
+        <FONT LANG="ZH-CN">MOV R7</FONT><FONT FACE="宋体" LANG="ZH-CN">，</FONT><FONT LANG="ZH-CN">#250</FONT><FONT FACE="宋体" LANG="ZH-CN">　</FONT>
+      </font><font size="2" FACE="宋体" LANG="ZH-CN">　；（６）</font></P> 
+      <P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">
+      <font size="2" LANG="ZH-CN">D1</font><font size="2"><FONT FACE="宋体" LANG="ZH-CN">：</FONT> 
+        <FONT LANG="ZH-CN">MOV R6</FONT><FONT FACE="宋体" LANG="ZH-CN">，</FONT><FONT LANG="ZH-CN">#250  
+        </FONT></font><font size="2" FACE="宋体" LANG="ZH-CN">　　；（７）</font></P>
+      <P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">
+      <font size="2" LANG="ZH-CN">D2</font><font size="2"><FONT FACE="宋体" LANG="ZH-CN">：</FONT> 
+        <FONT LANG="ZH-CN">DJNZ R6</FONT><FONT FACE="宋体" LANG="ZH-CN">，</FONT><FONT LANG="ZH-CN">D2  
+        </FONT></font><font size="2" FACE="宋体" LANG="ZH-CN">　　　；（８）</font></P>
+      <P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0"> 
+      <font size="2" FACE="宋体" LANG="ZH-CN">　　</font><font size="2"> 
+      <FONT LANG="ZH-CN">DJNZ  
+        R7</FONT><FONT FACE="宋体" LANG="ZH-CN">，</FONT><FONT LANG="ZH-CN">D1</FONT></font><font size="2" FACE="宋体" LANG="ZH-CN">　　　；（９）</font></P>
+      <P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0"> 
+      <font size="2" FACE="宋体" LANG="ZH-CN">　</font><font size="2"> <FONT FACE="宋体" LANG="ZH-CN">　</FONT><FONT LANG="ZH-CN">RET  
+        </FONT></font><font size="2" FACE="宋体" LANG="ZH-CN">　　　　　　　；（１０）</font></P>
+      <P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0"> 
+      <font size="2" FACE="宋体" LANG="ZH-CN">　　</font><font size="2"> 
+      <FONT LANG="ZH-CN">END  
+        </FONT><FONT FACE="宋体" LANG="ZH-CN">　　　　</FONT> <FONT FACE="宋体" LANG="ZH-CN">　　；（１１）</FONT>
+      </font>  
+      <P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0"> 
+      <P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">
+      <font size="2">&nbsp; </font> 
+      <P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0"> 
+      <P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">
+      <font size="2">&nbsp; </font> 
+      <P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">
+      <font size="2" FACE="宋体" LANG="ZH-CN">表1</font><font size="2"> </font> 
+    </TD>
+    <TD WIDTH="50%" VALIGN="TOP" HEIGHT=84> 
+      <P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">
+      <font size="2" LANG="ZH-CN">MAIN</font><font size="2"><FONT FACE="宋体" LANG="ZH-CN">：</FONT> 
+        <FONT LANG="ZH-CN">SETB P1.0 </FONT></font>
+      <font size="2" FACE="宋体" LANG="ZH-CN">　　　　；（１）</font></P>
+      <P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">
+      <font size="2" face="宋体" lang="ZH-CN">　　　</font><font size="2"><FONT LANG="ZH-CN">MOV  
+        30H</font><FONT FACE="宋体" LANG="ZH-CN">，</FONT></font><font size="2" LANG="ZH-CN">#255</font></P>
+      <P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">
+      <font size="2" FACE="宋体" LANG="ZH-CN">　　　 </font>
+      <FONT LANG="ZH-CN" size="2">LCALL  
+        DELAY </FONT><font size="2" FACE="宋体" LANG="ZH-CN">；</font></P> 
+      <P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0"> 
+      <font size="2" FACE="宋体" LANG="ZH-CN">　　　 </font><font size="2">
+      <FONT LANG="ZH-CN">CLR  
+        P1.0 </FONT><FONT FACE="宋体" LANG="ZH-CN">　　　　</FONT> </font>
+      <font size="2" FACE="宋体" LANG="ZH-CN">；（３）</font></P> 
+      <P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">
+      <font size="2" face="宋体" lang="ZH-CN">　　　</font><font size="2"> </font>
+      <font size="2" LANG="ZH-CN">MOV 30H,#200</font></P> 
+      <P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">
+      <font size="2" FACE="宋体" LANG="ZH-CN">　　　 </font>
+      <FONT LANG="ZH-CN" size="2">LCALL  
+        DELAY </FONT><font size="2" FACE="宋体" LANG="ZH-CN">　　；（４）</font></P>
+      <P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0"> 
+      <font size="2" FACE="宋体" LANG="ZH-CN">　　　 </font>
+      <FONT LANG="ZH-CN" size="2">AJMP  
+        MAIN </FONT><font size="2" FACE="宋体" LANG="ZH-CN">　　　；（５）</font></P>
+      <P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">
+      <FONT FACE="宋体" LANG="ZH-CN" size="2">；以下子程序</FONT></P>
+      <P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">
+      <font size="2" LANG="ZH-CN">DELAY</font><font size="2"><FONT FACE="宋体" LANG="ZH-CN">：</FONT> 
+        <FONT LANG="ZH-CN">MOV R7</FONT><FONT FACE="宋体" LANG="ZH-CN">，</FONT><FONT LANG="ZH-CN">30H</FONT><FONT FACE="宋体" LANG="ZH-CN">　</FONT>
+      </font><font size="2" FACE="宋体" LANG="ZH-CN">　；（６）</font></P> 
+      <P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">
+      <font size="2" LANG="ZH-CN">D1</font><font size="2"><FONT FACE="宋体" LANG="ZH-CN">：</FONT> 
+        <FONT LANG="ZH-CN">MOV R6</FONT><FONT FACE="宋体" LANG="ZH-CN">，</FONT><FONT LANG="ZH-CN">#250  
+        </FONT></font><font size="2" FACE="宋体" LANG="ZH-CN">　　；（７）</font></P>
+      <P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">
+      <font size="2" LANG="ZH-CN">D2</font><font size="2"><FONT FACE="宋体" LANG="ZH-CN">：</FONT> 
+        <FONT LANG="ZH-CN">DJNZ R6</FONT><FONT FACE="宋体" LANG="ZH-CN">，</FONT><FONT LANG="ZH-CN">D2  
+        </FONT></font><font size="2" FACE="宋体" LANG="ZH-CN">　　　；（８）</font></P>
+      <P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0"> 
+      <font size="2" FACE="宋体" LANG="ZH-CN">　　</font><font size="2"> 
+      <FONT LANG="ZH-CN">DJNZ  
+        R7</FONT><FONT FACE="宋体" LANG="ZH-CN">，</FONT><FONT LANG="ZH-CN">D1</FONT></font><font size="2" FACE="宋体" LANG="ZH-CN">　　　；（９）</font></P>
+      <P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0"> 
+      <font size="2" FACE="宋体" LANG="ZH-CN">　</font><font size="2"> <FONT FACE="宋体" LANG="ZH-CN">　</FONT><FONT LANG="ZH-CN">RET  
+        </FONT></font><font size="2" FACE="宋体" LANG="ZH-CN">　　　　　　　；（１０）</font></P>
+      <P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0"> 
+      <font size="2" FACE="宋体" LANG="ZH-CN">　　</font><font size="2"> 
+      <FONT LANG="ZH-CN">END  
+        </FONT><FONT FACE="宋体" LANG="ZH-CN">　　　　</FONT> <FONT FACE="宋体" LANG="ZH-CN">　　；（１１）</FONT>
+      </font>  
+      <P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">
+      <font size="2" face="宋体">表2</font><font size="2"> </font> 
+    </TD>
+  </TR>
+</TABLE>
+<P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">
+<font size="2" LANG="ZH-CN">　这样一来，我每次调用延时程序延时的时间都是相同的（大致都是0.13S)，如果我提出这样的要求：灯亮后延时时间为</font><font size="2"><FONT LANG="ZH-CN">0.13S灯灭，灯灭后延时0.1秒灯亮，如此循环，这样的程序还能满足要求吗？不能，怎么办？我们可以把延时程序改成这样(见表2)：调用则见表2中的主程，也就是先把一个数送入30H，在子程序中R7中的值并不固定，而是根据30H单元中传过来的数确定。</FONT>这样就可以满足要求。</font></P>
+<P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">
+<font size="2" LANG="ZH-CN">从这里我们可以得出结论，在数据传递中要找到被传递的数，很多时候，这个数并不能直接给出，需要变化，这就引出了一个概念：如何寻找操作数，我们把寻找操作数所在单元的地址称之为寻址。在这里我们直接使用数所在单元的地址找到了操作数，所以称这种方法为直接寻址。除了这种方法之外，还有一种，如果我们把数放在工作寄存器中，从工作寄存器中寻找数据，则称之为寄存器寻址。例：MOV  
+  A，R0就是将R0工作寄存器中的数据送到累加器A中去。提一个问题：我们知道，工作寄存器就是内存单元的一部份，如果我们选择工作寄存器组0，则R0就是RAM的00H单元，那么这样一来，MOV  
+  A，00H，和MOV  
+  A，R0不就没什么区别了吗？为什么要加以区分呢？的确，这两条指令执行的结果是完全相同的，都是将00H单元中的内容送到A中去，但是执行的过程不同，执行第一条指令需要2个周期，而第二条则只需要1个周期，第一条指令变成最终的目标码要两个字节（E5H  
+  00H），而第二条则只要一个字节（E8h）就可以了。</font></P>
+<P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0"> 
+<font size="2" LANG="ZH-CN">这么斤斤计较！不就差了一个周期吗，如果是12M的晶振的话，也就1个微秒时间了，一个字节又能有多少？</font></P>
+<P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0"> 
+<font size="2" LANG="ZH-CN">不对，如果这条指令只执行一次，也许无所谓，但一条指令如果执行上1000次，就是1毫秒，如果要执行1000000万次，就是1S的误差，这就很可观了，单片机做的是实时控制的事，所以必须如此“斤斤计较”。字节数同样如此。</font></P>
+<P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">
+<FONT LANG="ZH-CN" size="2">再来提一个问题，现在我们已知，寻找操作数可以通过直接给的方式（立即寻址）和直接给出数所在单元地址的方式（直接寻址），这就够了吗？</FONT></P>
+<P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">
+<font size="2" LANG="ZH-CN">看这个问题，要求从30H单元开始，取20个数，分别送入A累加器。</font></P>
+<P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0"> 
+<font size="2" LANG="ZH-CN">就我们目前掌握的办法而言，要从30H单元取数，就用MOV  
+  A，30H，那么下一个数呢？是31H单元的，怎么取呢？还是只能用MOV  
+  A，31H，那么20个数，不是得20条指令才能写完吗？这里只有20个数，如果要送200个或2000个数，那岂不要写上200条或2000条命令?这未免太笨了吧。为什么会出现这样的状况？是因为我们只会把地址写在指令中，所以就没办法了，如果我们不是把地址直接写在指令中，而是把地址放在另外一个寄存器单元中，根据这个寄存器单元中的数值决定该到哪个单元中取数据，比如，当前这个寄存器中的值是30H，那么就到30H单元中去取，如果是31H就到31H单元中去取，就可以解决这个问题了。怎么个解决法呢？既然是看的寄存器中的值，那么我们就可以通过一定的方法让这里面的值发生变化，比如取完一个数后，将这个寄存器单元中的值加1，还是执行同一条指令，可是取数的对象却不一样了，不是吗。通过例子来说明吧。</font></P>
+<P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">
+<font size="2" lang="ZH-CN">　　 </font><font size="2">MOV  
+  R7，#20</font></P>
+<P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">
+<font size="2" lang="ZH-CN">　　 </font><font size="2">MOV  
+  R0，#30H</font></P>
+<P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">
+<font size="2">LOOP：MOV A，@R0</font></P> 
+<P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">
+<font size="2" lang="ZH-CN">　　 </font><font size="2">INC  
+  R0</font></P>
+<P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">
+<font size="2" lang="ZH-CN">　　 </font><font size="2">DJNZ  
+  R7,LOOP</font></P>
+<P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0"> 
+<font size="2" LANG="ZH-CN">这个例子中大部份指令我们是能看懂的，第一句，是将立即数20送到R7中，执行完后R7中的值应当是20。第二句是将立即数30H送入R0工作寄存器中，所以执行完后，R0单元中的值是30H，第三句，这是看一下R0单元中是什么值，把这个值作为地址，取这个地址单元的内容送入A中，此时，执行这条指令的结果就相当于MOV  
+  A，30H。第四句，没学过，就是把R0中的值加1，因此执行完后，R0中的值就是31H，第五句，学过，将R7中的值减1，看是否等于0，不等于0，则转到标号LOOP处继续执行，因此，执行完这句后，将转去执行MOV  
+  A，@R0这句话，此时相当于执行了MOV  
+  A，31H（因为此时的R0中的值已是31H了），如此，直到R7中的值逐次相减等于0，也就是循环20次为止，就实现了我们的要求：从30H单元开始将20个数据送入A中。</font></P>
+<P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0"> 
+<font size="2" LANG="ZH-CN">这也是一种寻找数据的方法，由于数据是间接地被找到的，所以就称之为间址寻址。注意，在间址寻址中，只能用R0或R1存放等寻找的数据。</font></P>
+<P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">
+<FONT LANG="ZH-CN" size="2">二、指令</FONT></P>
+<OL>
+  <P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0"> 
+  <FONT FACE="宋体" LANG="ZH-CN"> 
+  <P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0"> 
+  </FONT> 
+  <LI>
+  <p style="line-height: 150%; margin-top: 0; margin-bottom: 0">
+  <font size="2" LANG="ZH-CN">数据传递类指令</font><font size="2"> </font> </LI>
+</OL>
+<OL>
+  <p style="line-height: 150%; margin-top: 0; margin-bottom: 0"><font size="2">1） 
+  <FONT LANG="ZH-CN">以累加器为目的操作数的指令</FONT> </font></p>
+  <p style="line-height: 150%; margin-top: 0; margin-bottom: 0">
+  <font size="2" LANG="ZH-CN">MOV A，Rn</font></P> 
+  <P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0"> 
+  <font size="2" LANG="ZH-CN">MOV A，direct</font></P> 
+  <P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0"> 
+  <font size="2" LANG="ZH-CN">MOV A，@Ri</font></P>
+  <P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0"> 
+  <font size="2" LANG="ZH-CN">MOV A，#data</font></P>
+  <P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">
+  <font size="2" LANG="ZH-CN">第一条指令中，Rn代表的是R0-R7。第二条指令中，direct就是指的直接地址，而第三条指令中，就是我们刚才讲过的。第四条指令是将立即数data送到A中。</font></P>
+  <P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">
+  <FONT LANG="ZH-CN" size="2">下面我们通过一些例子加以说明：</FONT></P>
+  <P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">
+  <font size="2" LANG="ZH-CN">MOV A，R1 ；将工作寄存器R1中的值送入A，R1中的值保持不变。</font></P>
+  <P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">
+  <font size="2" LANG="ZH-CN">MOV A,30H ；将内存30H单元中的值送入A，30H单元中的值保持不变。</font></P> 
+  <P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">
+  <font size="2" LANG="ZH-CN">MOV A,@R1 ；先看R1中是什么值，把这个值作为地址，并将这个地址单元中的值送入A中。如执行命令前R1中的值为20H，则是将20H单元中的值送入A中。</font></P> 
+  <P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">
+  <font size="2" LANG="ZH-CN">MOV A,#34H ；将立即数34H送入A中，执行完本条指令后，A中的值是34H。</font></P> 
+  <P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0"> 
+  　<P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0"> 
+  <font size="2">2）<FONT LANG="ZH-CN">以寄存器Rn为目的操作的指令</font> </font> 
+  <p style="line-height: 150%; margin-top: 0; margin-bottom: 0">
+  <FONT LANG="ZH-CN" size="2"> MOV Rn,A</FONT></P>
+</OL>
+<P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">
+<font size="2" lang="ZH-CN">　　MOV 
+Rn,direct</font></P>
+<P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">
+<font size="2" lang="ZH-CN">　　MOV 
+Rn,#data</font></P>
+<P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">
+<FONT LANG="ZH-CN" size="2">这组指令功能是把源地址单元中的内容送入工作寄存器，源操作数不变。</FONT></P>
+<P ALIGN="JUSTIFY"><FONT FACE="宋体" LANG="ZH-CN">　</FONT></P>
+
+          <hr width="550" SIZE="1" align="center">     
+
+<p align="center" style="line-height: 150%; margin-top: 0; margin-bottom: 0"><font size="2">伟纳电子 COPYRIGHT &reg; 2000 
+<a href="http://www.willar.com">http://www.willar.com</a><br>                                           
+&nbsp; e-mail:<a href="mailto:support@willar.com">support@willar.com</a></font>      
+ 
+<p align="center" style="line-height: 100%; margin-top: 0; margin-bottom: 0">　
+<P ALIGN="JUSTIFY"><FONT FACE="宋体" LANG="ZH-CN">　</FONT></P>
+<P ALIGN="JUSTIFY"><FONT FACE="宋体" LANG="ZH-CN">　</FONT></P>
+<P ALIGN="JUSTIFY"><FONT FACE="宋体" LANG="ZH-CN">　</FONT></P>
+<P ALIGN="JUSTIFY"><FONT FACE="宋体" LANG="ZH-CN">　</FONT></P>
+</BODY>
+</HTML>

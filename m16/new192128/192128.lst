@@ -1,0 +1,317 @@
+__text_start:
+__start:
+    0047 EFCF      LDI	R28,0xFF
+    0048 E1D0      LDI	R29,0x10
+    0049 BFCD      OUT	0x3D,R28
+    004A BFDE      OUT	0x3E,R29
+    004B 51C0      SUBI	R28,0x10
+    004C 40D0      SBCI	R29,0
+    004D EA0A      LDI	R16,0xAA
+    004E 8308      STD	Y+0,R16
+    004F 2400      CLR	R0
+    0050 E0E1      LDI	R30,1
+    0051 E0F1      LDI	R31,1
+    0052 E011      LDI	R17,1
+    0053 30E2      CPI	R30,2
+    0054 07F1      CPC	R31,R17
+    0055 F011      BEQ	0x0058
+    0056 9201      ST	R0,Z+
+    0057 CFFB      RJMP	0x0053
+    0058 8300      STD	Z+0,R16
+    0059 E8EC      LDI	R30,0x8C
+    005A E0F0      LDI	R31,0
+    005B E0A0      LDI	R26,0
+    005C E0B1      LDI	R27,1
+    005D E010      LDI	R17,0
+    005E 38ED      CPI	R30,0x8D
+    005F 07F1      CPC	R31,R17
+    0060 F021      BEQ	0x0065
+    0061 95C8      LPM
+    0062 9631      ADIW	R30,1
+    0063 920D      ST	R0,X+
+    0064 CFF9      RJMP	0x005E
+    0065 940E00DB  CALL	_main
+_exit:
+    0067 CFFF      RJMP	_exit
+FILE: E:\avr资料\例程\m16\new192128\192128.c
+(0001) //ICC-AVR application builder : 2008-01-04 16:13:23
+(0002) // Target : M128
+(0003) // Crystal: 2.0000Mhz
+(0004) 
+(0005) #include <iom128v.h>
+(0006) #include <macros.h>
+(0007) 
+(0008) 
+(0009) #define LCD_DDR  DDRC
+(0010) #define LCD_PORT PORTC
+(0011) 
+(0012) #define DATA_DDR  DDRD
+(0013) #define DATA_PORT PORTD
+(0014) 
+(0015) 
+(0016) //#define LCD_SID (1<<7)   //PIN8  data0
+(0017) //#define LCD_DL  (1<<6)   //PIN7  data1 
+(0018) //#define LCD_DM  (1<<1)   //PIN2  data2
+(0019) //#define LCD_DR  (1<<0)   //PIN1  data3
+(0020) 
+(0021) 
+(0022) #define LCD_DLL (1<<0)   //PIN3  
+(0023) #define LCD_M   (1<<1)   //PIN4  
+(0024) #define LCD_CL1 (1<<2)   //PIN5
+(0025) #define LCD_CL2 (1<<3)   //PIN6
+(0026)                          //PIN9  VCC
+(0027)                          //PIN10 GND
+(0028)                          //PIN11 VEE(-5~-10V)
+(0029)                          //PIN12 NC
+(0030)                          //PIN13 BLK~
+(0031)                          //PIN14 BLK~
+(0032) #define SET_LCD_DLL()	 (LCD_PORT |= LCD_DLL)
+(0033) #define SET_LCD_M() 	 (LCD_PORT |= LCD_M)
+(0034) #define SET_LCD_CL1()	 (LCD_PORT |= LCD_CL1)
+(0035) #define SET_LCD_CL2()	 (LCD_PORT |= LCD_CL2)
+(0036) 
+(0037)  
+(0038) 
+(0039) #define CLR_LCD_DLL()	 (LCD_PORT &= ~LCD_DLL)
+(0040) #define CLR_LCD_M()	 (LCD_PORT &= ~LCD_M)
+(0041) #define CLR_LCD_CL1()	 (LCD_PORT &= ~LCD_CL1)
+(0042) #define CLR_LCD_CL2()	 (LCD_PORT &= ~LCD_CL2)
+(0043) 
+(0044) 
+(0045) unsigned char  data=0,data1;
+(0046) void port_init(void)
+(0047) {
+(0048)  PORTA = 0x00;
+_port_init:
+    0068 2422      CLR	R2
+    0069 BA2B      OUT	0x1B,R2
+(0049)  DDRA  = 0x00;
+    006A BA2A      OUT	0x1A,R2
+(0050)  PORTB = 0x00;
+    006B BA28      OUT	0x18,R2
+(0051)  DDRB  = 0x00;
+    006C BA27      OUT	0x17,R2
+(0052)  PORTC = 0x00; //m103 output only
+    006D BA25      OUT	0x15,R2
+(0053)  DDRC  = 0xFF;
+    006E EF8F      LDI	R24,0xFF
+    006F BB84      OUT	0x14,R24
+(0054)  PORTD = 0x00;
+    0070 BA22      OUT	0x12,R2
+(0055)  DDRD  = 0xFF;
+    0071 BB81      OUT	0x11,R24
+(0056)  PORTE = 0x00;
+    0072 B823      OUT	0x03,R2
+(0057)  DDRE  = 0x00;
+    0073 B822      OUT	0x02,R2
+(0058)  PORTF = 0x00;
+    0074 92200062  STS	0x62,R2
+(0059)  DDRF  = 0x00;
+    0076 92200061  STS	0x61,R2
+(0060)  PORTG = 0x00;
+    0078 92200065  STS	0x65,R2
+(0061)  DDRG  = 0x00;
+    007A 92200064  STS	0x64,R2
+    007C 9508      RET
+(0062) }
+(0063) 
+(0064) 
+(0065) 
+(0066) //TIMER0 initialize - prescale:1024
+(0067) // WGM: Normal
+(0068) // desired value: 100mSec
+(0069) // actual value: 99.840mSec (0.2%)
+(0070) void timer0_init(void)
+(0071) {
+(0072)  TCCR0 = 0x00; //stop
+_timer0_init:
+    007D 2422      CLR	R2
+    007E BE23      OUT	0x33,R2
+(0073)  ASSR  = 0x00; //set async mode
+    007F BE20      OUT	0x30,R2
+(0074)  TCNT0 = 0x3D; //set count
+    0080 E38D      LDI	R24,0x3D
+    0081 BF82      OUT	0x32,R24
+(0075)  OCR0  = 0xC3;
+    0082 EC83      LDI	R24,0xC3
+    0083 BF81      OUT	0x31,R24
+(0076)  TCCR0 = 0x07; //start timer
+    0084 E087      LDI	R24,7
+    0085 BF83      OUT	0x33,R24
+    0086 9508      RET
+_timer0_ovf_isr:
+    0087 938A      ST	R24,-Y
+    0088 B78F      IN	R24,0x3F
+    0089 938A      ST	R24,-Y
+(0077) }
+(0078) 
+(0079) #pragma interrupt_handler timer0_ovf_isr:17
+(0080) void timer0_ovf_isr(void)
+(0081) {
+(0082)  TCNT0 = 0x3D; //reload counter value
+    008A E38D      LDI	R24,0x3D
+    008B BF82      OUT	0x32,R24
+    008C 9189      LD	R24,Y+
+    008D BF8F      OUT	0x3F,R24
+    008E 9189      LD	R24,Y+
+    008F 9518      RETI
+(0083)  
+(0084) 
+(0085) }
+(0086) 
+(0087) 
+(0088) 
+(0089) //TIMER1 initialize - prescale:64
+(0090) // WGM: 0) Normal, TOP=0xFFFF
+(0091) // desired value: 1Sec
+(0092) // actual value:  1.000Sec (0.0%)
+(0093) void timer1_init(void)
+(0094) {
+(0095)  TCCR1B = 0xFF; //stop
+_timer1_init:
+    0090 EF8F      LDI	R24,0xFF
+    0091 BD8E      OUT	0x2E,R24
+(0096)  TCNT1H = 0x85; //setup
+    0092 E885      LDI	R24,0x85
+    0093 BD8D      OUT	0x2D,R24
+(0097)  
+(0098)  TCNT1L = 0xEE;
+    0094 EE8E      LDI	R24,0xEE
+    0095 BD8C      OUT	0x2C,R24
+(0099)  OCR1AH = 0x7A;
+    0096 E78A      LDI	R24,0x7A
+    0097 BD8B      OUT	0x2B,R24
+(0100)  OCR1AL = 0x12;
+    0098 E182      LDI	R24,0x12
+    0099 BD8A      OUT	0x2A,R24
+(0101)  OCR1BH = 0x7A;
+    009A E78A      LDI	R24,0x7A
+    009B BD89      OUT	0x29,R24
+(0102)  OCR1BL = 0x12;
+    009C E182      LDI	R24,0x12
+    009D BD88      OUT	0x28,R24
+(0103) 
+(0104)  ICR1H  = 0x7A;
+    009E E78A      LDI	R24,0x7A
+    009F BD87      OUT	0x27,R24
+(0105)  ICR1L  = 0x12;
+    00A0 E182      LDI	R24,0x12
+    00A1 BD86      OUT	0x26,R24
+(0106)  TCCR1A = 0x00;
+    00A2 2422      CLR	R2
+    00A3 BC2F      OUT	0x2F,R2
+(0107)  TCCR1B = 0x03; //start Timer
+    00A4 E083      LDI	R24,3
+    00A5 BD8E      OUT	0x2E,R24
+    00A6 9508      RET
+_timer1_ovf_isr:
+    00A7 922A      ST	R2,-Y
+    00A8 938A      ST	R24,-Y
+    00A9 939A      ST	R25,-Y
+    00AA B62F      IN	R2,0x3F
+    00AB 922A      ST	R2,-Y
+(0108) }
+(0109) 
+(0110) #pragma interrupt_handler timer1_ovf_isr:9
+(0111) void timer1_ovf_isr(void)
+(0112) {
+(0113)  //TIMER1 has overflowed
+(0114)  TCNT1H = 0x85; //reload counter high value
+    00AC E885      LDI	R24,0x85
+    00AD BD8D      OUT	0x2D,R24
+(0115)  TCNT1L = 0xEE; //reload counter low value
+    00AE EE8E      LDI	R24,0xEE
+    00AF BD8C      OUT	0x2C,R24
+(0116)   data++;
+    00B0 91800100  LDS	R24,data
+    00B2 5F8F      SUBI	R24,0xFF
+    00B3 93800100  STS	data,R24
+(0117)  if(data == 2)
+    00B5 3082      CPI	R24,2
+    00B6 F429      BNE	0x00BC
+(0118)  {
+(0119)  SET_LCD_DLL();
+    00B7 9AA8      SBI	0x15,0
+(0120)  data = 0;
+    00B8 2422      CLR	R2
+    00B9 92200100  STS	data,R2
+(0121)  }
+    00BB C001      RJMP	0x00BD
+(0122)  else
+(0123)  CLR_LCD_DLL();
+    00BC 98A8      CBI	0x15,0
+(0124)  
+(0125)  
+(0126)  SET_LCD_CL1();
+    00BD 9AAA      SBI	0x15,2
+(0127)  CLR_LCD_CL1();
+    00BE 98AA      CBI	0x15,2
+(0128)  
+(0129)  DATA_PORT = 0Xf;     //装载数据
+    00BF E08F      LDI	R24,0xF
+    00C0 BB82      OUT	0x12,R24
+(0130)  CLR_LCD_CL2();
+    00C1 98AB      CBI	0x15,3
+(0131)  SET_LCD_CL2();
+    00C2 9AAB      SBI	0x15,3
+    00C3 9029      LD	R2,Y+
+    00C4 BE2F      OUT	0x3F,R2
+    00C5 9199      LD	R25,Y+
+    00C6 9189      LD	R24,Y+
+    00C7 9029      LD	R2,Y+
+    00C8 9518      RETI
+(0132)  }
+(0133)   
+(0134) 
+(0135) 
+(0136) 
+(0137) 
+(0138) //call this routine to initialize all peripherals
+(0139) void init_devices(void)
+(0140) {
+(0141)  //stop errant interrupts until set up
+(0142)  CLI(); //disable all interrupts
+_init_devices:
+    00C9 94F8      BCLR	7
+(0143)  XDIV  = 0x00; //xtal divider
+    00CA 2422      CLR	R2
+    00CB BE2C      OUT	0x3C,R2
+(0144)  XMCRA = 0x00; //external memory
+    00CC 9220006D  STS	0x6D,R2
+(0145)  port_init();
+    00CE DF99      RCALL	_port_init
+(0146)  timer0_init();
+    00CF DFAD      RCALL	_timer0_init
+(0147)  timer1_init();
+    00D0 DFBF      RCALL	_timer1_init
+(0148) 
+(0149)  MCUCR = 0x00;
+    00D1 2422      CLR	R2
+    00D2 BE25      OUT	0x35,R2
+(0150)  EICRA = 0x00; //extended ext ints
+    00D3 9220006A  STS	0x6A,R2
+(0151)  EICRB = 0x00; //extended ext ints
+    00D5 BE2A      OUT	0x3A,R2
+(0152)  EIMSK = 0x00;
+    00D6 BE29      OUT	0x39,R2
+(0153)  TIMSK = 0x05; //timer interrupt sources
+    00D7 E085      LDI	R24,5
+    00D8 BF87      OUT	0x37,R24
+(0154)   
+(0155)  SEI(); //re-enable interrupts
+    00D9 9478      BSET	7
+    00DA 9508      RET
+(0156)  //all peripherals are now initialized
+(0157) }
+(0158) 
+(0159) //
+(0160) void main(void)
+(0161) {
+(0162)  int i,j;
+(0163)  init_devices();
+FILE: <library>
+_main:
+  j                    --> Y+1
+  i                    --> Y+1
+    00DB DFED      RCALL	_init_devices
+    00DC 9508      RET

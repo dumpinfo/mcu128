@@ -1,0 +1,366 @@
+<HTML>
+<HEAD>
+<META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=gb_2312-80">
+<META NAME="Generator" CONTENT="Microsoft FrontPage 5.0">
+<TITLE>单片机第二十课：中断系统</TITLE>
+<META NAME="Template" CONTENT="C:\PROGRAM FILES\MICROSOFT OFFICE\OFFICE\html.dot">
+</HEAD>
+<BODY LINK="#0000ff" VLINK="#800080" background="../back.jpg">
+<FONT FACE="宋体" LANG="ZH-CN" size="2">
+<P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">单片机第二十课：中断系统</P>
+</FONT><OL><FONT FACE="宋体" LANG="ZH-CN">
+
+<P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0"><LI>
+  <p style="line-height: 150%; margin-top: 0; margin-bottom: 0"><font size="2">有关中断的概念</LI></font></p>
+  <p style="line-height: 150%; margin-top: 0; margin-bottom: 0"></P>
+<P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">
+<font size="2">什么是中断，我们从一个生活中的例子引入。你正在家中看书，突然电话铃响了，你放下书本，去接电话，和来电话的人交谈，然后放下电话，回来继续看你的书。这就是生活中的“中断”的现象，就是正常的工作过程被外部的事件打断了。</font></P>
+</font>
+  <P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">
+  <font size="2" FACE="宋体" LANG="ZH-CN">仔细研究一下生活中的中断，对于我们学习单片机的中断也很有好处。第一、什么可经引起中断，生活中很多事件可以引起中断：有人按了门铃了，电话铃响了，你的闹钟闹响了，你烧的水开了</font><font size="2"><FONT FACE="System" LANG="ZH-CN">….</FONT><FONT FACE="宋体" LANG="ZH-CN">等等诸如此类的事件，我们把可以引起中断的称之为中断源，单片机中也有一些可以引起中断的事件，</FONT><FONT FACE="System" LANG="ZH-CN">8031</FONT><FONT FACE="宋体" LANG="ZH-CN">中一共有</FONT><FONT FACE="System" LANG="ZH-CN">5</FONT><FONT FACE="宋体" LANG="ZH-CN">个：两个外部中断，两个计数</FONT><FONT FACE="System" LANG="ZH-CN">/</FONT></font><font size="2" FACE="宋体" LANG="ZH-CN">定时器中断，一个串行口中断。</font></P>
+  <FONT FACE="宋体" LANG="ZH-CN" size="2">
+<P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">第二、中断的嵌套与优先级处理：设想一下，我们正在看书，电话铃响了，同时又有人按了门铃，你该先做那样呢？如果你正是在等一个很重要的电话，你一般不会去理会门铃的，而反之，你正在等一个重要的客人，则可能就不会去理会电话了。如果不是这两者（即不等电话，也不是等人上门），你可能会按你通常的习惯去处理。总之这里存在一个优先级的问题，单片机中也是如此，也有优先级的问题。优先级的问题不仅仅发生在两个中断同时产生的情况，也发生在一个中断已产生，又有一个中断产生的情况，比如你正接电话，有人按门铃的情况，或你正开门与人交谈，又有电话响了情况。考虑一下我们会怎么办吧。</P>
+</FONT>
+  <P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">
+  <font size="2" FACE="宋体" LANG="ZH-CN">第三、中断的响应过程：当有事件产生，进入中断之前我们必须先记住现在看书的第几页了，或拿一个书签放在当前页的位置，然后去处理不同的事情（因为处理完了，我们还要回来继续看书）：电话铃响我们要到放电话的地方去，门铃响我们要到门那边去，也说是不同的中断，我们要在不同的地点处理，而这个地点通常还是固定的。计算机中也是采用的这种方法，五个中断源，每个中断产生后都到一个固定的地方去找处理这个中断的程序，当然在去之前首先要保存下面将执行的指令的地址，以便处理完中断后回到原来的地方继续往下执行程序。具体地说，中断响应可以分为以下几个步骤：</font><font size="2"><FONT FACE="System" LANG="ZH-CN">1</FONT><FONT FACE="宋体" LANG="ZH-CN">、保护断点，即保存下一将要执行的指令的地址，就是把这个地址送入堆栈。</FONT><FONT FACE="System" LANG="ZH-CN">2</FONT><FONT FACE="宋体" LANG="ZH-CN">、寻找中断入口，根据</FONT><FONT FACE="System" LANG="ZH-CN">5</FONT><FONT FACE="宋体" LANG="ZH-CN">个不同的中断源所产生的中断，查找</FONT><FONT FACE="System" LANG="ZH-CN">5</FONT><FONT FACE="宋体" LANG="ZH-CN">个不同的入口地址。以上工作是由计算机自动完成的，与编程者无关。在这</FONT><FONT FACE="System" LANG="ZH-CN">5</FONT><FONT FACE="宋体" LANG="ZH-CN">个入口地址处存放有中断处理程序（这是程序编写时放在那儿的，如果没把中断程序放在那儿，就错了，中断程序就不能被执行到）。</FONT><FONT FACE="System" LANG="ZH-CN">3</FONT><FONT FACE="宋体" LANG="ZH-CN">、执行中断处理程序。</FONT><FONT FACE="System" LANG="ZH-CN">4</FONT></font><font size="2" FACE="宋体" LANG="ZH-CN">、中断返回：执行完中断指令后，就从中断处返回到主程序，继续执行。</font></P>
+  <FONT FACE="宋体" LANG="ZH-CN" size="2">
+<P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">究竟单片机是怎么样找到中断程序所在位置，又怎么返回的呢？我们稍后再谈。</P>
+</FONT><FONT FACE="System" LANG="ZH-CN">
+  <P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0"></FONT><LI>
+  <p style="line-height: 150%; margin-top: 0; margin-bottom: 0">
+  <font size="2" FACE="System" LANG="ZH-CN">MCS-51</font><font size="2"><FONT FACE="宋体" LANG="ZH-CN">中断系统的结构：</font></LI></font><FONT FACE="宋体" LANG="ZH-CN"></p>
+  <p style="line-height: 150%; margin-top: 0; margin-bottom: 0"></P></font></OL>
+<P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">
+
+<font size="2" FACE="宋体" LANG="ZH-CN">如图（抱歉，本图请找本</font><font size="2"><FONT FACE="System" LANG="ZH-CN">51</FONT><FONT FACE="宋体" LANG="ZH-CN">书看一下）所示，由与中断有关的特殊功能寄存器、中断入口、顺序查询逻辑电路等组成，包括</FONT><FONT FACE="System" LANG="ZH-CN">5</FONT><FONT FACE="宋体" LANG="ZH-CN">个中断请求源，</FONT><FONT FACE="System" LANG="ZH-CN">4</FONT><FONT FACE="宋体" LANG="ZH-CN">个用于中断控制的寄存器</FONT><FONT FACE="System" LANG="ZH-CN">IE</FONT><FONT FACE="宋体" LANG="ZH-CN">、</FONT><FONT FACE="System" LANG="ZH-CN">IP</FONT><FONT FACE="宋体" LANG="ZH-CN">、</FONT><FONT FACE="System" LANG="ZH-CN">ECON</FONT><FONT FACE="宋体" LANG="ZH-CN">和</FONT><FONT FACE="System" LANG="ZH-CN">SCON</FONT><FONT FACE="宋体" LANG="ZH-CN">来控制中断</FONT>
+</font><font size="2" FACE="宋体" LANG="ZH-CN">类弄、中断的开、关和各种中断源的优先级确定。</font></P><FONT FACE="宋体" LANG="ZH-CN">
+<OL>
+
+<P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0"><LI>
+<p style="line-height: 150%; margin-top: 0; margin-bottom: 0"><font size="2">中断请求源：</LI></font></p>
+<p style="line-height: 150%; margin-top: 0; margin-bottom: 0"></P></OL>
+</FONT><DIR>
+  <P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">
+
+<font size="2" FACE="宋体" LANG="ZH-CN">（</font><font size="2"><FONT FACE="System" LANG="ZH-CN">1</FONT><FONT FACE="宋体" LANG="ZH-CN">）外部中断请求源：即外中断</FONT><FONT FACE="System" LANG="ZH-CN">0</FONT><FONT FACE="宋体" LANG="ZH-CN">和</FONT><FONT FACE="System" LANG="ZH-CN">1</FONT><FONT FACE="宋体" LANG="ZH-CN">，经由外部引脚引入的，在单片机上有两个引脚，名称为</FONT><FONT FACE="System" LANG="ZH-CN">INT0</FONT><FONT FACE="宋体" LANG="ZH-CN">、</FONT><FONT FACE="System" LANG="ZH-CN">INT1</FONT><FONT FACE="宋体" LANG="ZH-CN">，也就是</FONT><FONT FACE="System" LANG="ZH-CN">P3.2</FONT><FONT FACE="宋体" LANG="ZH-CN">、</FONT><FONT FACE="System" LANG="ZH-CN">P3.3</FONT><FONT FACE="宋体" LANG="ZH-CN">这两个引脚。在内部的</FONT><FONT FACE="System" LANG="ZH-CN">TCON</FONT></font><font size="2" FACE="宋体" LANG="ZH-CN">中有四位是与外中断有关的。</font></P>
+<P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">
+<font size="2" FACE="System" LANG="ZH-CN">IT0</font><font size="2"><FONT FACE="宋体" LANG="ZH-CN">：</FONT><FONT FACE="System" LANG="ZH-CN">INT0</FONT><FONT FACE="宋体" LANG="ZH-CN">触发方式控制位，可由软件进和置位和复位，</FONT><FONT FACE="System" LANG="ZH-CN">IT0=0</FONT><FONT FACE="宋体" LANG="ZH-CN">，</FONT><FONT FACE="System" LANG="ZH-CN">INT0</FONT><FONT FACE="宋体" LANG="ZH-CN">为低电平触发方式，</FONT><FONT FACE="System" LANG="ZH-CN">IT0=1</FONT><FONT FACE="宋体" LANG="ZH-CN">，</FONT><FONT FACE="System" LANG="ZH-CN">INT0</FONT></font><font size="2" FACE="宋体" LANG="ZH-CN">为负跳变触发方式。这两种方式的差异将在以后再谈。</font></P>
+<P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">
+<font size="2" FACE="System" LANG="ZH-CN">IE0</font><font size="2"><FONT FACE="宋体" LANG="ZH-CN">：</FONT><FONT FACE="System" LANG="ZH-CN">INT0</FONT><FONT FACE="宋体" LANG="ZH-CN">中断请求标志位。当有外部的中断请求时，这位就会置</FONT><FONT FACE="System" LANG="ZH-CN">1</FONT><FONT FACE="宋体" LANG="ZH-CN">（这由硬件来完成），在</FONT><FONT FACE="System" LANG="ZH-CN">CPU</FONT><FONT FACE="宋体" LANG="ZH-CN">响应中断后，由硬件将</FONT><FONT FACE="System" LANG="ZH-CN">IE0</FONT><FONT FACE="宋体" LANG="ZH-CN">清</FONT><FONT FACE="System" LANG="ZH-CN">0</FONT></font><font size="2" FACE="宋体" LANG="ZH-CN">。</font></P>
+<P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">
+<font size="2" FACE="System" LANG="ZH-CN">IT1</font><font size="2"><FONT FACE="宋体" LANG="ZH-CN">、</FONT><FONT FACE="System" LANG="ZH-CN">IE1</FONT><FONT FACE="宋体" LANG="ZH-CN">的用途和</FONT><FONT FACE="System" LANG="ZH-CN">IT0</FONT><FONT FACE="宋体" LANG="ZH-CN">、</FONT><FONT FACE="System" LANG="ZH-CN">IE0</FONT></font><font size="2" FACE="宋体" LANG="ZH-CN">相同。</font></P>
+  <P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">
+<font size="2" FACE="宋体" LANG="ZH-CN">（</font><FONT FACE="System" LANG="ZH-CN" size="2">2</FONT><font size="2" FACE="宋体" LANG="ZH-CN">）内部中断请求源</font></P>
+<P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">
+<font size="2" FACE="System" LANG="ZH-CN">TF0</font><font size="2"><FONT FACE="宋体" LANG="ZH-CN">：定时器</FONT><FONT FACE="System" LANG="ZH-CN">T0</FONT><FONT FACE="宋体" LANG="ZH-CN">的溢出中断标记，当</FONT><FONT FACE="System" LANG="ZH-CN">T0</FONT><FONT FACE="宋体" LANG="ZH-CN">计数产生溢出时，由硬件置位</FONT><FONT FACE="System" LANG="ZH-CN">TF0</FONT><FONT FACE="宋体" LANG="ZH-CN">。当</FONT><FONT FACE="System" LANG="ZH-CN">CPU</FONT><FONT FACE="宋体" LANG="ZH-CN">响应中断后，再由硬件将</FONT><FONT FACE="System" LANG="ZH-CN">TF0</FONT><FONT FACE="宋体" LANG="ZH-CN">清</FONT><FONT FACE="System" LANG="ZH-CN">0</FONT></font><font size="2" FACE="宋体" LANG="ZH-CN">。</font></P>
+<P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">
+<font size="2" FACE="System" LANG="ZH-CN">TF1</font><font size="2"><FONT FACE="宋体" LANG="ZH-CN">：与</FONT><FONT FACE="System" LANG="ZH-CN">TF0</FONT></font><font size="2" FACE="宋体" LANG="ZH-CN">类似。</font></P>
+<P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">
+<font size="2" FACE="System" LANG="ZH-CN">TI</font><font size="2"><FONT FACE="宋体" LANG="ZH-CN">、</FONT><FONT FACE="System" LANG="ZH-CN">RI</FONT></font><font size="2" FACE="宋体" LANG="ZH-CN">：串行口发送、接收中断，在串口中再讲解。</font></P></DIR>
+
+<P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">
+<font size="2" FACE="System" LANG="ZH-CN">2</font><FONT FACE="宋体" LANG="ZH-CN" size="2">、中断允许寄存器</FONT><font size="2" FACE="System" LANG="ZH-CN">IE</font></P>
+<P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">
+<font size="2" FACE="宋体" LANG="ZH-CN">在</font><font size="2"><FONT FACE="System" LANG="ZH-CN">MCS</FONT><FONT FACE="宋体" LANG="ZH-CN">－</FONT><FONT FACE="System" LANG="ZH-CN">51</FONT><FONT FACE="宋体" LANG="ZH-CN">中断系统中，中断的允许或禁止是由片内可进行位寻址的</FONT><FONT FACE="System" LANG="ZH-CN">8</FONT><FONT FACE="宋体" LANG="ZH-CN">位中断允许寄存器</FONT><FONT FACE="System" LANG="ZH-CN">IE</FONT></font><font size="2" FACE="宋体" LANG="ZH-CN">来控制的。见下表</font></P>
+<TABLE BORDER CELLSPACING=1 CELLPADDING=7 WIDTH=607>
+<TR><TD WIDTH="13%" VALIGN="TOP">
+<FONT FACE="System" LANG="ZH-CN" size="2">
+<P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">EA</FONT></TD>
+<TD WIDTH="13%" VALIGN="TOP">
+<FONT FACE="System" LANG="ZH-CN" size="2">
+<P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">X</FONT></TD>
+<TD WIDTH="13%" VALIGN="TOP">
+<FONT FACE="System" LANG="ZH-CN" size="2">
+<P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">X</FONT></TD>
+<TD WIDTH="13%" VALIGN="TOP">
+<FONT FACE="System" LANG="ZH-CN" size="2">
+<P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">ES</FONT></TD>
+<TD WIDTH="13%" VALIGN="TOP">
+<FONT FACE="System" LANG="ZH-CN" size="2">
+<P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">ET1</FONT></TD>
+<TD WIDTH="13%" VALIGN="TOP">
+<FONT FACE="System" LANG="ZH-CN" size="2">
+<P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">EX1</FONT></TD>
+<TD WIDTH="13%" VALIGN="TOP">
+<FONT FACE="System" LANG="ZH-CN" size="2">
+<P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">ET0</FONT></TD>
+<TD WIDTH="13%" VALIGN="TOP">
+<FONT FACE="System" LANG="ZH-CN" size="2">
+<P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">EX0</FONT></TD>
+</TR>
+</TABLE>
+
+<P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">
+<font size="2" FACE="宋体" LANG="ZH-CN">其中</font><font size="2"><FONT FACE="System" LANG="ZH-CN">EA</FONT><FONT FACE="宋体" LANG="ZH-CN">是总开关，如果它等于</FONT><FONT FACE="System" LANG="ZH-CN">0</FONT></font><font size="2" FACE="宋体" LANG="ZH-CN">，则所有中断都不允许。</font></P>
+<P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">
+<font size="2" FACE="System" LANG="ZH-CN">ES</font><font size="2" FACE="宋体" LANG="ZH-CN">－串行口中断允许</font></P>
+<P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">
+<font size="2" FACE="System" LANG="ZH-CN">ET1</font><font size="2"><FONT FACE="宋体" LANG="ZH-CN">－定时器</FONT><FONT FACE="System" LANG="ZH-CN">1</FONT></font><font size="2" FACE="宋体" LANG="ZH-CN">中断允许</font></P>
+<P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">
+<font size="2" FACE="System" LANG="ZH-CN">EX1</font><font size="2"><FONT FACE="宋体" LANG="ZH-CN">－外中断</FONT><FONT FACE="System" LANG="ZH-CN">1</FONT></font><font size="2" FACE="宋体" LANG="ZH-CN">中断允许。</font></P>
+<P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">
+<font size="2" FACE="System" LANG="ZH-CN">ET0</font><font size="2"><FONT FACE="宋体" LANG="ZH-CN">－定时器</FONT><FONT FACE="System" LANG="ZH-CN">0</FONT></font><font size="2" FACE="宋体" LANG="ZH-CN">中断允许</font></P>
+<P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">
+<font size="2" FACE="System" LANG="ZH-CN">EX0</font><font size="2"><FONT FACE="宋体" LANG="ZH-CN">－外中断</FONT><FONT FACE="System" LANG="ZH-CN">0</FONT></font><font size="2" FACE="宋体" LANG="ZH-CN">中断允许。</font></P>
+<P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">
+<font size="2" FACE="宋体" LANG="ZH-CN">如果我们要设置允许外中断</font><font size="2"><FONT FACE="System" LANG="ZH-CN">1</FONT><FONT FACE="宋体" LANG="ZH-CN">，定时器</FONT><FONT FACE="System" LANG="ZH-CN">1</FONT><FONT FACE="宋体" LANG="ZH-CN">中断允许，其它不允许，则</FONT><FONT FACE="System" LANG="ZH-CN">IE</FONT></font><font size="2" FACE="宋体" LANG="ZH-CN">可以是</font></P>
+<TABLE BORDER CELLSPACING=1 CELLPADDING=7 WIDTH=607>
+<TR><TD WIDTH="13%" VALIGN="TOP">
+<FONT FACE="System" LANG="ZH-CN" size="2">
+<P ALIGN="CENTER" style="line-height: 150%; margin-top: 0; margin-bottom: 0">EA</FONT></TD>
+<TD WIDTH="13%" VALIGN="TOP">
+<FONT FACE="System" LANG="ZH-CN" size="2">
+<P ALIGN="CENTER" style="line-height: 150%; margin-top: 0; margin-bottom: 0">X</FONT></TD>
+<TD WIDTH="13%" VALIGN="TOP">
+<FONT FACE="System" LANG="ZH-CN" size="2">
+<P ALIGN="CENTER" style="line-height: 150%; margin-top: 0; margin-bottom: 0">X</FONT></TD>
+<TD WIDTH="13%" VALIGN="TOP">
+<FONT FACE="System" LANG="ZH-CN" size="2">
+<P ALIGN="CENTER" style="line-height: 150%; margin-top: 0; margin-bottom: 0">ES</FONT></TD>
+<TD WIDTH="13%" VALIGN="TOP">
+<FONT FACE="System" LANG="ZH-CN" size="2">
+<P ALIGN="CENTER" style="line-height: 150%; margin-top: 0; margin-bottom: 0">ET1</FONT></TD>
+<TD WIDTH="13%" VALIGN="TOP">
+<FONT FACE="System" LANG="ZH-CN" size="2">
+<P ALIGN="CENTER" style="line-height: 150%; margin-top: 0; margin-bottom: 0">EX1</FONT></TD>
+<TD WIDTH="13%" VALIGN="TOP">
+<FONT FACE="System" LANG="ZH-CN" size="2">
+<P ALIGN="CENTER" style="line-height: 150%; margin-top: 0; margin-bottom: 0">ET0</FONT></TD>
+<TD WIDTH="13%" VALIGN="TOP">
+<FONT FACE="System" LANG="ZH-CN" size="2">
+<P ALIGN="CENTER" style="line-height: 150%; margin-top: 0; margin-bottom: 0">EX0</FONT></TD>
+</TR>
+<TR><TD WIDTH="13%" VALIGN="TOP">
+<FONT FACE="System" LANG="ZH-CN" size="2">
+<P ALIGN="CENTER" style="line-height: 150%; margin-top: 0; margin-bottom: 0">1</FONT></TD>
+<TD WIDTH="13%" VALIGN="TOP">
+<FONT FACE="System" LANG="ZH-CN" size="2">
+<P ALIGN="CENTER" style="line-height: 150%; margin-top: 0; margin-bottom: 0">0</FONT></TD>
+<TD WIDTH="13%" VALIGN="TOP">
+<FONT FACE="System" LANG="ZH-CN" size="2">
+<P ALIGN="CENTER" style="line-height: 150%; margin-top: 0; margin-bottom: 0">0</FONT></TD>
+<TD WIDTH="13%" VALIGN="TOP">
+<FONT FACE="System" LANG="ZH-CN" size="2">
+<P ALIGN="CENTER" style="line-height: 150%; margin-top: 0; margin-bottom: 0">0</FONT></TD>
+<TD WIDTH="13%" VALIGN="TOP">
+<FONT FACE="System" LANG="ZH-CN" size="2">
+<P ALIGN="CENTER" style="line-height: 150%; margin-top: 0; margin-bottom: 0">1</FONT></TD>
+<TD WIDTH="13%" VALIGN="TOP">
+<FONT FACE="System" LANG="ZH-CN" size="2">
+<P ALIGN="CENTER" style="line-height: 150%; margin-top: 0; margin-bottom: 0">1</FONT></TD>
+<TD WIDTH="13%" VALIGN="TOP">
+<FONT FACE="System" LANG="ZH-CN" size="2">
+<P ALIGN="CENTER" style="line-height: 150%; margin-top: 0; margin-bottom: 0">0</FONT></TD>
+<TD WIDTH="13%" VALIGN="TOP">
+<FONT FACE="System" LANG="ZH-CN" size="2">
+<P ALIGN="CENTER" style="line-height: 150%; margin-top: 0; margin-bottom: 0">0</FONT></TD>
+</TR>
+</TABLE>
+
+<P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">
+<font size="2" FACE="宋体" LANG="ZH-CN">即</font><FONT FACE="System" LANG="ZH-CN" size="2">8CH</FONT><font size="2" FACE="宋体" LANG="ZH-CN">，当然，我们也可以用位操作指令</font></P>
+<P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">
+<font size="2" FACE="System" LANG="ZH-CN">SETB&#9;EA</font><FONT FACE="宋体" LANG="ZH-CN" size="2"><BR>
+</FONT><font size="2" FACE="System" LANG="ZH-CN">SETB&#9;ET1</font></P>
+<FONT FACE="System" LANG="ZH-CN" size="2">
+<P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">SETB&#9;EX1</P>
+</FONT><FONT FACE="宋体" LANG="ZH-CN" size="2">
+<P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">来实现它。</P>
+</FONT>
+<P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">
+<font size="2" FACE="System" LANG="ZH-CN">3</font><font size="2" FACE="宋体" LANG="ZH-CN">、五个中断源的自然优先级与中断服务入口地址</font></P><DIR>
+  <P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">
+
+<font size="2" FACE="宋体" LANG="ZH-CN">外中断</font><font size="2"><FONT FACE="System" LANG="ZH-CN">0</FONT><FONT FACE="宋体" LANG="ZH-CN">：</FONT></font><font size="2" FACE="System" LANG="ZH-CN">0003H</font></P>
+<P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">
+<font size="2" FACE="宋体" LANG="ZH-CN">定时器</font><font size="2"><FONT FACE="System" LANG="ZH-CN">0</FONT><FONT FACE="宋体" LANG="ZH-CN">：</FONT></font><font size="2" FACE="System" LANG="ZH-CN">000BH</font></P>
+<P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">
+<font size="2" FACE="宋体" LANG="ZH-CN">外中断</font><font size="2"><FONT FACE="System" LANG="ZH-CN">1</FONT><FONT FACE="宋体" LANG="ZH-CN">：</FONT></font><font size="2" FACE="System" LANG="ZH-CN">0013H</font></P>
+<P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">
+<font size="2" FACE="宋体" LANG="ZH-CN">定时器</font><font size="2"><FONT FACE="System" LANG="ZH-CN">1</FONT><FONT FACE="宋体" LANG="ZH-CN">：</FONT></font><font size="2" FACE="System" LANG="ZH-CN">001BH</font></P>
+<P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">
+<font size="2" FACE="宋体" LANG="ZH-CN">串口</font><font size="2"> <FONT FACE="宋体" LANG="ZH-CN">：</FONT></font><font size="2" FACE="System" LANG="ZH-CN">0023H</font></P>
+<FONT FACE="宋体" LANG="ZH-CN">
+  <P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">
+  <font size="2">它们的自然优先级由高到低排列。</font></P>
+<P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">
+<font size="2">写到这里，大家应当明白，为什么前面有一些程序一始我们这样写：</font></P>
+</FONT><FONT FACE="System" LANG="ZH-CN">
+  <P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">
+  <font size="2">ORG&#9;0000H</font></P>
+<P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">
+<font size="2">LJMP&#9;START</font></P>
+<P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">
+<font size="2">ORG&#9;0030H</font></P>
+</FONT>
+  <P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">
+  <font size="2" FACE="System" LANG="ZH-CN">START</font><font size="2" FACE="宋体" LANG="ZH-CN">：</font></P>
+<FONT FACE="System" LANG="ZH-CN" size="2">
+  <P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">。</P>
+</FONT><FONT FACE="宋体" LANG="ZH-CN">
+  <P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">
+  <font size="2">。</font></P>
+<P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">
+<font size="2">。</font></P>
+</FONT>
+  <P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">
+  <font size="2" FACE="宋体" LANG="ZH-CN">这样写的目的，就是为了让出中断源所占用的向量地址。当然，在程序中没用中断时，直接从</font><FONT FACE="System" LANG="ZH-CN" size="2">0000H</FONT><font size="2" FACE="宋体" LANG="ZH-CN">开始写程序，在原理上并没有错，但在实际工作中最好不这样做。</font></P>
+  <FONT FACE="宋体" LANG="ZH-CN" size="2">
+<P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">优先级：单片机采用了自然优先级和人工设置高、低优先级的策略，即可以由程序员设定那些中断是高优先级、哪些中断是低优先级，由于只有两级，必有一些中断处于同一级别，处于同一级别的，就由自然优先级确定。</P></font></DIR>
+<P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">
+
+<font size="2" FACE="宋体" LANG="ZH-CN">开机时，每个中断都处于低优先级，我们可以用指令对优先级进行设置。看表</font><font size="2" FACE="System" LANG="ZH-CN">2</font></P>
+<P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">
+<font size="2" FACE="宋体" LANG="ZH-CN">中断优先级中由中断优先级寄存器</font><font size="2"><FONT FACE="System" LANG="ZH-CN">IP</FONT><FONT FACE="宋体" LANG="ZH-CN">来高置的，</FONT><FONT FACE="System" LANG="ZH-CN">IP</FONT><FONT FACE="宋体" LANG="ZH-CN">中某位设为</FONT><FONT FACE="System" LANG="ZH-CN">1</FONT></font><font size="2" FACE="宋体" LANG="ZH-CN">，相应的中断就是高优先级，否则就是低优先级。</font></P>
+<P ALIGN="CENTER" style="line-height: 150%; margin-top: 0; margin-bottom: 0"><CENTER><TABLE BORDER CELLSPACING=1 CELLPADDING=7 WIDTH=607>
+<TR><TD WIDTH="13%" VALIGN="TOP">
+<FONT FACE="System" LANG="ZH-CN" size="2">
+<P ALIGN="CENTER" style="line-height: 150%; margin-top: 0; margin-bottom: 0">X</FONT></TD>
+<TD WIDTH="13%" VALIGN="TOP">
+<FONT FACE="System" LANG="ZH-CN" size="2">
+<P ALIGN="CENTER" style="line-height: 150%; margin-top: 0; margin-bottom: 0">X</FONT></TD>
+<TD WIDTH="13%" VALIGN="TOP">
+<FONT FACE="System" LANG="ZH-CN" size="2">
+<P ALIGN="CENTER" style="line-height: 150%; margin-top: 0; margin-bottom: 0">X</FONT></TD>
+<TD WIDTH="13%" VALIGN="TOP">
+<FONT FACE="System" LANG="ZH-CN" size="2">
+<P ALIGN="CENTER" style="line-height: 150%; margin-top: 0; margin-bottom: 0">PS</FONT></TD>
+<TD WIDTH="13%" VALIGN="TOP">
+<FONT FACE="System" LANG="ZH-CN" size="2">
+<P ALIGN="CENTER" style="line-height: 150%; margin-top: 0; margin-bottom: 0">PT1</FONT></TD>
+<TD WIDTH="13%" VALIGN="TOP">
+<FONT FACE="System" LANG="ZH-CN" size="2">
+<P ALIGN="CENTER" style="line-height: 150%; margin-top: 0; margin-bottom: 0">PX1</FONT></TD>
+<TD WIDTH="13%" VALIGN="TOP">
+<FONT FACE="System" LANG="ZH-CN" size="2">
+<P ALIGN="CENTER" style="line-height: 150%; margin-top: 0; margin-bottom: 0">PT0</FONT></TD>
+<TD WIDTH="13%" VALIGN="TOP">
+<FONT FACE="System" LANG="ZH-CN" size="2">
+<P ALIGN="CENTER" style="line-height: 150%; margin-top: 0; margin-bottom: 0">PX0</FONT></TD>
+</TR>
+</TABLE>
+</CENTER><p style="line-height: 150%; margin-top: 0; margin-bottom: 0"></P>
+<DIR>
+
+<P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">
+<font size="2" FACE="宋体" LANG="ZH-CN">例：设有如下要求，将</font><font size="2"><FONT FACE="System" LANG="ZH-CN">T0</FONT><FONT FACE="宋体" LANG="ZH-CN">、外中断</FONT><FONT FACE="System" LANG="ZH-CN">1</FONT><FONT FACE="宋体" LANG="ZH-CN">设为高优先级，其它为低优先级，求</FONT><FONT FACE="System" LANG="ZH-CN">IP</FONT></font><font size="2" FACE="宋体" LANG="ZH-CN">的值。</font></P>
+<P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">
+<font size="2" FACE="System" LANG="ZH-CN">IP</font><font size="2"><FONT FACE="宋体" LANG="ZH-CN">的首</FONT><FONT FACE="System" LANG="ZH-CN">3</FONT><FONT FACE="宋体" LANG="ZH-CN">位没用，可任意取值，设为</FONT><FONT FACE="System" LANG="ZH-CN">000</FONT></font><font size="2" FACE="宋体" LANG="ZH-CN">，后面根据要求写就可以了</font></P></DIR>
+
+<TABLE BORDER CELLSPACING=1 CELLPADDING=7 WIDTH=697>
+<TR><TD WIDTH="64" VALIGN="TOP">
+<FONT FACE="System" LANG="ZH-CN" size="2">
+<P ALIGN="CENTER" style="line-height: 150%; margin-top: 0; margin-bottom: 0">X</FONT></TD>
+<TD WIDTH="66" VALIGN="TOP">
+<FONT FACE="System" LANG="ZH-CN" size="2">
+<P ALIGN="CENTER" style="line-height: 150%; margin-top: 0; margin-bottom: 0">X</FONT></TD>
+<TD WIDTH="71" VALIGN="TOP">
+<FONT FACE="System" LANG="ZH-CN" size="2">
+<P ALIGN="CENTER" style="line-height: 150%; margin-top: 0; margin-bottom: 0">X</FONT></TD>
+<TD WIDTH="69" VALIGN="TOP">
+<FONT FACE="System" LANG="ZH-CN" size="2">
+<P ALIGN="CENTER" style="line-height: 150%; margin-top: 0; margin-bottom: 0">PS</FONT></TD>
+<TD WIDTH="78" VALIGN="TOP">
+<FONT FACE="System" LANG="ZH-CN" size="2">
+<P ALIGN="CENTER" style="line-height: 150%; margin-top: 0; margin-bottom: 0">PT1</FONT></TD>
+<TD WIDTH="82" VALIGN="TOP">
+<FONT FACE="System" LANG="ZH-CN" size="2">
+<P ALIGN="CENTER" style="line-height: 150%; margin-top: 0; margin-bottom: 0">PX1</FONT></TD>
+<TD WIDTH="76" VALIGN="TOP">
+<FONT FACE="System" LANG="ZH-CN" size="2">
+<P ALIGN="CENTER" style="line-height: 150%; margin-top: 0; margin-bottom: 0">PT0</FONT></TD>
+<TD WIDTH="77" VALIGN="TOP">
+<FONT FACE="System" LANG="ZH-CN" size="2">
+<P ALIGN="CENTER" style="line-height: 150%; margin-top: 0; margin-bottom: 0">PX0</FONT></TD>
+</TR>
+<TR><TD WIDTH="64" VALIGN="TOP">
+<FONT FACE="System" LANG="ZH-CN" size="2">
+<P ALIGN="CENTER" style="line-height: 150%; margin-top: 0; margin-bottom: 0">0</FONT></TD>
+<TD WIDTH="66" VALIGN="TOP">
+<FONT FACE="System" LANG="ZH-CN" size="2">
+<P ALIGN="CENTER" style="line-height: 150%; margin-top: 0; margin-bottom: 0">0</FONT></TD>
+<TD WIDTH="71" VALIGN="TOP">
+<FONT FACE="System" LANG="ZH-CN" size="2">
+<P ALIGN="CENTER" style="line-height: 150%; margin-top: 0; margin-bottom: 0">0</FONT></TD>
+<TD WIDTH="69" VALIGN="TOP">
+<FONT FACE="System" LANG="ZH-CN" size="2">
+<P ALIGN="CENTER" style="line-height: 150%; margin-top: 0; margin-bottom: 0">0</FONT></TD>
+<TD WIDTH="78" VALIGN="TOP">
+<FONT FACE="System" LANG="ZH-CN" size="2">
+<P ALIGN="CENTER" style="line-height: 150%; margin-top: 0; margin-bottom: 0">0</FONT></TD>
+<TD WIDTH="82" VALIGN="TOP">
+<FONT FACE="System" LANG="ZH-CN" size="2">
+<P ALIGN="CENTER" style="line-height: 150%; margin-top: 0; margin-bottom: 0">1</FONT></TD>
+<TD WIDTH="76" VALIGN="TOP">
+<FONT FACE="System" LANG="ZH-CN" size="2">
+<P ALIGN="CENTER" style="line-height: 150%; margin-top: 0; margin-bottom: 0">1</FONT></TD>
+<TD WIDTH="77" VALIGN="TOP">
+<FONT FACE="System" LANG="ZH-CN" size="2">
+<P ALIGN="CENTER" style="line-height: 150%; margin-top: 0; margin-bottom: 0">0</FONT></TD>
+</TR>
+</TABLE>
+
+<P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">
+<font size="2" FACE="宋体" LANG="ZH-CN">因此，最终，</font><font size="2"><FONT FACE="System" LANG="ZH-CN">IP</FONT><FONT FACE="宋体" LANG="ZH-CN">的值就是</FONT><FONT FACE="System" LANG="ZH-CN">06H</FONT></font><font size="2" FACE="宋体" LANG="ZH-CN">。</font></P>
+<P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">
+<font size="2" FACE="宋体" LANG="ZH-CN">例：在上例中，如果</font><FONT FACE="System" LANG="ZH-CN" size="2">5</FONT><font size="2" FACE="宋体" LANG="ZH-CN">个中断请求同时发生，求中断响应的次序。</font></P>
+<P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">
+<font size="2" FACE="宋体" LANG="ZH-CN">响应次序为：定时器</font><font size="2"><FONT FACE="System" LANG="ZH-CN">0</FONT><FONT FACE="宋体" LANG="ZH-CN">－＞外中断</FONT><FONT FACE="System" LANG="ZH-CN">1</FONT><FONT FACE="宋体" LANG="ZH-CN">－＞外中断</FONT><FONT FACE="System" LANG="ZH-CN">0</FONT><FONT FACE="宋体" LANG="ZH-CN">－＞实时器</FONT><FONT FACE="System" LANG="ZH-CN">1</FONT></font><font size="2" FACE="宋体" LANG="ZH-CN">－＞串行中断。</font></P><OL>
+<FONT FACE="System" LANG="ZH-CN">
+<P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0"></FONT><LI>
+<p style="line-height: 150%; margin-top: 0; margin-bottom: 0">
+<font size="2" FACE="System" LANG="ZH-CN">MCS</font><font size="2"><FONT FACE="宋体" LANG="ZH-CN">－</FONT><FONT FACE="System" LANG="ZH-CN">51</FONT><FONT FACE="宋体" LANG="ZH-CN">的中断响应过程：</font></LI></font><FONT FACE="宋体" LANG="ZH-CN"></p>
+<p style="line-height: 150%; margin-top: 0; margin-bottom: 0"></P></font></OL>
+
+<P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">
+<font size="2" FACE="System" LANG="ZH-CN">1</font><font size="2"><FONT FACE="宋体" LANG="ZH-CN">、中断响应的条件：讲到这儿，我们依然对于计算机响应中断感到神奇，我们人可以响应外界的事件，是因为我们有多种“传感器“――眼、耳可以接受不同的信息，计算机是如何做到这点的呢？其实说穿了，一点都不希奇，</FONT><FONT FACE="System" LANG="ZH-CN">MCS51</FONT><FONT FACE="宋体" LANG="ZH-CN">工作时，在每个机器周期中都会去查询一下各个中断标记，看他们是否是“</FONT><FONT FACE="System" LANG="ZH-CN">1</FONT><FONT FACE="宋体" LANG="ZH-CN">“，如果是</FONT><FONT FACE="System" LANG="ZH-CN">1</FONT></font><font size="2" FACE="宋体" LANG="ZH-CN">，就说明有中断请求了，所以所谓中断，其实也是查询，不过是每个周期都查一下而已。这要换成人来说，就相当于你在看书的时候，每一秒钟都会抬起头来看一看，查问一下，是不是有人按门铃，是否有电话。。。。很蠢，不是吗？可计算机本来就是这样，它根本没人聪明。</font></P>
+<P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">
+<font size="2" FACE="宋体" LANG="ZH-CN">了解了上述中断的过程，就不难解中断响应的条件了。在下列三种情况之一时，</font><FONT FACE="System" LANG="ZH-CN" size="2">CPU</FONT><font size="2" FACE="宋体" LANG="ZH-CN">将封锁对中断的响应：</font></P><OL>
+<FONT FACE="System" LANG="ZH-CN">
+<P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0"></FONT><LI>
+<p style="line-height: 150%; margin-top: 0; margin-bottom: 0">
+<font size="2" FACE="System" LANG="ZH-CN">CPU</font><font size="2"><FONT FACE="宋体" LANG="ZH-CN">正在处理一个同级或更高级别的中断请求。</font></LI></font><FONT FACE="宋体" LANG="ZH-CN"></p>
+<p style="line-height: 150%; margin-top: 0; margin-bottom: 0"></P>
+<P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0"><LI>
+<p style="line-height: 150%; margin-top: 0; margin-bottom: 0"><font size="2">现行的机器周期不是当前正执行指令的最后一个周期。我们知道，单片机有单周期、双周期、三周期指令，当前执行指令是单字节没有关系，如果是双字节或四字节的，就要等整条指令都执行完了，才能响应中断（因为中断查询是在每个机器周期都可能查到的）。</LI></font></p>
+<p style="line-height: 150%; margin-top: 0; margin-bottom: 0"></P>
+<P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0"></FONT><LI>
+<p style="line-height: 150%; margin-top: 0; margin-bottom: 0">
+<font size="2" FACE="宋体" LANG="ZH-CN">当前正执行的指令是返回批令（</font><font size="2"><FONT FACE="System" LANG="ZH-CN">RETI</FONT><FONT FACE="宋体" LANG="ZH-CN">）或访问</FONT><FONT FACE="System" LANG="ZH-CN">IP</FONT><FONT FACE="宋体" LANG="ZH-CN">、</FONT><FONT FACE="System" LANG="ZH-CN">IE</FONT><FONT FACE="宋体" LANG="ZH-CN">寄存器的指令，则</FONT><FONT FACE="System" LANG="ZH-CN">CPU</FONT><FONT FACE="宋体" LANG="ZH-CN">至少再执行一条指令才应中断。这些都是与中断有关的，如果正访问</FONT><FONT FACE="System" LANG="ZH-CN">IP</FONT><FONT FACE="宋体" LANG="ZH-CN">、</FONT><FONT FACE="System" LANG="ZH-CN">IE</FONT><FONT FACE="宋体" LANG="ZH-CN">则可能会开、关中断或改变中断的优先级，而中断返回指令则说明本次中断还没有处理完，所以都要等本指令处理结束，再执行一条指令才可以响应中断。</font></LI></font><FONT FACE="宋体" LANG="ZH-CN"></p>
+<p style="line-height: 150%; margin-top: 0; margin-bottom: 0"></P></font></OL>
+
+<P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">
+<font size="2" FACE="System" LANG="ZH-CN">2</font><font size="2" FACE="宋体" LANG="ZH-CN">、中断响应过程</font></P>
+<P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">
+<font size="2" FACE="System" LANG="ZH-CN">CPU</font><font size="2"><FONT FACE="宋体" LANG="ZH-CN">响应中断时，首先把当前指令的下一条指令（就是中断返回后将要执行的指令）的地址送入堆栈，然后根据中断标记，将相应的中断入口地址送入</FONT><FONT FACE="System" LANG="ZH-CN">PC</FONT><FONT FACE="宋体" LANG="ZH-CN">，</FONT><FONT FACE="System" LANG="ZH-CN">PC</FONT><FONT FACE="宋体" LANG="ZH-CN">是程序指针，</FONT><FONT FACE="System" LANG="ZH-CN">CPU</FONT><FONT FACE="宋体" LANG="ZH-CN">取指令就根据</FONT><FONT FACE="System" LANG="ZH-CN">PC</FONT><FONT FACE="宋体" LANG="ZH-CN">中的值，</FONT><FONT FACE="System" LANG="ZH-CN">PC</FONT><FONT FACE="宋体" LANG="ZH-CN">中是什么值，就会到什么地方去取指令，所以程序就会转到中断入口处继续执行。这些工作都是由硬件来完成的，不必我们去考虑。这里还有个问题，大家是否注意到，每个中断向量地址只间隔了</FONT><FONT FACE="System" LANG="ZH-CN">8</FONT><FONT FACE="宋体" LANG="ZH-CN">个单元，如</FONT><FONT FACE="System" LANG="ZH-CN">0003</FONT><FONT FACE="宋体" LANG="ZH-CN">－</FONT><FONT FACE="System" LANG="ZH-CN">000B</FONT><FONT FACE="宋体" LANG="ZH-CN">，在如此少的空间中如何完成中断程序呢？很简单，你在中断处安排一个</FONT><FONT FACE="System" LANG="ZH-CN">LJMP</FONT></font><font size="2" FACE="宋体" LANG="ZH-CN">指令，不就可以把中断程序跳转到任何地方了吗？</font></P>
+<FONT FACE="宋体" LANG="ZH-CN" size="2">
+<P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">一个完整的主程序看起来应该是这样的：</P>
+</FONT><FONT FACE="System" LANG="ZH-CN">
+<P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">
+<font size="2">ORG&#9;0000H</font></P>
+<P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">
+<font size="2">LJMP&#9;START</font></P>
+<P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">
+<font size="2">ORG&#9;0003H</font></P>
+</FONT>
+<P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">
+<font size="2" FACE="System" LANG="ZH-CN">LJMP&#9;INT0&#9;</font>
+<FONT FACE="宋体" LANG="ZH-CN" size="2">；转外中断</FONT><font size="2" FACE="System" LANG="ZH-CN">0</font></P>
+<FONT FACE="System" LANG="ZH-CN" size="2">
+<P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">ORG&#9;000BH</P>
+</FONT>
+<P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">
+<font size="2" FACE="System" LANG="ZH-CN">RETI&#9;</font><font size="2"><FONT FACE="宋体" LANG="ZH-CN">；没有用定时器</FONT><FONT FACE="System" LANG="ZH-CN">0</FONT><FONT FACE="宋体" LANG="ZH-CN">中断，在此放一条</FONT><FONT FACE="System" LANG="ZH-CN">RETI</FONT><FONT FACE="宋体" LANG="ZH-CN">，万一</FONT>
+</font><font size="2" FACE="宋体" LANG="ZH-CN">“不小心“产生了中断，也不会有太大的后果。</font></P><FONT FACE="宋体" LANG="ZH-CN">
+<P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">
+<font size="2">。</font></P>
+<P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">
+<font size="2">。</font></P>
+<P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">
+<font size="2">。</font></P>
+<P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">
+<font size="2">。</font></P>
+</FONT>
+<P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">
+<font size="2" FACE="宋体" LANG="ZH-CN">中断程序完成后，一定要执行一条</font><font size="2"><FONT FACE="System" LANG="ZH-CN">RETI</FONT><FONT FACE="宋体" LANG="ZH-CN">指令，执行这条指令后，</FONT><FONT FACE="System" LANG="ZH-CN">CPU</FONT><FONT FACE="宋体" LANG="ZH-CN">将会把堆栈中保存着的地址取出，送回</FONT><FONT FACE="System" LANG="ZH-CN">PC</FONT><FONT FACE="宋体" LANG="ZH-CN">，那么程序就会从主程序的中断处继续往下执行了。注意：</FONT><FONT FACE="System" LANG="ZH-CN">CPU</FONT><FONT FACE="宋体" LANG="ZH-CN">所做的保护工作是很有限的，只保护了一个地址，而其它的所有东西都不保护，所以如果你在主程序中用到了如</FONT><FONT FACE="System" LANG="ZH-CN">A</FONT><FONT FACE="宋体" LANG="ZH-CN">、</FONT><FONT FACE="System" LANG="ZH-CN">PSW</FONT></font><font size="2" FACE="宋体" LANG="ZH-CN">等，在中断程序中又要用它们，还要保证回到主程序后这里面的数据还是没执行中断以前的数据，就得自己保护起来。</font></P></BODY>
+</HTML>

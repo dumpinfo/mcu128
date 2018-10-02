@@ -1,0 +1,19 @@
+<html>
+<body>
+<pre>
+<h1>µVision2 Build Log</h1>
+<h2>Project:</h2>
+E:\Project\WL031101\Code\WL014\ASM\wl014.uv2
+Project File Date:  02/12/2004
+
+<h2>Output:</h2>
+Build target 'Target 1'
+assembling wl014.asm...
+wl014.asm(46): warning A41: MISSING 'END' STATEMENT
+linking...
+Program Size: data=8.0 xdata=0 code=64
+creating hex file from "wl014"...
+"wl014" - 0 Error(s), 1 Warning(s).
+</pre>
+</body>
+</html>

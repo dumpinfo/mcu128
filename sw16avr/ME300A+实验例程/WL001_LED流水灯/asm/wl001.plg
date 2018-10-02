@@ -1,0 +1,15 @@
+<html>
+<body>
+<pre>
+<h1>礦ision2 Build Log</h1>
+<h2>Project:</h2>
+F:\winf\ME300系列\ME300B\samples_release\WL001_LED流水灯\asm\wl001.uv2
+Project File Date:  04/07/2004
+
+<h2>Output:</h2>
+Build target 'Target 1'
+assembling wl001.asm...
+linking...
+Program Size: data=8.0 xdata=0 code=31
+creating hex file from "wl001"...
+"wl001" - 0 Error(s), 0 Warning(s).

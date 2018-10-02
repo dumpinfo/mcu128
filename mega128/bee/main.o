@@ -1,0 +1,110 @@
+XL
+H 4 areas 6 global symbols
+M main.c
+A text size 9A flags 0
+dbfile F:\mega128包\mega128例程\蜂鸣器基本实验\main.c
+dbfunc e port_init 0 fV
+dbline FFFFFFFF 0
+dbline D 0
+dbline E 0
+dbline F 4
+dbline 10 8
+dbline 11 A
+dbline 12 C
+dbline 13 E
+dbline 14 10
+dbline 15 12
+dbline 16 14
+dbline 17 16
+dbline 18 18
+dbline 19 1C
+dbline 1A 20
+dbline 1B 26
+dbline FFFFFFFE 2A
+dbline 0 2A
+dbfunc e timer0_init 2C fV
+dbline FFFFFFFF 2C
+dbline 23 2C
+dbline 24 2C
+dbline 25 30
+dbline 26 32
+dbline 27 36
+dbline 28 3A
+dbline FFFFFFFE 3E
+dbline 0 3E
+dbfunc e timer0_ovf_isr 40 fV
+dbline FFFFFFFF 48
+dbline 2D 48
+dbline 2E 48
+dbline 2F 4C
+dbline 30 52
+dbline 31 58
+dbline 33 60
+dbline FFFFFFFE 66
+dbline 0 6E
+dbfunc e init_devices 70 fV
+dbline FFFFFFFF 70
+dbline 38 70
+dbline 3A 70
+dbline 3B 72
+dbline 3C 76
+dbline 3D 7A
+dbline 3E 7C
+dbline 40 7E
+dbline 41 82
+dbline 42 86
+dbline 43 88
+dbline 44 8A
+dbline 45 8E
+dbline 46 92
+dbline FFFFFFFE 94
+dbline 0 94
+dbfunc e main 96 fV
+dbline FFFFFFFF 96
+dbline 4C 96
+dbline 4D 96
+dbline FFFFFFFE 98
+dbline 0 98
+S _main Def0096
+S _timer0_ovf_isr Def0040
+S _port_init Def0000
+S _init_devices Def0070
+S _timer0_init Def002C
+A data size 1 flags 20
+dbfile F:\mega128包\mega128例程\蜂鸣器基本实验\main.c
+dbsym e Data 0 c
+S _Data Def0000
+A idata size 1 flags 0
+A vector size 44 flags C
+T 00 00 FE
+R 00 00 02 00
+T 00 00 8F EF 8B BB 22 24 2A BA 88 BB 27 BA 85 BB
+R 00 00 00 00
+T 0E 00 24 BA 82 BB 21 BA 83 B9 22 B8 80 93 62 00
+R 00 00 00 00
+T 1C 00 20 92 61 00 8F E1 80 93 65 00 20 92 64 00
+R 00 00 00 00
+T 2A 00 08 95
+R 00 00 00 00
+T 2C 00 22 24 23 BE 20 BE 85 EB 82 BF 8B E4 81 BF
+R 00 00 00 00
+T 3A 00 82 E0 83 BF 08 95
+R 00 00 00 00
+T 40 00 0C 94 20 00
+R 00 00 03 00 10 04 00 00
+T 40 00 2A 92 8A 93 2F B6 2A 92 85 EB 82 BF 20 90
+R 00 00 00 00
+T 4E 00 00 00 2B BA 82 2D 8E 3F 21 F4 8F EF 80 93
+R 00 00 00 00 00 02 01 00
+T 5C 00 00 00 03 C0 8E EF 80 93 00 00 29 90 2F BE
+R 00 00 00 00 00 02 01 00 00 0A 01 00
+T 6A 00 89 91 29 90 18 95
+R 00 00 00 00
+T 70 00 F8 94 22 24 2C BE 20 92 6D 00 C2 DF D7 DF
+R 00 00 00 00
+T 7E 00 22 24 25 BE 20 92 6A 00 2A BE 29 BE 81 E0
+R 00 00 00 00
+T 8C 00 87 BF 20 92 7D 00 78 94 08 95
+R 00 00 00 00
+T 96 00 EC DF 08 95
+R 00 00 00 00

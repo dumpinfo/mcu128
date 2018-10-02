@@ -1,0 +1,276 @@
+__start:
+__text_start:
+    0047 EFCF      LDI	R28,0xFF
+    0048 E1D0      LDI	R29,0x10
+    0049 BFCD      OUT	0x3D,R28
+    004A BFDE      OUT	0x3E,R29
+    004B 51C0      SUBI	R28,0x10
+    004C 40D0      SBCI	R29,0
+    004D EA0A      LDI	R16,0xAA
+    004E 8308      STD	Y+0,R16
+    004F 2400      CLR	R0
+    0050 E0E2      LDI	R30,2
+    0051 E0F1      LDI	R31,1
+    0052 E011      LDI	R17,1
+    0053 30E2      CPI	R30,2
+    0054 07F1      CPC	R31,R17
+    0055 F011      BEQ	0x0058
+    0056 9201      ST	R0,Z+
+    0057 CFFB      RJMP	0x0053
+    0058 8300      STD	Z+0,R16
+    0059 E8EC      LDI	R30,0x8C
+    005A E0F0      LDI	R31,0
+    005B E0A0      LDI	R26,0
+    005C E0B1      LDI	R27,1
+    005D E010      LDI	R17,0
+    005E 38EE      CPI	R30,0x8E
+    005F 07F1      CPC	R31,R17
+    0060 F021      BEQ	0x0065
+    0061 95C8      LPM
+    0062 9631      ADIW	R30,1
+    0063 920D      ST	R0,X+
+    0064 CFF9      RJMP	0x005E
+    0065 940E0104  CALL	_main
+_exit:
+    0067 CFFF      RJMP	_exit
+FILE: E:\新建文件夹\avr资料\例程\m16\电机\C_LEDPMD.C
+(0001) //ICC-AVR application builder : 2007-3-14 9:32:42
+(0002) // Target : M16
+(0003) // Crystal: 7.3728Mhz
+(0004) // Designed by solo       转载请注明
+(0005) // http://www.ourembed.com     
+(0006) // qq:15537031 phone:13879805760
+(0007) //该程序使用了PA口，请将PA口接到LED的脚上，然后运行程序
+(0008) //显示结果应该是循环点亮LED，
+(0009) //请注意主频
+(0010) #include <iom16v.h>
+(0011) #include <macros.h>
+(0012) 
+(0013) unsigned LM_Data=1;
+(0014) void port_init(void)
+(0015) {
+(0016)  PORTA = 0xFF;
+_port_init:
+    0068 EF8F      LDI	R24,0xFF
+    0069 BB8B      OUT	0x1B,R24
+(0017)  DDRA  = 0xFF;
+    006A BB8A      OUT	0x1A,R24
+(0018)  PORTB = 0x00;
+    006B 2422      CLR	R2
+    006C BA28      OUT	0x18,R2
+(0019)  DDRB  = 0x00;
+    006D BA27      OUT	0x17,R2
+(0020)  PORTC = 0x00; //m103 output only
+    006E BA25      OUT	0x15,R2
+(0021)  DDRC  = 0x00;
+    006F BA24      OUT	0x14,R2
+(0022)  PORTD = 0x00;
+    0070 BA22      OUT	0x12,R2
+(0023)  DDRD  = 0x00;
+    0071 BA21      OUT	0x11,R2
+    0072 9508      RET
+(0024) }
+(0025) 
+(0026) //TIMER1 initialize - prescale:256
+(0027) // WGM: 0) Normal, TOP=0xFFFF
+(0028) // desired value: 1Sec
+(0029) // actual value:  1.000Sec (0.0%)
+(0030) void timer1_init(void)
+(0031) {
+(0032)  TCCR1B = 0x00; //stop
+_timer1_init:
+    0073 2422      CLR	R2
+    0074 BC2E      OUT	0x2E,R2
+(0033)  TCNT1H = 0xcF; //setup
+    0075 EC8F      LDI	R24,0xCF
+    0076 BD8D      OUT	0x2D,R24
+(0034)  TCNT1L = 0xc1;
+    0077 EC81      LDI	R24,0xC1
+    0078 BD8C      OUT	0x2C,R24
+(0035)  OCR1AH = 0x70;
+    0079 E780      LDI	R24,0x70
+    007A BD8B      OUT	0x2B,R24
+(0036)  OCR1AL = 0x7F;
+    007B E78F      LDI	R24,0x7F
+    007C BD8A      OUT	0x2A,R24
+(0037)  OCR1BH = 0x70;
+    007D E780      LDI	R24,0x70
+    007E BD89      OUT	0x29,R24
+(0038)  OCR1BL = 0x7F;
+    007F E78F      LDI	R24,0x7F
+    0080 BD88      OUT	0x28,R24
+(0039)  ICR1H  = 0x70;
+    0081 E780      LDI	R24,0x70
+    0082 BD87      OUT	0x27,R24
+(0040)  ICR1L  = 0x7F;
+    0083 E78F      LDI	R24,0x7F
+    0084 BD86      OUT	0x26,R24
+(0041)  TCCR1A = 0x00;
+    0085 BC2F      OUT	0x2F,R2
+(0042)  TCCR1B = 0x02; //start Timer
+    0086 E082      LDI	R24,2
+    0087 BD8E      OUT	0x2E,R24
+    0088 9508      RET
+_timer1_ovf_isr:
+    0089 922A      ST	R2,-Y
+    008A 923A      ST	R3,-Y
+    008B 938A      ST	R24,-Y
+    008C 939A      ST	R25,-Y
+    008D 93EA      ST	R30,-Y
+    008E B62F      IN	R2,0x3F
+    008F 922A      ST	R2,-Y
+(0043) }
+(0044) 
+(0045) #pragma interrupt_handler timer1_ovf_isr:9
+(0046) void timer1_ovf_isr(void)
+(0047) {
+(0048)  //TIMER1 has overflowed
+(0049)  TCNT1H = 0xeF; //reload counter high value
+    0090 EE8F      LDI	R24,0xEF
+    0091 BD8D      OUT	0x2D,R24
+(0050)  TCNT1L = 0xff; //reload counter low value
+    0092 EF8F      LDI	R24,0xFF
+    0093 BD8C      OUT	0x2C,R24
+(0051)  PORTA = LM_Data;
+    0094 90200100  LDS	R2,LM_Data
+    0096 90300101  LDS	R3,LM_Data+1
+    0098 BA2B      OUT	0x1B,R2
+(0052)  
+(0053)  switch (LM_Data)
+    0099 01C1      MOVW	R24,R2
+    009A 3081      CPI	R24,1
+    009B E0E0      LDI	R30,0
+    009C 079E      CPC	R25,R30
+    009D F0E9      BEQ	0x00BB
+    009E 3082      CPI	R24,2
+    009F E0E0      LDI	R30,0
+    00A0 079E      CPC	R25,R30
+    00A1 F139      BEQ	0x00C9
+    00A2 3083      CPI	R24,3
+    00A3 E0E0      LDI	R30,0
+    00A4 079E      CPC	R25,R30
+    00A5 F0E1      BEQ	0x00C2
+    00A6 3084      CPI	R24,4
+    00A7 E0E0      LDI	R30,0
+    00A8 079E      CPC	R25,R30
+    00A9 F169      BEQ	0x00D7
+    00AA 3086      CPI	R24,6
+    00AB E0E0      LDI	R30,0
+    00AC 079E      CPC	R25,R30
+    00AD F111      BEQ	0x00D0
+    00AE 3088      CPI	R24,0x8
+    00AF E0E0      LDI	R30,0
+    00B0 079E      CPC	R25,R30
+    00B1 F199      BEQ	0x00E5
+    00B2 3089      CPI	R24,0x9
+    00B3 E0E0      LDI	R30,0
+    00B4 079E      CPC	R25,R30
+    00B5 F1B1      BEQ	0x00EC
+    00B6 308C      CPI	R24,0xC
+    00B7 E0E0      LDI	R30,0
+    00B8 079E      CPC	R25,R30
+    00B9 F121      BEQ	0x00DE
+    00BA C037      RJMP	0x00F2
+(0054)  {
+(0055)   case 1: LM_Data = 3;
+    00BB E083      LDI	R24,3
+    00BC E090      LDI	R25,0
+    00BD 93900101  STS	LM_Data+1,R25
+    00BF 93800100  STS	LM_Data,R24
+(0056)           break;
+    00C1 C030      RJMP	0x00F2
+(0057) 		  
+(0058)   case 3: LM_Data = 2;
+    00C2 E082      LDI	R24,2
+    00C3 E090      LDI	R25,0
+    00C4 93900101  STS	LM_Data+1,R25
+    00C6 93800100  STS	LM_Data,R24
+(0059)           break;
+    00C8 C029      RJMP	0x00F2
+(0060)   case 2: LM_Data = 6;
+    00C9 E086      LDI	R24,6
+    00CA E090      LDI	R25,0
+    00CB 93900101  STS	LM_Data+1,R25
+    00CD 93800100  STS	LM_Data,R24
+(0061)           break;
+    00CF C022      RJMP	0x00F2
+(0062)   case 6: LM_Data = 4;
+    00D0 E084      LDI	R24,4
+    00D1 E090      LDI	R25,0
+    00D2 93900101  STS	LM_Data+1,R25
+    00D4 93800100  STS	LM_Data,R24
+(0063)           break;
+    00D6 C01B      RJMP	0x00F2
+(0064)   case 4: LM_Data = 12;
+    00D7 E08C      LDI	R24,0xC
+    00D8 E090      LDI	R25,0
+    00D9 93900101  STS	LM_Data+1,R25
+    00DB 93800100  STS	LM_Data,R24
+(0065)           break;
+    00DD C014      RJMP	0x00F2
+(0066)   case 12:	LM_Data = 8;
+    00DE E088      LDI	R24,0x8
+    00DF E090      LDI	R25,0
+    00E0 93900101  STS	LM_Data+1,R25
+    00E2 93800100  STS	LM_Data,R24
+(0067)           break;
+    00E4 C00D      RJMP	0x00F2
+(0068)   case 8: 	LM_Data = 9;
+    00E5 E089      LDI	R24,0x9
+    00E6 E090      LDI	R25,0
+    00E7 93900101  STS	LM_Data+1,R25
+    00E9 93800100  STS	LM_Data,R24
+(0069)           break;
+    00EB C006      RJMP	0x00F2
+(0070)   case 9: 	LM_Data = 1;
+    00EC E081      LDI	R24,1
+    00ED E090      LDI	R25,0
+    00EE 93900101  STS	LM_Data+1,R25
+    00F0 93800100  STS	LM_Data,R24
+(0071)           break;
+    00F2 9029      LD	R2,Y+
+    00F3 BE2F      OUT	0x3F,R2
+    00F4 91E9      LD	R30,Y+
+    00F5 9199      LD	R25,Y+
+    00F6 9189      LD	R24,Y+
+    00F7 9039      LD	R3,Y+
+    00F8 9029      LD	R2,Y+
+    00F9 9518      RETI
+(0072) 	 
+(0073)  }
+(0074) }
+(0075) 
+(0076) //call this routine to initialize all peripherals
+(0077) void init_devices(void)
+(0078) {
+(0079)  //stop errant interrupts until set up
+(0080)  CLI(); //disable all interrupts
+_init_devices:
+    00FA 94F8      BCLR	7
+(0081)  port_init();
+    00FB DF6C      RCALL	_port_init
+(0082)  timer1_init();
+    00FC DF76      RCALL	_timer1_init
+(0083) 
+(0084)  MCUCR = 0x00;
+    00FD 2422      CLR	R2
+    00FE BE25      OUT	0x35,R2
+(0085)  GICR  = 0x00;
+    00FF BE2B      OUT	0x3B,R2
+(0086)  TIMSK = 0x04; //timer interrupt sources
+    0100 E084      LDI	R24,4
+    0101 BF89      OUT	0x39,R24
+(0087)  SEI(); //re-enable interrupts
+    0102 9478      BSET	7
+    0103 9508      RET
+(0088)  //all peripherals are now initialized
+(0089) }
+(0090) 
+(0091) //
+(0092) void main(void)
+(0093) {
+(0094)  init_devices();
+FILE: <library>
+_main:
+    0104 DFF5      RCALL	_init_devices
+    0105 9508      RET

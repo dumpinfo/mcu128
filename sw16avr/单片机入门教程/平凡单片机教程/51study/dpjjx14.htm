@@ -1,0 +1,160 @@
+<HTML>
+<HEAD>
+<META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=gb_2312-80">
+<META NAME="Generator" CONTENT="Microsoft FrontPage 5.0">
+<TITLE>单片机教学</TITLE>
+<META NAME="Template" CONTENT="C:\PROGRAM FILES\MICROSOFT OFFICE\OFFICE\html.dot">
+</HEAD>
+<BODY LINK="#0000ff" VLINK="#800080" background="../back.jpg">
+<FONT LANG="ZH-CN">
+<P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">
+<font size="2">单片机教学</font></P>
+<P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">
+<font size="2">三、逻辑运算类指令：</font></P>
+</FONT><OL><LI>
+  <p style="line-height: 150%; margin-top: 0; margin-bottom: 0">
+  <font size="2" LANG="ZH-CN">对累加器</font><font size="2"><FONT LANG="ZH-CN">A的逻辑操作：</FONT></LI></font></OL>
+<DIR>  
+  <P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">
+  <font size="2" LANG="ZH-CN">CLR&#9;A </font><FONT LANG="ZH-CN" size="2">；将A中的值清0，单周期单字节指令，与MOV 
+    A，#00H效果相同。</FONT></P>
+  <FONT LANG="ZH-CN"> 
+  <P style="line-height: 150%; margin-top: 0; margin-bottom: 0">
+  <font size="2">CPL&#9;A </font> </FONT><FONT LANG="ZH-CN" size="2">；将A</FONT><FONT LANG="ZH-CN"><font size="2">中的值按位取反 
+  </font>
+  </FONT><FONT LANG="ZH-CN"> 
+  <p style="line-height: 150%; margin-top: 0; margin-bottom: 0"><font size="2">RL&#9;&#9;A
+  </font> </FONT><FONT LANG="ZH-CN" size="2">；将A</FONT><FONT LANG="ZH-CN"><font size="2">中的值逻辑左移 
+  </font></p>
+  </FONT><FONT FACE="宋体" LANG="ZH-CN"> 
+  <p style="line-height: 150%; margin-top: 0; margin-bottom: 0"></P>
+  </FONT><FONT LANG="ZH-CN"> 
+  <P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">
+  <font size="2">RLC&#9;A </font> </FONT><FONT LANG="ZH-CN" size="2">；将A</FONT><FONT LANG="ZH-CN"><font size="2">中的值加上进位位进行逻辑左移 
+  </font>
+  </font><FONT FACE="宋体" LANG="ZH-CN"> 
+  <p style="line-height: 150%; margin-top: 0; margin-bottom: 0"></P>
+  </font></DIR>
+
+<P style="line-height: 150%; margin-top: 0; margin-bottom: 0">
+<font size="2" LANG="ZH-CN">RR&#9;&#9;A </font><FONT LANG="ZH-CN" size="2">；将A中的值进行逻辑右移</FONT></P>
+<P style="line-height: 150%; margin-top: 0; margin-bottom: 0">
+<FONT LANG="ZH-CN">   <font size="2">RRC&#9;A </font> </font>
+<FONT LANG="ZH-CN" size="2">；将A中的值加上进位位进行逻辑右移</FONT></P><DIR>
+  <P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">
+  <font size="2" LANG="ZH-CN">SWAP&#9;A </font><FONT LANG="ZH-CN" size="2">；将A中的值高、低4位交换。</FONT></P>
+  <P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">
+<font size="2" LANG="ZH-CN">例：（</font><FONT LANG="ZH-CN" size="2">A）=73H，则执行CPL&#9;&#9;A，这样进行：</FONT></P>
+<P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">
+<font size="2" LANG="ZH-CN">73H</font><FONT LANG="ZH-CN" size="2">化为二进制为01110011，</FONT></P>
+  <P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">
+<font size="2" LANG="ZH-CN">逐位取反即为</font> <FONT LANG="ZH-CN" size="2">10001100，也就是8CH。</FONT></P>
+<P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">
+<FONT LANG="ZH-CN"><font size="2">RL&#9;A</font></font><FONT LANG="ZH-CN" size="2">是将（A）中的值的第7位送到第0位，第0位送1位，依次类推。</FONT></P>
+  <P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">
+<font size="2" LANG="ZH-CN">例：</font><FONT LANG="ZH-CN" size="2">A中的值为68H，执行RL&#9;&#9;A。68H化为二进制为01101000，按上图进行移动。01101000化为11010000，即D0H。</FONT></P>
+<P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">
+<FONT LANG="ZH-CN"><font size="2">RLC&#9;&#9;A</font></font><FONT LANG="ZH-CN" size="2">，是将（A）中的值带上进位位（C）进行移位。</FONT></P>
+  <P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">
+<font size="2" LANG="ZH-CN">例：</font><FONT LANG="ZH-CN" size="2">A中的值为68H，C中的值为1，则执行RLC&#9;&#9;A</FONT></P>
+  <P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">
+<font size="2" LANG="ZH-CN">1 01101000</font><FONT LANG="ZH-CN" size="2">后，结果是0 11010001，也就是C进位位的值变成了0，而（A）则变成了D1H。</FONT></P>
+<P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">
+<font size="2" LANG="ZH-CN">RR&#9;A</font><FONT LANG="ZH-CN" size="2">和RRC&#9;&#9;A就不多谈了，请大家参考上面两个例子自行练习吧。</FONT></P>
+<P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">
+<font size="2" LANG="ZH-CN">SWAP&#9;A</font><FONT LANG="ZH-CN" size="2">，是将A中的值的高、低4位进行交换。</FONT></P>
+  <P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">
+<font size="2" LANG="ZH-CN">例：（</font><FONT LANG="ZH-CN" size="2">A）=39H，则执行SWAP&#9;A之后，A中的值就是93H。怎么正好是这么前后交换呢？因为这是一个16进制数，每1个16进位数字代表4个二进位。注意，如果是这样的：（A）=39，后面没H，执行SWAP&#9;A之后，可不是（A）=93。要将它化成二进制再算：39化为二进制是10111，也就是0001，0111高4位是0001，低4位是0111，交换后是01110001，也就是71H，即113。</FONT></P></DIR>
+<P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">
+
+<font size="2" LANG="ZH-CN">练习，已知（</font><FONT LANG="ZH-CN" size="2">A）=39H，执行下列指令后写出每步的结果</FONT></P>
+<FONT LANG="ZH-CN">
+<P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">
+<font size="2">CPL&#9;&#9;&#9;A</font></P>
+<P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">
+<font size="2">RL&#9;&#9;&#9;A</font></P>
+<P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">
+<font size="2">CLR&#9;&#9;&#9;C</font></P>
+<P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">
+<font size="2">RRC&#9;&#9;&#9;A</font></P>
+<P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">
+<font size="2">SETB&#9;&#9;9;      C</font></P>
+<P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">
+<font size="2">RLC&#9;&#9;&#9;A</font></P>
+<P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">
+<font size="2">SWAP&#9;&#9;9;      A</font></P>
+<P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">
+<font size="2">通过前面的学习，我们已经掌握了相当一部份的指令，大家对这些枯燥的指令可能也有些厌烦了，下面让我们轻松一下，做个实验。</font></P>
+<P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">
+<font size="2">实验五：</font></P>
+</FONT><FONT LANG="ZH-CN" SIZE=2>
+<P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">  ORG     0000H</P>
+<P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">        LJMP    START</P>
+<P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">        ORG     30H</P>
+<P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">START:</P>
+<P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">        MOV     SP,#5FH</P>
+<P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">        MOV     A,#80H</P>
+<P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">LOOP:</P>
+<P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">        MOV     P1,A</P>
+<P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">        RL      A</P>
+<P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">        LCALL   DELAY</P>
+<P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">        LJMP    LOOP</P>
+<P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">delay:</P>
+<P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">&#9;mov&#9;#9; r7,#255</P>
+<P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">d1:&#9;mov&#9;#9; r6,#255</P>
+<P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">d2:&#9;nop</P>
+<P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">&#9;nop</P>
+<P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">&#9;nop</P>
+<P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">&#9;nop</P>
+<P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">&#9;djnz&#9;    r6,d2</P>
+<P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">&#9;djnz &#9;r7,d1</P>
+<P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">&#9;ret</P>
+<P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">&#9;END</P>
+</FONT><FONT LANG="ZH-CN">
+<P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">
+<font size="2">先让我们将程序写入片中，装进实验板，看一看现象。</font></P>
+<P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">
+<font size="2">。</font></P>
+<P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">
+<font size="2">。</font></P>
+<P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">
+<font size="2">看到的是一个暗点流动的现象，让我们来分析一下吧。</font></P>
+</FONT>
+<P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">
+<font size="2" LANG="ZH-CN">前而的</font><FONT LANG="ZH-CN" size="2">ORG 0000H、LJMP&#9;START、ORG&#9;30H等我们稍后分析。从START开始，MOV&#9;SP，#5FH，这是初始化堆栈，在本程序中有无此句无关紧要，不过我们慢慢开始接触正规的编程，我也就慢慢给大家培养习惯吧。</FONT></P>
+<P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">
+<font size="2" LANG="ZH-CN">MOV &#9;A</font><FONT LANG="ZH-CN" size="2">，#80H，将80H这个数送到A中去。干什么呢？不知道，往下看。</FONT></P>
+<P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">
+<font size="2" LANG="ZH-CN">MOV&#9;P1</font><FONT LANG="ZH-CN" size="2">，A。将A中的值送到P1端口去。此时A中的值是80H，所以送出去的也就是80H，因此P1口的值是80H，也就是10000000B，通过前面的分析，我们应当知道，此时P1。7接的LED是不亮的，而其它的LED都是亮的，所以就形成了一个“暗点”。继续看，RL&#9;A，RL&#9;A是将A中的值进行左移，算一下，移之后的结果是什么？对了，是01H，也就是00000001B，这样，应当是接在P1。0上的LED不亮，而其它的都亮了，从现象上看“暗点”流到了后面。然后是调用延时程序，这个我们很熟悉了，让这个“暗点”“暗”一会儿。然后又调转到LOOP处（LJMP&#9;LOOP）。请大家计算一下，下面该哪个灯不亮了。。。。。对了，应当是接在P1。1上灯不亮了。这样依次循环，就形成了“暗点流动”这一现象。</FONT></P>
+<FONT LANG="ZH-CN">
+<P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">
+<font size="2">问题：</font></P>
+</FONT><FONT FACE="宋体" LANG="ZH-CN">
+<OL>
+
+<P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">
+</FONT><FONT LANG="ZH-CN">
+<LI>
+<p style="line-height: 150%; margin-top: 0; margin-bottom: 0"><font size="2">如何实现亮点流动？</LI></font></p>
+</FONT><FONT FACE="宋体" LANG="ZH-CN">
+<p style="line-height: 150%; margin-top: 0; margin-bottom: 0"></P>
+<P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">
+<FONT LANG="ZH-CN">
+<LI>
+<p style="line-height: 150%; margin-top: 0; margin-bottom: 0"><font size="2">如何改变流动的方向？</LI></font></p>
+</FONT><FONT FACE="宋体" LANG="ZH-CN">
+<p style="line-height: 150%; margin-top: 0; margin-bottom: 0"></P></OL>
+
+<FONT LANG="ZH-CN">
+
+<P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">
+<font size="2">答案：</font></P>
+<P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">
+<font size="2">1、将A中的初始值改为7FH即可。&#9;</font>&#9;</P>
+<P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">
+<font size="2">2、将RL A改为RR A即可。</font></P>
+</FONT>
+<P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">　</P>
+</FONT>
+</FONT></BODY>
+</HTML>

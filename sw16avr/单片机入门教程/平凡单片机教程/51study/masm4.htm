@@ -1,0 +1,528 @@
+<html>
+<head>
+<title>汇编指令的格式（宏指令）</title>
+<meta http-equiv="Content-Type" content="text/html; charset=gb2312">
+</head>
+
+<body bgcolor="#CCCCCC">
+<div align="center"></div>
+<ol>
+  <ol>
+    <div align="center">
+      <p style="line-height: 150%; margin-top: 0; margin-bottom: 0"><b><font face="黑体" lang="ZH-CN" size=4>第六节</font><font size=4> 
+      </font><font face="黑体" lang="ZH-CN" size=4>宏</font><font size=4>  
+      </font><font face="黑体" lang="ZH-CN" size=4>指</font><font size=4>  
+      </font><font face="黑体" lang="ZH-CN" size=4>令 </font> </b> </div>
+    <p style="line-height: 150%; margin-top: 0; margin-bottom: 0"></p>
+    <font face="宋体" lang="ZH-CN" size=3> 
+    <p align="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0"></p>
+    </font> 
+    <p align="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0"><font face="宋体" lang="ZH-CN" size=3>宏指令是汇编功能的另一种扩充。在我们编写程序时，常常会遇到这种情况：一些程序段它们的结构相同，但在不同情况下使用的参数不同，这时可以把那变化的参数定义为形参，采用宏指令的方法来解决。在汇编时，汇编程序将填入相应的实参，把它们逐条汇编并生成到相应的程序中去。</font></p>
+    <p align="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0"><font face="宋体" lang="ZH-CN" size=3>一个宏指令是汇编语句的一个代码段，其中可以包含有形参，所谓形参是指它的值由引用宏指令时定义，在编写宏指令时它仅仅是一个符号而已。每个宏指令都有一个宏指令名，在程序中可以通过引用它的名字以及给定所需要的参数使用它。宏指令通在汇编语句的命令中使用，参数出现在参数部分中，宏指令每次在程序中引用时，通过实参对形参的替换，使程序中宏指令中的形参获得实际值。一个宏指令必须在它的第一次使用之前被定义。通常，所有的宏指令的定义都集中在程序的首部，宏指令的定义格式如下：</font></p>
+    <p align="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0"><font face="宋体" lang="ZH-CN" size=3>宏指令名</font><font size=3> 
+      </font><font face="宋体" lang="ZH-CN" size=3>ＭＡＣＲＯ</font><font size=3>  
+      </font><font face="宋体" lang="ZH-CN" size=3>形参表</font></p> 
+    <p align="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0"><font face="宋体" lang="ZH-CN" size=3>（宏指令体）</font></p>
+    <p align="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0"><font face="宋体" lang="ZH-CN" size=3>ＥＮＤＭ</font></p>
+    <p align="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0"><font face="宋体" lang="ZH-CN" size=3>ＭＡＣＲＯ和ＥＮＤＭ语句是宏指令定义的标志，它们指出了宏指令的首部和尾部。每个ＭＡＣＲＯ语句必须有一个匹配的ＥＮＤＭ语句。这些语句不使用标号。</font></p>
+    <p align="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0"><font face="宋体" lang="ZH-CN" size=3>宏指令名按照汇编程序中的其它符号名约定，宏指令名被加到汇编程序符号表中，并赋给一个宏指令类型。因而它必须有唯一的名字。其名字将包括在汇编程序列表输出的汇编符号清单中。</font></p>
+    <p align="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0"><font face="宋体" lang="ZH-CN" size=3>形参表是在宏指令定义中使用的形参集合。这些参数用符号表示，且仅仅在宏指令定义中使用，而不被加到汇编符号表中。它们只能在宏指令中的代码块中使用。各个形参在参数表中应该用逗号隔开。宏汇编中，每个宏指令最多可支持４０个参数。但是，参数表必须与ＭＡＣＦＯ指令在同一行上，由于每一代码行最大长度为８０个字符，因形参的数量也受这个条件限制，参数表是任选的，所以一个宏指令也可以是无参的。</font></p>
+    <p align="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0"><font face="宋体" lang="ZH-CN" size=3>宏指令是程序块，它可以是任何汇编语言或伪指令，但由于汇编程序不支持嵌套的宏指令，因此，在宏指令体内不能再使用宏指令或对其他宏指令进行定义。形参可以在代码段语句的任何域中使用，包括标号、命令、参数和注解。形参经常被用作为参数，但是也有可以在其它域中使用。</font></p>
+    <p align="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0"><font face="宋体" lang="ZH-CN" size=3>一个宏指令的主要特点是形参的使用。当宏指令在程序段中被调用时，调用处的实际参数替换定义中的形参。因此，宏指令每次被调用时，通过使用时提供的一个唯一的实际参数集，就生成一个唯一的代码段。一个简单的宏指令定义如下所示：</font></p>
+    <i><font face="Arial" size=3> 
+    <p align="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0"> ABC MACRO P1,P2,P3</p> 
+    <p align="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0"> MOV A,P1</p>
+    <p align="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0"> MOV R4,P2</p>
+    <p align="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0"> P3</p>
+    <p align="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0"> DEC R5</p>
+    <p align="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0"> ENDM</p>
+    <p align="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0"> JK MACRO P1,X5,OPC1,ARG1,ARG2</p>
+    <p align="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0"> INC X5</p>
+    <p align="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0"> MOV A,P1</p>
+    <p align="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0"> OPC1 ARG1,ARG2</p>
+    <p align="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0"> ENDM</p>
+    <p align="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0"></p>
+    <p align="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0"> CLR A</p>
+    <p align="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0"> MOV R3,A</p>
+    <p align="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0"> ABC R2,#25H,INC R3</p>
+    <p align="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0"> NOP</p>
+    <p align="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0"> JK @R0,R2,ADD,A,R6</p>
+    <p align="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0"> NOP</p>
+    <p align="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0"> ABC #4FH,#39H,DEC A</p>
+    <p align="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0"> NOP</p>
+    <p align="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0"> END</p>
+    </font></i> 
+    <p align="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0"><font face="宋体" lang="ZH-CN" size=3>该程序中前部是两个宏指令定义，前一个宏指令为ＡＢＣ，第二个为ＪＫ。后部为主程序，在主程序中ＡＢＣ、ＪＫ分别被引用。汇编后的列表文件如下：</font></p>
+    <i><font face="Arial" size=3> 
+    <p align="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">The Cybernetic Micro Systems 8051 Family Assembler, Version  
+      3.03 Page 1</p> 
+    <p align="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0"> 08-27-96</p>
+    <p align="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0"> ABC MACRO P1,P2,P3</p>
+    <p align="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0"> MOV A,P1</p>
+    <p align="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0"> MOV R4,P2</p>
+    <p align="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0"> P3</p>
+    <p align="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0"> DEC R5</p>
+    <p align="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0"> ENDM</p>
+    <p align="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0"> JK MACRO P1,X5,OPC1,ARG1,ARG2</p>
+    <p align="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0"> INC X5</p>
+    <p align="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0"> MOV A,P1</p>
+    <p align="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0"> OPC1 ARG1,ARG2</p>
+    <p align="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0"> ENDM</p>
+    <p align="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0"></p>
+    <p align="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0"> 0000 E4 CLR A</p>
+    <p align="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0"> 0001 FB MOV R3,A</p>
+    <p align="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0"> 0002 ABC R2,#25H,INC R3</p>
+    <p align="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">+0002 EA MOV A,R2</p>
+    <p align="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">+0003 7C25 MOV R4,#25H</p>
+    <p align="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">+0005 0B INC R3</p>
+    <p align="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">+0006 1D DEC R5</p>
+    <p align="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0"> 0007 00 NOP</p>
+    <p align="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0"> 0008 JK @R0,R2,ADD,A,R6</p>
+    <p align="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">+0008 0A INC R2</p>
+    <p align="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">+0009 E6 MOV A,@R0</p>
+    <p align="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">+000A 2E ADD A,R6</p>
+    <p align="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0"> 000B 00 NOP</p>
+    <p align="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0"> 000C ABC #4FH,#39H,DEC A</p>
+    <p align="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">+000C 744F MOV A,#4FH</p>
+    <p align="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">+000E 7C39 MOV R4,#39H</p>
+    <p align="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">+0010 14 DEC A</p>
+    <p align="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">+0011 1D DEC R5</p>
+    <p align="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0"> 0012 00 NOP</p>
+    <p align="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0"> 0000 END</p>
+    <p align="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">The Cybernetic Micro Systems 8051 Family Assembler, Version 
+      3.03 Page 2</p>
+    <p align="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0"> 08-27-96</p>
+    <p align="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0"> ;%T Symbol Name Type Value</p>
+    <p align="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0"> ABC . . . . . . . . . . . . . . M 0000</p>
+    <p align="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0"> JK. . . . . . . . . . . . . . . M 0000</p>
+    <p align="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0"> ;%Z</p>
+    <p align="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0"> 00 Errors (0000)</p>
+    </font></i><font face="Arial" size=3> 
+    <p align="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0"> </p>
+    </font> 
+    <p align="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0"><font face="宋体" lang="ZH-CN" size=3>在列表文件中，在调用宏指令处，实参数被充填到宏指令的形参处，并把宏指令体扩充到程序中形成代码。在这个例子中实参不仅代替了指令中的参数部分，而且还能代替整个指令。文件中最前列带“＋”的语句为引用宏指令扩展的部分。宏指令被引用时，参数表上实参表应与所替代的形参相对应。在表中出现的参数必须用逗号隔开，汇编程序取逗号之间或与第一个逗号之间，或最后一个逗号与行尾之间的任何字符作为实际参数。这样，可以使用多个符号，甚至一个整条指令作为一个参数，只要在数中没有逗号就行。一个逗号不能作为一个参数的一部分被传递。汇编程序将滤去每个参数的前面和后面的空格，仅仅保留第一个到最后一个可打印字符。</font></p>
+    <p align="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0"><font face="宋体" lang="ZH-CN" size=3>此外，宏指令的实际参数表可以不与形参表完全匹配，即实际参数的数量可以多于或少于形参表中的形参个数。当参数空缺时，相应的形参在宏扩展时被取消，如果实际参数比形参多，则多余的实际参数将被忽略。最后一个在表中间的参数可以通过在参数表中间放两个逗号来赋空值。参见下面的例子。</font></p>
+    <i><font face="Arial" size=3> 
+    <p align="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0"> ABC MACRO P1,P2,P3</p> 
+    <p align="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0"> MOV A,P1</p>
+    <p align="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0"> MOV R4,P2</p>
+    <p align="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0"> P3</p>
+    <p align="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0"> DEC R5</p>
+    <p align="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0"> ENDM</p>
+    <p align="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0"></p>
+    <p align="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0"> JK MACRO P1,X5,OPC1,ARG1,ARG2</p>
+    <p align="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0"> INC X5</p>
+    <p align="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0"> MOV A,P1</p>
+    <p align="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0"> OPC1 ARG1,ARG2</p>
+    <p align="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0"> ENDM</p>
+    <p align="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0"></p>
+    <p align="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0"> NOP</p>
+    <p align="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0"> JK #33H,R3,NOP</p>
+    <p align="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0"> SWAP A</p>
+    <p align="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0"> NOP </p>
+    <p align="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0"> JK R4,R2,ADDC,A,@R1,#66H</p>
+    <p align="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0"> NOP</p>
+    <p align="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0"> JK #40H,R4,,DEC R2</p>
+    <p align="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0"> NOP</p>
+    <p align="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0"> END</p>
+    </font></i> 
+    <p align="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0"><font face="宋体" lang="ZH-CN" size=3>宏指令的另一个特点是形参可以被用作一个标号，如果一个形参被用作一个标号，当引用宏指令时，实参将成为标号。这就要求每次宏指令调用时，该实参不能相同。以避免标号重复定义错误。例：</font></p>
+    <i><font face="Arial" size=3> 
+    <p align="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">The Cybernetic Micro Systems 8051 Family Assembler, Version  
+      3.03 Page 1</p> 
+    <p align="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0"> 08-27-96</p>
+    <p align="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0"> ABC MACRO P1,P2,P3</p>
+    <p align="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0"> MOV A,P1</p>
+    <p align="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0"> MOV R4,P2</p>
+    <p align="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0"> P3</p>
+    <p align="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0"> DEC R5</p>
+    <p align="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0"> ENDM</p>
+    <p align="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0"></p>
+    <p align="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0"> JK MACRO P1,X5,OPC1,ARG1,ARG2</p>
+    <p align="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0"> INC X5</p>
+    <p align="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0"> MOV A,P1</p>
+    <p align="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0"> OPC1 ARG1,ARG2</p>
+    <p align="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0"> ENDM</p>
+    <p align="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0"></p>
+    <p align="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0"> 0000 00 NOP</p>
+    <p align="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0"> 0001 JK #33H,R3,NOP</p>
+    <p align="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">+0001 0B INC R3</p>
+    <p align="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">+0002 7433 MOV A,#33H</p>
+    <p align="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">+0004 00 NOP ,</p>
+    <p align="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0"> 0005 C4 SWAP A</p>
+    <p align="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0"> 0006 00 NOP</p>
+    <p align="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0"> 0007 JK R4,R2,ADDC,A,@R1,#66H</p>
+    <p align="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">+0007 0A INC R2</p>
+    <p align="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">+0008 EC MOV A,R4</p>
+    <p align="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">+0009 37 ADDC A,@R1</p>
+    <p align="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0"> 000A 00 NOP</p>
+    <p align="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0"> 000B JK #40H,R4,,DEC R2</p>
+    <p align="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">+000B 0C INC R4</p>
+    <p align="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">+000C 7440 MOV A,#40H</p>
+    <p align="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">+000E 1A DEC R2,</p>
+    <p align="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0"> 000F 00 NOP</p>
+    <p align="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0"> 0000 END</p>
+    <p align="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0"></p>
+    <p align="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">The Cybernetic Micro Systems 8051 Family Assembler, Version 
+      3.03 Page 2</p>
+    <p align="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0"> 08-27-96</p>
+    <p align="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0"> ;%T Symbol Name Type Value</p>
+    <p align="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0"> ABC . . . . . . . . . . . . . . M 0B0D</p>
+    <p align="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0"> JK. . . . . . . . . . . . . . . M 0000</p>
+    <p align="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0"> ;%Z</p>
+    <p align="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0"> 00 Errors (0000)</p>
+    </font></i> 
+    <p align="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0"><font face="宋体" lang="ZH-CN" size=3>若在宏指信中使用标号，由于这些标号不是形参，所以不会被实参所替代。这样，在程序中多次引用是否会出现标号重复呢？在作宏汇编时，汇编程序会在所有标号尾部增加一个唯</font><font size=3> 
+      </font><font face="宋体" lang="ZH-CN" size=3>一的四位数，以使多次引用时标号不会重复。例：</font></p> 
+    <font face="Arial" size=3> 
+    <p align="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0"> <i> LMAC MACRO P1,P2,L1</i></p> 
+    <i> 
+    <p align="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0"> ANL A,P1</p>
+    <p align="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0"> JZ L1</p>
+    <p align="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0"> ORL A,P2</p>
+    <p align="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0"> L1: MOV @R1,A</p>
+    <p align="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0"> INC R1</p>
+    <p align="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0"> ENDM</p>
+    <p align="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0"></p>
+    <p align="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0"> MOV R1,#2AH</p>
+    <p align="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0"> MOV A,#65H</p>
+    <p align="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0"> LMAC R3,#0F0H,R3ANDA0</p>
+    <p align="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0"> MOV A,#23H</p>
+    <p align="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0"> LMAC R5,#07H,R5ANDA0</p>
+    <p align="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0"> NOP</p>
+    <p align="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0"> END</p>
+    </i></font> 
+    <p align="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0"><font face="宋体" lang="ZH-CN" size=3>程序中有二个标号ＭＡＴＣＨ１及ＮＯＭＡＴＣＨ，宏指令被二次引用，经汇编后其列表文件如下：</font></p>
+    <i><font face="Arial" size=3> 
+    <p align="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">The Cybernetic Micro Systems 8051 Family Assembler, Version  
+      3.03 Page 1</p> 
+    <p align="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0"> 08-27-96</p>
+    <p align="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0"> LMAC MACRO P1,P2,L1</p>
+    <p align="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0"> ANL A,P1</p>
+    <p align="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0"> JZ L1</p>
+    <p align="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0"> ORL A,P2</p>
+    <p align="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0"> L1: MOV @R1,A</p>
+    <p align="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0"> INC R1</p>
+    <p align="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0"> ENDM</p>
+    <p align="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0"></p>
+    <p align="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0"> 0000 792A MOV R1,#2AH</p>
+    <p align="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0"> 0002 7465 MOV A,#65H</p>
+    <p align="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0"> 0004 LMAC R3,#0F0H,R3ANDA0</p>
+    <p align="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">+0004 5B ANL A,R3</p>
+    <p align="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">+0005 6002 JZ R3ANDA0</p>
+    <p align="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">+0007 44F0 ORL A,#0F0H</p>
+    <p align="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">+0009 F7 R3ANDA0: MOV @R1,A</p>
+    <p align="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">+000A 09 INC R1</p>
+    <p align="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0"> 000B 7423 MOV A,#23H</p>
+    <p align="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0"> 000D LMAC R5,#07H,R5ANDA0</p>
+    <p align="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">+000D 5D ANL A,R5</p>
+    <p align="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">+000E 6002 JZ R5ANDA0</p>
+    <p align="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">+0010 4407 ORL A,#07H</p>
+    <p align="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">+0012 F7 R5ANDA0: MOV @R1,A</p>
+    <p align="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">+0013 09 INC R1</p>
+    <p align="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0"> 0014 00 NOP</p>
+    <p align="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0"> 0000 END</p>
+    <p align="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">The Cybernetic Micro Systems 8051 Family Assembler, Version 
+      3.03 Page 2</p>
+    <p align="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0"> 08-27-96</p>
+    <p align="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0"> ;%T Symbol Name Type Value</p>
+    <p align="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0"> LMAC. . . . . . . . . . . . . . M 0000</p>
+    <p align="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0"> R3ANDA0 . . . . . . . . . . . . L 0009</p>
+    <p align="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0"> R5ANDA0 . . . . . . . . . . . . L 0012</p>
+    <p align="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0"> ;%Z</p>
+    <p align="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0"> 00 Errors (0000)</p>
+    </font></i> 
+    <p align="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0"><font face="宋体" lang="ZH-CN" size=3>若在宏指令中使用标号，由于这些标号不是形参，所以不会被实参所替代。这样，在程序中多次引用是否会出现标号重复呢，这一点宏汇编程序已作了考虑，在作宏汇编时，汇编程序会在所有标号尾部增加一个唯一的四位数，以使多次引用时标号不会重复。下面的例子说明了多次引用宏指令时内部标号的处理。</font></p>
+    <p align="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0"><font face="宋体" lang="ZH-CN" size=3>例：</font></p>
+    <i><font face="Arial" size=3> 
+    <p align="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0"> CHK MACRO N1,N2</p> 
+    <p align="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0"> XRL A,N1</p>
+    <p align="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0"> JZ MATCH1</p>
+    <p align="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0"> XRL A,N2</p>
+    <p align="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0"> JNZ NOMATCH</p>
+    <p align="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0"> ADD A,#15H</p>
+    <p align="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0"> MATCH1:</p>
+    <p align="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0"> ADD A,#7</p>
+    <p align="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0"> MOV R4,A</p>
+    <p align="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0"> NOMATCH:</p>
+    <p align="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0"> MOV R5,A</p>
+    <p align="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0"> ENDM</p>
+    <p align="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0"></p>
+    <p align="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0"> MOV A,#23H</p>
+    <p align="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0"> CHK #65H,R3</p>
+    <p align="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0"> MOV A,@R0</p>
+    <p align="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0"> CHK R2,#23H</p>
+    <p align="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0"> NOP</p>
+    <p align="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0"> END</p>
+    </font></i> 
+    <p align="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0"><font face="宋体" lang="ZH-CN" size=3>程序中有二个标号ＭＡＴＣＨ１及ＮＯＭＡＴＣＨ。宏指令被二次引用。经汇编后其列表文件如下：</font></p>
+    <i><font face="Arial" size=3> 
+    <p align="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">The Cybernetic Micro Systems 8051 Family Assembler, Version  
+      3.03 Page 1</p> 
+    <p align="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0"> 08-27-96</p>
+    <p align="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0"> CHK MACRO N1,N2</p>
+    <p align="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0"> XRL A,N1</p>
+    <p align="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0"> JZ MATCH1</p>
+    <p align="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0"> XRL A,N2</p>
+    <p align="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0"> JNZ NOMATCH</p>
+    <p align="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0"> ADD A,#15H</p>
+    <p align="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0"> MATCH1:</p>
+    <p align="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0"> ADD A,#7</p>
+    <p align="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0"> MOV R4,A</p>
+    <p align="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0"> NOMATCH:</p>
+    <p align="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0"> MOV R5,A</p>
+    <p align="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0"> ENDM</p>
+    <p align="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0"></p>
+    <p align="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0"> 0000 7423 MOV A,#23H</p>
+    <p align="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0"> 0002 CHK #65H,R3</p>
+    <p align="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">+0002 6465 XRL A,#65H</p>
+    <p align="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">+0004 6005 JZ MATCH10001</p>
+    <p align="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">+0006 6B XRL A,R3</p>
+    <p align="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">+0007 7005 JNZ NOMATCH0001</p>
+    <p align="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">+0009 2415 ADD A,#15H</p>
+    <p align="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">+ MATCH10001:</p>
+    <p align="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">+000B 2407 ADD A,#7</p>
+    <p align="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">+000D FC MOV R4,A</p>
+    <p align="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">+ NOMATCH0001:</p>
+    <p align="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">+000E FD MOV R5,A</p>
+    <p align="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0"> 000F E6 MOV A,@R0</p>
+    <p align="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0"> 0010 CHK R2,#23H</p>
+    <p align="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">+0010 6A XRL A,R2</p>
+    <p align="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">+0011 6006 JZ MATCH10002</p>
+    <p align="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">+0013 6423 XRL A,#23H</p>
+    <p align="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">+0015 7005 JNZ NOMATCH0002</p>
+    <p align="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">+0017 2415 ADD A,#15H</p>
+    <p align="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">+ MATCH10002:</p>
+    <p align="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">+0019 2407 ADD A,#7</p>
+    <p align="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">+001B FC MOV R4,A</p>
+    <p align="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">+ NOMATCH0002:</p>
+    <p align="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">+001C FD MOV R5,A</p>
+    <p align="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0"> 001D 00 NOP</p>
+    <p align="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0"> 0000 END</p>
+    <p align="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0"></p>
+    <p align="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">The Cybernetic Micro Systems 8051 Family Assembler, Version 
+      3.03 Page 2</p>
+    <p align="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0"> 08-27-96</p>
+    <p align="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0"> ;%T Symbol Name Type Value</p>
+    <p align="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0"> CHK . . . . . . . . . . . . . . M 0000</p>
+    <p align="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0"> MATCH10001. . . . . . . . . . . L 000B</p>
+    <p align="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0"> MATCH10002. . . . . . . . . . . L 0019</p>
+    <p align="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0"> NOMATCH0001 . . . . . . . . . . L 000E</p>
+    <p align="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0"> NOMATCH0002 . . . . . . . . . . L 001C</p>
+    <p align="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0"> ;%Z</p>
+    <p align="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0"> 00 Errors (0000)</p>
+    </font></i> 
+    <p align="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0"><font face="宋体" lang="ZH-CN" size=3>从列表文件中我们可以看到，汇编程序已对宏指令中的标号作了处理，在第一次引用时，宏指令中的标号ＭＡＴＣＨ１及ＮＯＭＡＴＣＨ分别衩扩展为ＭＡＴＣＨ１００１及ＮＯＭＡＴＣＨ０００１，而第二次被引用时相应的标号被扩展为ＭＡＴＣＨ１００２及ＮＯＭＡＴＣＨ０００２，从而避免在同一程序中标号的重复。</font></p>
+    <p align="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0"><font face="宋体" lang="ZH-CN" size=3>“＆”在宏指令中作为连接操作符。“＆”通常出现在带有形参的字符串中。为了区分字符串中哪些字符是形参，需要在形参与固定字符间加入“＆”例如：</font></p>
+    <font face="Arial" size=3> 
+    <p align="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0"> <i> CON MACRO X1,X2,SI,L1</i></p> 
+    <i> 
+    <p align="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0"> MOV R2,#X1</p>
+    <p align="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0"> MOV R2,#X1</p>
+    <p align="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0"> ADD A,#X1+5-X2</p>
+    <p align="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0"> DB 'STRING&amp;SI&amp;'</p>
+    <p align="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0"> JNZ LAB&amp;L1</p>
+    <p align="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0"> LAB&amp;L1:</p>
+    <p align="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0"> XRL A,R3</p>
+    <p align="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0"> ENDM</p>
+    <p align="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0"> CLR A</p>
+    <p align="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0"> CON 23H,65H,SPECIAL,57</p>
+    <p align="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0"> END</p>
+    </i></font> 
+    <p align="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0"><font face="宋体" lang="ZH-CN" size=3>列表文件如下：</font></p>
+    <i><font face="Arial" size=3> 
+    <p align="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">The Cybernetic Micro Systems 8051 Family Assembler, Version  
+      3.03 Page 1</p> 
+    <p align="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0"> 08-27-96</p>
+    <p align="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0"> CON MACRO X1,X2,SI,L1</p>
+    <p align="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0"> MOV R2,#X1</p>
+    <p align="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0"> MOV R2,#X1</p>
+    <p align="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0"> ADD A,#X1+5-X2</p>
+    <p align="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0"> DB 'STRING&amp;SI&amp;'</p>
+    <p align="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0"> JNZ LAB&amp;L1</p>
+    <p align="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0"> LAB&amp;L1:</p>
+    <p align="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0"> XRL A,R3</p>
+    <p align="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0"> ENDM</p>
+    <p align="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0"> 0000 E4 CLR A</p>
+    <p align="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0"> 0001 CON 23H,65H,SPECIAL,57</p>
+    <p align="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">+0001 7A23 MOV R2,#23H</p>
+    <p align="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">+0003 7A23 MOV R2,#23H</p>
+    <p align="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">+0005 24C3 ADD A,#23H+5-65H</p>
+    <p align="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">+0007 53 54 52 DB 'STRINGSPECIAL'</p>
+    <p align="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">+000A 49 4E 47 53 50 45 43 49 41 4C</p>
+    <p align="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">+0014 7000 JNZ LAB57</p>
+    <p align="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">+ LAB57:</p>
+    <p align="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">+0016 6B XRL A,R3</p>
+    <p align="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0"> 0000 END</p>
+    <p align="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0"></p>
+    <p align="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">The Cybernetic Micro Systems 8051 Family Assembler, Version 
+      3.03 Page 2</p>
+    <p align="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0"> 08-27-96</p>
+    <p align="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0"> ;%T Symbol Name Type Value</p>
+    <p align="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0"> CON . . . . . . . . . . . . . . M 0000</p>
+    <p align="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0"> LAB57 . . . . . . . . . . . . . L 0016</p>
+    <p align="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0"> ;%Z</p>
+    <p align="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0"> 00 Errors (0000)</p>
+    </font></i> 
+    <p align="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0"><font face="宋体" lang="ZH-CN" size=3>在算术表达式中所有的加数否需要连接操作符，这是因为算术操作符本身具有符号与数之间的自然分隔符作用。立即操作数（由＃符号引导）可以用一个空格把它与一个形参分开，在这种情况下也不需要字符“＆”。</font></p>
+    <p align="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0"><font face="宋体" lang="ZH-CN" size=3>最后，所有的宏指令所支持的功能可以合并起来使用，从而组成一个相当复杂的宏指令，例如宏指令可以包括条件结构，或者宏指令可以是一个条件结构的一部分，但是宏指令不可以嵌套，条件结构不可以超过宏指令的边界。即宏指令必须完全在一个条件结构中，或者条件结构必须在一条宏指令中。可以通过形参来决定条件表达式的值。当宏指令衩调用时，传递的实际参数值将决定每一条指令的生成代码。如：</font></p>
+    <i><font face="Arial" size=3> 
+    <p align="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0"> CON MACRO C1,C2,P1,P2,P3</p> 
+    <p align="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0"> MOV A,P1</p>
+    <p align="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0"> IF C1</p>
+    <p align="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0"> INC R3</p>
+    <p align="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0"> MOV R4,A</p>
+    <p align="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0"> ENDIF</p>
+    <p align="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0"> IF C2</p>
+    <p align="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0"> MOV R5,P2</p>
+    <p align="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0"> ADDC A,P3</p>
+    <p align="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0"> ELSE</p>
+    <p align="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0"> MOV R1,P2</p>
+    <p align="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0"> XRL A,R3</p>
+    <p align="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0"> ENDIF</p>
+    <p align="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0"> MOV @R1,A</p>
+    <p align="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0"> ENDM</p>
+    <p align="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0"> CLR A</p>
+    <p align="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0"> MOV R3,#2AH</p>
+    <p align="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0"> CON 0,0,#23H,#65H,R6</p>
+    <p align="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0"> END</p>
+    </font></i> 
+    <p align="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0"><font face="宋体" lang="ZH-CN" size=3>列表文件如下：</font></p>
+    <i><font face="Arial" size=3> 
+    <p align="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">The Cybernetic Micro Systems 8051 Family Assembler, Version  
+      3.03 Page 1</p> 
+    <p align="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0"> 08-27-96</p>
+    <p align="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0"> CON MACRO C1,C2,P1,P2,P3</p>
+    <p align="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0"> MOV A,P1</p>
+    <p align="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0"> IF C1</p>
+    <p align="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0"> INC R3</p>
+    <p align="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0"> MOV R4,A</p>
+    <p align="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0"> ENDIF</p>
+    <p align="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0"> IF C2</p>
+    <p align="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0"> MOV R5,P2</p>
+    <p align="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0"> ADDC A,P3</p>
+    <p align="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0"> ELSE</p>
+    <p align="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0"> MOV R1,P2</p>
+    <p align="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0"> XRL A,R3</p>
+    <p align="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0"> ENDIF</p>
+    <p align="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0"> MOV @R1,A</p>
+    <p align="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0"> ENDM</p>
+    <p align="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0"> 0000 E4 CLR A</p>
+    <p align="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0"> 0001 7B2A MOV R3,#2AH</p>
+    <p align="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0"> 0003 CON 0,0,#23H,#65H,R6</p>
+    <p align="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">+0003 7423 MOV A,#23H</p>
+    <p align="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">+ IF 0</p>
+    <p align="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">+ INC R3</p>
+    <p align="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">+ MOV R4,A</p>
+    <p align="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">+ ENDIF</p>
+    <p align="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">+ IF 0</p>
+    <p align="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">+ MOV R5,#65H</p>
+    <p align="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">+ ADDC A,R6</p>
+    <p align="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">+ ELSE</p>
+    <p align="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">+0005 7965 MOV R1,#65H</p>
+    <p align="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">+0007 6B XRL A,R3</p>
+    <p align="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">+ ENDIF</p>
+    <p align="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">+0008 F7 MOV @R1,A</p>
+    <p align="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0"> 0000 END</p>
+    <p align="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0"></p>
+    <p align="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">The Cybernetic Micro Systems 8051 Family Assembler, Version 
+      3.03 Page 2</p>
+    <p align="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0"> 08-27-96</p>
+    <p align="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0"> ;%T Symbol Name Type Value</p>
+    <p align="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0"> CON . . . . . . . . . . . . . . M 0000</p>
+    <p align="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0"> ;%Z</p>
+    <p align="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0"> 00 Errors (0000)</p>
+    </font></i> 
+    <p align="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0"><font face="宋体" lang="ZH-CN" size=3>程序中宏指令带有条件结构，并可以通过形参Ｃ１确定判别条件。</font></p>
+    <b><font face="Arial" size=5> 
+    <p align="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0"> 
+    </font> 
+    <li>
+    <p style="line-height: 150%; margin-top: 0; margin-bottom: 0"><a name="_Toc416236575"></a><font face="黑体" lang="ZH-CN" size=4>第七节</font><font size=4> 
+      </font><font face="黑体" lang="ZH-CN" size=4>汇编程序的出错信息</font></li> 
+    <font face="黑体" lang="ZH-CN" size=4> 
+    </p>
+    <p style="line-height: 150%; margin-top: 0; margin-bottom: 0"></p>
+    </font></b> 
+  </ol>
+</ol>
+<p align="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0"><font face="宋体" lang="ZH-CN" size=3>一个汇编程序往往不可能一次编写就完全正确，总会有一些错误存在，ＭＡＳＭ５１在汇编时可以对源程序中存在的一些语法错误判别，并给出出错信息，出错信息将出现在屏幕上，并被写入到列表文件中去，我们可以根据出错信息对照源程序进行修改。</font></p>
+<p align="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0"><font face="宋体" lang="ZH-CN" size=3>一般出错信息的格式为：</font></p>
+<p align="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0"><font face="宋体" lang="ZH-CN" size=3>描述性信息（</font><font face="Arial" size=3>aaaa)</font></p>
+<p align="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0"> <font face="宋体" lang="ZH-CN" size=3>描述性信息向用户提供错误的类型，以提供用户分析与纠正错误。</font><font face="Arial" size=3>aaaa</font><font face="宋体" lang="ZH-CN" size=3>是四位十六进制数字，它指出的是上一个错误出现的地址，以便</font><font size=3> 
+  </font><font face="宋体" lang="ZH-CN" size=3>用户在较长的列表文件中找到上一个错误的所在。</font></p> 
+<p align="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0"><font face="宋体" lang="ZH-CN" size=3>错误数量的报告记录在列表文件的最后，其格式为：</font></p>
+<p align="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0"><font face="宋体" lang="ZH-CN" size=3>ＸＸ</font><font size=3> 
+  </font><font face="宋体" lang="ZH-CN" size=3>Ｅｒｒｏｒｓ（００００）</font></p> 
+<p align="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0"><font face="宋体" lang="ZH-CN" size=3>其中ＸＸ为十六进制数表示的错误数量。</font></p>
+<p align="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0"><font face="宋体" lang="ZH-CN" size=3>宏汇编能提供的错误信息有：</font></p>
+<p align="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0"><font face="宋体" lang="ZH-CN" size=3>（１）</font><font face="Arial" size=3>Undefined  
+  symbol</font></p>
+<p align="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0"> <font face="宋体" lang="ZH-CN" size=3>表示在源程序的语句中使用的符号未被定义，实际上可能是符号名拼错或在源程序中缺少一个该符号的等价指令。</font></p>
+<p align="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0"><font face="宋体" lang="ZH-CN" size=3>（２）</font><font face="Arial" size=3>Missing  
+  Argumentin Expression</font></p> 
+<p align="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0"> <font face="宋体" lang="ZH-CN" size=3>表示表达式中算术运算符后面没有操作数。</font></p>
+<p align="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0"><font face="宋体" lang="ZH-CN" size=3>（３）</font><font face="Arial" size=3>Unblaanced  
+  Parentheses</font></p>
+<p align="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0"> <font face="宋体" lang="ZH-CN" size=3>每一个左括号必须与一个右括号配套，如果表达式中多余或缺少括号，将出现上述提示信息。</font></p>
+<p align="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0"><font face="宋体" lang="ZH-CN" size=3>（４）</font><font face="Arial" size=3>ILLEGAL  
+  EQUATE</font></p>
+<p align="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0"> <font face="宋体" lang="ZH-CN" size=3>表示把两个不同类型的量用等价伪指令连在一起，例如保留字的值１寄存器名等，它们不允许用等值伪指令来改变。</font></p>
+<p align="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0"><font face="宋体" lang="ZH-CN" size=3>（５）</font><font face="Arial" size=3>BADLY  
+  ROFMED ARGUMENT</font></p> 
+<p align="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0"> <font face="宋体" lang="ZH-CN" size=3>表示一个数字参数使用了非法的数字。例如二进制中出现除０与１以外的其他数字。</font></p>
+<p align="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0"><font face="宋体" lang="ZH-CN" size=3>（６）</font><font face="Arial" size=3>MISSING  
+  END STATEMENT</font></p> 
+<p align="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0"> <font face="宋体" lang="ZH-CN" size=3>源文件结束处没有</font><font face="Arial" size=3>END</font><font face="宋体" lang="ZH-CN" size=3>语句。源文件的结束处必须有一个</font><font face="Arial" size=3>END</font><font face="宋体" lang="ZH-CN" size=3>语句。</font></p>
+<p align="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0"><font face="宋体" lang="ZH-CN" size=3>（７）</font><font face="Arial" size=3>LABEL  
+  NAME CONFLICTS WITH SYMBOL NAME</font></p> 
+<p align="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0"> <font face="宋体" lang="ZH-CN" size=3>标号名与符号名相同。</font></p>
+<p align="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0"><font face="宋体" lang="ZH-CN" size=3>（８）</font><font face="Arial" size=3>MULTIPLY  
+  DEFINED LABEL</font></p> 
+<p align="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0"> <font face="宋体" lang="ZH-CN" size=3>相同标号多次出现。</font></p>
+<p align="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0"><font face="宋体" lang="ZH-CN" size=3>（９）</font><font face="Arial" size=3>LABEL  
+  ADDRESS CHANGED ON PASS 2</font></p> 
+<p align="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0"> <font face="宋体" lang="ZH-CN" size=3>标号的值在两次扫描中改变。这个错误往往是在源程序的不同处用了同一个标号名，只要用字处理软件查找这个标号，就可以改正。</font></p>
+<p align="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0"><font face="宋体" lang="ZH-CN" size=3>（１０）</font><font face="Arial" size=3>UNRECOGNIZED  
+  STATEMENT OR UNDEFINED ARGUMENT</font></p> 
+<p align="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0"> <font face="宋体" lang="ZH-CN" size=3>表示有未定义的指令、或源代码。出现一个语法类型的错误。该类错误可能由拼错命令名产生或由于记错命令的用法产生，改正起来较为简单。</font></p>
+<p align="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0"><font face="宋体" lang="ZH-CN" size=3>（１１）</font><font face="Arial" size=3>ADDRESS  
+  OUT OF RANGE</font></p> 
+<p align="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0"> <font face="宋体" lang="ZH-CN" size=3>转移地址超出该语句的范围，例如ＳＪＭＰ转移地址超过＋１２７～－１２８的范围，另外ＪＢ、ＪＮＢ、ＪＺ、ＪＮＺ等指令也容易发生类错误。如果是ＳＪＭＰ、ＡＪＭＰ、ＡＣＡＬＬ等指令发生错误，则改正较为容易，只要将指令改为范围较在的即可，如将ＳＪＭＰ改为ＡＪＭＰ，将ＡＪＭＰ改为ＬＪＭＰ，将ＡＣＬＬ改为ＬＣＡＬＬ等，如果是ＪＺ、ＪＢ、ＪＮＺ、ＪＮＢ等指令发生此类错误，则要使用一些技工技巧，如下面程序１所示，ＮＥＸＴ标号已超出了ＪＺ指令作用的范围，则可以改成程序２，使用一个中间标号ＮＥＸＴ１，然后从ＮＥＸＴ１跳转到ＮＥＸＴ处。</font></p>
+<font face="宋体" lang="ZH-CN" size=3> 
+<p align="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">例：</p>
+</font>
+<p align="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0"><i><font face="宋体" lang="ZH-CN" size=3>．</font></i></p>
+<i> 
+<p align="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0"><font face="宋体" lang="ZH-CN" size=3>．</font></p>
+<p align="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0"><font face="宋体" lang="ZH-CN" size=3>ＪＢ</font><font size=3> 
+  </font><font face="宋体" lang="ZH-CN" size=3>ＮＥＸＴ１</font></p> 
+<p align="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0"><font face="宋体" lang="ZH-CN" size=3>．</font></p>
+<p align="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0"><font face="宋体" lang="ZH-CN" size=3>．</font></p>
+<p align="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0"><font face="宋体" lang="ZH-CN" size=3>．</font></p>
+<font face="宋体" lang="ZH-CN" size=3> 
+<p align="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">ＮＥＸＴ１：</p>
+</font>
+<p align="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0"><font face="宋体" lang="ZH-CN" size=3>ＡＪＭＰ</font><font size=3> 
+  </font><font face="宋体" lang="ZH-CN" size=3>ＮＥＸＴ</font></p> 
+<p align="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0"><font face="宋体" lang="ZH-CN" size=3>．</font></p>
+<p align="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0"><font face="宋体" lang="ZH-CN" size=3>．</font></p>
+</i>
+<p align="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0"> <font face="宋体" lang="ZH-CN" size=3>（１２）</font><font face="Arial" size=3>VALUE  
+  OUT OF RANGE</font></p> 
+<p align="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0"> <font face="宋体" lang="ZH-CN" size=3>用一个非法的值来说明一个语句。</font></p>
+<p align="center" style="line-height: 150%; margin-top: 0; margin-bottom: 0"><a href="dpjjx.htm">
+<font size=3> 
+<img src="back1.gif" border="0" width="43" height="55">
+</font></a></p>
+<p align="center" style="line-height: 150%; margin-top: 0; margin-bottom: 0">　</p>
+<p align="center" style="line-height: 150%; margin-top: 0; margin-bottom: 0">　</p>
+<p align="center" style="line-height: 150%; margin-top: 0; margin-bottom: 0"><font size="2">伟纳电子 COPYRIGHT &reg; 2000  
+<a href="http://www.willar.com">http://www.willar.com</a><br>                                           
+&nbsp; E-mail:&nbsp; <a href="mailto:support@willar.com">support@willar.com</a></font>      
+ 
+</p>
+<p align="center" style="line-height: 150%; margin-top: 0; margin-bottom: 0">　</p>
+<p align="center">　</p>
+</body>
+</html>

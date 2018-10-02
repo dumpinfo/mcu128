@@ -1,0 +1,144 @@
+__start:
+__text_start:
+    002A E5CF      LDI	R28,0x5F
+    002B E0D4      LDI	R29,4
+    002C BFCD      OUT	0x3D,R28
+    002D BFDE      OUT	0x3E,R29
+    002E 51C0      SUBI	R28,0x10
+    002F 40D0      SBCI	R29,0
+    0030 EA0A      LDI	R16,0xAA
+    0031 8308      STD	Y+0,R16
+    0032 2400      CLR	R0
+    0033 E6E0      LDI	R30,0x60
+    0034 E0F0      LDI	R31,0
+    0035 E010      LDI	R17,0
+    0036 36E1      CPI	R30,0x61
+    0037 07F1      CPC	R31,R17
+    0038 F011      BEQ	0x003B
+    0039 9201      ST	R0,Z+
+    003A CFFB      RJMP	0x0036
+    003B 8300      STD	Z+0,R16
+    003C E5E4      LDI	R30,0x54
+    003D E0F0      LDI	R31,0
+    003E E6A0      LDI	R26,0x60
+    003F E0B0      LDI	R27,0
+    0040 E010      LDI	R17,0
+    0041 35E4      CPI	R30,0x54
+    0042 07F1      CPC	R31,R17
+    0043 F021      BEQ	0x0048
+    0044 95C8      LPM
+    0045 9631      ADIW	R30,1
+    0046 920D      ST	R0,X+
+    0047 CFF9      RJMP	0x0041
+    0048 940E005E  CALL	_main
+_exit:
+    004A CFFF      RJMP	_exit
+FILE: D:\AVR\demo\demo.c
+(0001) ///////////////////////////////////////////////////////
+(0002) //
+(0003) //          DEMO
+(0004) //
+(0005) // MCU: ATmega16   
+(0006) // RST:	外部RST
+(0007) // BOD: BOD功能允许，电平4V
+(0008) // BOOTRST: 复位后从0地址执行
+(0009) // OCDEN JTAGEN SP1EN CKOPT EESAVE BOOTSZ1 BOOTSZ0 BOOTRST
+(0010) //   1      0   	0	  1      0      0       0       1	
+(0011) // 时钟源: 内部RC 8M     
+(0012) // BODLEVEL BODEN SUT1 SUT0 CKSEL3 CKSEL2 CKSEL1 CKSEL0
+(0013) //     0      0    0     0    0       1     0       0
+(0014) // 时钟源: 外部晶振	
+(0015) // BODLEVEL BODEN SUT1 SUT0 CKSEL3 CKSEL2 CKSEL1 CKSEL0
+(0016) //     0      0    0     1    1       1     1       1   		 
+(0017) //注: 1 - 未编程（检查框不打钩） 
+(0018) //////////////////////////////////////////////////////		 
+(0019) #include <iom16v.h>
+(0020) 
+(0021) typedef  unsigned char uchar;
+(0022) typedef  unsigned int  uint;
+(0023) typedef  unsigned long ulong;
+(0024) 
+(0025) uchar i;
+(0026) 
+(0027) void delay(void) {
+(0028) 	 uchar i,j;
+(0029) 	 for (i=0;i<255;i++) {
+_delay:
+  i                    --> R16
+  j                    --> R18
+    004B 2700      CLR	R16
+    004C C00E      RJMP	0x005B
+(0030) 	 	 for (j=0;j<255;j++) {
+    004D 2722      CLR	R18
+    004E C009      RJMP	0x0058
+(0031) 		 	 asm("NOP");
+    004F 0000      NOP
+(0032) 			 asm("NOP");
+    0050 0000      NOP
+(0033) 			 asm("NOP");
+    0051 0000      NOP
+(0034) 			 asm("NOP");
+    0052 0000      NOP
+(0035) 			 asm("NOP");
+    0053 0000      NOP
+(0036) 			 asm("NOP");
+    0054 0000      NOP
+(0037) 			 asm("NOP");
+    0055 0000      NOP
+(0038) 			 asm("NOP");
+    0056 0000      NOP
+    0057 9523      INC	R18
+    0058 3F2F      CPI	R18,0xFF
+    0059 F3A8      BCS	0x004F
+    005A 9503      INC	R16
+    005B 3F0F      CPI	R16,0xFF
+    005C F380      BCS	0x004D
+    005D 9508      RET
+(0039) 		}
+(0040) 	 }
+(0041) }
+(0042) void main(void){
+(0043) 	 
+(0044) 	 DDRA=0xff;			 //A口为输出口 		
+_main:
+    005E EF8F      LDI	R24,0xFF
+    005F BB8A      OUT	0x1A,R24
+(0045) 	 PORTA=0xff; 		 //A口全部输出1
+    0060 BB8B      OUT	0x1B,R24
+    0061 C01A      RJMP	0x007C
+(0046) 
+(0047) 	 while(1){
+(0048) 	 	for (i=0;i<8;i++) {	 
+    0062 2422      CLR	R2
+    0063 92200060  STS	_i,R2
+    0065 C012      RJMP	0x0078
+(0049) 			PORTA=0xff; 	 
+    0066 EF8F      LDI	R24,0xFF
+    0067 BB8B      OUT	0x1B,R24
+(0050) 	 		PORTA&=~(1<<i);
+    0068 91100060  LDS	R17,_i
+    006A E001      LDI	R16,1
+    006B 940E007E  CALL	lsl8
+    006D 2E20      MOV	R2,R16
+    006E 9420      COM	R2
+    006F B23B      IN	R3,0x1B
+    0070 2032      AND	R3,R2
+    0071 BA3B      OUT	0x1B,R3
+(0051) 			delay();
+FILE: <library>
+    0072 DFD8      RCALL	_delay
+    0073 91800060  LDS	R24,_i
+    0075 5F8F      SUBI	R24,0xFF
+    0076 93800060  STS	_i,R24
+    0078 91800060  LDS	R24,_i
+    007A 3088      CPI	R24,0x8
+    007B F350      BCS	0x0066
+    007C CFE5      RJMP	0x0062
+    007D 9508      RET
+lsl8:
+    007E 2311      TST	R17
+    007F F019      BEQ	0x0083
+    0080 0F00      LSL	R16
+    0081 951A      DEC	R17
+    0082 CFFB      RJMP	lsl8
+    0083 9508      RET

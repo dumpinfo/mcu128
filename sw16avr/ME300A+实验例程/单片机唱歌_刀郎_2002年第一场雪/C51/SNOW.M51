@@ -1,0 +1,118 @@
+BL51 BANKED LINKER/LOCATER V5.12                                                        01/02/2005  00:12:39  PAGE 1
+
+
+BL51 BANKED LINKER/LOCATER V5.12, INVOKED BY:
+E:\KEIL\C51\BIN\BL51.EXE SNOW.obj TO SNOW
+
+
+MEMORY MODEL: SMALL
+
+
+INPUT MODULES INCLUDED:
+  SNOW.obj (SNOW)
+  E:\KEIL\C51\LIB\C51S.LIB (?C_STARTUP)
+
+
+LINK MAP OF MODULE:  SNOW (SNOW)
+
+
+            TYPE    BASE      LENGTH    RELOCATION   SEGMENT NAME
+            -----------------------------------------------------
+
+            * * * * * * *   D A T A   M E M O R Y   * * * * * * *
+            REG     0000H     0008H     ABSOLUTE     "REG BANK 0"
+            DATA    0008H     0002H     UNIT         ?DT?SNOW
+            IDATA   000AH     0001H     UNIT         ?STACK
+
+            * * * * * * *   C O D E   M E M O R Y   * * * * * * *
+            CODE    0000H     0003H     ABSOLUTE     
+                    0003H     0008H                  *** GAP ***
+            CODE    000BH     0003H     ABSOLUTE     
+            CODE    000EH     027CH     UNIT         ?CO?SNOW
+            CODE    028AH     005BH     UNIT         ?PR?MAIN?SNOW
+            CODE    02E5H     0033H     UNIT         ?PR?TIMER0?SNOW
+            CODE    0318H     001CH     UNIT         ?PR?_DELAYMS?SNOW
+            CODE    0334H     000CH     UNIT         ?C_C51STARTUP
+
+
+
+OVERLAY MAP OF MODULE:   SNOW (SNOW)
+
+
+SEGMENT
+  +--> CALLED SEGMENT
+---------------------
+?PR?TIMER0?SNOW
+  +--> ?CO?SNOW
+
+*** NEW ROOT ***************************************************
+
+?C_C51STARTUP
+  +--> ?PR?MAIN?SNOW
+
+?PR?MAIN?SNOW
+  +--> ?CO?SNOW
+  +--> ?PR?_DELAYMS?SNOW
+
+
+
+SYMBOL TABLE OF MODULE:  SNOW (SNOW)
+
+  VALUE           TYPE          NAME
+BL51 BANKED LINKER/LOCATER V5.12                                                      01/02/2005  00:12:39  PAGE 2
+
+
+  ----------------------------------
+
+  -------         MODULE        SNOW
+  C:0000H         SYMBOL        _ICE_DUMMY_
+  D:00B0H         PUBLIC        P3
+  D:00A8H         PUBLIC        IE
+  C:028AH         PUBLIC        main
+  D:0089H         PUBLIC        TMOD
+  C:000EH         PUBLIC        song
+  D:008CH         PUBLIC        TH0
+  D:008AH         PUBLIC        TL0
+  C:0318H         PUBLIC        _delayms
+  C:02E5H         PUBLIC        timer0
+  B:0088H.4       PUBLIC        TR0
+  D:0008H         PUBLIC        j
+  B:00B0H.7       PUBLIC        SPK
+  -------         PROC          MAIN
+  C:028AH         LINE#         38
+  C:028AH         LINE#         39
+  C:028DH         LINE#         40
+  C:0290H         LINE#         41
+  C:0290H         LINE#         42
+  C:0295H         LINE#         43
+  C:02A0H         LINE#         44
+  C:02A2H         LINE#         45
+  C:02C6H         LINE#         46
+  C:02D8H         LINE#         47
+  C:02E3H         LINE#         48
+  -------         ENDPROC       MAIN
+  -------         PROC          TIMER0
+  C:02E5H         LINE#         52
+  C:02EDH         LINE#         53
+  C:02FDH         LINE#         54
+  C:030DH         LINE#         55
+  C:030FH         LINE#         56
+  -------         ENDPROC       TIMER0
+  -------         PROC          _DELAYMS
+  D:0007H         SYMBOL        ms
+  -------         DO            
+  D:0004H         SYMBOL        i
+  -------         ENDDO         
+  C:0318H         LINE#         57
+  C:0318H         LINE#         58
+  C:0318H         LINE#         59
+  C:031EH         LINE#         60
+  C:031EH         LINE#         61
+  C:0331H         LINE#         62
+  C:0331H         LINE#         63
+  C:0333H         LINE#         65
+  -------         ENDPROC       _DELAYMS
+  -------         ENDMOD        SNOW
+
+Program Size: data=11.0 xdata=0 code=824
+LINK/LOCATE RUN COMPLETE.  0 WARNING(S),  0 ERROR(S)

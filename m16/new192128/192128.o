@@ -1,0 +1,163 @@
+XL
+H 5 areas 9 global symbols
+M _192128.c
+A text size EA flags 0
+dbfile E:\avr资料\例程\m16\new192128\192128.c
+dbfunc e port_init 0 fV
+dbline FFFFFFFF 0
+dbline 2F 0
+dbline 30 0
+dbline 31 4
+dbline 32 6
+dbline 33 8
+dbline 34 A
+dbline 35 C
+dbline 36 10
+dbline 37 12
+dbline 38 14
+dbline 39 16
+dbline 3A 18
+dbline 3B 1C
+dbline 3C 20
+dbline 3D 24
+dbline FFFFFFFE 28
+dbline 0 28
+dbfunc e timer0_init 2A fV
+dbline FFFFFFFF 2A
+dbline 47 2A
+dbline 48 2A
+dbline 49 2E
+dbline 4A 30
+dbline 4B 34
+dbline 4C 38
+dbline FFFFFFFE 3C
+dbline 0 3C
+dbfunc e timer0_ovf_isr 3E fV
+dbline FFFFFFFF 44
+dbline 51 44
+dbline 52 44
+dbline FFFFFFFE 48
+dbline 0 4E
+dbfunc e timer1_init 50 fV
+dbline FFFFFFFF 50
+dbline 5E 50
+dbline 5F 50
+dbline 60 54
+dbline 62 58
+dbline 63 5C
+dbline 64 60
+dbline 65 64
+dbline 66 68
+dbline 68 6C
+dbline 69 70
+dbline 6A 74
+dbline 6B 78
+dbline FFFFFFFE 7C
+dbline 0 7C
+dbfunc e timer1_ovf_isr 7E fV
+dbline FFFFFFFF 88
+dbline 70 88
+dbline 72 88
+dbline 73 8C
+dbline 74 90
+dbline 75 9A
+dbline 76 9E
+dbline 77 9E
+dbline 78 A0
+dbline 79 A6
+dbline 7B A8
+dbline 7E AA
+dbline 7F AC
+dbline 81 AE
+dbline 82 B2
+dbline 83 B4
+dbline FFFFFFFE B6
+dbline 0 C0
+dbfunc e init_devices C2 fV
+dbline FFFFFFFF C2
+dbline 8C C2
+dbline 8E C2
+dbline 8F C4
+dbline 90 C8
+dbline 91 CC
+dbline 92 CE
+dbline 93 D0
+dbline 95 D2
+dbline 96 D6
+dbline 97 DA
+dbline 98 DC
+dbline 99 DE
+dbline 9B E2
+dbline FFFFFFFE E4
+dbline 0 E4
+dbfunc e main E6 fV
+dbsym l j 1 I
+dbsym l i 1 I
+dbline FFFFFFFF E6
+dbline A1 E6
+dbline A3 E6
+dbline FFFFFFFE E8
+dbline 0 E8
+S _main Def00E6
+S _timer0_ovf_isr Def003E
+S _timer1_ovf_isr Def007E
+S _port_init Def0000
+S _init_devices Def00C2
+S _timer0_init Def002A
+S _timer1_init Def0050
+A data size 1 flags 20
+dbfile E:\avr资料\例程\m16\new192128\192128.c
+dbsym e data 0 c
+S _data Def0000
+A idata size 1 flags 0
+A vector size 44 flags C
+A bss size 1 flags 20
+dbfile E:\avr资料\例程\m16\new192128\192128.c
+dbsym e data1 0 c
+S _data1 Def0000
+T 00 00 00
+R 00 00 02 00
+T 00 00 22 24 2B BA 2A BA 28 BA 27 BA 25 BA 8F EF
+R 00 00 00 00
+T 0E 00 84 BB 22 BA 81 BB 23 B8 22 B8 20 92 62 00
+R 00 00 00 00
+T 1C 00 20 92 61 00 20 92 65 00 20 92 64 00 08 95
+R 00 00 00 00
+T 2A 00 22 24 23 BE 20 BE 8D E3 82 BF 83 EC 81 BF
+R 00 00 00 00
+T 38 00 87 E0 83 BF 08 95
+R 00 00 00 00
+T 40 00 0C 94 1F 00
+R 00 00 03 00 10 04 00 00
+T 3E 00 8A 93 8F B7 8A 93 8D E3 82 BF 89 91 8F BF
+R 00 00 00 00
+T 4C 00 89 91 18 95
+R 00 00 00 00
+T 50 00 8F EF 8E BD 85 E8 8D BD 8E EE 8C BD 8A E7
+R 00 00 00 00
+T 5E 00 8B BD 82 E1 8A BD 8A E7 89 BD 82 E1 88 BD
+R 00 00 00 00
+T 6C 00 8A E7 87 BD 82 E1 86 BD 22 24 2F BC 83 E0
+R 00 00 00 00
+T 7A 00 8E BD 08 95
+R 00 00 00 00
+T 20 00 0C 94 3F 00
+R 00 00 03 00 10 04 00 00
+T 7E 00 2A 92 8A 93 9A 93 2F B6 2A 92 85 E8 8D BD
+R 00 00 00 00
+T 8C 00 8E EE 8C BD 80 91 00 00 8F 5F 80 93 00 00
+R 00 00 00 00 00 08 01 00 00 0E 01 00
+T 9A 00 82 30 29 F4 A8 9A 22 24 20 92 00 00 01 C0
+R 00 00 00 00 00 0C 01 00
+T A8 00 A8 98 AA 9A AA 98 8F E0 82 BB AB 98 AB 9A
+R 00 00 00 00
+T B6 00 29 90 2F BE 99 91 89 91 29 90 18 95
+R 00 00 00 00
+T C2 00 F8 94 22 24 2C BE 20 92 6D 00 99 DF AD DF
+R 00 00 00 00
+T D0 00 BF DF 22 24 25 BE 20 92 6A 00 2A BE 29 BE
+R 00 00 00 00
+T DE 00 85 E0 87 BF 78 94 08 95
+R 00 00 00 00
+T E6 00 ED DF 08 95
+R 00 00 00 00

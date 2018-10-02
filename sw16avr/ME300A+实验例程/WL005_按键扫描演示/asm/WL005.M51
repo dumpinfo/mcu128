@@ -1,0 +1,107 @@
+BL51 BANKED LINKER/LOCATER V5.11                                                        03/29/2005  15:43:01  PAGE 1
+
+
+BL51 BANKED LINKER/LOCATER V5.11, INVOKED BY:
+C:\KEIL\C51\BIN\BL51.EXE wl005.obj TO WL005 CODE (0X0000-0X0FFF)
+
+
+INPUT MODULES INCLUDED:
+  wl005.obj (WL005)
+
+
+LINK MAP OF MODULE:  WL005 (WL005)
+
+
+            TYPE    BASE      LENGTH    RELOCATION   SEGMENT NAME
+            -----------------------------------------------------
+
+            * * * * * * *   D A T A   M E M O R Y   * * * * * * *
+            REG     0000H     0008H     ABSOLUTE     "REG BANK 0"
+            DATA    0008H     0002H     UNIT         DATA_SEG
+            IDATA   000AH     0014H     UNIT         STACK_SEG
+
+            * * * * * * *   C O D E   M E M O R Y   * * * * * * *
+            CODE    0000H     0003H     ABSOLUTE     
+            CODE    0003H     0050H     UNIT         CODE_SEG
+
+
+
+SYMBOL TABLE OF MODULE:  WL005 (WL005)
+
+  VALUE           TYPE          NAME
+  ----------------------------------
+
+  -------         MODULE        WL005
+  C:0003H         SEGMENT       CODE_SEG
+  D:0008H         SEGMENT       DATA_SEG
+  I:000AH         SEGMENT       STACK_SEG
+  D:00E0H         SYMBOL        ACC
+  C:0046H         SYMBOL        DELAYMS
+  C:0049H         SYMBOL        DLY_LP1
+  C:004BH         SYMBOL        DLY_LP2
+  C:0052H         SYMBOL        END_DLYMS
+  B:0090H.4       SYMBOL        K1
+  B:0090H.5       SYMBOL        K2
+  C:000CH         SYMBOL        KEY_CHKSW
+  D:0008H         SYMBOL        KEY_S
+  D:0009H         SYMBOL        KEY_V
+  C:0003H         SYMBOL        MAIN
+  D:0080H         SYMBOL        P0
+  D:0090H         SYMBOL        P1
+  C:003AH         SYMBOL        PROC_K1
+  C:0040H         SYMBOL        PROC_K2
+  C:0031H         SYMBOL        PROC_KEY
+  C:0027H         SYMBOL        SCAN_KEY
+  D:0081H         SYMBOL        SP
+  I:000AH         SYMBOL        STACK
+  C:0000H         LINE#         38
+  C:0003H         LINE#         43
+  C:0006H         LINE#         44
+  C:0009H         LINE#         45
+  C:000CH         LINE#         48
+BL51 BANKED LINKER/LOCATER V5.11                                                      03/29/2005  15:43:01  PAGE 2
+
+
+  C:000EH         LINE#         49
+  C:0010H         LINE#         50
+  C:0012H         LINE#         51
+  C:0014H         LINE#         53
+  C:0016H         LINE#         54
+  C:0018H         LINE#         55
+  C:001AH         LINE#         56
+  C:001CH         LINE#         57
+  C:001EH         LINE#         58
+  C:0020H         LINE#         60
+  C:0023H         LINE#         61
+  C:0025H         LINE#         62
+  C:0027H         LINE#         69
+  C:0028H         LINE#         70
+  C:002AH         LINE#         71
+  C:002CH         LINE#         72
+  C:002EH         LINE#         73
+  C:0030H         LINE#         74
+  C:0031H         LINE#         82
+  C:0033H         LINE#         83
+  C:0036H         LINE#         84
+  C:0039H         LINE#         85
+  C:003AH         LINE#         88
+  C:003CH         LINE#         89
+  C:003DH         LINE#         90
+  C:003FH         LINE#         91
+  C:0040H         LINE#         94
+  C:0042H         LINE#         95
+  C:0043H         LINE#         96
+  C:0045H         LINE#         97
+  C:0046H         LINE#         106
+  C:0047H         LINE#         107
+  C:0049H         LINE#         109
+  C:004BH         LINE#         111
+  C:004CH         LINE#         112
+  C:004DH         LINE#         113
+  C:004EH         LINE#         114
+  C:0050H         LINE#         115
+  C:0052H         LINE#         118
+  -------         ENDMOD        WL005
+
+Program Size: data=30.0 xdata=0 code=83
+LINK/LOCATE RUN COMPLETE.  0 WARNING(S),  0 ERROR(S)

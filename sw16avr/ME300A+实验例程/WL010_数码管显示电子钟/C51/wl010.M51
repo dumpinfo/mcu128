@@ -1,0 +1,289 @@
+BL51 BANKED LINKER/LOCATER V5.03                                                        02/10/2004  20:07:51  PAGE 1
+
+
+BL51 BANKED LINKER/LOCATER V5.03, INVOKED BY:
+D:\KEIL\C51\BIN\BL51.EXE wl010.obj TO wl010 CODE (0X0000-0X0FFF)
+
+
+MEMORY MODEL: SMALL
+
+
+INPUT MODULES INCLUDED:
+  wl010.obj (WL010)
+  D:\KEIL\C51\LIB\C51S.LIB (?C_STARTUP)
+
+
+LINK MAP OF MODULE:  wl010 (WL010)
+
+
+            TYPE    BASE      LENGTH    RELOCATION   SEGMENT NAME
+            -----------------------------------------------------
+
+            * * * * * * *   D A T A   M E M O R Y   * * * * * * *
+            REG     0000H     0008H     ABSOLUTE     "REG BANK 0"
+            DATA    0008H     0010H     UNIT         ?DT?WL010
+            IDATA   0018H     0001H     UNIT         ?STACK
+
+            * * * * * * *   C O D E   M E M O R Y   * * * * * * *
+            CODE    0000H     0003H     ABSOLUTE     
+                    0003H     0008H                  *** GAP ***
+            CODE    000BH     0002H     ABSOLUTE     
+            CODE    000DH     000CH     UNIT         ?C_C51STARTUP
+                    0019H     0002H                  *** GAP ***
+            CODE    001BH     0002H     ABSOLUTE     
+            CODE    001DH     0089H     INBLOCK      ?PR?MAIN?WL010
+            CODE    00A6H     0049H     INBLOCK      ?PR?TIMER1?WL010
+            CODE    00EFH     003AH     INBLOCK      ?PR?TIMER0?WL010
+            CODE    0129H     0036H     INBLOCK      ?PR?PROC_KEY?WL010
+            CODE    015FH     0033H     INBLOCK      ?PR?INC_HOUR?WL010
+            CODE    0192H     0026H     INBLOCK      ?PR?INC_SEC?WL010
+            CODE    01B8H     0026H     INBLOCK      ?PR?INC_MIN?WL010
+            CODE    01DEH     001BH     INBLOCK      ?PR?SCAN_KEY?WL010
+            CODE    01F9H     0012H     INBLOCK      ?PR?_DELAYMS?WL010
+            CODE    020BH     000BH     UNIT         ?CO?WL010
+
+
+
+OVERLAY MAP OF MODULE:   wl010 (WL010)
+
+
+SEGMENT
+  +--> CALLED SEGMENT
+---------------------
+?PR?TIMER1?WL010
+  +--> ?PR?INC_SEC?WL010
+
+?PR?INC_SEC?WL010
+  +--> ?PR?INC_MIN?WL010
+  +--> ?CO?WL010
+
+?PR?INC_MIN?WL010
+  +--> ?PR?INC_HOUR?WL010
+BL51 BANKED LINKER/LOCATER V5.03                                                      02/10/2004  20:07:51  PAGE 2
+
+
+  +--> ?CO?WL010
+
+?PR?INC_HOUR?WL010
+  +--> ?CO?WL010
+
+*** NEW ROOT ***************************************************
+
+?C_C51STARTUP
+  +--> ?PR?MAIN?WL010
+
+?PR?MAIN?WL010
+  +--> ?CO?WL010
+  +--> ?PR?SCAN_KEY?WL010
+  +--> ?PR?_DELAYMS?WL010
+  +--> ?PR?PROC_KEY?WL010
+
+?PR?PROC_KEY?WL010
+  +--> ?PR?INC_HOUR?WL010
+  +--> ?CO?WL010
+
+
+
+SYMBOL TABLE OF MODULE:  wl010 (WL010)
+
+  VALUE           TYPE          NAME
+  ----------------------------------
+
+  -------         MODULE        WL010
+  C:0000H         SYMBOL        _ICE_DUMMY_
+  D:0080H         PUBLIC        P0
+  D:00A0H         PUBLIC        P2
+  D:00B0H         PUBLIC        P3
+  B:00A8H.7       PUBLIC        EA
+  D:00A8H         PUBLIC        IE
+  D:0008H         PUBLIC        key_s
+  D:0009H         PUBLIC        key_v
+  C:001DH         PUBLIC        main
+  D:0089H         PUBLIC        TMOD
+  D:0088H         PUBLIC        TCON
+  D:000AH         PUBLIC        dis_digit
+  D:000BH         PUBLIC        sec
+  D:000CH         PUBLIC        dis_index
+  C:020BH         PUBLIC        dis_code
+  B:00B0H.2       PUBLIC        AN1
+  D:000DH         PUBLIC        hour
+  B:00B0H.3       PUBLIC        AN2
+  D:000EH         PUBLIC        min
+  D:008CH         PUBLIC        TH0
+  D:008DH         PUBLIC        TH1
+  D:000FH         PUBLIC        sec100
+  D:008AH         PUBLIC        TL0
+  D:008BH         PUBLIC        TL1
+  C:01DEH         PUBLIC        scan_key
+  C:01F9H         PUBLIC        _delayms
+  C:00EFH         PUBLIC        timer0
+  C:00A6H         PUBLIC        timer1
+  B:0088H.4       PUBLIC        TR0
+BL51 BANKED LINKER/LOCATER V5.03                                                      02/10/2004  20:07:51  PAGE 3
+
+
+  B:0088H.6       PUBLIC        TR1
+  C:0192H         PUBLIC        inc_sec
+  C:015FH         PUBLIC        inc_hour
+  D:0010H         PUBLIC        dis_buf
+  C:01B8H         PUBLIC        inc_min
+  C:0129H         PUBLIC        proc_key
+  -------         PROC          MAIN
+  C:001DH         LINE#         52
+  C:001DH         LINE#         53
+  C:001DH         LINE#         54
+  C:0020H         LINE#         55
+  C:0023H         LINE#         56
+  C:0026H         LINE#         57
+  C:0029H         LINE#         58
+  C:002CH         LINE#         60
+  C:002FH         LINE#         61
+  C:0032H         LINE#         63
+  C:0035H         LINE#         64
+  C:0037H         LINE#         65
+  C:0039H         LINE#         67
+  C:003BH         LINE#         69
+  C:0047H         LINE#         70
+  C:0052H         LINE#         71
+  C:005BH         LINE#         72
+  C:0066H         LINE#         73
+  C:006FH         LINE#         74
+  C:007AH         LINE#         75
+  C:007DH         LINE#         76
+  C:0080H         LINE#         78
+  C:0083H         LINE#         79
+  C:0086H         LINE#         81
+  C:0089H         LINE#         82
+  C:008CH         LINE#         84
+  C:008EH         LINE#         85
+  C:0090H         LINE#         87
+  C:0093H         LINE#         89
+  C:0093H         LINE#         90
+  C:0093H         LINE#         91
+  C:0097H         LINE#         92
+  C:0097H         LINE#         93
+  C:009BH         LINE#         94
+  C:009FH         LINE#         95
+  C:009FH         LINE#         96
+  C:00A2H         LINE#         97
+  C:00A4H         LINE#         98
+  C:00A4H         LINE#         99
+  C:00A4H         LINE#         101
+  -------         ENDPROC       MAIN
+  -------         PROC          SCAN_KEY
+  C:01DEH         LINE#         104
+  C:01DEH         LINE#         105
+  C:01DEH         LINE#         106
+  C:01E1H         LINE#         107
+  C:01E6H         LINE#         108
+  C:01ECH         LINE#         109
+  C:01F2H         LINE#         110
+  C:01F8H         LINE#         111
+BL51 BANKED LINKER/LOCATER V5.03                                                      02/10/2004  20:07:51  PAGE 4
+
+
+  -------         ENDPROC       SCAN_KEY
+  -------         PROC          PROC_KEY
+  C:0129H         LINE#         113
+  C:0129H         LINE#         114
+  C:0129H         LINE#         115
+  C:012BH         LINE#         116
+  C:0130H         LINE#         117
+  C:0130H         LINE#         118
+  C:0132H         LINE#         119
+  C:0134H         LINE#         120
+  C:0139H         LINE#         121
+  C:0139H         LINE#         122
+  C:013BH         LINE#         123
+  C:0142H         LINE#         124
+  C:0142H         LINE#         125
+  C:0145H         LINE#         126
+  C:0145H         LINE#         127
+  C:0151H         LINE#         128
+  C:015CH         LINE#         129
+  C:015CH         LINE#         131
+  C:015EH         LINE#         132
+  -------         ENDPROC       PROC_KEY
+  -------         PROC          TIMER0
+  C:00EFH         LINE#         134
+  C:00FAH         LINE#         141
+  C:00FDH         LINE#         142
+  C:0100H         LINE#         144
+  C:0103H         LINE#         145
+  C:010BH         LINE#         146
+  C:010EH         LINE#         148
+  C:011BH         LINE#         149
+  C:011DH         LINE#         151
+  C:0120H         LINE#         152
+  -------         ENDPROC       TIMER0
+  -------         PROC          TIMER1
+  C:00A6H         LINE#         154
+  C:00C3H         LINE#         156
+  C:00C6H         LINE#         158
+  C:00C8H         LINE#         160
+  C:00CFH         LINE#         161
+  C:00CFH         LINE#         162
+  C:00D2H         LINE#         163
+  C:00D4H         LINE#         164
+  C:00D4H         LINE#         165
+  -------         ENDPROC       TIMER1
+  -------         PROC          INC_SEC
+  C:0192H         LINE#         167
+  C:0192H         LINE#         168
+  C:0192H         LINE#         169
+  C:0194H         LINE#         170
+  C:019BH         LINE#         171
+  C:019BH         LINE#         172
+  C:019EH         LINE#         173
+  C:01A0H         LINE#         174
+  C:01A0H         LINE#         175
+  C:01ACH         LINE#         176
+  C:01B7H         LINE#         177
+BL51 BANKED LINKER/LOCATER V5.03                                                      02/10/2004  20:07:51  PAGE 5
+
+
+  -------         ENDPROC       INC_SEC
+  -------         PROC          INC_MIN
+  C:01B8H         LINE#         179
+  C:01B8H         LINE#         180
+  C:01B8H         LINE#         181
+  C:01BAH         LINE#         182
+  C:01C1H         LINE#         183
+  C:01C1H         LINE#         184
+  C:01C4H         LINE#         185
+  C:01C6H         LINE#         186
+  C:01C6H         LINE#         187
+  C:01D2H         LINE#         188
+  C:01DDH         LINE#         189
+  -------         ENDPROC       INC_MIN
+  -------         PROC          INC_HOUR
+  C:015FH         LINE#         191
+  C:015FH         LINE#         192
+  C:015FH         LINE#         193
+  C:0161H         LINE#         194
+  C:0168H         LINE#         195
+  C:0168H         LINE#         196
+  C:016BH         LINE#         197
+  C:016BH         LINE#         198
+  C:0172H         LINE#         199
+  C:0180H         LINE#         201
+  C:0183H         LINE#         202
+  C:0191H         LINE#         204
+  -------         ENDPROC       INC_HOUR
+  -------         PROC          _DELAYMS
+  D:0007H         SYMBOL        ms
+  -------         DO            
+  D:0006H         SYMBOL        i
+  -------         ENDDO         
+  C:01F9H         LINE#         207
+  C:01F9H         LINE#         209
+  C:01F9H         LINE#         211
+  C:01FFH         LINE#         212
+  C:01FFH         LINE#         213
+  C:020AH         LINE#         214
+  C:020AH         LINE#         215
+  -------         ENDPROC       _DELAYMS
+  -------         ENDMOD        WL010
+
+Program Size: data=25.0 xdata=0 code=524
+LINK/LOCATE RUN COMPLETE.  0 WARNING(S),  0 ERROR(S)

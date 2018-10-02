@@ -1,0 +1,18 @@
+<html>
+<body>
+<pre>
+<h1>礦ision2 Build Log</h1>
+<h2>Project:</h2>
+F:\winf\ME300系列\ME300B\samples_release\WL021_DS18B20+数码管显示温度控制\ASM\DS18B20-DSY.uv2
+Project File Date:  03/29/2005
+
+<h2>Output:</h2>
+Build target 'Target 1'
+assembling DS18B20-DSY.asm...
+linking...
+Program Size: data=8.0 xdata=0 code=985
+creating hex file from "DS18B20-DSY"...
+"DS18B20-DSY" - 0 Error(s), 0 Warning(s).
+</pre>
+</body>
+</html>

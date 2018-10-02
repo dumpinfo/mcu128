@@ -1,0 +1,105 @@
+C51 COMPILER V7.50   SNOW                                                                  01/02/2005 00:12:38 PAGE 1   
+
+
+C51 COMPILER V7.50, COMPILATION OF MODULE SNOW
+OBJECT MODULE PLACED IN SNOW.OBJ
+COMPILER INVOKED BY: E:\Keil\C51\BIN\C51.EXE SNOW.C BROWSE DEBUG OBJECTEXTEND
+
+line level    source
+
+   1          #include <reg51.h>
+   2          sbit SPK=P3^7;
+   3          void delayms(unsigned char ms);
+   4          unsigned int data j;
+   5          unsigned char code song[636]={ 0xFF,0xFF,4,0xFd,0x08,2,0xFd,0x08,2,0xFd,0x08,2,0xFd,0x08,2,0xFd,0x08,2,0xf
+             -d,0x08,2,                                //21
+   6                                                                    0xFD,0x5B,4,0xFD,0x08,2,0xFC,0xAB,2,0xFC,0x0B,2,0xFC,0x0B,2,0xff,0xff,2,0xFc,0x0B,2,                          //21
+   7                                                                    0xFC,0xAB,2,0xFC,0xAB,2,0xFC,0xAB,2,0xFC,0xAB,2,0xFC,0xAB,4,0xFC,0xAB,2,0xFC,0xAB,2,                          //21    
+   8                                                                    0xFB,0x8F,2,0xFC,0x0B,2,0xFC,0x0B,4,0xff,0xff,8,                                                                                                      //12
+   9                                                                    0xff,0xff,2,0xFD,0x08,2,0xFD,0x08,2,0xFD,0x08,2,0xFD,0x08,4,0xFD,0x08,2,0xFD,0x08,2,                          //21
+  10                                                                    0xFD,0x5B,4,0xFD,0x08,2,0xFC,0xAB,4,0xFD,0x08,6,                                                              //12
+  11                                                                    0xff,0xff,2,0xFB,0x8F,2,0xFB,0x8F,2,0xFB,0x8F,2,0xFB,0x8F,2,0xFB,0x8F,2,0xFB,0x03,2,0xFA,0x14,2, 
+             - //24
+  12                                                                    0xFC,0xAB,4,0xFC,0xAB,2,0xFC,0xAB,2,0xFC,0xAB,2,0xFC,0x0B,2,0xFC,0x0B,4,                                                      //18
+  13                                                                    0xFF,0xFF,4,0xFD,0x08,2,0xFD,0x08,2,0xFD,0x08,2,0xFD,0x08,2,0xFD,0x08,2,0xFD,0x08,2,                          //21    
+  14                                                                    0xFD,0x5B,4,0xFD,0x08,2,0xFC,0xAB,4,0xFD,0x08,6,                                                                                              //12,183
+  15                                                                0xFF,0xFF,2,0xFB,0x8F,2,0xFB,0x8F,2,0xFB,0x8F,2,0xFB,0x8F,2,0xFB,0x8F,2,0xFB,0x03,2,0xFA,0x14,
+             -2,  //24
+  16                                                                    0xFC,0xAB,4,0xFC,0xAB,2,0xFC,0xAB,2,0xFC,0xAB,2,0xFC,0x0B,2,0xFC,0x0B,4,                                                  //18
+  17                                                                0xFF,0xFF,4,0xFd,0x08,2,0xFd,0x08,2,0xFd,0x08,2,0xFd,0x08,2,0xFd,0x08,2,0xfd,0x08,2,                              //21
+  18                                        0xFD,0x5B,4,0xFD,0x08,2,0xFD,0x5B,2,0xFC,0xAB,2,0xFC,0x0B,2,0xFC,0x0B,4,                          
+             -                        //18
+  19                                                                    0xFF,0xFF,2,0xFB,0x8F,2,0xFB,0x8F,2,0xFB,0x03,2,0xFB,0x8F,4,0xFB,0x8F,2,0xFB,0x03,2,                          //21
+  20                                                                    0xFC,0x0B,4,0xFB,0x8F,2,0xFC,0x0B,2,0xFB,0x03,2,0xfa,0x14,2,0xfa,0x14,4,                         
+             - //18
+  21                                                                0xFF,0xFF,2,0xFD,0x08,2,0xFD,0x08,2,0xFD,0x08,2,0xFD,0x08,2,0xFD,0x08,2,0xFD,0x08,2,0xFD,0x08,
+             -2,  //24
+  22                                                                    0xFD,0x5B,4,0xFD,0x08,2,0xFD,0x5B,2,0xFC,0xAB,2,0xFC,0x0B,2,0xFC,0x0B,4,                                                      //18
+  23                                                                    0xff,0xff,2,0xFB,0x8F,2,0xFB,0x8F,2,0xFB,0x8F,2,0xFB,0x8F,2,0xFB,0x8F,2,0xFB,0x03,2,0xFA,0x14,2, 
+             - //24
+  24                                                                    0xfc,0xab,4,0xfc,0xab,2,0xfc,0xab,2,0xfb,0x8f,2,0xfc,0x0b,2,0xFC,0x0B,4,                                                  //18,204
+  25                                                                    0xFF,0xFF,2,0xFd,0x08,2,0xFd,0x08,2,0xFd,0x08,2,0xFd,0x08,2,0xFd,0x08,4,0xFd,0x08,2,              
+             -//21
+  26                                                                    0xfd,0x5b,4,0xfd,0x08,2,0xfc,0xab,4,0xfc,0x0b,6,                                                                                                      //12
+  27                                                                    0xFF,0xFF,2,0xFB,0x8F,2,0xFB,0x8F,2,0xFB,0x03,2,0xFB,0x8F,2,0xFB,0x8F,2,0xFB,0x8F,2,0xFB,0x03,2,      
+             -//24        
+  28                                                                0xFC,0x0B,4,0xFB,0x8F,2,0xFC,0x0B,2,0xFB,0x03,2,0xfa,0x14,2,0xfa,0x14,4,                                                  //18    
+  29                                                                0xff,0xff,2,0xFB,0x8F,2,0xFB,0x8F,2,0xFB,0x8F,2,0xFB,0x8F,2,0xFB,0x8F,2,0xFB,0x03,2,0xFA,0x14,
+             -2,  //24
+  30                                                                    0xfb,0x03,2,0xfb,0x03,2,0xfb,0x03,2,0xfa,0x14,2,0xfa,0x14,1,0xf9,0x5b,1,0xf8,0x2a,2,0xf8,0x2a,4, 
+             - //24
+  31                                                                    0xff,0xff,2,0xFB,0x8F,2,0xFB,0x8F,2,0xFB,0x8F,2,0xFB,0x8F,2,0xFB,0x8F,2,0xFB,0x03,2,0xFA,0x14,2, 
+             - //24
+  32                                                                    0xfb,0x8f,2,0xfc,0x08,2,0xfc,0x08,2,0xfc,0x08,10,                                                                                                     //12
+  33                                                                    0xff,0xff,2,0xFB,0x8F,2,0xFB,0x8F,2,0xFB,0x8F,2,0xFB,0x8F,2,0xFB,0x8F,2,0xFB,0x03,2,0xFA,0x14,2, 
+             - //24
+  34                                                                    0xfb,0x03,2,0xfb,0x03,2,0xfb,0x03,2,0xfa,0x14,2,0xfa,0x14,1,0xf9,0x5b,1,0xf8,0x2a,2,0xf8,0x2a,4, 
+             - //24,207                                
+  35                                                                    0xff,0xff,2,0xFB,0x8F,2,0xFB,0x8F,2,0xFB,0x8F,2,0xFB,0x8F,2,0xFB,0x8F,2,0xFB,0x03,2,0xFA,0x14,2, 
+             - //24
+  36                                                                    0xfc,0xab,2,0xfd,0x08,2,0xfd,0x08,2,0xfd,0x08,2,0xff,0xff,4,0xff,0xff,4};                                                     //18,42,636     
+  37          
+  38          void main()
+  39          {       TMOD = 0x01;
+  40   1              IE = 0x82;
+C51 COMPILER V7.50   SNOW                                                                  01/02/2005 00:12:38 PAGE 2   
+
+  41   1                      while(1)
+  42   1                      {       j=0;
+  43   2                              while (j<636)
+  44   2                                      {       TR0=1;
+  45   3                                              if ((song[j]==0xff)&&(song[j+1]==0xff)) TR0=0;//休止符用0xff,0xff表示,出现休止符时CT0禁止,不发声.
+  46   3                                              delayms(song[j+2]);                                                       //每一音符唱多长.
+  47   3                                              j=j+3;
+  48   3                                      }
+  49   2                      }
+  50   1      }
+  51          
+  52          void timer0() interrupt 1 using 1                                                                 //每一音符唱多高
+  53          {       TH0=song[j];
+  54   1              TL0=song[j+1];
+  55   1              SPK = !SPK;     
+  56   1      }
+  57          void delayms(unsigned char ms)                                                                    //基本延时子程序(16分之1拍的时间)
+  58          {       unsigned int i; 
+  59   1              while(ms--)
+  60   1              {
+  61   2                      for(i = 0; i < 20300; i++);
+  62   2              }
+  63   1              TR0=0;
+  64   1              
+  65   1      }
+
+
+MODULE INFORMATION:   STATIC OVERLAYABLE
+   CODE SIZE        =    170    ----
+   CONSTANT SIZE    =    636    ----
+   XDATA SIZE       =   ----    ----
+   PDATA SIZE       =   ----    ----
+   DATA SIZE        =      2    ----
+   IDATA SIZE       =   ----    ----
+   BIT SIZE         =   ----    ----
+END OF MODULE INFORMATION.
+
+
+C51 COMPILATION COMPLETE.  0 WARNING(S),  0 ERROR(S)

@@ -1,0 +1,322 @@
+C51 COMPILER V7.06   MAIN                                                                  02/01/2008 12:33:50 PAGE 1   
+
+
+C51 COMPILER V7.06, COMPILATION OF MODULE MAIN
+OBJECT MODULE PLACED IN main.OBJ
+COMPILER INVOKED BY: d:\Keil\C51\BIN\C51.EXE main.c BROWSE DEBUG OBJECTEXTEND
+
+stmt level    source
+
+   1          #include <stdio.h>
+   2          #include <string.h>
+   3          #include <reg51.h>                /* special function register declarations   */
+   4          
+   5          #include "epphal.h"
+   6          #include "d12ci.h"
+   7          #include "mainloop.h"
+   8          #include "usb100.h"
+   9          #include "chap_9.h"
+  10          #include "protodma.h"
+  11          #include"51usb.h"
+  12          
+  13          
+  14          /*
+  15          //*************************************************************************
+  16          // USB protocol function pointer arrays
+  17          //*************************************************************************
+  18          */
+  19          
+  20          #define uchar unsigned char 
+  21          
+  22          //USB标准请求
+  23          code void (*StandardDeviceRequest[])(void) =
+  24          {
+  25                  get_status,
+  26                  clear_feature,
+  27                  reserved,
+  28                  set_feature,
+  29                  reserved,
+  30                  set_address,
+  31                  get_descriptor,
+  32                  reserved,
+  33                  get_configuration,
+  34                  set_configuration,
+  35                  get_interface,
+  36                  set_interface,
+  37                  reserved,
+  38                  reserved,
+  39                  reserved,
+  40                  reserved
+  41          };
+  42          
+  43          //用户厂商请求
+  44          code void (*VendorDeviceRequest[])(void) =
+  45          {
+  46                  reserved,
+  47                  reserved,
+  48                  reserved,
+  49                  reserved,
+  50                  reserved,
+  51                  reserved,
+  52                  reserved,
+  53                  reserved,
+  54                  reserved,
+  55                  reserved,
+C51 COMPILER V7.06   MAIN                                                                  02/01/2008 12:33:50 PAGE 2   
+
+  56                  reserved,
+  57                  reserved,
+  58                  reserved,
+  59                  reserved,
+  60                  reserved,
+  61                  reserved
+  62          };
+  63          
+  64          /*
+  65          //*************************************************************************
+  66          //  Public static data
+  67          //*************************************************************************
+  68          */
+  69          
+  70          extern EPPFLAGS bEPPflags;
+  71          extern unsigned long ClockTicks;
+  72          extern unsigned char idata GenEpBuf[];
+  73          extern IO_REQUEST idata ioRequest;
+  74          
+  75          extern unsigned char ioSize, ioCount;
+  76          extern unsigned char idata EpBuf[];
+  77          extern unsigned char idata mainbuflen;
+  78          
+  79          CONTROL_XFER ControlData;
+  80          BOOL bNoRAM;
+  81          
+  82          /////////////////数码管数据/////////////////////
+  83          unsigned char code      SEG[8]={0x00,0x02,0x04,0x06,0x08,0x0A,0x0C,0x0E};
+  84          unsigned char code  Tab[]       =       {0xC0,0xF9,0xA4,0xB0,0x99,0x92,0x82,0xF8,
+  85                                                   0x80,0x90,0x88,0x83,0xC6,0xA1,0x86,0x8E};
+  86          unsigned char ShuMa[7]={1,2,3,4,5,6,0xFF};
+  87          unsigned char index=0;
+  88          ///////////////////////////////////////////////
+  89          
+  90          void init_timer0(void)
+  91          {
+  92   1              TMOD=0x01;//Timer0模式1
+  93   1              TH0 =0xFA;//Timer0 1.5ms中断一次
+  94   1              TL0 =0x24;
+  95   1              TF0 = 0;
+  96   1              ET0 = 1;       
+  97   1              TR0 = 1;         
+  98   1      }
+  99          
+ 100          //外部中断设置
+ 101          void init_special_interrupts(void)
+ 102          {
+ 103   1              IT0 = 0;
+ 104   1              EX0 = 1;
+ 105   1              PX0 = 1;
+ 106   1      }
+ 107          
+ 108          //I/O口初始化程序
+ 109          void init_port()
+ 110          {
+ 111   1              P0 = 0xFF;
+ 112   1              P1 = 0xFF;
+ 113   1              P2 = 0xFF;
+ 114   1              P3 = 0xFF;
+ 115   1      }
+ 116          //////////////////////////////////
+ 117          void Display();
+C51 COMPILER V7.06   MAIN                                                                  02/01/2008 12:33:50 PAGE 3   
+
+ 118          /////////////////////////////////
+ 119          void main(void)
+ 120          {
+ 121   1      
+ 122   1              init_port();//初始化I/O口
+ 123   1              init_timer0();//初始化定时器0
+ 124   1              init_special_interrupts();//设置中断
+ 125   1              EA = 1;
+ 126   1              bEPPflags.value = 0;
+ 127   1              reconnect_USB();//重新连接USB
+ 128   1              /* Main program loop */
+ 129   1      
+ 130   1              while( TRUE )
+ 131   1              {
+ 132   2                      if (bEPPflags.bits.timer)
+ 133   2                      {
+ 134   3                              Display();
+ 135   3                              DISABLE;//定时器溢出,检测按键状态
+ 136   3                              bEPPflags.bits.timer = 0;
+ 137   3                              if(bEPPflags.bits.configuration)//设备未配置返回
+ 138   3                                      check_key_LED();                //检测键盘
+ 139   3                              ENABLE;
+ 140   3      
+ 141   3                      }
+ 142   2      
+ 143   2      
+ 144   2                      if (bEPPflags.bits.bus_reset) 
+ 145   2                      {//设备复位处理
+ 146   3                              DISABLE;
+ 147   3                              bEPPflags.bits.bus_reset = 0;
+ 148   3                              ENABLE;
+ 149   3                      
+ 150   3                      } // if bus reset
+ 151   2      
+ 152   2                      if(bEPPflags.bits.ep1_rxdone)  //端点1输出
+ 153   2                      {  
+ 154   3                       DISABLE;
+ 155   3                       bEPPflags.bits.ep1_rxdone=0;
+ 156   3                       ENABLE;
+ 157   3                      }
+ 158   2              
+ 159   2      
+ 160   2                      if (bEPPflags.bits.setup_packet)
+ 161   2                      {//Setup包处理
+ 162   3                              DISABLE;
+ 163   3                              bEPPflags.bits.setup_packet = 0;
+ 164   3                              ENABLE;
+ 165   3                              TR0=0;
+ 166   3                              control_handler();//调用请求处理子程序
+ 167   3                              TR0=1;
+ 168   3                      } // if setup_packet
+ 169   2      
+ 170   2                      if(bEPPflags.bits.main_rxdone)                  //端点2输出
+ 171   2                      {
+ 172   3                              DISABLE;
+ 173   3                              bEPPflags.bits.main_rxdone=0;
+ 174   3                              ENABLE;
+ 175   3                      } //if main_rxdone
+ 176   2              } // Main Loop
+ 177   1      }
+ 178          
+ 179          //返回stall应答
+C51 COMPILER V7.06   MAIN                                                                  02/01/2008 12:33:50 PAGE 4   
+
+ 180          void stall_ep0(void)
+ 181          {
+ 182   1              D12_SetEndpointStatus(0, 1);
+ 183   1              D12_SetEndpointStatus(1, 1);
+ 184   1      }
+ 185          
+ 186          //断开USB总线
+ 187          void disconnect_USB(void)
+ 188          {
+ 189   1              // Initialize D12 configuration
+ 190   1              D12_SetMode(D12_NOLAZYCLOCK, D12_SETTOONE | D12_CLOCK_12M);
+ 191   1      }
+ 192          
+ 193          //连接USB总线
+ 194          void connect_USB(void)
+ 195          {
+ 196   1              // reset event flags
+ 197   1              DISABLE;
+ 198   1              bEPPflags.value = 0;//清除所有状态
+ 199   1              ENABLE;
+ 200   1      
+ 201   1              // V2.1 enable normal+sof interrupt
+ 202   1              D12_SetDMA(D12_ENDP4INTENABLE | D12_ENDP5INTENABLE);
+ 203   1      
+ 204   1              // Initialize D12 configuration
+ 205   1              D12_SetMode(D12_NOLAZYCLOCK|D12_SOFTCONNECT, D12_SETTOONE | D12_CLOCK_12M);
+ 206   1      }
+ 207          
+ 208          //重新连接到USB总线
+ 209          void reconnect_USB(void)
+ 210          {
+ 211   1              unsigned long clk_cnt;
+ 212   1              disconnect_USB();
+ 213   1              clk_cnt = ClockTicks;
+ 214   1              while(ClockTicks < clk_cnt + 20);
+ 215   1              connect_USB();
+ 216   1      }
+ 217          
+ 218          //恢复到未配置状态
+ 219          void init_unconfig(void)
+ 220          {
+ 221   1              D12_SetEndpointEnable(0);       /* Disable all endpoints but EPP0. */
+ 222   1      }
+ 223          
+ 224          //设置配置状态
+ 225          void init_config(void)
+ 226          {
+ 227   1              D12_SetEndpointEnable(1);       /* Enable  generic/iso endpoints. */
+ 228   1      }
+ 229          
+ 230          //从端点号1发送数据
+ 231          void single_transmit(unsigned char * buf, unsigned char len)
+ 232          {
+ 233   1              if( len <= EP0_PACKET_SIZE) {
+ 234   2                      D12_WriteEndpoint(1, len, buf);
+ 235   2              }
+ 236   1      }
+ 237          
+ 238          //发送端点号1建立代码
+ 239          void code_transmit(unsigned char code * pRomData, unsigned short len)
+ 240          {
+ 241   1              ControlData.wCount = 0;
+C51 COMPILER V7.06   MAIN                                                                  02/01/2008 12:33:50 PAGE 5   
+
+ 242   1              if(ControlData.wLength > len)
+ 243   1                      ControlData.wLength = len;
+ 244   1      
+ 245   1              ControlData.pData = pRomData;
+ 246   1              if( ControlData.wLength >= EP0_PACKET_SIZE) {
+ 247   2                      D12_WriteEndpoint(1, EP0_PACKET_SIZE, ControlData.pData);//发送16字节数据
+ 248   2                      ControlData.wCount += EP0_PACKET_SIZE;
+ 249   2                      DISABLE;
+ 250   2                      bEPPflags.bits.control_state = USB_TRANSMIT;
+ 251   2                      ENABLE;
+ 252   2              }
+ 253   1              else {
+ 254   2                      D12_WriteEndpoint(1, ControlData.wLength, pRomData);//发送16字节内数据
+ 255   2                      ControlData.wCount += ControlData.wLength;
+ 256   2                      DISABLE;
+ 257   2                      bEPPflags.bits.control_state = USB_IDLE;
+ 258   2                      ENABLE;
+ 259   2              }
+ 260   1      }
+ 261          
+ 262          //LED和按键处理子程序
+ 263          
+ 264          void Display()
+ 265          {
+ 266   1              P1=1;                   //关显示
+ 267   1              if(index==6)    LED=ShuMa[index];//输出LED数据
+ 268   1              else                    LED=Tab[ShuMa[index]];//输出数码管数据
+ 269   1              P1=SEG[index];  //开显示
+ 270   1      }
+ 271          void check_key_LED(void)
+ 272          {
+ 273   1              unsigned char temp;
+ 274   1              temp=KEY;                       //读取键值
+ 275   1              temp^=0xff;                     //取反，方便上位机程序
+ 276   1              D12_WriteEndpoint(5,1,&temp); //写入端点5
+ 277   1      }
+ 278          
+ 279          //请求处理子程序        处理Setup包
+ 280          void control_handler()
+ 281          {
+ 282   1              unsigned char type, req;
+ 283   1              type = ControlData.DeviceRequest.bmRequestType & USB_REQUEST_TYPE_MASK;
+ 284   1              req = ControlData.DeviceRequest.bRequest & USB_REQUEST_MASK;
+ 285   1              if (type == USB_STANDARD_REQUEST)
+ 286   1                      (*StandardDeviceRequest[req])();//调用标准请求
+ 287   1              else if (type == USB_VENDOR_REQUEST)
+ 288   1                      (*VendorDeviceRequest[req])();//调用厂商请求
+ 289   1              else
+ 290   1                      stall_ep0();
+ 291   1      }
+
+
+MODULE INFORMATION:   STATIC OVERLAYABLE
+   CODE SIZE        =    529    ----
+   CONSTANT SIZE    =    120    ----
+   XDATA SIZE       =   ----    ----
+   PDATA SIZE       =   ----    ----
+   DATA SIZE        =     32       9
+   IDATA SIZE       =   ----    ----
+   BIT SIZE         =   ----    ----
+END OF MODULE INFORMATION.
+
+
+C51 COMPILATION COMPLETE.  0 WARNING(S),  0 ERROR(S)

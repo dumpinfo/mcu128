@@ -1,0 +1,316 @@
+XL
+H 4 areas 1B global symbols
+M second.c
+S push_gset1 Ref0000
+S push_gset2 Ref0000
+S push_gset3 Ref0000
+S pop_gset1 Ref0000
+S pop_gset2 Ref0000
+S pop_gset3 Ref0000
+A text size 1B8 flags 0
+dbfile E:\avr资料\例程\mega128\1602/1602.h
+dbfunc e lcd_init 0 fV
+dbline FFFFFFFF 0
+dbline 25 0
+dbline 26 0
+dbline 27 6
+dbline 28 C
+dbline 29 12
+dbline 2A 18
+dbline 2B 1E
+dbline 2C 24
+dbline 2E 2A
+dbline 2F 30
+dbline 30 36
+dbline 31 3C
+dbline 32 42
+dbline FFFFFFFE 48
+dbline 0 48
+dbfunc e delay_1ms 4A fV
+dbsym r i 10 i
+dbline FFFFFFFF 4A
+dbline 38 4A
+dbline 3A 4A
+dbline 3A 50
+dbline 3A 50
+dbline 3A 54
+dbline FFFFFFFE 5C
+dbline 0 5C
+dbfunc e delay_nms 5E fV
+dbsym r i 14 i
+dbsym r n 16 i
+dbline FFFFFFFF 64
+dbline 3F 64
+dbline 41 64
+dbline 41 6A
+dbline 41 6C
+dbline 41 70
+dbline FFFFFFFE 76
+dbline 0 7A
+dbfunc e lcd_write_command 7C fV
+dbsym r wait_en 16 c
+dbsym r command 14 c
+dbline FFFFFFFF 84
+dbline 46 84
+dbline 47 84
+dbline 47 88
+dbline 48 8A
+dbline 49 8C
+dbline 4A 8E
+dbline 4B 90
+dbline 4C 92
+dbline 4D 94
+dbline 4E 96
+dbline FFFFFFFE 98
+dbline 0 9C
+dbfunc e display_a_char 9E fV
+dbsym r position_tem 16 c
+dbsym r char_data 14 c
+dbsym r position A c
+dbline FFFFFFFF A6
+dbline 54 A6
+dbline 56 A6
+dbline 57 AC
+dbline 59 B2
+dbline 5A B6
+dbline 5B BC
+dbline FFFFFFFE C0
+dbline 0 C4
+dbfunc e display_a_string C6 fV
+dbsym r col_tem 14 c
+dbsym r i 16 c
+dbsym r ptr A pc
+dbsym r col 14 c
+dbline FFFFFFFF CE
+dbline 61 CE
+dbline 63 CE
+dbline 64 D6
+dbline 65 DA
+dbline 64 EC
+dbline 64 EE
+dbline FFFFFFFE F2
+dbline 0 F6
+dbfunc e lcd_write_data F8 fV
+dbsym r char_data 14 c
+dbline FFFFFFFF FE
+dbline 6A FE
+dbline 6B FE
+dbline 6C 100
+dbline 6D 102
+dbline 6E 104
+dbline 6F 106
+dbline 70 108
+dbline 71 10A
+dbline 72 10C
+dbline FFFFFFFE 10E
+dbline 0 112
+dbfunc e wait_enable 114 fV
+dbline FFFFFFFF 114
+dbline 78 114
+dbline 79 114
+dbline 7A 116
+dbline 7B 118
+dbline 7C 11A
+dbline 7D 11C
+dbline 7E 11E
+dbline 7E 11E
+dbline 7F 122
+dbline 80 124
+dbline FFFFFFFE 126
+dbline 0 126
+dbfile E:\avr资料\例程\mega128\1602\second.c
+dbfunc e port_init 128 fV
+dbline FFFFFFFF 128
+dbline 1F 128
+dbline 20 128
+dbline 21 12C
+dbline 22 12E
+dbline 23 130
+dbline 24 132
+dbline 25 134
+dbline 26 136
+dbline 27 138
+dbline 28 13A
+dbline 29 13C
+dbline 2A 13E
+dbline 2B 142
+dbline 2C 146
+dbline 2D 14C
+dbline FFFFFFFE 152
+dbline 0 152
+dbfunc e init_devices 154 fV
+dbline FFFFFFFF 154
+dbline 32 154
+dbline 34 154
+dbline 35 156
+dbline 36 15A
+dbline 37 15E
+dbline 39 160
+dbline 3A 164
+dbline 3B 168
+dbline 3C 16A
+dbline 3D 16C
+dbline 3E 16E
+dbline 3F 172
+dbline FFFFFFFE 174
+dbline 0 174
+dbfunc e main 176 fV
+dbline FFFFFFFF 176
+dbline 49 176
+dbline 4A 176
+dbline 4B 178
+dbline 4D 17A
+dbline 4E 182
+dbline FFFFFFFE 18A
+dbline 0 18A
+dbfunc e delay_ms 18C fV
+dbsym r j 14 i
+dbsym r i 16 i
+dbsym r time 10 i
+dbline FFFFFFFF 190
+dbline 55 190
+dbline 57 190
+dbline 58 196
+dbline 58 196
+dbline 59 19C
+dbline 58 19C
+dbline 58 1A0
+dbline 5A 1A8
+dbline 57 1A8
+dbline 57 1AC
+dbline FFFFFFFE 1B2
+dbline 0 1B6
+S _main Def0176
+S _display_a_string Def00C6
+S _display_a_char Def009E
+S _lcd_write_data Def00F8
+S _delay_nms Def005E
+S _port_init Def0128
+S _init_devices Def0154
+S _lcd_write_command Def007C
+S _lcd_init Def0000
+S _delay_ms Def018C
+S _wait_enable Def0114
+S _delay_1ms Def004A
+A lit size A flags 0
+dbfile E:\avr资料\例程\mega128\1602/1602.h
+dbsym e seg_table 0 A[10:10]kc
+S _seg_table Def0000
+A data size 2C flags 20
+dbfile E:\avr资料\例程\mega128\1602/1602.h
+dbfile E:\avr资料\例程\mega128\1602\second.c
+dbsym e led_buff 0 A[17:17]c
+dbsym e str1 11 A[17:17]c
+dbsym e hour 22 i
+dbsym e minute 24 i
+dbsym e second 26 i
+dbsym e ms 28 i
+dbsym e c_next 2A c
+dbsym e choose 2B c
+S _hour Def0022
+S _ms Def0028
+S _led_buff Def0000
+S _second Def0026
+S _choose Def002B
+S _c_next Def002A
+S _str1 Def0011
+S _minute Def0024
+A idata size 2C flags 0
+T 00 00 30 31 32 33 34 35 36 37 38 39
+R 00 00 01 00
+T 00 00 04 E6 10 E0 2C D0 22 27 08 E3 38 D0 04 E1
+R 00 00 00 00
+T 0E 00 10 E0 26 D0 22 27 08 E3 32 D0 04 E1 10 E0
+R 00 00 00 00
+T 1C 00 20 D0 22 27 08 E3 2C D0 04 E1 10 E0 1A D0
+R 00 00 00 00
+T 2A 00 21 E0 08 E3 26 D0 21 E0 08 E0 23 D0 21 E0
+R 00 00 00 00
+T 38 00 01 E0 20 D0 21 E0 06 E0 1D D0 21 E0 0C E0
+R 00 00 00 00
+T 46 00 1A D0 08 95
+R 00 00 00 00
+T 4A 00 00 27 11 27 02 C0 0F 5F 1F 4F 00 34 E6 E0
+R 00 00 00 00
+T 58 00 1E 07 D0 F3 08 95
+R 00 00 00 00
+T 5E 00 0E 94 00 00 B8 01 44 27 55 27 03 C0 EF DF
+R 00 00 00 00 12 04 01 00
+T 6C 00 4F 5F 5F 4F 46 17 57 07 D0 F3 0E 94 00 00
+R 00 00 00 00 12 0E 04 00
+T 7A 00 08 95
+R 00 00 00 00
+T 7C 00 0E 94 00 00 62 2F 40 2F 66 23 09 F0 45 D0
+R 00 00 00 00 12 04 01 00
+T 8A 00 95 98 96 98 97 98 00 00 97 9A 45 BB 97 98
+R 00 00 00 00
+T 98 00 0E 94 00 00 08 95
+R 00 00 00 00 12 04 04 00
+T 9E 00 0E 94 00 00 42 2F A0 2E 8A 2D 80 31 18 F0
+R 00 00 00 00 12 04 02 00
+T AC 00 68 2F 60 55 02 C0 6A 2D 60 58 21 E0 06 2F
+R 00 00 00 00
+T BA 00 E0 DF 04 2F 1C D0 0E 94 00 00 08 95
+R 00 00 00 00 12 0A 05 00
+T C6 00 0E 94 00 00 59 01 40 2F 84 2F 8F 70 82 95
+R 00 00 00 00 12 04 02 00
+T D4 00 48 2F 66 27 0A C0 E6 2F FF 27 EA 0D FB 1D
+R 00 00 00 00
+T E2 00 20 81 24 2E 4F 5F 02 2D D9 DF 63 95 60 31
+R 00 00 00 00
+T F0 00 A0 F3 0E 94 00 00 08 95
+R 00 00 00 00 12 06 05 00
+T F8 00 0E 94 00 00 40 2F 0A D0 95 9A 96 98 97 98
+R 00 00 00 00 12 04 00 00
+T 06 01 00 00 97 9A 45 BB 97 98 0E 94 00 00 08 95
+R 00 00 00 00 12 0C 03 00
+T 14 01 A7 98 95 98 96 9A 00 00 97 9A 9F 99 FE CF
+R 00 00 00 00
+T 22 01 97 98 A7 9A 08 95
+R 00 00 00 00
+T 00 00 71 69 61 6E 20 72 75 20 73 68 69 20 4C 4D
+R 00 00 03 00
+T 0E 00 21 20 00
+R 00 00 03 00
+T 11 00 77 77 77 2E 6F 75 72 65 6D 62 65 64 2E 63
+R 00 00 03 00
+T 1F 00 6F 6D 00
+R 00 00 03 00
+T 22 00 00 00
+R 00 00 03 00
+T 24 00 00 00
+R 00 00 03 00
+T 26 00 00 00
+R 00 00 03 00
+T 28 00 00 00
+R 00 00 03 00
+T 2A 00 00
+R 00 00 03 00
+T 2B 00 00
+R 00 00 03 00
+T 28 01 8F EF 8B BB 8A BB 88 BB 87 BB 85 BB 84 BB
+R 00 00 00 00
+T 36 01 82 BB 81 BB 83 B9 82 B9 80 93 62 00 80 93
+R 00 00 00 00
+T 44 01 61 00 8F E1 80 93 65 00 8F EF 80 93 64 00
+R 00 00 00 00
+T 52 01 08 95
+R 00 00 00 00
+T 54 01 F8 94 22 24 2C BE 20 92 6D 00 E4 DF 22 24
+R 00 00 00 00
+T 62 01 25 BE 20 92 6A 00 2A BE 29 BE 27 BE 20 92
+R 00 00 00 00
+T 70 01 7D 00 78 94 08 95
+R 00 00 00 00
+T 76 01 EE DF 43 DF 20 E0 30 E0 00 27 A2 DF
+R 00 00 00 00 20 06 02 00 00 00 40 08 02 00 00 00
+T 82 01 20 E0 30 E0 01 E0 9E DF 08 95
+R 00 00 00 00 20 02 02 00 11 00 40 04 02 00 11 00
+T 8C 01 0E 94 00 00 44 27 55 27 0B C0 66 27 77 27
+R 00 00 00 00 12 04 01 00
+T 9A 01 02 C0 6F 5F 7F 4F 68 3E E3 E0 7E 07 D0 F3
+R 00 00 00 00
+T A8 01 4F 5F 5F 4F 40 17 51 07 90 F3 0E 94 00 00
+R 00 00 00 00 12 0E 04 00
+T B6 01 08 95
+R 00 00 00 00

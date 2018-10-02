@@ -1,0 +1,96 @@
+C51 COMPILER V7.08   WL004                                                                 02/12/2004 11:44:43 PAGE 1   
+
+
+C51 COMPILER V7.08, COMPILATION OF MODULE WL004
+OBJECT MODULE PLACED IN wl004.OBJ
+COMPILER INVOKED BY: d:\Keil\C51\BIN\C51.EXE wl004.C BROWSE DEBUG OBJECTEXTEND
+
+line level    source
+
+   1          /*******************************************************************************
+   2          *                                                                              *
+   3          *    File       : wl004.c                                                      *
+   4          *    Date       : 2004-1-5                                                     *
+   5          *    Version    : 1.0                                                          *
+   6          *                                                                              *
+   7          *    Author     : Freeman          freeman@willar.com                          *
+   8          *    Company    : Willar           www.willar.com                              *
+   9          *                                                                              *
+  10          ********************************************************************************
+  11          *    Description:                                                              *
+  12          *                 LED数码管显示演示程序                                        *
+  13          *                 在8个LED数码管上依次显示1,2,3,4,5,6,7,8                      *
+  14          *                                                                              *
+  15          *                                                                              *
+  16          *                                                                              *
+  17          *******************************************************************************/
+  18          #include <reg51.h>
+  19          #include <intrins.h>
+  20          
+  21          unsigned char data dis_digit;
+  22          unsigned char code dis_code[11]={0xc0,0xf9,0xa4,0xb0,   // 0, 1, 2, 3
+  23                                          0x99,0x92,0x82,0xf8,0x80,0x90, 0xff};// 4, 5, 6, 7, 8, 9, off 
+  24          unsigned char data dis_buf[8];
+  25          unsigned char data dis_index;
+  26          
+  27          void main()
+  28          {
+  29   1              P0 = 0xff;
+  30   1              P2 = 0xff;
+  31   1              TMOD = 0x01;
+  32   1              TH0 = 0xFC;
+  33   1              TL0 = 0x17;
+  34   1              IE = 0x82;
+  35   1      
+  36   1              dis_buf[0] = dis_code[0x1];
+  37   1              dis_buf[1] = dis_code[0x2];
+  38   1              dis_buf[2] = dis_code[0x3];
+  39   1              dis_buf[3] = dis_code[0x4];
+  40   1              dis_buf[4] = dis_code[0x5];
+  41   1              dis_buf[5] = dis_code[0x6];
+  42   1              dis_buf[6] = dis_code[0x7];
+  43   1              dis_buf[7] = dis_code[0x8];
+  44   1              
+  45   1              dis_digit = 0xfe;
+  46   1              dis_index = 0;
+  47   1              
+  48   1              TR0 = 1;
+  49   1              while(1);
+  50   1      
+  51   1      }
+  52          
+  53          void timer0() interrupt 1
+  54          // 定时器0中断服务程序, 用于数码管的动态扫描
+  55          // dis_index --- 显示索引, 用于标识当前显示的数码管和缓冲区的偏移量
+C51 COMPILER V7.08   WL004                                                                 02/12/2004 11:44:43 PAGE 2   
+
+  56          // dis_digit --- 位选通值, 传送到P2口用于选通当前数码管的数值, 如等于0xfe时,
+  57          //                              选通P2.0口数码管
+  58          // dis_buf   --- 显于缓冲区基地址       
+  59          {
+  60   1              TH0 = 0xFC;
+  61   1              TL0 = 0x17;
+  62   1              
+  63   1              P2 = 0xff;                                                      // 先关闭所有数码管
+  64   1              P0 = dis_buf[dis_index];                        // 显示代码传送到P0口
+  65   1              P2 = dis_digit;                                         // 
+  66   1      
+  67   1              dis_digit = _crol_(dis_digit,1);        // 位选通值左移, 下次中断时选通下一位数码管
+  68   1              dis_index++;                                            // 
+  69   1                                              
+  70   1              dis_index &= 0x07;                      // 8个数码管全部扫描完一遍之后，再回到第一个开始下一次扫描
+  71   1      }
+
+
+MODULE INFORMATION:   STATIC OVERLAYABLE
+   CODE SIZE        =    128    ----
+   CONSTANT SIZE    =     11    ----
+   XDATA SIZE       =   ----    ----
+   PDATA SIZE       =   ----    ----
+   DATA SIZE        =     10    ----
+   IDATA SIZE       =   ----    ----
+   BIT SIZE         =   ----    ----
+END OF MODULE INFORMATION.
+
+
+C51 COMPILATION COMPLETE.  0 WARNING(S),  0 ERROR(S)

@@ -1,0 +1,52 @@
+C51 COMPILER V7.50   MAIN                                                                  12/03/2006 09:27:25 PAGE 1   
+
+
+C51 COMPILER V7.50, COMPILATION OF MODULE MAIN
+OBJECT MODULE PLACED IN main.OBJ
+COMPILER INVOKED BY: C:\Keil\C51\BIN\C51.EXE main.c BROWSE DEBUG OBJECTEXTEND
+
+line level    source
+
+   1          #include"reg51.h"
+   2          #include"absacc.h"
+   3          #include"stdio.h"
+   4          //波特率：4.8K
+   5          /*
+   6          请打开串口调试工具，选择波特率4800
+   7          */
+   8          void init();
+   9          void main()
+  10          {
+  11   1       init();
+  12   1       printf("\nwww.lgmcu.com\n");
+  13   1       while(1);
+  14   1      }
+  15          
+  16          
+  17          void init()
+  18          {
+  19   1       TMOD=0x20;      //Timer1 模式2
+  20   1       TH1=0xF3;       //
+  21   1       TL1=0xF3;       //
+  22   1       TR1=1;          //启动Timer1
+  23   1       PCON|=0x80; //波特率加倍
+  24   1       SCON=0x50;      //设置串口
+  25   1       TI=1;
+  26   1       EA=0;
+  27   1      }
+  28          
+  29          
+
+
+MODULE INFORMATION:   STATIC OVERLAYABLE
+   CODE SIZE        =     36    ----
+   CONSTANT SIZE    =     16    ----
+   XDATA SIZE       =   ----    ----
+   PDATA SIZE       =   ----    ----
+   DATA SIZE        =   ----    ----
+   IDATA SIZE       =   ----    ----
+   BIT SIZE         =   ----    ----
+END OF MODULE INFORMATION.
+
+
+C51 COMPILATION COMPLETE.  0 WARNING(S),  0 ERROR(S)

@@ -1,0 +1,309 @@
+<HTML>
+<HEAD>
+<META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=gb_2312-80">
+<META NAME="Generator" CONTENT="Microsoft FrontPage 5.0">
+<TITLE>动态扫描显示接口</TITLE>
+<META NAME="Template" CONTENT="D:\MICROSOFT OFFICE\OFFICE\html.dot">
+</HEAD>
+<BODY LINK="#0000ff" VLINK="#800080" background="../back.jpg">
+<B><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>
+<P ALIGN="CENTER" style="line-height: 150%; margin-top: 0; margin-bottom: 0">动态扫描显示接口</P>
+</font></B>
+<P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">
+<font size="2" FACE="宋体" LANG="ZH-CN">&nbsp;&nbsp; 动态扫描显示接口是单片机中应用最为广泛的一种显示方式之一。其接口电路是把所有显示器的</font><font size="2"><FONT FACE="System,黑体" LANG="ZH-CN">8</FONT><FONT FACE="宋体" LANG="ZH-CN">个笔划段</FONT><FONT FACE="System,黑体" LANG="ZH-CN">a-h</FONT><FONT FACE="宋体" LANG="ZH-CN">同名端连在一起，而每一个显示器的公共极</FONT><FONT FACE="System,黑体" LANG="ZH-CN">COM</FONT><FONT FACE="宋体" LANG="ZH-CN">是各自独立地受</FONT><FONT FACE="System,黑体" LANG="ZH-CN">I/O</FONT><FONT FACE="宋体" LANG="ZH-CN">线控制。</FONT><FONT FACE="System,黑体" LANG="ZH-CN">CPU</FONT><FONT FACE="宋体" LANG="ZH-CN">向字段输出口送出字形码时，所有显示器接收到相同的字形码，但究竟是那个显示器亮，则取决于</FONT><FONT FACE="System,黑体" LANG="ZH-CN">COM</FONT><FONT FACE="宋体" LANG="ZH-CN">端，而这一端是由</FONT><FONT FACE="System,黑体" LANG="ZH-CN">I/O</FONT><FONT FACE="宋体" LANG="ZH-CN">控制的，所以我们就可以自行决定何时显示哪一位了。而所谓动态扫描就是指我们采用分时的方法，轮流控制各个显示器的</FONT><FONT FACE="System,黑体" LANG="ZH-CN">COM</FONT></font><font size="2" FACE="宋体" LANG="ZH-CN">端，使各个显示器轮流点亮。</font></P>
+<P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">
+<font size="2" FACE="宋体" LANG="ZH-CN">&nbsp;&nbsp;    在轮流点亮扫描过程中，每位显示器的点亮时间是极为短暂的（约</font><FONT FACE="System,黑体" LANG="ZH-CN" size="2">1ms</FONT><font size="2" FACE="宋体" LANG="ZH-CN">），但由于人的视觉暂留现象及发光二极管的余辉效应，尽管实际上各位显示器并非同时点亮，但只要扫描的速度足够快，给人的印象就是一组稳定的显示数据，不会有闪烁感。</font></P>
+<P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0"> 
+<font size="2" FACE="宋体" LANG="ZH-CN">&nbsp;&nbsp; 下图所示就是我们的实验板上的动态扫描接口。由</font><font size="2"><FONT FACE="System,黑体" LANG="ZH-CN">89C51</FONT><FONT FACE="宋体" LANG="ZH-CN">的</FONT><FONT FACE="System,黑体" LANG="ZH-CN">P0</FONT><FONT FACE="宋体" LANG="ZH-CN">口能灌入较大的电流，所以我们采用共阳的数码管，并且不用限流电阻，而只是用两只1N4004进行降压后给数码管供电，这里仅用了两只，实际上还可以扩充。它们的公共端则由</FONT><FONT FACE="System,黑体" LANG="ZH-CN">PNP</FONT><FONT FACE="宋体" LANG="ZH-CN">型三极管</FONT><FONT FACE="System,黑体" LANG="ZH-CN">8550</FONT><FONT FACE="宋体" LANG="ZH-CN">控制，显然，如果</FONT><FONT FACE="System,黑体" LANG="ZH-CN">8550</FONT><FONT FACE="宋体" LANG="ZH-CN">导通，则相应的数码管就可以亮，而如果</FONT><FONT FACE="System,黑体" LANG="ZH-CN">8550</FONT><FONT FACE="宋体" LANG="ZH-CN">截止，则对应的数码管就不可能亮，</FONT><FONT FACE="System,黑体" LANG="ZH-CN">8550</FONT><FONT FACE="宋体" LANG="ZH-CN">是由</FONT><FONT FACE="System,黑体" LANG="ZH-CN">P2.7</FONT><FONT FACE="宋体" LANG="ZH-CN">，</FONT><FONT FACE="System,黑体" LANG="ZH-CN">P2.6</FONT><FONT FACE="宋体" LANG="ZH-CN">控制的。这样我们就可以通过控制</FONT><FONT FACE="System,黑体" LANG="ZH-CN">P27</FONT><FONT FACE="宋体" LANG="ZH-CN">、</FONT><FONT FACE="System,黑体" LANG="ZH-CN">P26</FONT></font><font size="2" FACE="宋体" LANG="ZH-CN">达到控制某个数码管亮或灭的目的。</font></P>
+<P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">
+<font size="2" FACE="宋体" LANG="ZH-CN">下面的这个程序，就是用实验板上的数码管显示</font><font size="2"><FONT FACE="System,黑体" LANG="ZH-CN">0</FONT><FONT FACE="宋体" LANG="ZH-CN">和</FONT><FONT FACE="System,黑体" LANG="ZH-CN">1</FONT></font><font size="2" FACE="宋体" LANG="ZH-CN">。</font></P>
+<P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">
+<font size="2" FACE="System,黑体" LANG="ZH-CN">FIRST&#9;&#9;EQU&#9;P2.7&#9;;</font><font size="2" FACE="宋体" LANG="ZH-CN">第一位数码管的位控制</font></P>
+<P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">
+<font size="2" FACE="System,黑体" LANG="ZH-CN">SECOND &#9;EQU&#9;P2.6&#9;;</font><font size="2" FACE="宋体" LANG="ZH-CN">第二位数码管的位控制</font></P>
+<P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0"><FONT FACE="System,黑体" LANG="ZH-CN">
+<font size="2">DISPBUFF&#9;EQU&#9;5AH&#9;;</font></font><font size="2"><FONT FACE="宋体" LANG="ZH-CN">显示缓冲区为</FONT><FONT FACE="System,黑体" LANG="ZH-CN">5AH</FONT><FONT FACE="宋体" LANG="ZH-CN">和</FONT></font><font size="2" FACE="System,黑体" LANG="ZH-CN">5BH</font></P><FONT FACE="System,黑体" LANG="ZH-CN">
+<P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">&#9;
+<font size="2">ORG&#9;0000H</font></P>
+<P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">&#9;
+<font size="2">AJMP&#9;START</font></P>
+<P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">&#9;
+<font size="2">ORG&#9;30H</font></P>
+<P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">
+<font size="2">START:</font></P>
+</FONT>
+<P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0"><FONT FACE="System,黑体" LANG="ZH-CN">&#9;
+<font size="2">MOV&#9;SP,#5FH&#9;&#9;;</font></font><font size="2" FACE="宋体" LANG="ZH-CN">设置堆栈</font></P>
+<P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">
+<FONT FACE="System,黑体" LANG="ZH-CN" size="2">MOV&#9;P1,#0FFH</font></P>
+<FONT FACE="System,黑体" LANG="ZH-CN" size="2">
+<P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">&#9;MOV&#9;P0,#0FFH</P>
+</FONT>
+<P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0"><FONT FACE="System,黑体" LANG="ZH-CN">&#9;
+<font size="2">MOV&#9;P2,#0FFH&#9;;</font></font><font size="2"><FONT FACE="宋体" LANG="ZH-CN">初始化，所显示器，</FONT><FONT FACE="System,黑体" LANG="ZH-CN">LED</FONT></font><font size="2" FACE="宋体" LANG="ZH-CN">灭</font></P>
+<P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">
+<FONT FACE="System,黑体" LANG="ZH-CN"><font size="2">MOV&#9;DISPBUFF,#0&#9;;</font></FONT><FONT FACE="宋体" LANG="ZH-CN" size="2">第一位显示</FONT><font size="2" FACE="System,黑体" LANG="ZH-CN">0</font></P>
+<P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">
+<FONT FACE="System,黑体" LANG="ZH-CN">&#9;<font size="2">MOV&#9;DISPBUFF+1,#1&#9;;</font></font><FONT FACE="宋体" LANG="ZH-CN" size="2">第二握显示</FONT><font size="2" FACE="System,黑体" LANG="ZH-CN">1</font></P>
+<FONT FACE="System,黑体" LANG="ZH-CN" size="2">
+<P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">LOOP:</P>
+</FONT>
+<P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0"><FONT FACE="System,黑体" LANG="ZH-CN">&#9;
+<font size="2">LCALL&#9;DISP&#9;&#9;;</font></font><font size="2" FACE="宋体" LANG="ZH-CN">调用显示程序</font></P>
+<P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">
+<FONT FACE="System,黑体" LANG="ZH-CN" size="2">AJMP&#9;LOOP</font></P>
+<P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">
+<font size="2" FACE="System,黑体" LANG="ZH-CN">;</font><font size="2" FACE="宋体" LANG="ZH-CN">主程序到此结束</font></P>
+<FONT FACE="System,黑体" LANG="ZH-CN" size="2">
+<P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">DISP:</P>
+</FONT>
+<P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">
+<font size="2" FACE="System,黑体" LANG="ZH-CN">PUSH&#9;ACC&#9;&#9;;ACC</font><font size="2" FACE="宋体" LANG="ZH-CN">入栈</font></P>
+<P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">
+<font size="2" FACE="System,黑体" LANG="ZH-CN">PUSH&#9;PSW&#9;&#9;;PSW</font><font size="2" FACE="宋体" LANG="ZH-CN">入栈</font></P>
+<P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">
+<FONT FACE="System,黑体" LANG="ZH-CN"><font size="2">MOV&#9;A,DISPBUFF&#9;;</font></FONT><font size="2" FACE="宋体" LANG="ZH-CN">取第一个待显示数</font></P>
+<P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">
+<FONT FACE="System,黑体" LANG="ZH-CN"><font size="2">MOV&#9;DPTR,#DISPTAB&#9;;</font></FONT><font size="2" FACE="宋体" LANG="ZH-CN">字形表首地址</font></P>
+<P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">
+<FONT FACE="System,黑体" LANG="ZH-CN"><font size="2">MOVC&#9;A,@A+DPTR&#9;;</font></FONT><font size="2" FACE="宋体" LANG="ZH-CN">取字形码</font></P>
+<P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">
+<FONT FACE="System,黑体" LANG="ZH-CN"><font size="2">MOV&#9;P0,A&#9;&#9;;</font></FONT><font size="2"><FONT FACE="宋体" LANG="ZH-CN">将字形码送</FONT><FONT FACE="System,黑体" LANG="ZH-CN">P0</FONT></font><font size="2" FACE="宋体" LANG="ZH-CN">位（段口）</font></P>
+<P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">
+<FONT FACE="System,黑体" LANG="ZH-CN"><font size="2">CLR&#9;FIRST&#9;&#9;;</font></FONT><font size="2" FACE="宋体" LANG="ZH-CN">开第一位显示器位口</font></P>
+<P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">
+<FONT FACE="System,黑体" LANG="ZH-CN"><font size="2">LCALL&#9;DELAY&#9;&#9;;</font></FONT><font size="2"><FONT FACE="宋体" LANG="ZH-CN">延时</FONT><FONT FACE="System,黑体" LANG="ZH-CN">1</FONT></font><font size="2" FACE="宋体" LANG="ZH-CN">毫秒</font></P>
+<P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">
+<FONT FACE="System,黑体" LANG="ZH-CN"><font size="2">SETB&#9;FIRST&#9;&#9;;</font></FONT><font size="2" FACE="宋体" LANG="ZH-CN">关闭第一位显示器（开始准备第二位的数据）</font></P>
+<P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">
+<FONT FACE="System,黑体" LANG="ZH-CN"><font size="2">MOV&#9;A,DISPBUFF+1&#9;;</font></FONT><font size="2" FACE="宋体" LANG="ZH-CN">取显示缓冲区的第二位</font></P>
+<P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">
+<FONT FACE="System,黑体" LANG="ZH-CN" size="2">MOV&#9;DPTR,#DISPTAB&#9;</font></P>
+<FONT FACE="System,黑体" LANG="ZH-CN" size="2">
+<P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">&#9;MOVC&#9;A,@A+DPTR</P>
+</FONT>
+<P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0"><FONT FACE="System,黑体" LANG="ZH-CN">&#9;
+<font size="2">MOV&#9;P0,A&#9;&#9;;</font></font><font size="2"><FONT FACE="宋体" LANG="ZH-CN">将第二个字形码送</FONT><FONT FACE="System,黑体" LANG="ZH-CN">P0</FONT></font><font size="2" FACE="宋体" LANG="ZH-CN">口</font></P>
+<P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">
+<FONT FACE="System,黑体" LANG="ZH-CN"><font size="2">CLR&#9;SECOND&#9;&#9;;</font></FONT><font size="2" FACE="宋体" LANG="ZH-CN">开第二位显示器</font></P>
+<P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">
+<FONT FACE="System,黑体" LANG="ZH-CN"><font size="2">LCALL&#9;DELAY&#9;&#9;;</font></FONT><font size="2" FACE="宋体" LANG="ZH-CN">延时</font></P>
+<P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">
+<FONT FACE="System,黑体" LANG="ZH-CN"><font size="2">SETB&#9;SECOND&#9;&#9;;</font></FONT><font size="2" FACE="宋体" LANG="ZH-CN">关第二位显示</font></P>
+<P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">
+<FONT FACE="System,黑体" LANG="ZH-CN" size="2">POP&#9;PSW</font></P><FONT FACE="System,黑体" LANG="ZH-CN">
+<P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">&#9;
+<font size="2">POP&#9;ACC</font></P>
+<P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">&#9;
+<font size="2">RET</font></P>
+</FONT>
+<P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">
+<font size="2" FACE="System,黑体" LANG="ZH-CN">DELAY:&#9;&#9;&#9;;</font><font size="2"><FONT FACE="宋体" LANG="ZH-CN">延时</FONT><FONT FACE="System,黑体" LANG="ZH-CN">1</FONT></font><font size="2" FACE="宋体" LANG="ZH-CN">毫秒</font></P>
+<P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">
+<FONT FACE="System,黑体" LANG="ZH-CN" size="2">PUSH&#9;PSW</font></P><FONT FACE="System,黑体" LANG="ZH-CN">
+<P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">&#9;
+<font size="2">SETB&#9;RS0</font></P>
+<P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">&#9;
+<font size="2">MOV&#9;R7,#50</font></P>
+<P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">
+<font size="2">D1:&#9;MOV&#9;R6,#10</font></P>
+<P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">
+<font size="2">D2:&#9;DJNZ&#9;R6,$</font></P>
+<P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">&#9;
+<font size="2">DJNZ&#9;R7,D1</font></P>
+<P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">&#9;
+<font size="2">POP&#9;PSW</font></P>
+<P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">&#9;
+<font size="2">RET</font></P>
+<P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">
+<font size="2">DISPTAB:DB 28H,7EH,0a4H,64H,72H,61H,21H,7CH,20H,60H </font>&#9;</P>
+<P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">&#9;
+<font size="2">END</font></P>
+</FONT>
+<P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">
+<font size="2" FACE="宋体" LANG="ZH-CN">&nbsp;&nbsp; 从上面的例子中可以看出，动态扫描显示必须由</font><FONT FACE="System,黑体" LANG="ZH-CN" size="2">CPU</FONT><font size="2" FACE="宋体" LANG="ZH-CN">不断地调用显示程序，才能保证持续不断的显示。</font></P>
+<P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">
+<font size="2" FACE="宋体" LANG="ZH-CN">&nbsp; 上面的这个程序可以实现数字的显示，但不太实用，为什么呢？这里仅是显示两个数字，并没有做其他的工作，因此，两个数码管轮流显示</font><font size="2"><FONT FACE="System,黑体" LANG="ZH-CN">1</FONT><FONT FACE="宋体" LANG="ZH-CN">毫秒，没有问题，实际的工作中，当然不可能只显示两个数字，还是要做其他的事情的，这样在二次调用显示程序之间的时间间隔就不一不定了，如果时间间隔比较长，就会使显示不连续。而实际工作中是很难保证所有工作都能在很短时间内完成的。况且这个显示程序也有点“浪费”，每个数码管显示都要占用</FONT><FONT FACE="System,黑体" LANG="ZH-CN">1</FONT></font><font size="2" FACE="宋体" LANG="ZH-CN">个毫秒的时间，这在很多合是不允许的，怎么办呢？我们可以借助于定时器，定时时间一到，产生中断，点亮一个数码管，然后马上返回，这个数码管就会一直亮到下一次定时时间到，而不用调用延时程序了，这段时间可以留给主程序干其他的事。到下一次定时时间到则显示下一个数码管，这样就很少浪费了。</font></P>
+<P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">
+<font size="2" FACE="System,黑体" LANG="ZH-CN">Counter&#9;&#9;EQU&#9;59H&#9;;</font><font size="2" FACE="宋体" LANG="ZH-CN">计数器，显示程序通过它得知现正显示哪个数码管</font></P>
+<P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">
+<font size="2" FACE="System,黑体" LANG="ZH-CN">FIRST&#9;&#9;EQU&#9;P2.7&#9;;</font><font size="2" FACE="宋体" LANG="ZH-CN">第一位数码管的位控制</font></P>
+<P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">
+<font size="2" FACE="System,黑体" LANG="ZH-CN">SECOND &#9;EQU&#9;P2.6&#9;;</font><font size="2" FACE="宋体" LANG="ZH-CN">第二位数码管的位控制</font></P>
+<P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">
+<font size="2" FACE="System,黑体" LANG="ZH-CN">DISPBUFF&#9;EQU&#9;5AH&#9;;</font><font size="2"><FONT FACE="宋体" LANG="ZH-CN">显示缓冲区为</FONT><FONT FACE="System,黑体" LANG="ZH-CN">5AH</FONT><FONT FACE="宋体" LANG="ZH-CN">和</FONT></font><font size="2" FACE="System,黑体" LANG="ZH-CN">5BH</font></P><FONT FACE="System,黑体" LANG="ZH-CN">
+<P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">&#9;
+<font size="2">ORG&#9;0000H</font></P>
+<P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">&#9;
+<font size="2">AJMP&#9;START</font></P>
+</FONT>
+<P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">
+<font size="2" FACE="System,黑体" LANG="ZH-CN">ORG&#9;000BH&#9;&#9;;</font><font size="2"><FONT FACE="宋体" LANG="ZH-CN">定时器</FONT><FONT FACE="System,黑体" LANG="ZH-CN">T0</FONT></font><font size="2" FACE="宋体" LANG="ZH-CN">的入口</font></P>
+<P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">
+<font size="2" FACE="System,黑体" LANG="ZH-CN">AJMP&#9;DISP&#9;&#9;;</font><font size="2" FACE="宋体" LANG="ZH-CN">显示程序</font></P>
+<P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">
+<FONT FACE="System,黑体" LANG="ZH-CN" size="2">ORG&#9;30H</font></P>
+<FONT FACE="System,黑体" LANG="ZH-CN" size="2">
+<P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">START:</P>
+</FONT>
+<P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">
+<font size="2" FACE="System,黑体" LANG="ZH-CN">MOV&#9;SP,#5FH&#9;&#9;;</font><font size="2" FACE="宋体" LANG="ZH-CN">设置堆栈</font></P>
+<P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">
+<FONT FACE="System,黑体" LANG="ZH-CN" size="2">MOV&#9;P1,#0FFH</font></P>
+<FONT FACE="System,黑体" LANG="ZH-CN" size="2">
+<P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">&#9;MOV&#9;P0,#0FFH</P>
+</FONT>
+<P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">
+<font size="2" FACE="System,黑体" LANG="ZH-CN">MOV&#9;P2,#0FFH&#9;;</font><font size="2"><FONT FACE="宋体" LANG="ZH-CN">初始化，所显示器，</FONT><FONT FACE="System,黑体" LANG="ZH-CN">LED</FONT></font><font size="2" FACE="宋体" LANG="ZH-CN">灭</font></P>
+<P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">
+<font size="2" FACE="System,黑体" LANG="ZH-CN">MOV&#9;TMOD,#00000001B&#9;;</font><font size="2"><FONT FACE="宋体" LANG="ZH-CN">定时器</FONT><FONT FACE="System,黑体" LANG="ZH-CN">T0</FONT><FONT FACE="宋体" LANG="ZH-CN">工作于模式</FONT><FONT FACE="System,黑体" LANG="ZH-CN">1</FONT><FONT FACE="宋体" LANG="ZH-CN">（</FONT><FONT FACE="System,黑体" LANG="ZH-CN">16</FONT><FONT FACE="宋体" LANG="ZH-CN">位定时</FONT><FONT FACE="System,黑体" LANG="ZH-CN">/</FONT></font><font size="2" FACE="宋体" LANG="ZH-CN">计数模式）</font></P>
+<P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">
+<FONT FACE="System,黑体" LANG="ZH-CN" size="2">MOV&#9;TH0,#HIGH(65536-2000)</font></P><FONT FACE="System,黑体" LANG="ZH-CN">
+<P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">&#9;
+<font size="2">MOV&#9;TL0,#LOW(65536-2000)</font></P>
+<P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">&#9;
+<font size="2">SETB&#9;TR0</font></P>
+<P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">&#9;
+<font size="2">SETB&#9;EA</font></P>
+<P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">&#9;
+<font size="2">SETB&#9;ET0</font></P>
+</FONT>
+<P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">
+<font size="2" FACE="System,黑体" LANG="ZH-CN">MOV&#9;Counter,#0&#9;;</font><font size="2" FACE="宋体" LANG="ZH-CN">计数器初始化</font></P>
+<P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">
+<font size="2" FACE="System,黑体" LANG="ZH-CN">MOV&#9;DISPBUFF,#0&#9;;</font><FONT FACE="宋体" LANG="ZH-CN" size="2">第一位始终显示</FONT><font size="2" FACE="System,黑体" LANG="ZH-CN">0</font></P><FONT FACE="System,黑体" LANG="ZH-CN">
+<P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">&#9;
+<font size="2">MOV&#9;A,#0</font></P>
+<P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">
+<font size="2">LOOP:&#9;</font>&#9;</P>
+</FONT>
+<P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">
+<font size="2" FACE="System,黑体" LANG="ZH-CN">MOV&#9;DISPBUFF+1,A&#9;;</font><FONT FACE="宋体" LANG="ZH-CN" size="2">第二位轮流显示</FONT><font size="2" FACE="System,黑体" LANG="ZH-CN">0-9</font></P><FONT FACE="System,黑体" LANG="ZH-CN">
+<P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">&#9;
+<font size="2">INC&#9;A</font></P>
+<P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">&#9;
+<font size="2">LCALL&#9;DELAY</font></P>
+<P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">&#9;
+<font size="2">CJNE&#9;A,#10,LOOP</font></P>
+<P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">&#9;
+<font size="2">MOV&#9;A,#0</font></P>
+</FONT>
+<P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">
+<font size="2" FACE="System,黑体" LANG="ZH-CN">AJMP&#9;LOOP</font><font size="2"><FONT FACE="宋体" LANG="ZH-CN">&#9;</FONT><FONT FACE="System,黑体" LANG="ZH-CN">;</FONT></font><font size="2" FACE="宋体" LANG="ZH-CN">在此中间可以按排任意程序，这里仅作示范。</font></P>
+<P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">
+<font size="2" FACE="System,黑体" LANG="ZH-CN">;</font><font size="2" FACE="宋体" LANG="ZH-CN">主程序到此结束</font></P>
+<P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">
+<font size="2" FACE="System,黑体" LANG="ZH-CN">DISP:&#9;&#9;;</font><font size="2"><FONT FACE="宋体" LANG="ZH-CN">定时器</FONT><FONT FACE="System,黑体" LANG="ZH-CN">T0</FONT></font><font size="2" FACE="宋体" LANG="ZH-CN">的中断响应程序</font></P>
+<P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">
+<font size="2" FACE="System,黑体" LANG="ZH-CN">PUSH&#9;ACC&#9;&#9;;ACC</font><font size="2" FACE="宋体" LANG="ZH-CN">入栈</font></P>
+<P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">
+<font size="2" FACE="System,黑体" LANG="ZH-CN">PUSH&#9;PSW&#9;&#9;;PSW</font><font size="2" FACE="宋体" LANG="ZH-CN">入栈</font></P>
+<P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">
+<font size="2" FACE="System,黑体" LANG="ZH-CN">MOV&#9;TH0,#HIGH(65536-2000)&#9;;</font><font size="2"><FONT FACE="宋体" LANG="ZH-CN">定时时间为</FONT><FONT FACE="System,黑体" LANG="ZH-CN">2000</FONT><FONT FACE="宋体" LANG="ZH-CN">个周期，约</FONT><FONT FACE="System,黑体" LANG="ZH-CN">2170</FONT><FONT FACE="宋体" LANG="ZH-CN">微秒（</FONT><FONT FACE="System,黑体" LANG="ZH-CN">11.0592M</FONT></font><font size="2" FACE="宋体" LANG="ZH-CN">）</font></P>
+<P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">
+<FONT FACE="System,黑体" LANG="ZH-CN" size="2">MOV&#9;TL0,#LOW(65536-2000)</font></P>
+<FONT FACE="System,黑体" LANG="ZH-CN" size="2">
+<P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">&#9;SETB&#9;FIRST</P>
+</FONT>
+<P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">
+<font size="2" FACE="System,黑体" LANG="ZH-CN">SETB&#9;SECOND&#9;&#9;;</font><font size="2" FACE="宋体" LANG="ZH-CN">关显示</font></P>
+<P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">
+<font size="2" FACE="System,黑体" LANG="ZH-CN">MOV&#9;A,#DISPBUFF&#9;;</font><font size="2" FACE="宋体" LANG="ZH-CN">显示缓冲区首地址</font></P>
+<P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">
+<FONT FACE="System,黑体" LANG="ZH-CN" size="2">ADD&#9;A,Counter&#9;</font></P>
+<FONT FACE="System,黑体" LANG="ZH-CN" size="2">
+<P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">&#9;MOV&#9;R0,A</P>
+</FONT>
+<P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">
+<font size="2" FACE="System,黑体" LANG="ZH-CN">MOV&#9;A,@R0&#9;&#9;;</font><font size="2" FACE="宋体" LANG="ZH-CN">根据计数器的值取相应的显示缓冲区的值</font></P>
+<P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">
+<font size="2" FACE="System,黑体" LANG="ZH-CN">MOV&#9;DPTR,#DISPTAB&#9;;</font><font size="2" FACE="宋体" LANG="ZH-CN">字形表首地址</font></P>
+<P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">
+<font size="2" FACE="System,黑体" LANG="ZH-CN">MOVC&#9;A,@A+DPTR&#9;;</font><font size="2" FACE="宋体" LANG="ZH-CN">取字形码</font></P>
+<P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">
+<font size="2" FACE="System,黑体" LANG="ZH-CN">MOV&#9;P0,A&#9;&#9;;</font><font size="2"><FONT FACE="宋体" LANG="ZH-CN">将字形码送</FONT><FONT FACE="System,黑体" LANG="ZH-CN">P0</FONT></font><font size="2" FACE="宋体" LANG="ZH-CN">位（段口）</font></P>
+<P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">
+<font size="2" FACE="System,黑体" LANG="ZH-CN">MOV&#9;A,Counter&#9;;</font><font size="2" FACE="宋体" LANG="ZH-CN">取计数器的值</font></P>
+<P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">
+<font size="2" FACE="System,黑体" LANG="ZH-CN">JZ&#9;DISPFIRST&#9;;</font><font size="2"><FONT FACE="宋体" LANG="ZH-CN">如果是</FONT><FONT FACE="System,黑体" LANG="ZH-CN">0</FONT></font><font size="2" FACE="宋体" LANG="ZH-CN">则显示第一位</font></P>
+<P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">
+<font size="2" FACE="System,黑体" LANG="ZH-CN">CLR&#9;SECOND&#9;&#9;;</font><font size="2" FACE="宋体" LANG="ZH-CN">否则显示第二位</font></P>
+<P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">
+<FONT FACE="System,黑体" LANG="ZH-CN" size="2">AJMP&#9;DISPNEXT</font></P>
+<FONT FACE="System,黑体" LANG="ZH-CN" size="2">
+<P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">DISPFIRST:</P>
+</FONT>
+<P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">
+<font size="2" FACE="System,黑体" LANG="ZH-CN">CLR&#9;FIRST&#9;&#9;;</font><font size="2" FACE="宋体" LANG="ZH-CN">显示第一位&#9;&#9; 
+</font></P>
+<FONT FACE="System,黑体" LANG="ZH-CN" size="2">
+<P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">DISPNEXT:</P>
+</FONT>
+<P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">
+<font size="2" FACE="System,黑体" LANG="ZH-CN">INC&#9;Counter&#9;&#9;;</font><FONT FACE="宋体" LANG="ZH-CN" size="2">计数器加</FONT><font size="2" FACE="System,黑体" LANG="ZH-CN">1</font></P>
+<FONT FACE="System,黑体" LANG="ZH-CN" size="2">
+<P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">&#9;MOV&#9;A,Counter&#9;</P>
+</FONT>
+<P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">
+<font size="2" FACE="System,黑体" LANG="ZH-CN">DEC&#9;A&#9;&#9;;</font><font size="2"><FONT FACE="宋体" LANG="ZH-CN">如果计数器计到</FONT><FONT FACE="System,黑体" LANG="ZH-CN">2</FONT><FONT FACE="宋体" LANG="ZH-CN">，则让它回</FONT></font><font size="2" FACE="System,黑体" LANG="ZH-CN">0</font></P><FONT FACE="System,黑体" LANG="ZH-CN">
+<P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">&#9;
+<font size="2">DEC&#9;A&#9;&#9;</font>&#9;&#9;</P>
+<P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">&#9;
+<font size="2">JZ&#9;RSTCOUNT&#9;</font>&#9;</P>
+<P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">&#9;
+<font size="2">AJMP&#9;DISPEXIT</font></P>
+<P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">
+<font size="2">RSTCOUNT:</font></P>
+</FONT>
+<P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">
+<font size="2" FACE="System,黑体" LANG="ZH-CN">MOV&#9;Counter,#0&#9;;</font><font size="2"><FONT FACE="宋体" LANG="ZH-CN">计数器的值只能是</FONT><FONT FACE="System,黑体" LANG="ZH-CN">0</FONT><FONT FACE="宋体" LANG="ZH-CN">或</FONT></font><font size="2" FACE="System,黑体" LANG="ZH-CN">1</font></P><FONT FACE="System,黑体" LANG="ZH-CN">
+<P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">
+<font size="2">DISPEXIT:</font></P>
+<P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">&#9;
+<font size="2">POP&#9;PSW</font></P>
+<P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">&#9;
+<font size="2">POP&#9;ACC</font></P>
+<P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">&#9;
+<font size="2">RETI</font></P>
+</FONT>
+<P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">
+<font size="2" FACE="System,黑体" LANG="ZH-CN">DELAY:&#9;&#9;&#9;;</font><font size="2"><FONT FACE="宋体" LANG="ZH-CN">延时</FONT><FONT FACE="System,黑体" LANG="ZH-CN">130</FONT></font><font size="2" FACE="宋体" LANG="ZH-CN">毫秒</font></P>
+<P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">
+<FONT FACE="System,黑体" LANG="ZH-CN" size="2">PUSH&#9;PSW</font></P><FONT FACE="System,黑体" LANG="ZH-CN">
+<P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">&#9;
+<font size="2">SETB&#9;RS0</font></P>
+<P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">&#9;
+<font size="2">MOV&#9;R7,#255</font></P>
+<P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">
+<font size="2">D1:&#9;MOV&#9;R6,#255</font></P>
+<P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">
+<font size="2">D2:&#9;NOP</font></P>
+<P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">&#9;
+<font size="2">NOP</font></P>
+<P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">&#9;
+<font size="2">NOP</font></P>
+<P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">&#9;
+<font size="2">NOP</font></P>
+<P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">&#9;
+<font size="2">DJNZ&#9;R6,D2</font></P>
+<P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">&#9;
+<font size="2">DJNZ&#9;R7,D1</font></P>
+<P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">&#9;
+<font size="2">POP&#9;PSW</font></P>
+<P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">&#9;
+<font size="2">RET</font></P>
+<P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">
+<font size="2">DISPTAB:DB 28H,7EH,0a4H,64H,72H,61H,21H,7CH,20H,60H </font>&#9;</P>
+<P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">&#9;
+<font size="2">END</font></P>
+</FONT><FONT FACE="宋体" LANG="ZH-CN" size="2">
+<P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">从上面的程序可以看出，和静态显示相比，动态扫描的程序稍有点复杂，不过，这是值得的。这个程序有一定的通用性，只要改变端口的值及计数器的值就可以显示更多位数了。下面给出显示程序的流程图。</P>
+</FONT><FONT FACE="System,黑体" LANG="ZH-CN">
+<P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">
+<font size="2">　<IMG SRC="dpj261.gif" width="398" height="409"><IMG SRC="dpj262.gif" width="410" height="273"></font></P>
+<P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0"><a href="down/exec81.asm">
+<font size="2">程序一</font></a><font size="2"> <a href="down/exec81.hex">程序一之代码</a> 
+  <a href="down/exec82.asm">程序二 </a></font><a href="down/exec82.hex"> 
+<font size="2">程序二之代码</font></a></P>
+</FONT></BODY>
+</HTML>

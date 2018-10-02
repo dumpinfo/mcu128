@@ -1,0 +1,36 @@
+Installing AVR Studio 4.09 and USB setup
+----------------------------------------
+
+Note: Do not turn on the USB-connection to ICE40/50 or JTAGICE mkII before all software is installed.
+
+
+Before installing version 4.09 we recommend that version 4.08 and 4.08 SP1 are uninstalled.  
+It is important that you uninstall 4.08 before 4.08 SP1.
+
+If 4.08 and 4.08 SP1 are not uninstalled before installing 4.09, everything will work fine, but 4.08 SP1 will still
+exist in Add/Remove Programs.  If it is removed later, 4.09 need to run setup with repair to work properly.
+
+After running USB-setup, we recommend to reboot the computer. For Windows 98, Me and 2000 the device is 
+automatically installed when the ICE is turned on.  For Windows XP, you must select Automatic Installation (default) 
+
+
+
+Special considirations
+----------------------
+
+*If SP1 is uninstalled first, 4.08 may report an error when being uninstalled.
+To fix this, Restart AVR Studio 4 setup and run repair before uninstall.
+
+*During installation you might get messages telling you the installer is trying to access files protected by windows.  
+Ignore these and press Ok.  This may occur on Windows XP.
+
+*If USB-setup was run on version 4.08 to support ICE50/40 there is no need to run it again.
+Doing this however does not harm the installation.
+
+*We strongly recomend to install the Microsoft XML Parser (MSXML) 3.0 Service Pack 4 or later (SP4).  
+AVR Studio 4 uses the XML parser extensively. This package can be downloaded from the following site: 
+
+The Microsoft® XML Parser (MSXML) 3.0 SP4 
+http://www.microsoft.com/downloads/details.aspx?FamilyID=c0f86022-2d4c-4162-8fb8-66bfc12f32b0&DisplayLang=en
+
+Upgrading the parser may fix the issue with only one part selectable.

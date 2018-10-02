@@ -1,0 +1,3 @@
+main.o: D:/PROGRA~1/icc/include/stdio.h D:/PROGRA~1/icc/include/stdarg.h D:/PROGRA~1/icc/include/_const.h D:/PROGRA~1/icc/include/string.h D:/PROGRA~1/icc/include/_const.h D:/PROGRA~1/icc/include/iom16v.h E:\avr资料\例程\m16\USB\固件/epphal.h\
+ E:\avr资料\例程\m16\USB\固件/d12ci.h E:\avr资料\例程\m16\USB\固件/mainloop.h E:\avr资料\例程\m16\USB\固件/usb100.h E:\avr资料\例程\m16\USB\固件/chap_9.h E:\avr资料\例程\m16\USB\固件/protodma.h E:\avr资料\例程\m16\USB\固件/51usb.h\
+ D:/PROGRA~1/icc/include/iom16v.h

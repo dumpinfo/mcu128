@@ -1,0 +1,405 @@
+<HTML>
+<HEAD>
+<META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=gb_2312-80">
+<META NAME="Generator" CONTENT="Microsoft FrontPage 5.0">
+<TITLE>单片机第七课：单片机内部结构分析（五）</TITLE>
+</HEAD>
+<BODY background="../back.jpg">
+<FONT FACE="宋体" LANG="ZH-CN" SIZE=2>
+<P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">单片机第七课：单片机内部结构分析（五）</P>
+</FONT>
+<P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">
+<FONT FACE="宋体" LANG="ZH-CN" SIZE=2>通过前面的学习，我们已知单片机的内部有</font><FONT SIZE=2>ROM</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>、有</FONT><FONT SIZE=2>RAM</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>、有并行</FONT><FONT SIZE=2>I/O</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>口，那么，除了这些东西之外，单片机内部究竟还有些什么，这些个零碎的东西怎么连在一起的，让我们来对单片机内部作一个完整的分析吧！</font></P>
+<P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0"> 
+<FONT FACE="宋体" LANG="ZH-CN" SIZE=2>看图（</font><FONT SIZE=2>1</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>）（本图太大，请大家找本书看吧，一般讲单片机的书，随便哪本都有）。从图中我们可以看出，在</FONT><FONT SIZE=2>51</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>单片机内部有<B>一个</b></FONT><B><FONT SIZE=2>CPU</font></B><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>用来运算、控制，有<B>四个并行</b></FONT><B><FONT SIZE=2>I/O</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>口</font></B><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>，分别是</FONT><FONT SIZE=2>P0</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>、</FONT><FONT SIZE=2>P1</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>、</FONT><FONT SIZE=2>P2</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>、</FONT><FONT SIZE=2>P3</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>，有</FONT><B><FONT SIZE=2>ROM</font></B><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>，用来存放程序，有</FONT><B><FONT SIZE=2>RAM</font></B><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>，用来存放中间结果，此外还有<B>定时</b></FONT><B><FONT SIZE=2>/</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>计数器</font></B><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>，<B>串行</b></FONT><B><FONT SIZE=2>I/O</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>口</font></B><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>，<B>中断系统</B>，以及一个<B>内部的时钟电路</B>。在一个</FONT><FONT SIZE=2>51</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>单片机的内部包含了这么多的东西。</font></P>
+<P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">
+<FONT FACE="宋体" LANG="ZH-CN" SIZE=2>对上面的图进行进一步的分析，我们已知，对并行</font><FONT SIZE=2>I/O</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>口的读写只要将数据送入到相应</FONT><FONT SIZE=2>I/O</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>口的锁存器就可以了，那么对于定时</FONT><FONT SIZE=2>/</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>计数器，串行</FONT><FONT SIZE=2>I/O</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>口等怎么用呢？在单片机中有一些独立的存储单元是用来控制这些器件的，被称之为特殊功能寄存器（</FONT><FONT SIZE=2>SFR</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>）。事实上，我们已接触过</FONT><FONT SIZE=2>P1</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>这个特殊功能寄存器了，还有哪些呢？看表</FONT><FONT SIZE=2>1</font></P>
+<TABLE BORDER CELLSPACING=1 CELLPADDING=7 WIDTH=602>
+  <TR> 
+    <TD WIDTH="0%" VALIGN="TOP"> <FONT FACE="宋体" LANG="ZH-CN" SIZE=2> 
+      <P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">符号 
+      </FONT></TD>
+    <TD WIDTH="9%" VALIGN="TOP"> <FONT FACE="宋体" LANG="ZH-CN" SIZE=2> 
+      <P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">地址 
+      </FONT></TD>
+    <TD WIDTH="57%" VALIGN="TOP"> <FONT FACE="宋体" LANG="ZH-CN" SIZE=2> 
+      <P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">功能介绍 
+      </FONT></TD>
+  </TR>
+  <TR> 
+    <TD WIDTH="0%" VALIGN="TOP"> <FONT SIZE=2> 
+      <P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">B 
+      </FONT></TD>
+    <TD WIDTH="9%" VALIGN="TOP"> <FONT SIZE=2> 
+      <P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">F0H 
+      </FONT></TD>
+    <TD WIDTH="57%" VALIGN="TOP"> 
+      <P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">
+      <FONT SIZE=2>B</font><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>寄存器</FONT><font size="2">
+      </font> 
+    </TD>
+  </TR>
+  <TR> 
+    <TD WIDTH="0%" VALIGN="TOP"> <FONT SIZE=2> 
+      <P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">ACC 
+      </FONT></TD>
+    <TD WIDTH="9%" VALIGN="TOP"> <FONT SIZE=2> 
+      <P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">E0H 
+      </FONT></TD>
+    <TD WIDTH="57%" VALIGN="TOP"> <FONT FACE="宋体" LANG="ZH-CN" SIZE=2> 
+      <P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">累加器 
+      </FONT></TD>
+  </TR>
+  <TR> 
+    <TD WIDTH="0%" VALIGN="TOP"> <FONT SIZE=2> 
+      <P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">PSW 
+      </FONT></TD>
+    <TD WIDTH="9%" VALIGN="TOP"> <FONT SIZE=2> 
+      <P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">D0H 
+      </FONT></TD>
+    <TD WIDTH="57%" VALIGN="TOP"> <FONT FACE="宋体" LANG="ZH-CN" SIZE=2> 
+      <P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">程序状态字 
+      </FONT></TD>
+  </TR>
+  <TR> 
+    <TD WIDTH="0%" VALIGN="TOP"> <FONT SIZE=2> 
+      <P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">IP 
+      </FONT></TD>
+    <TD WIDTH="9%" VALIGN="TOP"> <FONT SIZE=2> 
+      <P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">B8H 
+      </FONT></TD>
+    <TD WIDTH="57%" VALIGN="TOP"> <FONT FACE="宋体" LANG="ZH-CN" SIZE=2> 
+      <P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">中断优先级控制寄存器 
+      </FONT></TD>
+  </TR>
+  <TR> 
+    <TD WIDTH="0%" VALIGN="TOP"> <FONT SIZE=2> 
+      <P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">P3 
+      </FONT></TD>
+    <TD WIDTH="9%" VALIGN="TOP"> <FONT SIZE=2> 
+      <P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">B0H 
+      </FONT></TD>
+    <TD WIDTH="57%" VALIGN="TOP"> 
+      <P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">
+      <FONT SIZE=2>P3</font><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>口锁存器</FONT><font size="2">
+      </font> 
+    </TD>
+  </TR>
+  <TR> 
+    <TD WIDTH="0%" VALIGN="TOP"> <FONT SIZE=2> 
+      <P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">IE 
+      </FONT></TD>
+    <TD WIDTH="9%" VALIGN="TOP"> <FONT SIZE=2> 
+      <P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">A8H 
+      </FONT></TD>
+    <TD WIDTH="57%" VALIGN="TOP"> <FONT FACE="宋体" LANG="ZH-CN" SIZE=2> 
+      <P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">中断允许控制寄存器 
+      </FONT></TD>
+  </TR>
+  <TR> 
+    <TD WIDTH="0%" VALIGN="TOP"> <FONT SIZE=2> 
+      <P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">P2 
+      </FONT></TD>
+    <TD WIDTH="9%" VALIGN="TOP"> <FONT SIZE=2> 
+      <P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">A0H 
+      </FONT></TD>
+    <TD WIDTH="57%" VALIGN="TOP"> 
+      <P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">
+      <FONT SIZE=2>P2</font><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>口锁存器</FONT><font size="2">
+      </font> 
+    </TD>
+  </TR>
+  <TR> 
+    <TD WIDTH="0%" VALIGN="TOP"> <FONT SIZE=2> 
+      <P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">SBUF 
+      </FONT></TD>
+    <TD WIDTH="9%" VALIGN="TOP"> <FONT SIZE=2> 
+      <P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">99H 
+      </FONT></TD>
+    <TD WIDTH="57%" VALIGN="TOP"> <FONT FACE="宋体" LANG="ZH-CN" SIZE=2> 
+      <P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">串行口锁存器 
+      </FONT></TD>
+  </TR>
+  <TR> 
+    <TD WIDTH="0%" VALIGN="TOP"> <FONT SIZE=2> 
+      <P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">SCON 
+      </FONT></TD>
+    <TD WIDTH="9%" VALIGN="TOP"> <FONT SIZE=2> 
+      <P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">98H 
+      </FONT></TD>
+    <TD WIDTH="57%" VALIGN="TOP"> <FONT FACE="宋体" LANG="ZH-CN" SIZE=2> 
+      <P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">串行口控制寄存器 
+      </FONT></TD>
+  </TR>
+  <TR> 
+    <TD WIDTH="0%" VALIGN="TOP"> <FONT SIZE=2> 
+      <P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">P1 
+      </FONT></TD>
+    <TD WIDTH="9%" VALIGN="TOP"> <FONT SIZE=2> 
+      <P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">90H 
+      </FONT></TD>
+    <TD WIDTH="57%" VALIGN="TOP"> 
+      <P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">
+      <FONT SIZE=2>P1</font><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>口锁存器</FONT><font size="2">
+      </font> 
+    </TD>
+  </TR>
+  <TR> 
+    <TD WIDTH="0%" VALIGN="TOP"> <FONT SIZE=2> 
+      <P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">TH1 
+      </FONT></TD>
+    <TD WIDTH="9%" VALIGN="TOP"> <FONT SIZE=2> 
+      <P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">8DH 
+      </FONT></TD>
+    <TD WIDTH="57%" VALIGN="TOP"> 
+      <P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">
+      <FONT FACE="宋体" LANG="ZH-CN" SIZE=2>定时器</font><FONT SIZE=2>/</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>计数器</FONT><FONT SIZE=2>1</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>（高</FONT><FONT SIZE=2>8</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>位）</FONT><font size="2">
+      </font> 
+    </TD>
+  </TR>
+  <TR> 
+    <TD WIDTH="0%" VALIGN="TOP"> <FONT SIZE=2> 
+      <P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">TH0 
+      </FONT></TD>
+    <TD WIDTH="9%" VALIGN="TOP"> <FONT SIZE=2> 
+      <P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">8CH 
+      </FONT></TD>
+    <TD WIDTH="57%" VALIGN="TOP"> 
+      <P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">
+      <FONT FACE="宋体" LANG="ZH-CN" SIZE=2>定时器</font><FONT SIZE=2>/</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>计数器</FONT><FONT SIZE=2>1</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>（低</FONT><FONT SIZE=2>8</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>位）</FONT><font size="2">
+      </font> 
+    </TD>
+  </TR>
+  <TR> 
+    <TD WIDTH="0%" VALIGN="TOP"> <FONT SIZE=2> 
+      <P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">TL1 
+      </FONT></TD>
+    <TD WIDTH="9%" VALIGN="TOP"> <FONT SIZE=2> 
+      <P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">8BH 
+      </FONT></TD>
+    <TD WIDTH="57%" VALIGN="TOP"> 
+      <P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">
+      <FONT FACE="宋体" LANG="ZH-CN" SIZE=2>定时器</font><FONT SIZE=2>/</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>计数器</FONT><FONT SIZE=2>0</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>（高</FONT><FONT SIZE=2>8</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>位）</FONT><font size="2">
+      </font> 
+    </TD>
+  </TR>
+  <TR> 
+    <TD WIDTH="0%" VALIGN="TOP"> <FONT SIZE=2> 
+      <P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">TL0 
+      </FONT></TD>
+    <TD WIDTH="9%" VALIGN="TOP"> <FONT SIZE=2> 
+      <P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">8AH 
+      </FONT></TD>
+    <TD WIDTH="57%" VALIGN="TOP"> 
+      <P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">
+      <FONT FACE="宋体" LANG="ZH-CN" SIZE=2>定时器</font><FONT SIZE=2>/</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>计数器</FONT><FONT SIZE=2>0</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>（低</FONT><FONT SIZE=2>8</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>位）</FONT><font size="2">
+      </font> 
+    </TD>
+  </TR>
+  <TR> 
+    <TD WIDTH="0%" VALIGN="TOP"> <FONT SIZE=2> 
+      <P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">TMOD 
+      </FONT></TD>
+    <TD WIDTH="9%" VALIGN="TOP"> <FONT SIZE=2> 
+      <P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">89A 
+      </FONT></TD>
+    <TD WIDTH="57%" VALIGN="TOP"> 
+      <P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">
+      <FONT FACE="宋体" LANG="ZH-CN" SIZE=2>定时器</font><FONT SIZE=2>/</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>计数器方式控制寄存器</FONT><font size="2">
+      </font> 
+    </TD>
+  </TR>
+  <TR> 
+    <TD WIDTH="0%" VALIGN="TOP"> <FONT SIZE=2> 
+      <P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">TCON 
+      </FONT></TD>
+    <TD WIDTH="9%" VALIGN="TOP"> <FONT SIZE=2> 
+      <P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">88H 
+      </FONT></TD>
+    <TD WIDTH="57%" VALIGN="TOP"> 
+      <P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">
+      <FONT FACE="宋体" LANG="ZH-CN" SIZE=2>定时器</font><FONT SIZE=2>/</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>计数器控制寄存器</FONT><font size="2">
+      </font> 
+    </TD>
+  </TR>
+  <TR> 
+    <TD WIDTH="0%" VALIGN="TOP"> <FONT SIZE=2> 
+      <P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">DPH 
+      </FONT></TD>
+    <TD WIDTH="9%" VALIGN="TOP"> <FONT SIZE=2> 
+      <P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">83H 
+      </FONT></TD>
+    <TD WIDTH="57%" VALIGN="TOP"> 
+      <P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">
+      <FONT FACE="宋体" LANG="ZH-CN" SIZE=2>数据地址指针（高</font><FONT SIZE=2>8</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>位）</FONT><font size="2">
+      </font> 
+    </TD>
+  </TR>
+  <TR> 
+    <TD WIDTH="0%" VALIGN="TOP"> <FONT SIZE=2> 
+      <P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">DPL 
+      </FONT></TD>
+    <TD WIDTH="9%" VALIGN="TOP"> <FONT SIZE=2> 
+      <P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">82H 
+      </FONT></TD>
+    <TD WIDTH="57%" VALIGN="TOP"> 
+      <P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">
+      <FONT FACE="宋体" LANG="ZH-CN" SIZE=2>数据地址指针（低</font><FONT SIZE=2>8</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>位）</FONT><font size="2">
+      </font> 
+    </TD>
+  </TR>
+  <TR> 
+    <TD WIDTH="0%" VALIGN="TOP"> <FONT SIZE=2> 
+      <P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">SP 
+      </FONT></TD>
+    <TD WIDTH="9%" VALIGN="TOP"> <FONT SIZE=2> 
+      <P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">81H 
+      </FONT></TD>
+    <TD WIDTH="57%" VALIGN="TOP"> <FONT FACE="宋体" LANG="ZH-CN" SIZE=2> 
+      <P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">堆栈指针 
+      </FONT></TD>
+  </TR>
+  <TR> 
+    <TD WIDTH="0%" VALIGN="TOP"> <FONT SIZE=2> 
+      <P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">P0 
+      </FONT></TD>
+    <TD WIDTH="9%" VALIGN="TOP"> <FONT SIZE=2> 
+      <P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">80H 
+      </FONT></TD>
+    <TD WIDTH="57%" VALIGN="TOP"> 
+      <P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">
+      <FONT SIZE=2>P0</font><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>口锁存器</FONT><font size="2">
+      </font> 
+    </TD>
+  </TR>
+  <TR> 
+    <TD WIDTH="0%" VALIGN="TOP"> <FONT SIZE=2> 
+      <P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">PCON 
+      </FONT></TD>
+    <TD WIDTH="9%" VALIGN="TOP"> <FONT SIZE=2> 
+      <P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">87H 
+      </FONT></TD>
+    <TD WIDTH="57%" VALIGN="TOP"> <FONT FACE="宋体" LANG="ZH-CN" SIZE=2> 
+      <P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">电源控制寄存器 
+      </FONT></TD>
+  </TR>
+</TABLE>
+
+<p style="line-height: 150%; margin-top: 0; margin-bottom: 0"><font size="2">表1
+</font></p>
+<P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">
+<FONT FACE="宋体" LANG="ZH-CN" SIZE=2>下面，我们介绍一下几个常用的</font><FONT SIZE=2>SFR</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>，看图</FONT><FONT SIZE=2>2</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>。</font></P><OL>
+<FONT SIZE=3>
+<P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0"></FONT><LI>
+<p style="line-height: 150%; margin-top: 0; margin-bottom: 0"><FONT SIZE=2>ACC</font><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>：累加器，通常用</FONT><FONT SIZE=2>A</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>表示。这是个什么东西，可不能从名字上理解，它是一个寄存器，而不是一个做加法的东西，为什么给它这么一个名字呢？或许是因为在运算器做运算时其中一个数一定是在</FONT><FONT SIZE=2>ACC</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>中的缘故吧。它的名字特殊，身份也特殊，稍后我们将学到指令，可以发现，所有的运算类指令都离不开它。</font><font size="2"></LI></font><FONT FACE="宋体" LANG="ZH-CN" SIZE=3></p>
+<p style="line-height: 150%; margin-top: 0; margin-bottom: 0"></P></font></OL>
+
+<P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">
+<FONT SIZE=2>2</font><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>、</FONT><FONT SIZE=2>B</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>：一个寄存器。在做乘、除法时放乘数或除数，不做乘除法时，随你怎么用。</font></P>
+<p style="line-height: 150%; margin-top: 0; margin-bottom: 0"><font size="2">3、PSW：程序状态字。这是一个很重要的东西，里面放了CPU工作时的很多状态，借此，我们可以了解CPU的当前状态，并作出相应的处理。它的各位功能请看表2</font></p>
+<TABLE BORDER CELLSPACING=1 CELLPADDING=7 WIDTH=319>
+  <TR>
+    <TD WIDTH="11%" VALIGN="TOP"> <FONT SIZE=2> 
+      <P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">D7</FONT></TD>
+    <TD WIDTH="11%" VALIGN="TOP"> <FONT SIZE=2> 
+      <P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">D6</FONT></TD>
+    <TD WIDTH="11%" VALIGN="TOP"> <FONT SIZE=2> 
+      <P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">D5</FONT></TD>
+    <TD WIDTH="13%" VALIGN="TOP"> <FONT SIZE=2> 
+      <P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">D4</FONT></TD>
+    <TD WIDTH="13%" VALIGN="TOP"> <FONT SIZE=2> 
+      <P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">D3</FONT></TD>
+    <TD WIDTH="11%" VALIGN="TOP"> <FONT SIZE=2> 
+      <P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">D2</FONT></TD>
+    <TD WIDTH="14%" VALIGN="TOP"> <FONT SIZE=2> 
+      <P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">D1</FONT></TD>
+    <TD WIDTH="16%" VALIGN="TOP"> <FONT SIZE=2> 
+      <P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">D0</FONT></TD>
+</TR>
+<TR>
+    <TD WIDTH="11%" VALIGN="TOP"> <FONT SIZE=2> 
+      <P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">CY</FONT></TD>
+    <TD WIDTH="11%" VALIGN="TOP"> <FONT SIZE=2> 
+      <P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">AC</FONT></TD>
+    <TD WIDTH="11%" VALIGN="TOP"> <FONT SIZE=2> 
+      <P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">F0</FONT></TD>
+    <TD WIDTH="13%" VALIGN="TOP"> <FONT SIZE=2> 
+      <P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">RS1</FONT></TD>
+    <TD WIDTH="13%" VALIGN="TOP"> <FONT SIZE=2> 
+      <P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">RS0</FONT></TD>
+    <TD WIDTH="11%" VALIGN="TOP"> <FONT SIZE=2> 
+      <P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">OV</FONT></TD>
+    <TD WIDTH="14%" VALIGN="TOP">
+    <p style="line-height: 150%; margin-top: 0; margin-bottom: 0">　</TD>
+    <TD WIDTH="16%" VALIGN="TOP"> <FONT SIZE=2> 
+      <P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">P</FONT></TD>
+</TR>
+</TABLE>
+<p style="line-height: 150%; margin-top: 0; margin-bottom: 0"><font size="2">表2
+</font></p>
+<DIR>
+
+<FONT FACE="宋体" LANG="ZH-CN" SIZE=2>
+<P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">下面我们逐一介绍各位的用途</P>
+</FONT>
+<P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">
+<FONT FACE="宋体" LANG="ZH-CN" SIZE=2>（</font><FONT SIZE=2>1</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>）</FONT><FONT SIZE=2>CY</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>：进位标志。</FONT><FONT SIZE=2>8051</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>中的运算器是一种</FONT><FONT SIZE=2>8</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>位的运算器，我们知道，</FONT><FONT SIZE=2>8</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>位运算器只能表示到</FONT><FONT SIZE=2>0-255</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>，如果做加法的话，两数相加可能会超过</FONT><FONT SIZE=2>255</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>，这样最高位就会丢失，造成运算的错误，怎么办？最高位就进到这里来。这样就没事了。</font></P><DIR>
+  <P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">
+
+<FONT FACE="宋体" LANG="ZH-CN" SIZE=2>例：</font><FONT SIZE=2>78H+97H</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>（</FONT><FONT SIZE=2>01111000+10010111</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>）</font></P></DIR>
+</DIR>
+<OL START=2>
+  <FONT SIZE=3> 
+  <P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">
+  </FONT> <font size="2">（2）AC</font><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>：半进位标志。 
+  </font><FONT FACE="宋体" LANG="ZH-CN" SIZE=3> 
+  <p style="line-height: 150%; margin-top: 0; margin-bottom: 0"></P>
+  </FONT> 
+  <P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">
+  <FONT FACE="宋体" LANG="ZH-CN" SIZE=2>例：</font><FONT SIZE=2>57H+3AH</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>（</FONT><FONT SIZE=2>01010111+00111010</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>）</font></P>
+  <p style="line-height: 150%; margin-top: 0; margin-bottom: 0"><FONT SIZE=2> （3）F0</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>：用户标志位，由我们（编程人员）决定什么时候用，什么时候不用。</font></p>
+  <p style="line-height: 150%; margin-top: 0; margin-bottom: 0"><font size="2">（4）RS1</font><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>、</FONT><FONT SIZE=2>RS0</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>：工作寄存器组选择位。这个我们已知了。 </font></p>
+  <FONT FACE="宋体" LANG="ZH-CN" SIZE=3> 
+  <p style="line-height: 150%; margin-top: 0; margin-bottom: 0"></P>
+  </FONT><FONT SIZE=3> 
+  <P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">
+  </FONT> 
+  <p style="line-height: 150%; margin-top: 0; margin-bottom: 0"><font size="2">（5）0V</font><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>：溢出标志位。什么是溢出我们稍后再谈吧。</font></p>
+  <p style="line-height: 150%; margin-top: 0; margin-bottom: 0"><font size="2">（6）P</font><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>：奇偶校验位：它用来表示</FONT><FONT SIZE=2>ALU</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>运算结果中二进制数位“</FONT><FONT SIZE=2>1</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>”的个数的奇偶性。若为奇数，则</FONT><FONT SIZE=2>P=1</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>，否则为</FONT><FONT SIZE=2>0。</font></p>
+  <FONT SIZE=3>
+  <p style="line-height: 150%; margin-top: 0; margin-bottom: 0"></P>
+  </font> 
+</OL>
+<DIR> 
+  <DIR>  
+    <P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">
+    <FONT FACE="宋体" LANG="ZH-CN" SIZE=2>例：某运算结果是</font><FONT SIZE=2>78H</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>（</FONT><FONT SIZE=2>01111000</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>），显然</FONT><FONT SIZE=2>1</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>的个数为偶数，所以</FONT><FONT SIZE=2>P=0</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>。</font></P>
+  </DIR>
+  <P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">
+  <FONT SIZE=2>4</font><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>、</FONT><FONT SIZE=2>DPTR</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>（</FONT><FONT SIZE=2>DPH</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>、</FONT><FONT SIZE=2>DPL</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>）：数据指针，可以用它来访问外部数据存储器中的任一单元，如果不用，也可以作为通用寄存器来用，由我们自已决定如何使用。</font></P>
+  <P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">
+  <FONT SIZE=2>5</font><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>、</FONT><FONT SIZE=2>P0</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>、P1、P2、</FONT><FONT SIZE=2>P3</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>：这个我们已经知道，是四个并行输入</FONT><FONT SIZE=2>/</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>输出口的寄存器。它里面的内容对应着管脚的输出。 
+    </font></P>
+  <P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0"> 
+  <FONT SIZE=2>6、SP</font><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>：堆栈指针。</font></P>
+  <FONT FACE="宋体" LANG="ZH-CN" SIZE=2>
+  <P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0"> 堆栈介绍：日常生活中，我们都注意到过这样的现象，家里洗的碗，一只一只摞起来，最晚放上去的放在最上面，而最早放上去的则放在最下面，在取的时候正好相反，先从最上面取，这种现象我们用一句话来概括：“先进后出，后进先出”。请大家想想，还有什么地方有这种现象？其实比比皆是，建筑工地上堆放的砖头、材料，仓库里放的货物，都是“先进后出，后进先出”，这实际是一种存取物品的规则，我们称之为“堆栈”。</P>
+  </FONT> 
+  <P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">
+  <FONT FACE="宋体" LANG="ZH-CN" SIZE=2>在单片机中，我们也可以在</font><FONT SIZE=2>RAM</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>中构造这样一个区域，用来存放数据，这个区域存放数据的规则就是“先进后出，后进先出”，我们称之为“堆栈”。为什么需要这样来存放数据呢？存储器本身不是可以按地址来存放数据吗？对，知道了地址的确就可以知道里面的内容，但如果我们需要存放的是一批数据，每一个数据都需要知道地址那不是麻烦吗？如果我们让数据一个接一个地放置，那么我们只要知道第一个数据所在地址单元就可以了（看图</FONT><FONT SIZE=2>2</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>）如果第一个数据在</FONT><FONT SIZE=2>27H</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>，那么第二、三个就在</FONT><FONT SIZE=2>28H</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>、</FONT><FONT SIZE=2>29H</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>了。所以利用堆栈这种方法来放数据可以简化操作</font></P>
+  <P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0"> 
+  <FONT FACE="宋体" LANG="ZH-CN" SIZE=2>那么</font><FONT SIZE=2>51</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>中堆栈什么地方呢？单片机中能存放数据的区域有限，我们不能够专门分配一块地方做堆栈，所以就在内存（</FONT><FONT SIZE=2>RAM</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>）中开辟一块地方，用于堆栈，但是用内存的哪一块呢？还是不好定，因为</FONT><FONT SIZE=2>51</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>是一种通用的单片机，各人的实际需求各不相同，有人需要多一些堆栈，而有人则不需要那么多，所以怎么分配都不合适，怎样来解决这个问题</FONT><FONT SIZE=2>?</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>分不好干脆就不分了，把分的权利给用户（编程者），根据自已的需要去定吧，所以</FONT><FONT SIZE=2>51</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>单片机中堆栈的位置是可以变化的。而这种变化就体现在</FONT><FONT SIZE=2>SP</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>中值的变化，看图</FONT><FONT SIZE=2>2</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>，</FONT><FONT SIZE=2>SP</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>中的值等于</FONT><FONT SIZE=2>27H</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>不就相当于是一个指针指向</FONT><FONT SIZE=2>27H</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>单元吗？当然在真正的</FONT><FONT SIZE=2>51</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>机中，开始指针所指的位置并非就是数据存放的位置，而是数据存放的前一个位置，比如一开始指针是指向</FONT><FONT SIZE=2>27H</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>单元的，那么第一个数据的位置是</FONT><FONT SIZE=2>28H</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>单元，而不是</FONT><FONT SIZE=2>27H</FONT><FONT FACE="宋体" LANG="ZH-CN" SIZE=2>单元，为什么会这样，我们在学堆栈命令时再说明。</font></P>
+  <FONT FACE="宋体" LANG="ZH-CN" SIZE=3> 
+  <P ALIGN="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0"></P>
+  </font></DIR>
+<p style="line-height: 150%; margin-top: 0; margin-bottom: 0">
+<font face="宋体" lang="ZH-CN" size=2><img src="92.gif" width="131" height="280"></font><font size="2">图2
+</font> 
+</p>
+<p align="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">
+<font face="宋体" lang="ZH-CN" size=2>其它的</font><font size=2>SFR</font><font face="宋体" lang="ZH-CN" size=2>，我们在用到时再介绍。</font></p>
+<p align="JUSTIFY" style="line-height: 150%; margin-top: 0; margin-bottom: 0">　</p>
+<p style="line-height: 150%; margin-top: 0; margin-bottom: 0"><font size="2">&nbsp;
+</font> </p>
+</BODY>
+</HTML>

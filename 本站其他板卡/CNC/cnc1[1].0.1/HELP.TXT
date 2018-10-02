@@ -1,0 +1,34 @@
+一.软件系统要求
+　.WINDOWS 2000
+  .WINDOWS XP  中文版
+  .WINDOWS XP  英文版
+  
+二.硬件系统要求
+  .硬盘占用　5 M
+  .内存占用　30 M 　　
+  .CPU       P3 600 以上
+  .并行打印口
+
+三.功能描述
+  1.通过并口控制CNC三轴雕刻机，可设定并口的输出参数，并设定驱动速度。
+  
+  2.三轴联动，每轴每秒最多可输出2000个控制脉冲。
+  
+  3.手动控制
+  
+  4.读取标准G-Code代码，目前可以识别：G0，G1，G2，G3，G90，G91指令；X，Y，Z参数及G2，G3的I，J，AR参数，单位为mm。
+  
+  5.可快速查看G-Code数据的图形。
+  
+  6.将Protel 99 SE等PCB软件生成的光绘文件(Gerber)转为G代码文件(G-Code)。Gerber文件单位为mm，输出G-Code文件单位为mm或inc可选，增量尺寸或绝对尺寸可选。并可以设定Z轴的安全移动高度和下刀铣削的深度。
+
+四.文件组成
+   CNC.EXE         主程序
+   CNC.INI　       配置文件
+   HELP.TXT
+   COMDLG32.OCX
+   TABCTL32.OCX
+   WINIO.DLL
+   WINIO.SYS
+   WINIO.VXD
+   IMAGES          图标文件夹    
